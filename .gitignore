@@ -1,0 +1,15 @@
+# OS / editor junk
+.DS_Store
+**/.DS_Store
+Thumbs.db
+*.swp
+
+# image-slot runtime state (local drag-dropped images persistence)
+*.image-slots.state.json
+.image-slots*
+
+# logs / deps (if a build is added later)
+*.log
+node_modules/
+dist/
+.cache/

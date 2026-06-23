@@ -1,0 +1,477 @@
+<!--
+  ============================================================================
+  ASCII / DITHER + SCRAMBLE EFFECTS — учебный демо-файл
+  Воспроизводит ключевые приёмы со студийного сайта (тип artefakt.mov):
+    1. ASCII-фильтр изображения/видео на <canvas> (главный эффект)
+    2. Растворение картинки в символы по скроллу (dissolve mask)
+    3. Scramble / "декодирование" текста
+    4. Кинетический сплит-заголовок с clip-reveal
+    5. HUD-эстетика: моно-лейблы по углам, сетка, резкие края
+
+  Всё на чистом JS, без библиотек и без сборки.
+  Можно открыть файл в браузере как есть, либо скопировать нужные блоки к себе.
+  Места, где подставить свой контент, помечены  >>> SWAP <<<
+  ============================================================================
+-->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASCII / Scramble — демо эффектов</title>
+<style>
+  :root{
+    --bg:#0a0a0a;
+    --fg:#f2f2f0;
+    --dim:#6a6a66;
+    --line:rgba(255,255,255,.08);
+    --accent:#ff5b2e;            /* оранжевый акцент как на референсе */
+    --mono:"SFMono-Regular",ui-monospace,"Menlo","Consolas",monospace;
+    --sans:"Helvetica Neue",Arial,"Segoe UI",system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:auto}
+  body{
+    background:var(--bg);color:var(--fg);font-family:var(--sans);
+    overflow-x:hidden;
+    /* фоновая HUD-сетка */
+    background-image:
+      linear-gradient(var(--line) 1px,transparent 1px),
+      linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:44px 44px;
+  }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+  /* ---------- HUD: моно-лейблы по углам ---------- */
+  .hud{position:fixed;inset:0;pointer-events:none;z-index:50;
+       font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+       text-transform:uppercase;color:var(--fg);mix-blend-mode:difference}
+  .hud span{position:absolute;line-height:1.4}
+  .hud .tl{top:18px;left:18px}
+  .hud .tr{top:18px;right:18px;text-align:right}
+  .hud .bl{bottom:18px;left:18px}
+  .hud .br{bottom:18px;right:18px;text-align:right}
+  .hud b{font-family:var(--sans);font-weight:900;font-style:italic;letter-spacing:-.02em;font-size:18px}
+  .dim{color:var(--dim)}
+
+  /* ---------- общий каркас секций ---------- */
+  section{position:relative;padding:clamp(60px,9vw,140px) clamp(18px,4vw,64px)}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;
+           text-transform:uppercase;color:var(--dim);margin-bottom:28px}
+
+  /* ---------- 4. КИНЕТИЧЕСКИЙ ЗАГОЛОВОК ---------- */
+  .kinetic{font-family:var(--sans);font-weight:900;line-height:.9;
+           letter-spacing:-.03em;text-transform:uppercase;
+           font-size:clamp(40px,8.5vw,128px)}
+  .kinetic .row{display:flex;justify-content:space-between;gap:.4em;flex-wrap:wrap;width:100%}
+  .kinetic .w{display:inline-block;overflow:hidden;vertical-align:top}
+  .kinetic .w i{display:inline-block;font-style:normal;transform:translateY(110%);
+                transition:transform .9s cubic-bezier(.16,1,.3,1)}
+  .kinetic.in .w i{transform:translateY(0)}
+  .kinetic .w:nth-child(2) i{transition-delay:.08s}
+  .kinetic .w:nth-child(3) i{transition-delay:.16s}
+  .kinetic .thin{font-weight:300;font-style:italic}
+
+  /* ---------- ASCII canvas-контейнер ---------- */
+  .ascii-wrap{position:relative;margin-top:40px;width:100%;
+              aspect-ratio:16/8;background:#000;overflow:hidden;border:1px solid var(--line)}
+  .ascii-wrap canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .ascii-wrap .tag{position:absolute;left:14px;bottom:12px;z-index:3;
+                   font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+                   text-transform:uppercase;color:var(--fg);mix-blend-mode:difference}
+  /* подсказка/контролы */
+  .controls{display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+            margin-top:18px;font-family:var(--mono);font-size:12px;color:var(--dim)}
+  .controls label{display:flex;gap:8px;align-items:center;cursor:pointer}
+  .controls input[type=range]{accent-color:var(--accent)}
+  .drop{border:1px dashed var(--dim);padding:6px 12px;color:var(--fg);cursor:pointer;
+        transition:border-color .2s}
+  .drop:hover{border-color:var(--accent)}
+
+  /* ---------- 3. SCRAMBLE-текст ---------- */
+  .scramble-block{max-width:18ch;font-family:var(--sans);font-weight:900;
+                  font-size:clamp(28px,5vw,72px);line-height:.95;
+                  letter-spacing:-.02em;text-transform:uppercase}
+  .scramble-block .l{display:block}
+  .meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px 48px;margin-top:54px;
+             font-family:var(--mono);font-size:12px;letter-spacing:.04em;
+             text-transform:uppercase;max-width:760px}
+  .meta-grid .k{color:var(--dim);margin-bottom:8px}
+  .meta-grid .v{color:var(--fg);line-height:1.7}
+
+  /* ---------- футер с ASCII-логотипом ---------- */
+  .footer-ascii{position:relative;min-height:60vh;display:grid;place-items:center}
+  #logoCanvas{width:min(90vw,1100px);aspect-ratio:1000/300;display:block}
+  .foot-bar{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;
+            font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+            text-transform:uppercase;color:var(--dim);
+            border-top:1px solid var(--line);padding-top:22px;margin-top:40px}
+
+  .note{font-family:var(--mono);font-size:12px;color:var(--dim);line-height:1.7;
+        max-width:60ch;margin-top:20px}
+  .note b{color:var(--accent);font-weight:400}
+</style>
+</head>
+<body>
+
+<!-- ===== HUD по углам (фиксированный) ===== -->
+<div class="hud">
+  <span class="tl"><b>studio</b><br><span class="dim">visual&nbsp;/&nbsp;ascii&nbsp;lab</span></span>
+  <span class="tr">production studio<br><span class="dim">your&nbsp;city, country</span></span>
+  <span class="bl dim">scroll&nbsp;↓&nbsp;to&nbsp;dissolve</span>
+  <span class="br dim">est. 2025 — raw vision</span>
+</div>
+
+<!-- ============================================================ -->
+<!-- HERO: кинетический заголовок + ASCII-картинка                -->
+<!-- ============================================================ -->
+<section>
+  <div class="eyebrow">01 — hybrid production</div>
+
+  <h1 class="kinetic" id="hero-h1">
+    <span class="row">
+      <span class="w"><i>A</i></span>
+      <span class="w"><i>Hybrid</i></span>
+      <span class="w"><i>Film</i></span>
+    </span>
+    <span class="row">
+      <span class="w"><i>Production</i></span>
+      <span class="w"><i class="thin">visual&nbsp;eng.</i></span>
+    </span>
+  </h1>
+
+  <!-- ASCII-холст. Источник — анимированная процедурная сцена ИЛИ ваше фото -->
+  <div class="ascii-wrap" id="asciiWrap">
+    <canvas id="asciiCanvas"></canvas>
+    <span class="tag">raw vision · no filters — img → ascii</span>
+  </div>
+
+  <div class="controls">
+    <label>cell
+      <input type="range" id="cell" min="4" max="16" value="8" step="1">
+    </label>
+    <label>color
+      <input type="checkbox" id="colorToggle" checked>
+    </label>
+    <label class="drop" id="dropLabel">
+      ▣ перетащи сюда своё фото / клик
+      <input type="file" id="fileInput" accept="image/*" hidden>
+    </label>
+    <span>↓ растворение управляется скроллом страницы</span>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SCRAMBLE: декодирование текста при появлении                  -->
+<!-- ============================================================ -->
+<section>
+  <div class="eyebrow">02 — what we do</div>
+  <div class="scramble-block">
+    <span class="l scramble" data-text="We shoot.">We shoot.</span>
+    <span class="l scramble" data-text="We produce.">We produce.</span>
+    <span class="l scramble" data-text="We finish.">We finish.</span>
+  </div>
+
+  <div class="meta-grid">
+    <div>
+      <div class="k">creative direction (01)</div>
+      <div class="v">concept development<br>talent curation<br>visual direction</div>
+    </div>
+    <div>
+      <div class="k">production (02)</div>
+      <div class="v">scalable frameworks<br>cross-border production<br>end-to-end management</div>
+    </div>
+    <div>
+      <div class="k">post (03)</div>
+      <div class="v">color &amp; online<br>vfx &amp; compositing<br>mastering &amp; delivery</div>
+    </div>
+    <div>
+      <div class="k">hybrid approach (04)</div>
+      <div class="v">ai + hybrid models<br>workflow optimization<br>rights advisory</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- ФУТЕР: большой логотип, нарисованный как ASCII / точечная сетка-->
+<!-- ============================================================ -->
+<section class="footer-ascii">
+  <div style="width:100%">
+    <canvas id="logoCanvas"></canvas>
+    <div class="foot-bar">
+      <span>studio.mov — your address</span>
+      <span class="dim">get in touch — hello@studio.mov</span>
+      <span>↑ back to top</span>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <p class="note">
+    Этот файл — рабочий разбор. Главный эффект (<b>ASCII-фильтр</b>) живёт в функции
+    <b>renderASCII()</b>. Текстовый scramble — в классе <b>Scrambler</b>. Заголовок и
+    появление секций — на <b>IntersectionObserver</b> + CSS. Подставь свой <b>&lt;img&gt;</b>
+    или <b>&lt;video&gt;</b> в источник (помечено &gt;&gt;&gt; SWAP &lt;&lt;&lt;) — и эффект
+    ляжет на твой контент.
+  </p>
+</section>
+
+<script>
+/* ===========================================================================
+   ЭФФЕКТ 1 + 2 — ASCII-ФИЛЬТР + РАСТВОРЕНИЕ ПО СКРОЛЛУ
+   ---------------------------------------------------------------------------
+   Идея: рисуем источник (фото/видео/процедурная сцена) уменьшенным на скрытый
+   "sampler"-canvas размером cols×rows. Читаем пиксели. Для каждой ячейки берём
+   яркость → выбираем символ из рампы (тёмный→светлый). Рисуем символ крупно на
+   видимом canvas, при желании — цветом исходного пикселя.
+   "Растворение" = маска: чем ниже ячейка и чем больше прогресс скролла, тем
+   выше шанс показать символ вместо чистого пикселя.
+   =========================================================================== */
+const RAMP = " .,:;i1tfLCG08@";        // классическая рампа яркости (тёмный→светлый)
+// Можно заменить на «фирменную» рампу с цифрами: const RAMP = "  ..::34RT#@";
+
+const wrap   = document.getElementById('asciiWrap');
+const canvas = document.getElementById('asciiCanvas');
+const ctx    = canvas.getContext('2d');
+
+const sampler = document.createElement('canvas');   // скрытый буфер для семплинга
+const sctx    = sampler.getContext('2d',{willReadFrequently:true});
+
+let CELL = 8;             // размер ячейки в пикселях (меньше = детальнее, тяжелее)
+let useColor = true;
+let dissolve = 0;        // 0..1 — прогресс растворения (управляется скроллом)
+let dpr = Math.min(devicePixelRatio||1, 2);
+let cols=0, rows=0, W=0, H=0;
+
+/* ----- ИСТОЧНИК -----------------------------------------------------------
+   >>> SWAP <<<  Здесь источник — процедурная анимированная сцена, чтобы файл
+   был самодостаточным. Чтобы пустить ASCII на СВОЁ фото или видео, замените
+   drawSource() на отрисовку вашего <img>/<video>:
+     const media = document.querySelector('#myVideo');   // или new Image()
+     function drawSource(t){ sctx.drawImage(media,0,0,cols,rows); }
+*/
+const sceneImg = new Image();          // сюда пишется загруженное пользователем фото
+let hasUserImg = false;
+
+function drawSource(t){
+  if(hasUserImg){
+    // вписываем картинку с сохранением пропорций (cover)
+    const ir = sceneImg.width/sceneImg.height, cr = cols/rows;
+    let dw=cols,dh=rows,dx=0,dy=0;
+    if(ir>cr){ dw=rows*ir; dx=(cols-dw)/2; } else { dh=cols/ir; dy=(rows-dh)/2; }
+    sctx.drawImage(sceneImg,dx,dy,dw,dh);
+    return;
+  }
+  // --- процедурная сцена: движущийся свет + полосы + «постеры на стене» ---
+  sctx.fillStyle='#11110f'; sctx.fillRect(0,0,cols,rows);
+  // диагональный свет
+  const g=sctx.createLinearGradient(0,0,cols,rows);
+  g.addColorStop(0,'#3a352b'); g.addColorStop(.5,'#15140f'); g.addColorStop(1,'#000');
+  sctx.fillStyle=g; sctx.fillRect(0,0,cols,rows);
+  // солнечные полосы (жалюзи), плывут
+  sctx.globalAlpha=.35; sctx.fillStyle='#d9c9a0';
+  for(let i=-2;i<cols;i+=6){
+    const off=Math.sin(t/1400+i)*2;
+    sctx.fillRect(i+off,0,3,rows);
+  }
+  sctx.globalAlpha=1;
+  // три «постера» разных цветов
+  const posters=[['#1f3b2a',cols*0.10],['#2a4a6b',cols*0.42],['#5a2f1a',cols*0.72]];
+  posters.forEach(([c,x],k)=>{
+    sctx.fillStyle=c;
+    const y=rows*0.12+Math.sin(t/2000+k)*1;
+    sctx.fillRect(x,y,cols*0.16,rows*0.55);
+  });
+  // оранжевый объект-«стул», пульсирует
+  sctx.fillStyle='#ff5b2e';
+  const cx=cols*0.55, cy=rows*0.7+Math.sin(t/600)*1.5;
+  sctx.beginPath(); sctx.ellipse(cx,cy,cols*0.05,rows*0.05,0,0,7); sctx.fill();
+}
+
+function resize(){
+  const r = wrap.getBoundingClientRect();
+  W = Math.round(r.width); H = Math.round(r.height);
+  canvas.width = W*dpr; canvas.height = H*dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  cols = Math.max(1, Math.floor(W/CELL));
+  rows = Math.max(1, Math.floor(H/CELL));
+  sampler.width = cols; sampler.height = rows;
+  ctx.textBaseline='top';
+  ctx.font = `${CELL}px var(--mono)`;
+}
+window.addEventListener('resize', resize);
+
+function renderASCII(t){
+  drawSource(t);
+  const data = sctx.getImageData(0,0,cols,rows).data;
+
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H);
+  ctx.font = `${CELL}px ${getComputedStyle(document.body).getPropertyValue('--mono')}`;
+  ctx.textBaseline='top';
+
+  for(let y=0;y<rows;y++){
+    // маска растворения: верх остаётся «чистым» дольше, низ рассыпается первым
+    const yNorm = y/rows;
+    const cellChance = dissolve*1.35 - (1-yNorm); // >0 → показываем ASCII
+    for(let x=0;x<cols;x++){
+      const i=(y*cols+x)*4;
+      const r=data[i],gC=data[i+1],b=data[i+2];
+      const lum=(0.299*r+0.587*gC+0.114*b)/255;          // яркость 0..1
+
+      // решаем: эта ячейка уже «рассыпалась» в символ?
+      const noise=((x*7+y*13)%17)/17;                     // дешёвый детерм. шум
+      const asASCII = cellChance > noise;
+
+      const px=x*CELL, py=y*CELL;
+      if(asASCII){
+        const ch = RAMP[Math.min(RAMP.length-1, Math.floor(lum*RAMP.length))];
+        if(ch===' ') continue;
+        ctx.fillStyle = useColor
+          ? `rgb(${r},${gC},${b})`
+          : `rgba(242,242,240,${0.25+lum*0.75})`;
+        ctx.fillText(ch, px, py);
+      }else{
+        // ещё «чистый» пиксель — рисуем плотным блоком (как исходное фото)
+        ctx.fillStyle=`rgb(${r},${gC},${b})`;
+        ctx.fillRect(px,py,CELL,CELL);
+      }
+    }
+  }
+}
+
+/* растворение по скроллу: считаем, насколько hero ушёл вверх */
+function updateDissolve(){
+  const r = wrap.getBoundingClientRect();
+  const vh = innerHeight;
+  // 0 когда блок в центре экрана, 1 когда уехал вверх на свою высоту
+  const p = (vh*0.55 - r.top) / (r.height*0.9);
+  dissolve = Math.max(0, Math.min(1, p));
+}
+addEventListener('scroll', updateDissolve, {passive:true});
+
+/* контролы */
+document.getElementById('cell').addEventListener('input',e=>{CELL=+e.target.value;resize();});
+document.getElementById('colorToggle').addEventListener('change',e=>useColor=e.target.checked);
+
+/* загрузка своего фото */
+const fileInput=document.getElementById('fileInput');
+const dropLabel=document.getElementById('dropLabel');
+dropLabel.addEventListener('click',()=>fileInput.click());
+fileInput.addEventListener('change',e=>loadImg(e.target.files[0]));
+['dragover','drop'].forEach(ev=>wrap.addEventListener(ev,e=>e.preventDefault()));
+wrap.addEventListener('drop',e=>{const f=e.dataTransfer.files[0]; if(f) loadImg(f);});
+function loadImg(file){
+  if(!file||!file.type.startsWith('image')) return;
+  const url=URL.createObjectURL(file);
+  sceneImg.onload=()=>{hasUserImg=true; URL.revokeObjectURL(url);};
+  sceneImg.src=url;
+}
+
+/* ===========================================================================
+   ЭФФЕКТ 3 — SCRAMBLE / ДЕКОДИРОВАНИЕ ТЕКСТА
+   Каждый кадр часть символов «застывает» в правильные, остальные — случайны.
+   =========================================================================== */
+class Scrambler{
+  constructor(el){
+    this.el=el; this.target=el.dataset.text; this.chars="!<>-_\\/[]{}—=+*^?#________";
+    this.frame=0; this.queue=[]; this.req=null;
+  }
+  run(){
+    const old=this.el.textContent, len=this.target.length;
+    this.queue=[];
+    for(let i=0;i<len;i++){
+      const from=old[i]||'', to=this.target[i];
+      const start=Math.floor(Math.random()*30);
+      const end=start+Math.floor(Math.random()*30)+10;
+      this.queue.push({from,to,start,end,char:null});
+    }
+    cancelAnimationFrame(this.req); this.frame=0; this.tick();
+  }
+  tick(){
+    let out='', done=0;
+    for(const q of this.queue){
+      if(this.frame>=q.end){done++; out+=q.to;}
+      else if(this.frame>=q.start){
+        if(!q.char||Math.random()<0.28) q.char=this.chars[Math.floor(Math.random()*this.chars.length)];
+        out+=`<span style="color:var(--accent)">${q.char}</span>`;
+      }else out+=q.from;
+    }
+    this.el.innerHTML=out;
+    if(done<this.queue.length){ this.frame++; this.req=requestAnimationFrame(()=>this.tick()); }
+    else this.el.textContent=this.target;
+  }
+}
+
+/* ===========================================================================
+   ЭФФЕКТ 4 — ПОЯВЛЕНИЕ ПО СКРОЛЛУ (заголовок + scramble)
+   =========================================================================== */
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting) return;
+    if(e.target.id==='hero-h1') e.target.classList.add('in');
+    if(e.target.classList.contains('scramble')) new Scrambler(e.target).run();
+    io.unobserve(e.target);
+  });
+},{threshold:.4});
+document.getElementById('hero-h1') && io.observe(document.getElementById('hero-h1'));
+document.querySelectorAll('.scramble').forEach(el=>io.observe(el));
+
+/* ===========================================================================
+   ФУТЕР — большой логотип как ASCII / точечная сетка (то же ядро, но текст
+   рисуем во временный canvas и семплим его форму).
+   =========================================================================== */
+const logoCanvas=document.getElementById('logoCanvas');
+const lctx=logoCanvas.getContext('2d');
+const lbuf=document.createElement('canvas'); const lbctx=lbuf.getContext('2d',{willReadFrequently:true});
+const LOGO_TEXT="artefakt";
+let logoT=0, logoVisible=false;
+
+function setupLogo(){
+  const w=logoCanvas.clientWidth, h=logoCanvas.clientHeight;
+  logoCanvas.width=w*dpr; logoCanvas.height=h*dpr; lctx.setTransform(dpr,0,0,dpr,0,0);
+  const cell=Math.max(5,Math.round(w/180));
+  lbuf.width=Math.floor(w/cell); lbuf.height=Math.floor(h/cell);
+  logoCanvas._cell=cell;
+}
+function drawLogo(){
+  const w=logoCanvas.clientWidth, h=logoCanvas.clientHeight, cell=logoCanvas._cell;
+  const c=lbuf.width, r=lbuf.height;
+  // рисуем слово в буфер
+  lbctx.clearRect(0,0,c,r); lbctx.fillStyle='#000'; lbctx.fillRect(0,0,c,r);
+  lbctx.fillStyle='#fff'; lbctx.textAlign='center'; lbctx.textBaseline='middle';
+  lbctx.font=`900 italic ${r*0.78}px ${getComputedStyle(document.body).getPropertyValue('--sans')}`;
+  lbctx.fillText(LOGO_TEXT, c/2, r/2);
+  const d=lbctx.getImageData(0,0,c,r).data;
+
+  lctx.clearRect(0,0,w,h);
+  const DOTS=" ·•+▪■"; // рампа из точек/блоков
+  for(let y=0;y<r;y++)for(let x=0;x<c;x++){
+    const lum=d[(y*c+x)*4]/255;
+    if(lum<0.15) continue;
+    // лёгкое «дыхание»/джиттер
+    const jit=Math.sin((x*0.5+y*0.7)+logoT/12)*0.5;
+    const ch=DOTS[Math.min(DOTS.length-1,Math.floor(lum*DOTS.length))];
+    lctx.fillStyle = lum>0.6 ? '#f2f2f0' : 'rgba(242,242,240,.55)';
+    lctx.font=`${cell+1}px ${getComputedStyle(document.body).getPropertyValue('--mono')}`;
+    lctx.textBaseline='top';
+    lctx.fillText(ch, x*cell+jit, y*cell);
+  }
+}
+new IntersectionObserver(es=>es.forEach(e=>logoVisible=e.isIntersecting),{threshold:.2})
+  .observe(logoCanvas);
+
+/* ===========================================================================
+   ЕДИНЫЙ ЦИКЛ АНИМАЦИИ
+   =========================================================================== */
+function loop(t){
+  renderASCII(t);
+  if(logoVisible){ logoT=t; drawLogo(); }
+  requestAnimationFrame(loop);
+}
+function boot(){ resize(); setupLogo(); updateDissolve(); requestAnimationFrame(loop); }
+window.addEventListener('resize',()=>{resize();setupLogo();});
+boot();
+</script>
+</body>
+</html>
