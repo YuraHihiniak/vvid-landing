@@ -29,7 +29,7 @@
 <meta name="twitter:image" content="https://vvid.dev/og-image.png">
 <script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"VVID","url":"https://vvid.dev/","description":"Студия веб-инжиниринга и бизнес-автоматизации: маркетплейсы, парсинг, ETL, интеграции, кастомная разработка.","email":"info@vvid.dev","sameAs":["https://t.me/vvid"],"areaServed":"RU","knowsLanguage":["ru","en"],"slogan":"Автоматизируем то, что съедает вашу прибыль"},{"@context":"https://schema.org","@type":"WebSite","name":"VVID","url":"https://vvid.dev/","inLanguage":"ru"},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Сколько стоит и почему вилки открыты?","acceptedAnswer":{"@type":"Answer","text":"Прозрачность = доверие. Мелкие офферы — продуктизированный fixed-price (от $300). Крупное — T&M / retainer $2–6k/мес. Полностью закрытый прайс мы считаем сигналом недоступного enterprise — это не про нас."}},{"@type":"Question","name":"Есть же SelSup и коробки за 1000 ₽ — зачем вы?","acceptedAnswer":{"@type":"Answer","text":"Коробка закрывает ~80% типового и в этом сильна. Мы строим ваши 20% — кастомную логику, под которую коробка не заточена: нестандартный авто-дропшип, свои интеграции, парсинг и автоотчёты под вашу экономику."}},{"@type":"Question","name":"Как быстро отвечаете и кто ведёт проект?","acceptedAnswer":{"@type":"Answer","text":"Founder-led: вы общаетесь напрямую с теми, кто строит, в Telegram @vvid. Ответ — менее 2 часов в рабочее время. Никаких менеджеров-прокладок."}},{"@type":"Question","name":"Есть ли договор, юрлицо, гарантии?","acceptedAnswer":{"@type":"Answer","text":"Да — официальный договор, юрлицо, NDA по запросу, гарантийная поддержка."}},{"@type":"Question","name":"Что такое revenue-share для маркетплейса?","acceptedAnswer":{"@type":"Answer","text":"Альтернатива фиксу для селлеров: мы берём долю от прироста оборота, который дала автоматизация. Интересы совпадают — мы заинтересованы в вашем росте."}},{"@type":"Question","name":"Работаете на русском и английском?","acceptedAnswer":{"@type":"Answer","text":"Да, билингва RU/EN. RU — маркетплейс/парсинг-сегмент СНГ. EN — глобальный data/automation/SaaS."}}]}]</script>
 <script src="./support.js"></script>
-<script>(function(){try{var m=(window.innerWidth<760)||(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches);if(!m){var s=document.createElement('script');s.defer=true;s.src='https://unpkg.com/three@0.149.0/build/three.min.js';document.head.appendChild(s);}}catch(e){}})();</script>
+<script>(function(){try{var m=(window.innerWidth<760)||(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches);if(!m){['https://unpkg.com/three@0.149.0/build/three.min.js','https://unpkg.com/lenis@1.1.14/dist/lenis.min.js'].forEach(function(u){var s=document.createElement('script');s.defer=true;s.src=u;document.head.appendChild(s);});}}catch(e){}})();</script>
 </head>
 <body>
 <x-dc>
@@ -52,6 +52,11 @@
   @media (max-width:760px){ form[data-brief]{grid-template-columns:1fr !important} [data-cap-inner]{grid-template-columns:1fr !important} [data-ascii-team]{grid-template-columns:1fr !important} }
   @media (max-width:680px){ [data-hdr-tag]{display:none !important} }
   @media (max-width:600px){ header nav{gap:14px !important} [data-calm-btn]{display:none !important} }
+  /* Lenis smooth scroll (desktop) */
+  html.lenis,html.lenis body{height:auto}
+  .lenis.lenis-smooth{scroll-behavior:auto !important}
+  .lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+  .lenis.lenis-stopped{overflow:hidden}
 </style>
 <script src="./image-slot.js"></script>
 </helmet>
@@ -453,6 +458,7 @@ class Component extends DCLogic {
     window.removeEventListener('resize', this._teamResize);
     window.removeEventListener('resize', this._onResize);
     window.removeEventListener('scroll', this._onScroll);
+    this.destroySmoothScroll();
   }
   boot(){
     const root = this.root || document.querySelector('[data-vvid-root]') || document;
@@ -479,6 +485,7 @@ class Component extends DCLogic {
     this.initThree();
     this.initBgVideo();
     this.initScroll();
+    this.initSmoothScroll();
     this.initScenes();
     this.initReveal();
     this.initKinetic();
@@ -682,6 +689,29 @@ class Component extends DCLogic {
     window.addEventListener('resize', onScroll, {passive:true});
     this.applyScroll();
   }
+
+  /* ---------- SMOOTH SCROLL (Lenis inertia · desktop · calm/reduced-aware · sticky+IO safe) ---------- */
+  initSmoothScroll(){
+    if(this._lenis) return;
+    if(window.innerWidth < 760 || (window.matchMedia && window.matchMedia('(pointer:coarse)').matches)) return;
+    if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if(this._calm) return;
+    const L = window.Lenis;
+    if(!L){ this._lenisTries=(this._lenisTries||0)+1; if(this._lenisTries<150) setTimeout(()=>this.initSmoothScroll(),100); return; }
+    let lenis;
+    try{ lenis = new L({ lerp:0.085, wheelMultiplier:1, smoothWheel:true, syncTouch:false }); }catch(e){ return; }
+    this._lenis = lenis;
+    const raf=(t)=>{ if(!this._lenis){ this._lenisRaf=null; return; } lenis.raf(t); this._lenisRaf=requestAnimationFrame(raf); };
+    this._lenisRaf=requestAnimationFrame(raf);
+    if(!this._lenisAnchor){
+      this._lenisAnchor=(e)=>{ const t=e.target; const a=(t&&t.closest)?t.closest('a[href^="#"]'):null; if(!a) return; const href=a.getAttribute('href'); if(!href||href.length<2) return; const tgt=this.root.querySelector(href)||document.querySelector(href); if(tgt&&this._lenis){ e.preventDefault(); this._lenis.scrollTo(tgt,{offset:-72,duration:1.2}); } };
+      this.root.addEventListener('click', this._lenisAnchor);
+    }
+  }
+  destroySmoothScroll(){
+    if(this._lenisRaf){ cancelAnimationFrame(this._lenisRaf); this._lenisRaf=null; }
+    if(this._lenis){ try{ this._lenis.destroy(); }catch(e){} this._lenis=null; }
+  }
   applyScroll(){
     const vh = window.innerHeight;
     this.updateScenes();
@@ -824,8 +854,8 @@ class Component extends DCLogic {
   initReveal(){
     this._reveal = Array.from(this.root.querySelectorAll('[data-reveal]'));
     for(const el of this._reveal){
-      el.style.opacity='0'; el.style.transform='translateY(26px)';
-      el.style.transition='opacity 1s cubic-bezier(.16,1,.3,1), transform 1s cubic-bezier(.16,1,.3,1)';
+      el.style.opacity='0'; el.style.transform='translateY(30px)';
+      el.style.transition='opacity 1.1s cubic-bezier(.22,1,.36,1), transform 1.1s cubic-bezier(.22,1,.36,1)';
       el.style.willChange='opacity, transform';
     }
     this._io = new IntersectionObserver((ents)=>{
@@ -1122,6 +1152,7 @@ class Component extends DCLogic {
       clearInterval(this._wi); clearInterval(this._wi2);
       if(this._heroDraw) this._heroDraw(performance.now());
       if(this._teamRenderStatic) this._teamRenderStatic(1);
+      this.destroySmoothScroll();
       if(this._sceneLayer) this._sceneLayer.style.display='none';
       (this._kinetic||[]).forEach(h=>(h._kinners||[]).forEach(s=>{ s.style.transition='none'; s.style.transform='none'; }));
       (this._reveal||[]).forEach(el=>{ el.style.transition='none'; el.style.opacity='1'; el.style.transform='none'; });
@@ -1129,6 +1160,7 @@ class Component extends DCLogic {
       (this._csMedia||[]).forEach(el=>{ el.style.transform='none'; });
       (this.root.querySelectorAll('[data-anim]')||[]).forEach(el=>{ el.style.animationPlayState='paused'; });
     } else {
+      this.initSmoothScroll();
       if(this._three && this._three.start) this._three.start();
       if(this._bgvidPlay) this._bgvidPlay();
       if(this._heroDraw && this._heroVisible) this._raf=requestAnimationFrame(this._heroDraw);
