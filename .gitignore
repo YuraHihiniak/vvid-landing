@@ -4,6 +4,12 @@
 Thumbs.db
 *.swp
 
+# local agent / editor tooling
+.claude/
+
+# stray duplicate
+VVID.content copy.md
+
 # image-slot runtime state (local drag-dropped images persistence)
 *.image-slots.state.json
 .image-slots*
