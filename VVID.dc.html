@@ -65,7 +65,7 @@
 
   <!-- INTRO PRELOADER -->
   <div data-preloader="1" style="position:fixed;inset:0;z-index:9600;background:#13110c;color:#e4ded2;display:flex;flex-direction:column;justify-content:space-between;padding:30px 26px;overflow:hidden">
-    <video data-prevideo="1" data-src="./intro.mp4" muted loop playsinline preload="none" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.5;filter:grayscale(.15) contrast(1.05) brightness(.95) sepia(.25) saturate(1.2)"></video>
+    <video data-prevideo="1" data-src="./intro.mp4" data-src-mobile="./intro-mobile.mp4" muted loop playsinline preload="none" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.5;filter:grayscale(.15) contrast(1.05) brightness(.95) sepia(.25) saturate(1.2)"></video>
     <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(120% 95% at 50% 45%,rgba(19,17,12,.32),rgba(19,17,12,.8) 100%)"></div>
     <div style="position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#cfc7b9">
       <span>vvid — engineering &amp; automation</span><span>ru</span>
@@ -978,8 +978,8 @@ class Component extends DCLogic {
     const finish = ()=>{ if(this._preDone) return; this._preDone=true; pre.style.transition='transform .85s cubic-bezier(.76,0,.24,1)'; pre.style.transform='translateY(-100%)'; setTimeout(()=>{ pre.style.display='none'; stopVid(); },900); };
     if(reduce){ if(num) num.textContent='100'; if(bar) bar.style.width='100%'; stopVid(); pre.style.display='none'; return; }
     const isMobile = window.innerWidth < 760 || (window.matchMedia && window.matchMedia('(pointer:coarse)').matches);
-    const pv=pre.querySelector('[data-prevideo]'); if(pv && !isMobile){ try{ pv.src=pv.getAttribute('data-src')||''; pv.muted=true; pv.load(); const pp=pv.play(); if(pp&&pp.catch) pp.catch(()=>{}); }catch(e){} }
-    const dur = isMobile ? 1500 : 3800; this._preT0=0;
+    const pv=pre.querySelector('[data-prevideo]'); if(pv){ try{ const vsrc = isMobile ? (pv.getAttribute('data-src-mobile')||pv.getAttribute('data-src')||'') : (pv.getAttribute('data-src')||''); pv.src=vsrc; pv.muted=true; pv.load(); const pp=pv.play(); if(pp&&pp.catch) pp.catch(()=>{}); }catch(e){} }
+    const dur = isMobile ? 2600 : 3800; this._preT0=0;
     const step=(t)=>{ if(!this._preT0) this._preT0=t; const p=Math.min(1,(t-this._preT0)/dur); const e=1-Math.pow(1-p,3); const v=Math.round(e*100); if(num) num.textContent=String(v); if(bar) bar.style.width=v+'%'; if(p<1) requestAnimationFrame(step); else finish(); };
     requestAnimationFrame(step); setTimeout(finish,6000);
   }
