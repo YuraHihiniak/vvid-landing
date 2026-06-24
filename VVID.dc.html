@@ -48,7 +48,7 @@
   @keyframes vFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
   @keyframes vPulse{0%,100%{opacity:.4}50%{opacity:1}}
   @media (max-width:880px){ [data-navgroup]{display:none !important} }
-  @media (max-width:760px){ form[data-brief]{grid-template-columns:1fr !important} [data-cap-inner]{grid-template-columns:1fr !important} [data-ascii-team]{grid-template-columns:1fr !important} }
+  @media (max-width:760px){ form[data-brief]{grid-template-columns:1fr !important} [data-cap-inner]{grid-template-columns:1fr !important} [data-ascii-team]{grid-template-columns:1fr !important} [data-ascii-cases]{grid-template-columns:1fr !important} }
   @media (max-width:680px){ [data-hdr-tag]{display:none !important} }
   @media (max-width:600px){ header nav{gap:14px !important} [data-calm-btn]{display:none !important} }
   /* Lenis smooth scroll (desktop) */
@@ -180,47 +180,51 @@
     </div>
   </section>
 
-  <!-- 04 CASES — pinned horizontal lookbook -->
-  <section id="work" data-screen-label="04 Cases" data-hcases="1" style="position:relative;z-index:10;background:#e4ded2;color:#1b1812;height:340vh">
-    <div style="position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column">
-      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:clamp(64px,7.5vh,84px) 26px 16px;max-width:1320px;margin:0 auto;width:100%">
+  <!-- 04 CASES — lookbook (artefakt-style: case list + ASCII tech motifs, native scroll) -->
+  <section id="work" data-screen-label="04 Cases" style="position:relative;z-index:10;background:#e4ded2;color:#1b1812;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
+    <div data-speed="6" data-pmax="150" style="position:absolute;top:1vw;right:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(27,24,18,.035);pointer-events:none;user-select:none">04</div>
+    <div style="max-width:1320px;margin:0 auto;position:relative">
+      <div data-reveal="1" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:clamp(48px,7vw,84px)">
         <div>
           <div style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8c8474;margin-bottom:18px">fig.04 — lookbook кейсов</div>
           <h2 style="font-size:clamp(26px,4.2vw,56px);line-height:1.0;letter-spacing:-.035em;font-weight:600;margin:0">кейсы с числами.<br><span style="font-weight:700;color:#5a5346">не обещания — метрики.</span></h2>
         </div>
-        <div style="display:flex;align-items:center;gap:24px">
-          <span style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;border:1px solid rgba(27,24,18,.3);padding:7px 11px">договор + юрлицо</span>
-          <div style="font-weight:300;font-size:30px;letter-spacing:-.02em"><span data-hcount="1">01</span><span style="color:rgba(27,24,18,.35)"> / 03</span></div>
-        </div>
+        <span style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;border:1px solid rgba(27,24,18,.3);padding:7px 11px">договор + юрлицо</span>
       </div>
-      <div style="flex:1;display:flex;align-items:center;overflow:hidden">
-        <div data-htrack="1" style="display:flex;gap:clamp(28px,3vw,52px);padding:0 26px;will-change:transform">
+
+      <div data-ascii-cases="1" style="display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(24px,5vw,72px);align-items:center;margin-bottom:clamp(48px,7vw,80px)">
+        <div data-case-names style="display:flex;flex-direction:column">
           <sc-for list="{{ cases }}" as="cs" hint-placeholder-count="3">
-            <article style="flex:none;width:clamp(300px,40vw,460px)">
-              <div style="position:relative;overflow:hidden" data-cs-frame="1">
-                <image-slot data-cs-media="1" id="{{ cs.slot }}" style="width:124%;margin-left:-12%;height:clamp(220px,38vh,360px);display:block;background:#d3ccbd;will-change:transform" shape="rect" placeholder="ui кейса · перетащите скриншот"></image-slot>
-                <div style="position:absolute;top:14px;left:14px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;background:#13110c;color:#e4ded2;padding:6px 10px">{{ cs.n }}</div>
-                <div style="position:absolute;top:14px;right:14px;display:flex;align-items:center;gap:6px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;background:rgba(228,222,210,.9);color:#1b1812;padding:6px 10px"><span style="width:5px;height:5px;border-radius:50%;background:var(--acc,#b9543f)"></span>{{ cs.status }}</div>
-              </div>
-              <div style="padding-top:20px;border-top:1px solid rgba(27,24,18,.22);margin-top:18px">
-                <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8c8474;margin-bottom:12px">{{ cs.client }}</div>
-                <h3 style="font-size:clamp(20px,2.2vw,28px);line-height:1.08;letter-spacing:-.025em;font-weight:600;margin:0 0 14px">{{ cs.title }}</h3>
-                <div style="display:flex;gap:30px;flex-wrap:wrap">
-                  <sc-for list="{{ cs.metrics }}" as="mt" hint-placeholder-count="3">
-                    <div><div style="font-weight:300;font-size:30px;letter-spacing:-.02em;color:#1b1812">{{ mt.v }}</div><div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8c8474;margin-top:4px">{{ mt.l }}</div></div>
-                  </sc-for>
-                </div>
-              </div>
-            </article>
+            <button data-case-name="1" data-idx="{{ cs.i }}" onClick="{{ setCaseActive }}" onMouseEnter="{{ setCaseActive }}" style="display:block;width:100%;text-align:left;background:none;border:none;border-top:1px solid rgba(27,24,18,.18);color:inherit;cursor:pointer;padding:clamp(16px,2vw,26px) 0;transition:padding-left .5s cubic-bezier(.16,1,.3,1)">
+              <span style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap">
+                <span style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#8c8474;flex:none">{{ cs.n }}</span>
+                <span data-case-word style="font-size:clamp(22px,3.2vw,40px);line-height:1.02;letter-spacing:-.03em;font-weight:600;transition:color .4s">{{ cs.title }}</span>
+              </span>
+              <span style="display:block;padding-left:0;margin-top:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#8c8474">{{ cs.client }}</span>
+              <span data-case-metrics style="display:flex;gap:clamp(20px,3vw,38px);flex-wrap:wrap;margin-top:0;max-height:0;opacity:0;overflow:hidden;transition:max-height .55s cubic-bezier(.16,1,.3,1),opacity .4s,margin-top .4s">
+                <sc-for list="{{ cs.metrics }}" as="mt" hint-placeholder-count="3">
+                  <span style="display:block"><span style="display:block;font-weight:300;font-size:clamp(24px,2.4vw,32px);letter-spacing:-.02em;color:#1b1812">{{ mt.v }}</span><span style="display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8c8474;margin-top:4px">{{ mt.l }}</span></span>
+                </sc-for>
+              </span>
+            </button>
           </sc-for>
-          <article style="flex:none;width:clamp(280px,30vw,400px);display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:22px;padding:0 20px">
-            <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#8c8474">следующий слот — свободен</div>
-            <h3 style="font-size:clamp(24px,3vw,44px);line-height:1.05;letter-spacing:-.035em;font-weight:600;margin:0">здесь будет <span style="font-weight:700;color:var(--acc,#b9543f)">ваш кейс</span>.</h3>
-            <a href="#brief" data-magnetic="1" style="display:inline-flex;align-items:center;gap:10px;background:#13110c;color:#e4ded2;padding:14px 24px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600" style-hover="background:var(--acc,#b9543f);color:#fff">обсудить задачу →</a>
-          </article>
+          <div style="border-top:1px solid rgba(27,24,18,.18)"></div>
+        </div>
+
+        <div style="position:relative">
+          <canvas data-ascii-canvas="1" style="width:100%;height:clamp(340px,44vw,540px);display:block;background:#0b0906"></canvas>
+          <div style="position:absolute;top:14px;left:14px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#6f685c">fig.04.a — ascii / пайплайн</div>
+          <div data-case-hint style="position:absolute;bottom:14px;left:14px;right:14px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#6f685c"></div>
         </div>
       </div>
-      <div style="height:1px;background:rgba(27,24,18,.18);margin:0 26px 30px;max-width:1320px;width:calc(100% - 52px);align-self:center"><div data-hprog="1" style="height:1px;width:6%;background:#1b1812;margin-top:-1px"></div></div>
+
+      <div data-reveal="1" style="display:flex;align-items:center;gap:clamp(18px,3vw,40px);flex-wrap:wrap;justify-content:space-between;border-top:1px solid rgba(27,24,18,.18);padding-top:clamp(28px,4vw,44px)">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#8c8474">следующий слот — свободен</span>
+          <h3 style="font-size:clamp(22px,3vw,40px);line-height:1.05;letter-spacing:-.035em;font-weight:600;margin:0">здесь будет <span style="font-weight:700;color:var(--acc,#b9543f)">ваш кейс</span>.</h3>
+        </div>
+        <a href="#brief" data-magnetic="1" style="display:inline-flex;align-items:center;gap:10px;background:#13110c;color:#e4ded2;padding:14px 24px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600" style-hover="background:var(--acc,#b9543f);color:#fff">обсудить задачу →</a>
+      </div>
     </div>
   </section>
 
@@ -420,6 +424,7 @@ class Component extends DCLogic {
     clearInterval(this._teamRotate);
     cancelAnimationFrame(this._teamRaf);
     window.removeEventListener('resize', this._teamResize);
+    (this._asciiPanels||[]).forEach(p=>p.destroy());
     window.removeEventListener('scroll', this._onScroll);
     this.destroySmoothScroll();
   }
@@ -432,11 +437,7 @@ class Component extends DCLogic {
     this.calmBtn     = this.calmBtn     || q('[data-calm-btn]');
     this.calmLabel   = this.calmLabel   || q('[data-calm-label]');
     this.submitBtn   = this.submitBtn   || q('[data-submit-btn]');
-    this.hcasesEl    = q('[data-hcases]');
-    this.htrack      = q('[data-htrack]');
-    this.hcount      = q('[data-hcount]');
-    this.hprog       = q('[data-hprog]');
-    this.casesLen    = 3;
+    this._asciiPanels = [];
     try{ root.style && root.style.setProperty('--acc', this.props.accent || '#b9543f'); }catch(e){}
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     this.initPreloader();
@@ -446,6 +447,7 @@ class Component extends DCLogic {
     this.initReveal();
     this.initKinetic();
     this.initAsciiTeam();
+    this.initAsciiCases();
     this.initMagnetic();
     this.initFloatCTA();
     this.initWordSwap();
@@ -518,7 +520,6 @@ class Component extends DCLogic {
       sp: parseFloat(el.getAttribute('data-speed'))||0,
       cap: parseFloat(el.getAttribute('data-pmax')) || 60
     }));
-    this._csMedia = Array.from(this.root.querySelectorAll('[data-cs-media]'));
     const onScroll = ()=>{ if(this._scrollPending) return; this._scrollPending=true; this._sraf=requestAnimationFrame(()=>{ this._scrollPending=false; this.applyScroll(); }); };
     this._onScroll = onScroll;
     window.addEventListener('scroll', onScroll, {passive:true});
@@ -550,16 +551,6 @@ class Component extends DCLogic {
   }
   applyScroll(){
     const vh = window.innerHeight;
-    const hc = this.hcasesEl;
-    if(hc && this.htrack){
-      const rect = hc.getBoundingClientRect();
-      const total = hc.offsetHeight - vh;
-      const p = total>0 ? Math.min(1, Math.max(0, (-rect.top)/total)) : 0;
-      const max = Math.max(0, this.htrack.scrollWidth - window.innerWidth + 52);
-      this.htrack.style.transform = 'translate3d('+(-(p*max)).toFixed(1)+'px,0,0)';
-      if(this.hprog) this.hprog.style.width = (6 + p*94).toFixed(1)+'%';
-      if(this.hcount){ const idx=Math.min(this.casesLen, Math.floor(p*this.casesLen)+(p>=1?0:1))||1; this.hcount.textContent=('0'+Math.max(1,Math.min(this.casesLen,idx))).slice(-2); }
-    }
     // ASCII portrait: reveal char-by-char as the canvas scrolls up through the viewport
     if(this.teamCanvas){
       const r = this.teamCanvas.getBoundingClientRect();
@@ -572,18 +563,10 @@ class Component extends DCLogic {
         if(this._calm && this._teamRenderStatic) this._teamRenderStatic(rp);
       }
     }
+    // reusable ASCII panels (cases lookbook) — same scroll-driven reveal, native scroll
+    const panels = this._asciiPanels;
+    if(panels) for(let i=0;i<panels.length;i++) panels[i].updateReveal(vh);
     if(this._calm) return;
-    // case lookbook: media drifts horizontally within its frame (editorial depth)
-    if(this._csMedia && this._csMedia.length){
-      const vw = window.innerWidth, cxv = vw/2;
-      for(const m of this._csMedia){
-        const fr = (m.parentElement||m).getBoundingClientRect();
-        if(fr.right < -60 || fr.left > vw + 60) continue;
-        const d = (fr.left + fr.width/2 - cxv) / (vw/2 + fr.width/2); // -1..1
-        const off = Math.max(-1,Math.min(1,d)) * 9; // % of own width, gentle
-        m.style.transform = 'translate3d('+off.toFixed(2)+'%,0,0)';
-      }
-    }
     for(const it of this._para){
       const hr = it.host.getBoundingClientRect();
       if(hr.bottom < -40 || hr.top > vh + 40) continue;
@@ -855,6 +838,234 @@ class Component extends DCLogic {
     this.switchTeam(0,false);
   }
 
+  /* ---------- ASCII PANEL (reusable: list + procedural tech motifs, native scroll) ---------- */
+  // Procedural tech motif → offscreen canvas the ASCII reader samples like a photo.
+  asciiMotif(kind){
+    const w=240, h=300, c=document.createElement('canvas'); c.width=w; c.height=h;
+    const g=c.getContext('2d'); const TAU=Math.PI*2;
+    g.fillStyle='#0b0906'; g.fillRect(0,0,w,h); g.lineCap='round'; g.lineJoin='round';
+    const R=(a,b)=>a+Math.random()*(b-a);
+    if(kind==='bridge'){
+      // авто-дропшип 1688 → WB: источники слева → трансформация → грид маркетплейса справа
+      const sx=w*0.15, srcY=[h*0.30,h*0.5,h*0.70], mx=w*0.5, my=h*0.5;
+      srcY.forEach(y=>{ g.strokeStyle='rgba(205,195,176,0.8)'; g.lineWidth=2;
+        g.beginPath(); g.moveTo(sx+11,y); g.lineTo(mx-15,my+(y-my)*0.22); g.stroke(); });
+      srcY.forEach(y=>{ g.fillStyle='#d8d0c0'; g.beginPath(); g.arc(sx,y,7,0,TAU); g.fill();
+        g.strokeStyle='rgba(150,140,124,0.55)'; g.lineWidth=2; g.beginPath(); g.arc(sx,y,11,0,TAU); g.stroke(); });
+      g.fillStyle='#e8e0d0'; g.beginPath(); g.arc(mx,my,12,0,TAU); g.fill();
+      g.strokeStyle='rgba(185,84,63,0.78)'; g.lineWidth=2.5; g.beginPath(); g.arc(mx,my,17,0,TAU); g.stroke();
+      const gx=w*0.66, gw=w*0.26, gy=h*0.2, gh=h*0.6, cc=3, rr=4, cwd=gw/cc, chh=gh/rr;
+      g.strokeStyle='rgba(205,195,176,0.85)'; g.lineWidth=2.5; g.beginPath(); g.moveTo(mx+17,my); g.lineTo(gx-6,my); g.stroke();
+      g.beginPath(); g.moveTo(gx-12,my-5); g.lineTo(gx-3,my); g.lineTo(gx-12,my+5); g.stroke();
+      for(let r2=0;r2<rr;r2++) for(let c2=0;c2<cc;c2++){ const v=Math.random();
+        g.fillStyle='rgba(216,208,192,'+(0.12+v*0.55).toFixed(3)+')'; g.fillRect(gx+c2*cwd+1,gy+r2*chh+1,cwd-2,chh-2); }
+    } else if(kind==='converge'){
+      // etl: множество входных потоков сходятся в воронку → один отчёт справа
+      const fx=w*0.56, fy=h*0.5, n=7;
+      for(let k=0;k<n;k++){ const y=h*(0.14+0.72*k/(n-1));
+        g.strokeStyle='rgba(150,140,124,'+(0.38+0.32*Math.random()).toFixed(3)+')'; g.lineWidth=2;
+        g.beginPath(); g.moveTo(w*0.1,y); g.lineTo(fx,fy); g.stroke();
+        g.fillStyle='#cfc7b6'; g.beginPath(); g.arc(w*0.1,y,3.5,0,TAU); g.fill(); }
+      g.fillStyle='#e8e0d0'; g.beginPath(); g.arc(fx,fy,11,0,TAU); g.fill();
+      g.strokeStyle='rgba(185,84,63,0.78)'; g.lineWidth=2.5; g.beginPath(); g.arc(fx,fy,16,0,TAU); g.stroke();
+      const bx=w*0.7, bw=w*0.2, by=h*0.26, bh=h*0.48, bars=5, bgap=bh/bars;
+      g.strokeStyle='rgba(205,195,176,0.85)'; g.lineWidth=2.5; g.beginPath(); g.moveTo(fx+16,fy); g.lineTo(bx-4,fy); g.stroke();
+      for(let k=0;k<bars;k++){ const y=by+k*bgap+2, ln=bw*(0.4+0.6*Math.random());
+        g.fillStyle='rgba(216,208,192,0.7)'; g.fillRect(bx,y,ln,bgap-4); }
+    } else { // scanner — парсер цен/остатков: плотная матрица + бегущая строка + дельта-ячейки
+      const cc=9, rr=13, pad=w*0.08, gw=(w-pad*2)/cc, gh=(h-pad*2)/rr;
+      for(let yy=0;yy<rr;yy++) for(let xx=0;xx<cc;xx++){ const v=Math.random();
+        g.fillStyle='rgba(216,208,192,'+(0.07+v*0.5).toFixed(3)+')'; g.fillRect(pad+xx*gw+1,pad+yy*gh+1,gw-2,gh-2); }
+      const sy=pad+gh*Math.round(rr*0.46); g.fillStyle='rgba(255,250,240,0.92)'; g.fillRect(pad,sy,w-pad*2,gh);
+      for(let k=0;k<4;k++){ const xx=Math.floor(Math.random()*cc), yy=Math.floor(Math.random()*rr);
+        g.fillStyle='rgba(185,84,63,0.8)'; g.fillRect(pad+xx*gw+1,pad+yy*gh+1,gw-2,gh-2); }
+      g.strokeStyle='rgba(120,112,98,0.35)'; g.lineWidth=1;
+      for(let xx=0;xx<=cc;xx++){ g.beginPath(); g.moveTo(pad+xx*gw,pad); g.lineTo(pad+xx*gw,h-pad); g.stroke(); }
+    }
+    return c;
+  }
+
+  // Build an ASCII panel bound to `wrap`. Returns a controller; keeps all state local.
+  makeAsciiPanel(wrap, opts){
+    opts = opts || {}; const self = this;
+    const cv = wrap.querySelector('[data-ascii-canvas]'); if(!cv) return null;
+    const nameBtns = Array.from(wrap.querySelectorAll(opts.nameSel || '[data-panel-name]'));
+    const hintEl = opts.hintEl || null;
+    const ctx = cv.getContext('2d');
+    const buf = document.createElement('canvas');
+    const bctx = buf.getContext('2d',{willReadFrequently:true});
+    const RAMP = ' .·:-=+*oахв#%@';
+    let dpr=1, cell=8, W=1, H=1, cols=1, rows=1, randoms=null;
+    let active=0, reveal=0, lumCache=null, lumKey='';
+    let raf=0, lastT=0, running=false, visible=false, seen=false;
+    const imgs={}; const mouse={x:-999,y:-999,on:false};
+
+    const setup = ()=>{
+      dpr = Math.min(window.devicePixelRatio||1, 1.5);
+      const r = cv.getBoundingClientRect();
+      W = Math.max(1, Math.round(r.width)); H = Math.max(1, Math.round(r.height||360));
+      cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
+      cell = Math.max(5, Math.round(W/96));
+      cols = Math.max(8, Math.floor(W/cell)); rows = Math.max(8, Math.floor(H/cell));
+      buf.width = cols; buf.height = rows;
+      randoms = new Float32Array(cols*rows);
+      for(let y=0;y<rows;y++) for(let x=0;x<cols;x++){
+        const vert = y/Math.max(1,rows-1);
+        randoms[y*cols+x] = Math.min(0.999, Math.max(0, vert*0.7 + Math.random()*0.34 - 0.02));
+      }
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    };
+    setup();
+
+    const sampleLum = (img)=>{
+      bctx.clearRect(0,0,cols,rows);
+      const iw = img && (img.naturalWidth || img.width), ih = img && (img.naturalHeight || img.height);
+      if(iw && ih){
+        const ir=iw/ih, cr=cols/rows; let sw,sh,sx,sy;
+        if(ir>cr){ sh=ih; sw=sh*cr; sx=(iw-sw)/2; sy=0; }
+        else { sw=iw; sh=sw/cr; sx=0; sy=(ih-sh)/2; }
+        bctx.drawImage(img, sx,sy,sw,sh, 0,0,cols,rows);
+      } else {
+        const gd=bctx.createRadialGradient(cols*0.5,rows*0.42,0,cols*0.5,rows*0.46,Math.max(cols,rows)*0.62);
+        gd.addColorStop(0,'#c9c2b3'); gd.addColorStop(0.55,'#6b6457'); gd.addColorStop(1,'#14110b');
+        bctx.fillStyle=gd; bctx.fillRect(0,0,cols,rows);
+      }
+      return bctx.getImageData(0,0,cols,rows).data;
+    };
+    const getLum = ()=>{
+      const key = active+'|'+cols+'x'+rows;
+      if(lumCache && lumKey===key) return lumCache;
+      const img = imgs[active];
+      const fallback = !(img && (img.naturalWidth || img.width));
+      const data = sampleLum(img);
+      const lum = new Float32Array(cols*rows);
+      for(let y=0;y<rows;y++) for(let x=0;x<cols;x++){
+        const i=y*cols+x, o=i*4;
+        let l=(0.299*data[o]+0.587*data[o+1]+0.114*data[o+2])/255;
+        if(fallback) l = Math.min(1, l + 0.16*Math.sin(x*0.7+y*0.5) + 0.10*Math.sin(x*0.21-y*0.33));
+        lum[i]=l;
+      }
+      lumCache=lum; lumKey=key; return lum;
+    };
+    const renderStatic = (prog, ts)=>{
+      const lum = getLum();
+      const t = ts==null ? (performance.now()) : ts;
+      const NR = RAMP.length;
+      ctx.clearRect(0,0,W,H);
+      ctx.textBaseline='top';
+      const baseFont = (cell+1)+'px "IBM Plex Mono", monospace';
+      ctx.font = baseFont; let curFont = baseFont;
+      const m = mouse;
+      const Rr = cell*8, R2 = Rr*Rr;
+      const mx = m.on ? m.x : -99999, my = m.on ? m.y : -99999;
+      for(let y=0;y<rows;y++) for(let x=0;x<cols;x++){
+        const i=y*cols+x;
+        const l=lum[i];
+        const thr=randoms[i];
+        const shown = prog>=1 || thr<prog;
+        if(!shown){
+          if(prog<=0 || thr-prog>0.10) continue;
+          const gi=Math.floor(Math.random()*NR); const ch=RAMP[gi];
+          if(ch!==' '){ ctx.fillStyle='rgba(185,84,63,0.6)'; if(curFont!==baseFont){ctx.font=baseFont;curFont=baseFont;} ctx.fillText(ch, x*cell, y*cell); }
+          continue;
+        }
+        if(l<0.08) continue;
+        let prox=0, px=x*cell+cell*0.5, py=y*cell+cell*0.5;
+        if(m.on){ const dx=px-mx, dy=py-my, d2=dx*dx+dy*dy; if(d2<R2){ prox=1-Math.sqrt(d2)/Rr; } }
+        const ph = thr*6.2832;
+        const wave = Math.sin(t*0.0019 + x*0.32 + y*0.22 + ph)
+                   + 0.5*Math.sin(t*0.0041 - x*0.11 + y*0.17 + ph*1.7);
+        const amp = 1.4 + 2.0*(1 - Math.abs(l-0.5)*2);
+        let gi = Math.round(l*(NR-1) + wave*amp*(1+prox*1.6) + prox*4.5);
+        if(gi<0) gi=0; else if(gi>NR-1) gi=NR-1;
+        const ch=RAMP[gi]; if(ch===' ') continue;
+        if(prox>0.02){
+          const sz = Math.round((cell+1)*(1+prox*1.15));
+          const f = sz+'px "IBM Plex Mono", monospace';
+          if(curFont!==f){ ctx.font=f; curFont=f; }
+        } else if(curFont!==baseFont){ ctx.font=baseFont; curFont=baseFont; }
+        const spark = Math.sin(t*0.006 + x*0.5 - y*0.3 + ph*2.3);
+        if(prox>0.5){ ctx.fillStyle = '#fff'; }
+        else if(spark>0.992 || prox>0.15){ ctx.fillStyle='rgba(185,84,63,0.92)'; }
+        else { ctx.fillStyle = l>0.66 ? '#e4ded2' : (l>0.4 ? 'rgba(214,206,191,0.88)' : 'rgba(143,135,122,0.72)'); }
+        const off = prox>0.02 ? prox*cell*0.55 : 0;
+        ctx.fillText(ch, x*cell-off, y*cell-off);
+      }
+    };
+    const anim = (t)=>{
+      if(t - lastT < 33){ if(!self._calm && visible){ raf=requestAnimationFrame(anim); } return; }
+      lastT = t;
+      renderStatic(reveal, t);
+      if(!self._calm && visible){ running=true; raf=requestAnimationFrame(anim); }
+      else { running=false; }
+    };
+    const switchTo = (idx)=>{
+      idx = Math.max(0, Math.min(nameBtns.length-1, idx));
+      active = idx; lumKey='';
+      if(opts.onActivate) opts.onActivate(nameBtns, idx);
+      if(hintEl){ hintEl.style.opacity='1'; hintEl.textContent = opts.hintText ? opts.hintText(idx, nameBtns) : ('0'+(idx+1)); }
+      cancelAnimationFrame(raf);
+      if(self._calm){ running=false; renderStatic(reveal); return; }
+      running=true; lastT=0; raf=requestAnimationFrame(anim);
+    };
+    const onResize = ()=>{ setup(); renderStatic(reveal); };
+    window.addEventListener('resize', onResize);
+
+    const kinds = opts.kinds || ['flow','grid','network'];
+    for(let i=0;i<nameBtns.length;i++) imgs[i]=self.asciiMotif(kinds[i%kinds.length]);
+
+    let hover=false;
+    wrap.addEventListener('mouseenter', ()=>{ hover=true; }, {passive:true});
+    wrap.addEventListener('mouseleave', ()=>{ hover=false; }, {passive:true});
+    const rotate = setInterval(()=>{
+      if(self._calm || hover || !visible || document.hidden) return;
+      const n=nameBtns.length||1; switchTo((active+1)%n);
+    }, opts.rotate || 4500);
+
+    const onMove = (e)=>{ const r=cv.getBoundingClientRect(); mouse.x=e.clientX-r.left; mouse.y=e.clientY-r.top; mouse.on=true; };
+    const onLeave = ()=>{ mouse.on=false; };
+    cv.addEventListener('mousemove', onMove, {passive:true});
+    cv.addEventListener('mouseleave', onLeave, {passive:true});
+    cv.addEventListener('touchmove', (e)=>{ if(e.touches&&e.touches[0]){ const r=cv.getBoundingClientRect(); mouse.x=e.touches[0].clientX-r.left; mouse.y=e.touches[0].clientY-r.top; mouse.on=true; } }, {passive:true});
+    cv.addEventListener('touchend', onLeave, {passive:true});
+    cv.style.cursor='crosshair';
+
+    const io = new IntersectionObserver((es)=>{ const e=es[0]; visible=e.isIntersecting;
+      if(e.isIntersecting){ if(!seen){ seen=true; switchTo(0); } else if(!self._calm && !running){ running=true; lastT=0; raf=requestAnimationFrame(anim); } }
+    },{threshold:0.12});
+    io.observe(cv);
+    switchTo(0);
+
+    return {
+      canvas: cv, switchTo,
+      updateReveal(vh){ const r=cv.getBoundingClientRect(); if(r.height>0){ const start=vh*0.88, end=vh*0.32; let rp=(start-r.top)/(start-end); rp=rp<0?0:rp>1?1:rp; reveal=rp; if(self._calm) renderStatic(rp); } },
+      kick(){ if(!self._calm && visible && !running){ running=true; lastT=0; raf=requestAnimationFrame(anim); } },
+      calmStatic(){ cancelAnimationFrame(raf); running=false; renderStatic(1); },
+      destroy(){ try{io.disconnect();}catch(e){} clearInterval(rotate); cancelAnimationFrame(raf); window.removeEventListener('resize', onResize); }
+    };
+  }
+
+  initAsciiCases(){
+    const wrap = this.root.querySelector('[data-ascii-cases]'); if(!wrap) return;
+    const ctl = this.makeAsciiPanel(wrap, {
+      nameSel: '[data-case-name]',
+      hintEl: wrap.querySelector('[data-case-hint]'),
+      kinds: ['bridge','converge','scanner'],
+      rotate: 5200,
+      onActivate: (btns, idx)=>{
+        btns.forEach((b,i)=>{ const word=b.querySelector('[data-case-word]'); const mx=b.querySelector('[data-case-metrics]'); const on=i===idx;
+          b.style.paddingLeft = on? '14px':'0';
+          if(word) word.style.color = on? 'var(--acc,#b9543f)':'rgba(27,24,18,0.34)';
+          if(mx){ mx.style.maxHeight = on? '160px':'0'; mx.style.opacity = on? '1':'0'; mx.style.marginTop = on? '16px':'0'; }
+        });
+      },
+      hintText: (idx, btns)=>{ const wEl=btns[idx]&&btns[idx].querySelector('[data-case-word]'); return '0'+(idx+1)+' / 03 · '+((wEl&&wEl.textContent)||''); }
+    });
+    if(!ctl) return;
+    this._asciiCases = ctl;
+    (this._asciiPanels = this._asciiPanels || []).push(ctl);
+  }
+
   /* ---------- MAGNETIC ---------- */
   initMagnetic(){
     this._mag = Array.from(this.root.querySelectorAll('[data-magnetic]'));
@@ -930,16 +1141,17 @@ class Component extends DCLogic {
       cancelAnimationFrame(this._teamRaf); this._teamRunning=false;
       clearInterval(this._wi); clearInterval(this._wi2);
       if(this._teamRenderStatic) this._teamRenderStatic(1);
+      (this._asciiPanels||[]).forEach(p=>p.calmStatic());
       this.destroySmoothScroll();
       (this._kinetic||[]).forEach(h=>(h._kinners||[]).forEach(s=>{ s.style.transition='none'; s.style.transform='none'; }));
       (this._reveal||[]).forEach(el=>{ el.style.transition='none'; el.style.opacity='1'; el.style.transform='none'; });
       (this._para||[]).forEach(it=>{ it.el.style.transform='none'; });
-      (this._csMedia||[]).forEach(el=>{ el.style.transform='none'; });
       (this.root.querySelectorAll('[data-anim]')||[]).forEach(el=>{ el.style.animationPlayState='paused'; });
     } else {
       this.initSmoothScroll();
       if(this._three && this._three.start) this._three.start();
       if(this._teamAnim && this._teamVisible && !this._teamRunning){ this._teamRunning=true; this._lastTeam=0; this._teamRaf=requestAnimationFrame(this._teamAnim); }
+      (this._asciiPanels||[]).forEach(p=>p.kick());
       this.initWordSwap();
       (this.root.querySelectorAll('[data-anim]')||[]).forEach(el=>{ el.style.animationPlayState='running'; });
     }
@@ -959,6 +1171,7 @@ class Component extends DCLogic {
       toggleAcc: (e)=> this.toggleAcc(e),
       onSubmit: (e)=> this.onSubmit(e),
       setTeamActive: (e)=>{ const t=e.currentTarget; const i=parseInt(t&&t.getAttribute('data-idx'),10)||0; if(this.switchTeam) this.switchTeam(i,true); },
+      setCaseActive: (e)=>{ const t=e.currentTarget; const i=parseInt(t&&t.getAttribute('data-idx'),10)||0; if(this._asciiCases) this._asciiCases.switchTo(i); },
 
       principles: [
         {delay:0,   k:'01 / результат',     v:'каждый проект меряем в часах, обороте и снятых издержках — не в словах.'},
@@ -973,9 +1186,9 @@ class Component extends DCLogic {
         {n:'05', tag:'сервис-линия', title:'внедрение ии и обучение моделей', desc:'встраиваем ии в ваш продукт: ассистенты, llm, rag. обучаем и дообучаем модели под вашу конкретную задачу.', specs:['llm · rag','обучение моделей','fine-tuning','ассистенты']}
       ],
       cases: [
-        {n:'look 01', slot:'case-1', title:'авто-дропшип 1688 → WB', client:'селлер wb · категория «дом»', status:'in prod', metrics:[{v:'+34%',l:'оборот'},{v:'−480ч',l:'/мес'},{v:'5 мин',l:'карточка'}]},
-        {n:'look 02', slot:'case-2', title:'etl-пайплайн отчётности', client:'дистрибьютор fmcg', status:'in prod', metrics:[{v:'−92%',l:'время'},{v:'14',l:'источников'},{v:'0',l:'ручного'}]},
-        {n:'look 03', slot:'case-3', title:'парсер цен и остатков', client:'маркетплейс-агрегатор', status:'in prod', metrics:[{v:'1.2м',l:'sku/день'},{v:'15 мин',l:'обновление'},{v:'99.4%',l:'точность'}]}
+        {i:0, n:'look 01', slot:'case-1', kind:'bridge',  title:'авто-дропшип 1688 → WB', client:'селлер wb · категория «дом»', status:'in prod', metrics:[{v:'+34%',l:'оборот'},{v:'−480ч',l:'/мес'},{v:'5 мин',l:'карточка'}]},
+        {i:1, n:'look 02', slot:'case-2', kind:'converge', title:'etl-пайплайн отчётности', client:'дистрибьютор fmcg', status:'in prod', metrics:[{v:'−92%',l:'время'},{v:'14',l:'источников'},{v:'0',l:'ручного'}]},
+        {i:2, n:'look 03', slot:'case-3', kind:'scanner',  title:'парсер цен и остатков', client:'маркетплейс-агрегатор', status:'in prod', metrics:[{v:'1.2м',l:'sku/день'},{v:'15 мин',l:'обновление'},{v:'99.4%',l:'точность'}]}
       ],
       process: [
         {n:'01', delay:0,   title:'discovery', desc:'карта процессов, узкие места, метрика результата. фиксируем объём и отдачу.', meta:'1–2 нед'},
