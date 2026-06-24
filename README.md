@@ -25,8 +25,8 @@ python3 -m http.server 8123
 
 - Тёплый техно-брутализм: ink `#1b1812` · cream `#e4ded2` · акцент-терракота `#b9543f`. Шрифты: **Golos Text** (дисплей/проза) + **IBM Plex Mono** (метки/цифры/код).
 - React 18 (UMD) + Babel с unpkg; **three.js r149 (UMD)** для 3D-героя (жидкий металл).
-- Анимации: 3D-капля в герое, видео-заставка (прелоадер), переходы-шторки между секциями (CSS-кейфрейм по триггеру при пересечении границы — НЕ scroll-scrub), reveal/kinetic-заголовки, ASCII-портрет команды, magnetic-CTA. Всё уважает тумблер `motion` и `prefers-reduced-motion`.
+- Анимации: 3D-капля в герое, видео-заставка (прелоадер), reveal/kinetic-заголовки, ASCII-портрет команды, magnetic-CTA. Всё уважает тумблер `motion` и `prefers-reduced-motion`.
 
 ## Логика моушна (хуки в `VVID.dc.html`)
 
-`initPreloader` (видео-заставка) · `initThree` (3D-герой) · `initScroll`/`applyScroll` (параллакс/кейсы) · `initScenes`/`updateScenes`+`playScene` (шторки-переходы) · `initReveal` · `initKinetic` · `initAsciiTeam` · `initMagnetic` · `setCalm` (общий выключатель анимаций).
+`initPreloader` (видео-заставка) · `initThree` (3D-герой) · `initScroll`/`applyScroll` (параллакс/кейсы) · `initReveal` · `initKinetic` · `initAsciiTeam` · `initMagnetic` · `setCalm` (общий выключатель анимаций).
