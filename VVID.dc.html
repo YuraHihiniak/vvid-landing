@@ -437,17 +437,15 @@
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1320,&quot;height&quot;:900},&quot;accent&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;#b9543f&quot;,&quot;#6e2a1c&quot;,&quot;#4f4a3e&quot;,&quot;#1b1812&quot;],&quot;default&quot;:&quot;#b9543f&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;heroMetal&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;pewter&quot;,&quot;steel&quot;,&quot;graphite&quot;],&quot;default&quot;:&quot;pewter&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;heroVideoSrc&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
 class Component extends DCLogic {
   componentDidMount(){
-    this._calm=false; this._heroProg=0;
+    this._calm=false;
     const start=()=>{ if(this._booted) return; this._booted=true; this.boot(); };
     setTimeout(start,40);
   }
   componentWillUnmount(){
-    cancelAnimationFrame(this._raf); cancelAnimationFrame(this._sraf); cancelAnimationFrame(this._heroVidRaf);
+    cancelAnimationFrame(this._sraf);
     if(this._three){ cancelAnimationFrame(this._three.raf); if(this._three.io) this._three.io.disconnect(); window.removeEventListener('resize', this._threeResize); try{ this._three.renderer.dispose(); }catch(e){} }
-    if(this._bgvidIO) this._bgvidIO.disconnect();
     clearInterval(this._wi); clearInterval(this._wi2);
-    clearTimeout(this._scrollIdleT); clearTimeout(this._sceneHideT);
-    if(this._heroIO) this._heroIO.disconnect();
+    clearTimeout(this._sceneHideT);
     if(this._io) this._io.disconnect();
     if(this._kio) this._kio.disconnect();
     if(this._floatIO) this._floatIO.disconnect();
@@ -456,7 +454,6 @@ class Component extends DCLogic {
     clearInterval(this._teamPoll);
     cancelAnimationFrame(this._teamRaf);
     window.removeEventListener('resize', this._teamResize);
-    window.removeEventListener('resize', this._onResize);
     window.removeEventListener('scroll', this._onScroll);
     this.destroySmoothScroll();
   }
@@ -464,10 +461,7 @@ class Component extends DCLogic {
     const root = this.root || document.querySelector('[data-vvid-root]') || document;
     this.root = root;
     const q = (s)=> root.querySelector ? root.querySelector(s) : document.querySelector(s);
-    this.heroCanvas  = this.heroCanvas  || q('[data-hero-canvas]');
     this.heroEl      = this.heroEl      || q('[data-hero]');
-    this.heroContent = this.heroContent || q('[data-hero-content]');
-    this.rotEl       = this.rotEl       || q('[data-rot]');
     this.rotEl2      = this.rotEl2      || q('[data-rot2]');
     this.calmBtn     = this.calmBtn     || q('[data-calm-btn]');
     this.calmLabel   = this.calmLabel   || q('[data-calm-label]');
@@ -480,10 +474,7 @@ class Component extends DCLogic {
     try{ root.style && root.style.setProperty('--acc', this.props.accent || '#b9543f'); }catch(e){}
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     this.initPreloader();
-    this.initHero();
-    this.initHeroVideo();
     this.initThree();
-    this.initBgVideo();
     this.initScroll();
     this.initSmoothScroll();
     this.initScenes();
@@ -554,134 +545,14 @@ class Component extends DCLogic {
     if(!reduce && !this._calm) start();
   }
 
-  /* ---------- BACKGROUND VIDEO (blueprint interlude) · plays once on enter (no loop-flash) · calm/reduced-aware ---------- */
-  initBgVideo(){
-    const vid = this.root.querySelector('[data-bgvideo]'); if(!vid) return;
-    this._bgvid = vid;
-    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const play = ()=>{ if(this._bgvidVisible && !this._calm && !reduce){ try{ vid.currentTime = 0; }catch(e){} const p = vid.play(); if(p && p.catch) p.catch(()=>{}); } };
-    this._bgvidPlay = play;
-    this._bgvidIO = new IntersectionObserver((es)=>{ const e=es[0]; this._bgvidVisible = e.isIntersecting; if(e.isIntersecting){ vid.style.opacity='1'; play(); } else { try{ vid.pause(); }catch(e){} } }, {threshold:0.25});
-    this._bgvidIO.observe(vid);
-  }
-
-  /* ---------- LIQUID MERCURY HERO (procedural, scroll-scrubbed) ---------- */
-  initHero(){
-    const canvas = this.heroCanvas; if(!canvas) return;
-    const ctx = canvas.getContext('2d');
-    const off = document.createElement('canvas');
-    const octx = off.getContext('2d');
-    let dpr=1;
-    const palettes = {
-      pewter:[[0,'#efeae1'],[0.28,'#c3bcae'],[0.46,'#15120c'],[0.57,'#413b30'],[0.78,'#9c9486'],[1,'#ddd6c8']],
-      steel: [[0,'#e7e8e6'],[0.30,'#9fa6a8'],[0.47,'#14160f'],[0.58,'#37413f'],[0.80,'#8b9290'],[1,'#cdd1cb']],
-      graphite:[[0,'#d8d4cc'],[0.30,'#8a857b'],[0.47,'#0e0c08'],[0.58,'#2c281f'],[0.80,'#736b5e'],[1,'#b4ac9d']]
-    };
-    const stops = palettes[this.props.heroMetal] || palettes.pewter;
-    const resize = ()=>{
-      dpr = Math.min(window.devicePixelRatio||1, 1.5);
-      const w = canvas.clientWidth||window.innerWidth, h = canvas.clientHeight||window.innerHeight;
-      canvas.width = Math.round(w*dpr); canvas.height = Math.round(h*dpr);
-      off.width = Math.max(2,Math.round(w*dpr*0.45)); off.height = Math.max(2,Math.round(h*dpr*0.45));
-    };
-    this._onResize = resize; resize();
-    window.addEventListener('resize', resize);
-    const N = 8;
-    const blobs = Array.from({length:N}, (_,i)=>({ r:0.10+Math.random()*0.24, sp:0.22+Math.random()*0.55, ph:Math.random()*Math.PI*2, a:(i/N)*Math.PI*2, rad:0.16+Math.random()*0.16 }));
-    this._lastHero = 0;
-    const draw = (t)=>{
-      if(t - this._lastHero < 30){ this._heroRunning=true; if(!this._calm && this._heroVisible) this._raf=requestAnimationFrame(draw); else this._heroRunning=false; return; }
-      this._lastHero = t;
-      const prog = this._heroProg||0;
-      const ow=off.width, oh=off.height, m=Math.min(ow,oh), cx=ow*0.52, cy=oh*0.46;
-      octx.clearRect(0,0,ow,oh);
-      octx.globalCompositeOperation='source-over';
-      octx.filter = 'blur('+Math.round(ow*0.028)+'px) contrast(24)';
-      const spin = t*0.00008 + prog*1.4;
-      for(const b of blobs){
-        const ang = b.a + spin*b.sp;
-        const orbit = (b.r + Math.sin(t*0.0004*b.sp + b.ph)*0.05) * m * (1 + prog*0.35);
-        const x = cx + Math.cos(ang)*orbit;
-        const y = cy + Math.sin(ang*1.08 + b.ph)*orbit*0.82;
-        const rr = b.rad*m*(1 + Math.sin(t*0.0006 + b.ph)*0.12 - prog*0.18);
-        const g = octx.createRadialGradient(x,y,0,x,y,Math.max(1,rr));
-        g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(0.62,'rgba(255,255,255,0.92)'); g.addColorStop(1,'rgba(255,255,255,0)');
-        octx.fillStyle=g; octx.beginPath(); octx.arc(x,y,Math.max(1,rr),0,6.2832); octx.fill();
-      }
-      octx.filter='none';
-      const W=canvas.width, H=canvas.height;
-      ctx.clearRect(0,0,W,H);
-      const cg = ctx.createLinearGradient(0,0,W*0.4,H);
-      for(const s of stops) cg.addColorStop(s[0], s[1]);
-      ctx.fillStyle=cg; ctx.fillRect(0,0,W,H);
-      ctx.globalCompositeOperation='destination-in';
-      ctx.imageSmoothingEnabled=true;
-      ctx.drawImage(off,0,0,W,H);
-      ctx.globalCompositeOperation='source-atop';
-      const hx = W*(0.40 + 0.16*Math.sin(t*0.00026)), hy = H*(0.28 + 0.10*Math.cos(t*0.0002));
-      const hg = ctx.createRadialGradient(hx,hy,0,hx,hy,W*0.42);
-      hg.addColorStop(0,'rgba(255,252,246,0.7)'); hg.addColorStop(1,'rgba(255,252,246,0)');
-      ctx.fillStyle=hg; ctx.fillRect(0,0,W,H);
-      const sx = W*(0.66 - 0.14*Math.sin(t*0.0003));
-      const sg = ctx.createRadialGradient(sx,H*0.7,0,sx,H*0.7,W*0.32);
-      sg.addColorStop(0,'rgba(19,17,12,0.55)'); sg.addColorStop(1,'rgba(19,17,12,0)');
-      ctx.fillStyle=sg; ctx.fillRect(0,0,W,H);
-      ctx.globalCompositeOperation='source-over';
-      this._heroRunning=true;
-      if(!this._calm && this._heroVisible) this._raf = requestAnimationFrame(draw); else this._heroRunning=false;
-    };
-    this._heroDraw = draw; this._heroVisible=true; this._heroRunning=false;
-    this._heroIO = new IntersectionObserver((es)=>{ const e=es[0]; this._heroVisible=e.isIntersecting; if(e.isIntersecting && !this._calm && !this._heroRunning){ this._raf=requestAnimationFrame(draw); } },{threshold:0});
-    this._heroIO.observe(this.heroEl||canvas);
-    draw(performance.now());
-    this._raf = requestAnimationFrame(draw);
-  }
-
-  /* ---------- HERO SCROLL-SCRUB VIDEO ---------- */
-  initHeroVideo(){
-    const vid = this.root.querySelector('[data-hero-video]');
-    const drop = this.root.querySelector('[data-hero-drop]');
-    if(!vid || !drop) return;
-    this.heroVideo = vid;
-    this.heroDuotone = this.root.querySelector('[data-hero-duotone]');
-    this._heroVidReady = false; this._heroVidDur = 0; this._heroVidTarget = 0;
-    const activate = ()=>{
-      this._heroVidReady = true; this._heroVidDur = vid.duration || 0;
-      vid.style.display='block';
-      if(this.heroDuotone) this.heroDuotone.style.display='block';
-      if(this.heroCanvas) this.heroCanvas.style.display='none';
-      cancelAnimationFrame(this._raf); this._heroRunning=false; // stop procedural canvas
-      this.applyScroll();
-      this._heroSeekLoop();
-    };
-    vid.addEventListener('loadedmetadata', ()=>{ this._heroVidDur=vid.duration||0; });
-    vid.addEventListener('canplay', ()=>{ if(!this._heroVidReady) activate(); });
-    // smooth scrubbing: lerp currentTime toward scroll target
-    this._heroSeekLoop = ()=>{
-      if(!this._heroVidReady) return;
-      const cur = vid.currentTime || 0;
-      const dt = this._heroVidTarget - cur;
-      if(Math.abs(dt) > 0.012){ try{ vid.currentTime = cur + dt*0.18; }catch(e){} }
-      this._heroVidRaf = requestAnimationFrame(this._heroSeekLoop);
-    };
-    // load from prop if provided
-    const src = this.props && this.props.heroVideoSrc;
-    if(src){ vid.src = src; vid.load(); }
-    // drag & drop a video file onto the hero
-    const hint = this.root.querySelector('[data-hero-drophint]');
-    const show=(b)=>{ if(hint) hint.style.display=b?'block':'none'; };
-    ['dragenter','dragover'].forEach(ev=> drop.addEventListener(ev,(e)=>{ e.preventDefault(); show(true); }));
-    ['dragleave','dragend'].forEach(ev=> drop.addEventListener(ev,(e)=>{ e.preventDefault(); show(false); }));
-    drop.addEventListener('drop',(e)=>{
-      e.preventDefault(); show(false);
-      const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
-      if(f && /^video\//.test(f.type)){ const url=URL.createObjectURL(f); this._heroVidReady=false; vid.src=url; vid.load(); }
-    });
-  }
-
   /* ---------- SCROLL CHOREOGRAPHY ---------- */
   initScroll(){
-    this._para = Array.from(this.root.querySelectorAll('[data-speed]'));
+    // precompute static parallax params (data-speed/data-pmax never change) → avoids per-frame attribute reads/parseFloat
+    this._para = Array.from(this.root.querySelectorAll('[data-speed]')).map(el=>({
+      el, host: el.parentElement || el,
+      sp: parseFloat(el.getAttribute('data-speed'))||0,
+      cap: parseFloat(el.getAttribute('data-pmax')) || 60
+    }));
     this._csMedia = Array.from(this.root.querySelectorAll('[data-cs-media]'));
     const onScroll = ()=>{ if(this._scrollPending) return; this._scrollPending=true; this._sraf=requestAnimationFrame(()=>{ this._scrollPending=false; this.applyScroll(); }); };
     this._onScroll = onScroll;
@@ -715,20 +586,6 @@ class Component extends DCLogic {
   applyScroll(){
     const vh = window.innerHeight;
     this.updateScenes();
-    const hero = this.heroEl;
-    if(hero){
-      const rect = hero.getBoundingClientRect();
-      const total = hero.offsetHeight - vh;
-      const p = total>0 ? Math.min(1, Math.max(0, (-rect.top)/total)) : 0;
-      this._heroProg = p;
-      if(this._heroVidReady && this._heroVidDur>0){ this._heroVidTarget = Math.max(0, Math.min(this._heroVidDur-0.05, p*this._heroVidDur)); }
-      if(this._calm && this._heroDraw && !this._heroVidReady) this._heroDraw(performance.now());
-      if(this.heroContent){
-        const fade = 1 - Math.max(0,(p-0.5))/0.45;
-        this.heroContent.style.opacity = String(Math.max(0,fade));
-        this.heroContent.style.transform = 'translateY('+(p*-40).toFixed(1)+'px)';
-      }
-    }
     const hc = this.hcasesEl;
     if(hc && this.htrack){
       const rect = hc.getBoundingClientRect();
@@ -763,15 +620,13 @@ class Component extends DCLogic {
         m.style.transform = 'translate3d('+off.toFixed(2)+'%,0,0)';
       }
     }
-    for(const el of this._para){
-      const sp = parseFloat(el.getAttribute('data-speed'))||0;
-      const host = el.parentElement || el;
-      const hr = host.getBoundingClientRect();
+    for(const it of this._para){
+      const hr = it.host.getBoundingClientRect();
       if(hr.bottom < -40 || hr.top > vh + 40) continue;
       const prog = (hr.top + hr.height/2 - vh/2) / (vh/2 + hr.height/2);
-      const cap = parseFloat(el.getAttribute('data-pmax')) || 60;
-      let off = prog * sp * 26; if(off>cap) off=cap; else if(off<-cap) off=-cap;
-      el.style.transform = 'translate3d(0,'+off.toFixed(1)+'px,0)';
+      const cap = it.cap;
+      let off = prog * it.sp * 26; if(off>cap) off=cap; else if(off<-cap) off=-cap;
+      it.el.style.transform = 'translate3d(0,'+off.toFixed(1)+'px,0)';
     }
   }
 
@@ -1111,7 +966,6 @@ class Component extends DCLogic {
   }
   initWordSwap(){
     clearInterval(this._wi); clearInterval(this._wi2);
-    this._wi = this.makeSwap(this.rotEl, ['веб-приложения','мобильные приложения','телеграм-ботов','автоматизацию','интеграции','MVP']);
     this._wi2 = this.makeSwap(this.rotEl2, ['сегодня','за 2 спринта','без менеджеров','с гарантией']);
   }
 
@@ -1146,24 +1000,19 @@ class Component extends DCLogic {
     this._calm = on;
     if(on){
       if(this._three){ cancelAnimationFrame(this._three.raf); this._three.raf=null; }
-      if(this._bgvid){ try{ this._bgvid.pause(); }catch(e){} }
-      cancelAnimationFrame(this._raf); this._heroRunning=false;
       cancelAnimationFrame(this._teamRaf); this._teamRunning=false;
       clearInterval(this._wi); clearInterval(this._wi2);
-      if(this._heroDraw) this._heroDraw(performance.now());
       if(this._teamRenderStatic) this._teamRenderStatic(1);
       this.destroySmoothScroll();
       if(this._sceneLayer) this._sceneLayer.style.display='none';
       (this._kinetic||[]).forEach(h=>(h._kinners||[]).forEach(s=>{ s.style.transition='none'; s.style.transform='none'; }));
       (this._reveal||[]).forEach(el=>{ el.style.transition='none'; el.style.opacity='1'; el.style.transform='none'; });
-      (this._para||[]).forEach(el=>{ el.style.transform='none'; });
+      (this._para||[]).forEach(it=>{ it.el.style.transform='none'; });
       (this._csMedia||[]).forEach(el=>{ el.style.transform='none'; });
       (this.root.querySelectorAll('[data-anim]')||[]).forEach(el=>{ el.style.animationPlayState='paused'; });
     } else {
       this.initSmoothScroll();
       if(this._three && this._three.start) this._three.start();
-      if(this._bgvidPlay) this._bgvidPlay();
-      if(this._heroDraw && this._heroVisible) this._raf=requestAnimationFrame(this._heroDraw);
       if(this._teamAnim && this._teamVisible && !this._teamRunning){ this._teamRunning=true; this._lastTeam=0; this._teamRaf=requestAnimationFrame(this._teamAnim); }
       this.initWordSwap();
       (this.root.querySelectorAll('[data-anim]')||[]).forEach(el=>{ el.style.animationPlayState='running'; });
@@ -1175,10 +1024,7 @@ class Component extends DCLogic {
   renderVals(){
     return {
       setRoot: el=>{ this.root=el; },
-      setHeroCanvas: el=>{ this.heroCanvas=el; },
       setHero: el=>{ this.heroEl=el; },
-      setHeroContent: el=>{ this.heroContent=el; },
-      setRot: el=>{ this.rotEl=el; },
       setRot2: el=>{ this.rotEl2=el; },
       setCalmBtn: el=>{ this.calmBtn=el; },
       setCalmLabel: el=>{ this.calmLabel=el; },
