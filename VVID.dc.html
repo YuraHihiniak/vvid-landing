@@ -47,7 +47,6 @@
   @keyframes vMarq{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
   @keyframes vFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
   @keyframes vPulse{0%,100%{opacity:.4}50%{opacity:1}}
-  @keyframes vScenePanel{0%{transform:translateY(100%)}42%{transform:translateY(0)}58%{transform:translateY(0)}100%{transform:translateY(-100%)}}
   @media (max-width:880px){ [data-navgroup]{display:none !important} }
   @media (max-width:760px){ form[data-brief]{grid-template-columns:1fr !important} [data-cap-inner]{grid-template-columns:1fr !important} [data-ascii-team]{grid-template-columns:1fr !important} }
   @media (max-width:680px){ [data-hdr-tag]{display:none !important} }
@@ -94,26 +93,6 @@
       <a href="#brief" data-magnetic="1" style="display:inline-block;border:1px solid currentColor;padding:8px 15px;letter-spacing:.16em" style-hover="background:#e4ded2;color:#13110c">бриф</a>
     </nav>
   </header>
-
-  <!-- IMMERSIVE SCENE TRANSITION (scroll-scrubbed curtain between sections) -->
-  <div data-scene-layer="1" style="position:fixed;inset:0;z-index:7000;pointer-events:none;overflow:hidden;display:none">
-    <div data-scene-panel="1" style="position:absolute;inset:0;background:#13110c;will-change:transform">
-      <div style="position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(150,150,150,.045) 3px,rgba(150,150,150,.045) 4px)"></div>
-      <div data-scene-tint="1" style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 80% at 50% 42%,transparent 38%,rgba(0,0,0,.18) 100%)"></div>
-      <div data-scene-fig="1" style="position:absolute;top:84px;left:26px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8f877a">fig.02 — манифест</div>
-      <div data-scene-count="1" style="position:absolute;top:84px;right:26px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8f877a">scene 02 / 08</div>
-      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
-        <div data-scene-numwrap="1" style="display:flex;flex-direction:column;align-items:center;will-change:transform,opacity">
-          <div data-scene-num="1" style="font-weight:300;font-size:clamp(110px,30vw,360px);line-height:.78;letter-spacing:-.05em;color:#e4ded2">02</div>
-          <div style="display:flex;align-items:center;gap:18px;margin-top:clamp(14px,2vw,26px)">
-            <span data-scene-bar="1" style="display:block;width:clamp(34px,6vw,80px);height:1px;background:var(--acc,#b9543f);transform:scaleX(0);transform-origin:right"></span>
-            <div data-scene-label="1" style="font-size:clamp(13px,2vw,22px);letter-spacing:.32em;text-transform:uppercase;font-weight:600;color:#e4ded2">манифест</div>
-            <span data-scene-bar="1" style="display:block;width:clamp(34px,6vw,80px);height:1px;background:var(--acc,#b9543f);transform:scaleX(0);transform-origin:left"></span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- 01 HERO — minimal -->
   <section id="top" data-screen-label="01 Hero" data-hero="1" ref="{{ setHero }}" style="position:relative;min-height:100vh;display:flex;flex-direction:column;background:#13110c;color:#e4ded2;overflow:hidden">
@@ -445,7 +424,6 @@ class Component extends DCLogic {
     cancelAnimationFrame(this._sraf);
     if(this._three){ cancelAnimationFrame(this._three.raf); if(this._three.io) this._three.io.disconnect(); window.removeEventListener('resize', this._threeResize); try{ this._three.renderer.dispose(); }catch(e){} }
     clearInterval(this._wi); clearInterval(this._wi2);
-    clearTimeout(this._sceneHideT);
     if(this._io) this._io.disconnect();
     if(this._kio) this._kio.disconnect();
     if(this._floatIO) this._floatIO.disconnect();
@@ -477,7 +455,6 @@ class Component extends DCLogic {
     this.initThree();
     this.initScroll();
     this.initSmoothScroll();
-    this.initScenes();
     this.initReveal();
     this.initKinetic();
     this.initAsciiTeam();
@@ -585,7 +562,6 @@ class Component extends DCLogic {
   }
   applyScroll(){
     const vh = window.innerHeight;
-    this.updateScenes();
     const hc = this.hcasesEl;
     if(hc && this.htrack){
       const rect = hc.getBoundingClientRect();
@@ -628,81 +604,6 @@ class Component extends DCLogic {
       let off = prog * it.sp * 26; if(off>cap) off=cap; else if(off<-cap) off=-cap;
       it.el.style.transform = 'translate3d(0,'+off.toFixed(1)+'px,0)';
     }
-  }
-
-  /* ---------- IMMERSIVE SCENE TRANSITIONS (scroll-scrubbed curtain) ---------- */
-  initScenes(){
-    const layer = this.root.querySelector('[data-scene-layer]'); if(!layer) return;
-    this._sceneLayer = layer;
-    this._scenePanel = layer.querySelector('[data-scene-panel]');
-    this._sceneTint  = layer.querySelector('[data-scene-tint]');
-    this._sceneNum   = layer.querySelector('[data-scene-num]');
-    this._sceneLabel = layer.querySelector('[data-scene-label]');
-    this._sceneFig   = layer.querySelector('[data-scene-fig]');
-    this._sceneCount = layer.querySelector('[data-scene-count]');
-    this._sceneNumWrap = layer.querySelector('[data-scene-numwrap]');
-    this._sceneBars  = Array.from(layer.querySelectorAll('[data-scene-bar]'));
-    this._sceneCfg = [
-      {sel:'#manifesto',    num:'02', label:'манифест', fig:'fig.02 — манифест',  dark:false},
-      {sel:'#capabilities', num:'03', label:'услуги',   fig:'fig.03 — услуги',    dark:true },
-      {sel:'#work',         num:'04', label:'кейсы',    fig:'fig.04 — кейсы',     dark:false},
-      {sel:'#process',      num:'05', label:'процесс',  fig:'fig.05 — процесс',   dark:true },
-      {sel:'#pricing',      num:'06', label:'прайс',    fig:'fig.06 — прайс',     dark:false},
-      {sel:'#team',         num:'07', label:'команда',  fig:'fig.07 — команда',   dark:true },
-      {sel:'#brief',        num:'08', label:'бриф',     fig:'fig.08 — бриф',      dark:false}
-    ];
-    this._sceneIdx = -1;
-    this.computeSceneTops();
-  }
-  computeSceneTops(){
-    this._sceneW = window.innerWidth; this._sceneDocH = document.body.scrollHeight;
-    const sy = window.scrollY || window.pageYOffset || 0;
-    this._sceneTops = (this._sceneCfg||[]).map(c=>{ const el=this.root.querySelector(c.sel); return el ? Math.round(el.getBoundingClientRect().top + sy) : 1e12; });
-  }
-  applySceneStyle(c){
-    const bg  = c.dark ? '#13110c' : '#e4ded2';
-    const fg  = c.dark ? '#e4ded2' : '#1b1812';
-    const sub = c.dark ? '#8f877a' : '#8c8474';
-    if(this._scenePanel) this._scenePanel.style.background = bg;
-    if(this._sceneTint)  this._sceneTint.style.background = c.dark
-      ? 'radial-gradient(120% 80% at 50% 42%,transparent 38%,rgba(0,0,0,.30) 100%)'
-      : 'radial-gradient(120% 80% at 50% 42%,transparent 42%,rgba(27,24,18,.10) 100%)';
-    if(this._sceneNum){   this._sceneNum.style.color = fg;   this._sceneNum.textContent = c.num; }
-    if(this._sceneLabel){ this._sceneLabel.style.color = fg; this._sceneLabel.textContent = c.label; }
-    if(this._sceneFig){   this._sceneFig.style.color = sub;  this._sceneFig.textContent = c.fig; }
-    if(this._sceneCount){ this._sceneCount.style.color = sub; this._sceneCount.textContent = 'scene '+c.num+' / 08'; }
-  }
-  updateScenes(){
-    const layer = this._sceneLayer; if(!layer) return;
-    if(this._calm){ if(layer.style.display!=='none') layer.style.display='none'; return; }
-    if(this._sceneW!==window.innerWidth || this._sceneDocH!==document.body.scrollHeight) this.computeSceneTops();
-    const sy = window.scrollY || window.pageYOffset || 0, vh = window.innerHeight;
-    // DISCRETE TRIGGER (time-based curtain, NOT scroll-scrubbed → smooth, no flicker/jitter).
-    // Find which section we've entered; when the index increases (scrolling down past a boundary),
-    // play a ONE-SHOT CSS-keyframe curtain. The animation is compositor-driven, so it stays smooth
-    // regardless of scroll cadence or main-thread load (the 3D hero).
-    let idx = -1;
-    for(let i=0;i<this._sceneTops.length;i++){ if(sy >= this._sceneTops[i] - vh*0.5) idx = i; else break; }
-    if(this._sceneIdx == null) this._sceneIdx = idx;
-    if(idx > this._sceneIdx){
-      const now = performance.now();
-      if(now - (this._sceneCooldownT||0) > 500){ this._sceneCooldownT = now; this.playScene(idx); }
-    }
-    this._sceneIdx = idx;
-  }
-  playScene(i){
-    const cfg = this._sceneCfg && this._sceneCfg[i]; if(!cfg) return;
-    const layer = this._sceneLayer, panel = this._scenePanel, num = this._sceneNumWrap, bars = this._sceneBars||[];
-    if(!layer || !panel) return;
-    this.applySceneStyle(cfg);
-    // the number + bars ride the panel sweep — reset them visible
-    if(num){ num.style.opacity='1'; num.style.transform='none'; }
-    for(const b of bars) b.style.transform='scaleX(1)';
-    // restart the one-shot panel sweep (force reflow so the animation re-triggers each time)
-    panel.style.animation='none'; layer.style.display='block'; void layer.offsetWidth;
-    panel.style.animation='vScenePanel 1.15s cubic-bezier(.76,0,.24,1) forwards';
-    clearTimeout(this._sceneHideT);
-    this._sceneHideT = setTimeout(()=>{ layer.style.display='none'; panel.style.animation='none'; }, 1240);
   }
 
   /* ---------- REVEAL ON SCROLL ---------- */
@@ -1004,7 +905,6 @@ class Component extends DCLogic {
       clearInterval(this._wi); clearInterval(this._wi2);
       if(this._teamRenderStatic) this._teamRenderStatic(1);
       this.destroySmoothScroll();
-      if(this._sceneLayer) this._sceneLayer.style.display='none';
       (this._kinetic||[]).forEach(h=>(h._kinners||[]).forEach(s=>{ s.style.transition='none'; s.style.transform='none'; }));
       (this._reveal||[]).forEach(el=>{ el.style.transition='none'; el.style.opacity='1'; el.style.transform='none'; });
       (this._para||[]).forEach(it=>{ it.el.style.transform='none'; });
