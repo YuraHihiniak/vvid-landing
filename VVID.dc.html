@@ -1,10 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VVID — автоматизация маркетплейсов (WB/Ozon), парсинг и разработка</title>
+<meta name="description" content="Студия веб-инжиниринга и бизнес-автоматизации. Кастомная автоматизация маркетплейсов (WB / Ozon / Я.Маркет), парсинг, ETL, интеграции и разработка под ключ. Founder-led, прозрачный прайс, договор и юрлицо.">
+<meta name="author" content="VVID">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#13110c">
+<meta name="format-detection" content="telephone=no">
+<link rel="canonical" href="https://vvid.dev/">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="icon" href="./favicon-48.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="VVID">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:title" content="VVID — автоматизируем то, что съедает вашу прибыль">
+<meta property="og:description" content="Кастомная автоматизация маркетплейсов (WB/Ozon), парсинг, ETL, интеграции и разработка под ключ. Founder-led, прозрачно, с измеримым результатом.">
+<meta property="og:url" content="https://vvid.dev/">
+<meta property="og:image" content="https://vvid.dev/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="VVID — студия инжиниринга и бизнес-автоматизации">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="VVID — автоматизируем то, что съедает вашу прибыль">
+<meta name="twitter:description" content="Автоматизация маркетплейсов (WB/Ozon), парсинг, ETL, интеграции и кастомная разработка. Founder-led, прозрачно.">
+<meta name="twitter:image" content="https://vvid.dev/og-image.png">
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"VVID","url":"https://vvid.dev/","description":"Студия веб-инжиниринга и бизнес-автоматизации: маркетплейсы, парсинг, ETL, интеграции, кастомная разработка.","email":"info@vvid.dev","sameAs":["https://t.me/vvid"],"areaServed":"RU","knowsLanguage":["ru","en"],"slogan":"Автоматизируем то, что съедает вашу прибыль"},{"@context":"https://schema.org","@type":"WebSite","name":"VVID","url":"https://vvid.dev/","inLanguage":"ru"},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Сколько стоит и почему вилки открыты?","acceptedAnswer":{"@type":"Answer","text":"Прозрачность = доверие. Мелкие офферы — продуктизированный fixed-price (от $300). Крупное — T&M / retainer $2–6k/мес. Полностью закрытый прайс мы считаем сигналом недоступного enterprise — это не про нас."}},{"@type":"Question","name":"Есть же SelSup и коробки за 1000 ₽ — зачем вы?","acceptedAnswer":{"@type":"Answer","text":"Коробка закрывает ~80% типового и в этом сильна. Мы строим ваши 20% — кастомную логику, под которую коробка не заточена: нестандартный авто-дропшип, свои интеграции, парсинг и автоотчёты под вашу экономику."}},{"@type":"Question","name":"Как быстро отвечаете и кто ведёт проект?","acceptedAnswer":{"@type":"Answer","text":"Founder-led: вы общаетесь напрямую с теми, кто строит, в Telegram @vvid. Ответ — менее 2 часов в рабочее время. Никаких менеджеров-прокладок."}},{"@type":"Question","name":"Есть ли договор, юрлицо, гарантии?","acceptedAnswer":{"@type":"Answer","text":"Да — официальный договор, юрлицо, NDA по запросу, гарантийная поддержка."}},{"@type":"Question","name":"Что такое revenue-share для маркетплейса?","acceptedAnswer":{"@type":"Answer","text":"Альтернатива фиксу для селлеров: мы берём долю от прироста оборота, который дала автоматизация. Интересы совпадают — мы заинтересованы в вашем росте."}},{"@type":"Question","name":"Работаете на русском и английском?","acceptedAnswer":{"@type":"Answer","text":"Да, билингва RU/EN. RU — маркетплейс/парсинг-сегмент СНГ. EN — глобальный data/automation/SaaS."}}]}]</script>
 <script src="./support.js"></script>
-<script defer src="https://unpkg.com/three@0.149.0/build/three.min.js"></script>
+<script>(function(){try{var m=(window.innerWidth<760)||(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches);if(!m){var s=document.createElement('script');s.defer=true;s.src='https://unpkg.com/three@0.149.0/build/three.min.js';document.head.appendChild(s);}}catch(e){}})();</script>
 </head>
 <body>
 <x-dc>
@@ -24,8 +49,9 @@
   @keyframes vPulse{0%,100%{opacity:.4}50%{opacity:1}}
   @keyframes vScenePanel{0%{transform:translateY(100%)}42%{transform:translateY(0)}58%{transform:translateY(0)}100%{transform:translateY(-100%)}}
   @media (max-width:880px){ [data-navgroup]{display:none !important} }
-  @media (max-width:760px){ form[data-brief]{grid-template-columns:1fr !important} [data-cap-inner]{grid-template-columns:1fr !important} }
-  @media (max-width:600px){ header nav{gap:14px !important} }
+  @media (max-width:760px){ form[data-brief]{grid-template-columns:1fr !important} [data-cap-inner]{grid-template-columns:1fr !important} [data-ascii-team]{grid-template-columns:1fr !important} }
+  @media (max-width:680px){ [data-hdr-tag]{display:none !important} }
+  @media (max-width:600px){ header nav{gap:14px !important} [data-calm-btn]{display:none !important} }
 </style>
 <script src="./image-slot.js"></script>
 </helmet>
@@ -34,13 +60,13 @@
 
   <!-- INTRO PRELOADER -->
   <div data-preloader="1" style="position:fixed;inset:0;z-index:9600;background:#13110c;color:#e4ded2;display:flex;flex-direction:column;justify-content:space-between;padding:30px 26px;overflow:hidden">
-    <video data-prevideo="1" src="./intro.mp4" autoplay muted loop playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.5;filter:grayscale(.15) contrast(1.05) brightness(.95) sepia(.25) saturate(1.2)"></video>
+    <video data-prevideo="1" data-src="./intro.mp4" muted loop playsinline preload="none" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.5;filter:grayscale(.15) contrast(1.05) brightness(.95) sepia(.25) saturate(1.2)"></video>
     <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(120% 95% at 50% 45%,rgba(19,17,12,.32),rgba(19,17,12,.8) 100%)"></div>
     <div style="position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#cfc7b9">
       <span>vvid — engineering &amp; automation</span><span>ru</span>
     </div>
     <div style="position:relative;z-index:2;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap">
-      <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#cfc7b9;line-height:2">studio<br>est. mmxxvi</div>
+      <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#cfc7b9;line-height:2">studio<br>web-инжиниринг</div>
       <div style="font-weight:300;font-size:clamp(72px,17vw,220px);line-height:.8;letter-spacing:-.04em"><span data-pre-count="1">0</span></div>
     </div>
     <div style="position:relative;z-index:2;height:1px;background:rgba(228,222,210,.18)"><div data-pre-bar="1" style="height:100%;width:0%;background:#e4ded2"></div></div>
@@ -50,7 +76,7 @@
   <header style="position:fixed;top:0;left:0;right:0;z-index:8000;display:flex;align-items:center;justify-content:space-between;height:62px;padding:0 26px;mix-blend-mode:difference;color:#e4ded2">
     <a href="#top" style="display:flex;align-items:baseline;gap:12px">
       <span style="font-weight:700;font-size:20px;letter-spacing:-.05em">vvid</span>
-      <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#9a9286">digital product studio</span>
+      <span data-hdr-tag="1" style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#9a9286">студия инжиниринга и автоматизации</span>
     </a>
     <nav style="display:flex;align-items:center;gap:30px;font-size:11px;letter-spacing:.2em;text-transform:uppercase">
       <span data-navgroup="1" style="display:flex;align-items:center;gap:30px">
@@ -87,15 +113,15 @@
   <!-- 01 HERO — minimal -->
   <section id="top" data-screen-label="01 Hero" data-hero="1" ref="{{ setHero }}" style="position:relative;min-height:100vh;display:flex;flex-direction:column;background:#13110c;color:#e4ded2;overflow:hidden">
     <canvas data-hero-three="1" style="position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0"></canvas>
-    <div style="position:absolute;inset:0;pointer-events:none;z-index:1;background:linear-gradient(90deg,rgba(19,17,12,.94),rgba(19,17,12,.8) 32%,rgba(19,17,12,.32) 56%,rgba(19,17,12,0) 78%),linear-gradient(0deg,rgba(19,17,12,.55),rgba(19,17,12,0) 28%)"></div>
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:1;background:linear-gradient(90deg,rgba(19,17,12,.96),rgba(19,17,12,.88) 40%,rgba(19,17,12,.5) 64%,rgba(19,17,12,0) 88%),linear-gradient(0deg,rgba(19,17,12,.5),rgba(19,17,12,0) 26%)"></div>
     <div style="position:relative;z-index:2;flex:1;display:flex;align-items:center;width:100%;max-width:1100px;margin:0 auto;padding:120px 26px 40px">
       <div style="width:100%">
-        <div style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:#8f877a;margin-bottom:clamp(30px,5vw,54px)">студия цифровых продуктов</div>
-        <h1 style="font-size:clamp(42px,8.4vw,116px);line-height:1.0;letter-spacing:-.045em;font-weight:600;margin:0;max-width:15ch;text-shadow:0 2px 38px rgba(19,17,12,.72),0 1px 2px rgba(19,17,12,.5)">строим <span style="color:var(--acc,#b9543f)">цифровые продукты</span> под ваш бизнес</h1>
-        <p style="margin:clamp(30px,4vw,48px) 0 0;max-width:52ch;font-size:clamp(16px,1.5vw,19px);line-height:1.6;color:#b6ad9e;text-wrap:pretty;text-shadow:0 1px 20px rgba(19,17,12,.85)">веб- и мобильные приложения, телеграм-боты, автоматизация и интеграции. любой IT-запрос — с измеримым результатом.</p>
+        <div style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:#8f877a;margin-bottom:clamp(30px,5vw,54px)">автоматизация бизнеса и маркетплейсов</div>
+        <h1 style="font-size:clamp(38px,6.2vw,84px);line-height:1.06;letter-spacing:-.035em;font-weight:600;margin:0;max-width:17ch;text-shadow:0 2px 38px rgba(19,17,12,.8),0 1px 2px rgba(19,17,12,.6)">автоматизируем то, что <span style="color:var(--acc,#b9543f)">съедает вашу прибыль</span></h1>
+        <p style="margin:clamp(28px,4vw,44px) 0 0;max-width:40ch;font-size:clamp(16px,1.5vw,19px);line-height:1.55;color:#b6ad9e;text-wrap:pretty;text-shadow:0 1px 20px rgba(19,17,12,.85)">wb/ozon, парсинг, интеграции, разработка — с измеримым результатом.</p>
         <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:clamp(38px,5vw,56px)">
           <a href="#work" data-magnetic="1" style="display:inline-flex;align-items:center;gap:10px;background:#e4ded2;color:#13110c;padding:15px 28px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600" style-hover="background:var(--acc,#b9543f);color:#fff">смотреть кейсы →</a>
-          <a href="#brief" data-magnetic="1" style="display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(228,222,210,.4);color:#e4ded2;padding:15px 28px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600" style-hover="border-color:#e4ded2">telegram @vvid</a>
+          <a href="#brief" data-magnetic="1" style="display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(228,222,210,.4);color:#e4ded2;padding:15px 28px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600" style-hover="border-color:#e4ded2">написать в telegram</a>
         </div>
       </div>
     </div>
@@ -111,8 +137,8 @@
   <section data-screen-label="SLA bar" style="position:relative;z-index:10;background:#13110c;color:#e4ded2;border-top:1px solid rgba(228,222,210,.12);overflow:hidden">
     <div style="display:flex;white-space:nowrap;padding:15px 0;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#b6ad9e">
       <div data-anim="1" style="display:flex;animation:vMarq 36s linear infinite;flex:none">
-        <span>&nbsp;веб · мобайл · телеграм-боты · автоматизация&nbsp;&nbsp;—&nbsp;&nbsp;любой it-запрос&nbsp;&nbsp;—&nbsp;&nbsp;founder-led&nbsp;&nbsp;—&nbsp;&nbsp;договор + юрлицо + nda&nbsp;&nbsp;—&nbsp;&nbsp;ответ &lt; 2 часов&nbsp;&nbsp;—&nbsp;&nbsp;билингва ru / en&nbsp;&nbsp;—&nbsp;&nbsp;показываем, а не рассказываем&nbsp;&nbsp;—&nbsp;&nbsp;</span>
-        <span>&nbsp;веб · мобайл · телеграм-боты · автоматизация&nbsp;&nbsp;—&nbsp;&nbsp;любой it-запрос&nbsp;&nbsp;—&nbsp;&nbsp;founder-led&nbsp;&nbsp;—&nbsp;&nbsp;договор + юрлицо + nda&nbsp;&nbsp;—&nbsp;&nbsp;ответ &lt; 2 часов&nbsp;&nbsp;—&nbsp;&nbsp;билингва ru / en&nbsp;&nbsp;—&nbsp;&nbsp;показываем, а не рассказываем&nbsp;&nbsp;—&nbsp;&nbsp;</span>
+        <span>&nbsp;маркетплейс-автоматизация · парсинг · etl · интеграции&nbsp;&nbsp;—&nbsp;&nbsp;кастомная разработка&nbsp;&nbsp;—&nbsp;&nbsp;founder-led&nbsp;&nbsp;—&nbsp;&nbsp;договор + юрлицо + nda&nbsp;&nbsp;—&nbsp;&nbsp;ответ &lt; 2 часов&nbsp;&nbsp;—&nbsp;&nbsp;билингва ru / en&nbsp;&nbsp;—&nbsp;&nbsp;показываем, а не рассказываем&nbsp;&nbsp;—&nbsp;&nbsp;</span>
+        <span>&nbsp;маркетплейс-автоматизация · парсинг · etl · интеграции&nbsp;&nbsp;—&nbsp;&nbsp;кастомная разработка&nbsp;&nbsp;—&nbsp;&nbsp;founder-led&nbsp;&nbsp;—&nbsp;&nbsp;договор + юрлицо + nda&nbsp;&nbsp;—&nbsp;&nbsp;ответ &lt; 2 часов&nbsp;&nbsp;—&nbsp;&nbsp;билингва ru / en&nbsp;&nbsp;—&nbsp;&nbsp;показываем, а не рассказываем&nbsp;&nbsp;—&nbsp;&nbsp;</span>
       </div>
     </div>
   </section>
@@ -122,8 +148,8 @@
     <div data-speed="6" data-pmax="150" style="position:absolute;top:0;right:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(27,24,18,.045);pointer-events:none;user-select:none">02</div>
     <div style="max-width:1320px;margin:0 auto;position:relative">
       <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8c8474;margin-bottom:clamp(40px,6vw,80px)">fig.02 — манифест</div>
-      <h2 data-kinetic="1" style="font-size:clamp(30px,5.6vw,84px);line-height:1.0;letter-spacing:-.04em;font-weight:600;margin:0;max-width:20ch">все говорят «студия полного цикла». мы вместо этого показываем работу.</h2>
-      <p data-reveal="1" data-delay="120" style="margin:clamp(30px,4vw,56px) 0 0;max-width:60ch;font-size:clamp(16px,1.7vw,21px);line-height:1.5;color:#5a5346;text-wrap:pretty">кейсы с числами, живые продукты, открытый прайс. <span style="font-weight:700;color:#1b1812">доказательная машина</span>, а не презентация.</p>
+      <h2 data-kinetic="1" style="font-size:clamp(30px,5.6vw,84px);line-height:1.0;letter-spacing:-.04em;font-weight:600;margin:0;max-width:20ch">все говорят «студия полного цикла». мы показываем кейсы с числами.</h2>
+      <p data-reveal="1" data-delay="120" style="margin:clamp(30px,4vw,56px) 0 0;max-width:60ch;font-size:clamp(16px,1.7vw,21px);line-height:1.5;color:#5a5346;text-wrap:pretty">кейсы с числами, живые продукты, открытый прайс — <span style="font-weight:700;color:#1b1812">а не презентация</span>.</p>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:rgba(27,24,18,.18);margin-top:clamp(60px,9vw,110px)">
         <sc-for list="{{ principles }}" as="pr" hint-placeholder-count="3">
           <div data-reveal="1" data-delay="{{ pr.delay }}" style="background:#e4ded2;padding:36px 30px 40px">
@@ -142,9 +168,9 @@
       <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:clamp(50px,7vw,90px)">
         <div>
           <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8f877a;margin-bottom:24px">fig.03 — услуги</div>
-          <h2 data-kinetic="1" style="font-size:clamp(28px,4.6vw,64px);line-height:1.02;letter-spacing:-.035em;font-weight:600;margin:0;max-width:18ch">инжиниринг полного цикла — от идеи до прода.</h2>
+          <h2 data-kinetic="1" style="font-size:clamp(28px,4.6vw,64px);line-height:1.02;letter-spacing:-.035em;font-weight:600;margin:0;max-width:18ch">строим то, чего не умеют коробки.</h2>
         </div>
-        <div data-reveal="1" style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#8f877a">5 направлений<br>любой it-запрос</div>
+        <div data-reveal="1" style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#8f877a">5 направлений<br>маркетплейс → ии</div>
       </div>
       <div style="border-top:1px solid rgba(228,222,210,.18)">
         <sc-for list="{{ capabilities }}" as="cap" hint-placeholder-count="4">
@@ -173,13 +199,13 @@
   <!-- 04 CASES — pinned horizontal lookbook -->
   <section id="work" data-screen-label="04 Cases" data-hcases="1" style="position:relative;z-index:10;background:#e4ded2;color:#1b1812;height:340vh">
     <div style="position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column">
-      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:90px 26px 22px;max-width:1320px;margin:0 auto;width:100%">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:clamp(64px,7.5vh,84px) 26px 16px;max-width:1320px;margin:0 auto;width:100%">
         <div>
           <div style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8c8474;margin-bottom:18px">fig.04 — lookbook кейсов</div>
           <h2 style="font-size:clamp(26px,4.2vw,56px);line-height:1.0;letter-spacing:-.035em;font-weight:600;margin:0">кейсы с числами.<br><span style="font-weight:700;color:#5a5346">не обещания — метрики.</span></h2>
         </div>
         <div style="display:flex;align-items:center;gap:24px">
-          <span style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;border:1px solid rgba(27,24,18,.3);padding:7px 11px">clutch 4.9 ★</span>
+          <span style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;border:1px solid rgba(27,24,18,.3);padding:7px 11px">договор + юрлицо</span>
           <div style="font-weight:300;font-size:30px;letter-spacing:-.02em"><span data-hcount="1">01</span><span style="color:rgba(27,24,18,.35)"> / 03</span></div>
         </div>
       </div>
@@ -188,13 +214,13 @@
           <sc-for list="{{ cases }}" as="cs" hint-placeholder-count="3">
             <article style="flex:none;width:clamp(300px,40vw,460px)">
               <div style="position:relative;overflow:hidden" data-cs-frame="1">
-                <image-slot data-cs-media="1" id="{{ cs.slot }}" style="width:124%;margin-left:-12%;height:clamp(360px,52vh,520px);display:block;background:#d3ccbd;will-change:transform" shape="rect" placeholder="ui кейса · перетащите скриншот"></image-slot>
+                <image-slot data-cs-media="1" id="{{ cs.slot }}" style="width:124%;margin-left:-12%;height:clamp(220px,38vh,360px);display:block;background:#d3ccbd;will-change:transform" shape="rect" placeholder="ui кейса · перетащите скриншот"></image-slot>
                 <div style="position:absolute;top:14px;left:14px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;background:#13110c;color:#e4ded2;padding:6px 10px">{{ cs.n }}</div>
                 <div style="position:absolute;top:14px;right:14px;display:flex;align-items:center;gap:6px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;background:rgba(228,222,210,.9);color:#1b1812;padding:6px 10px"><span style="width:5px;height:5px;border-radius:50%;background:var(--acc,#b9543f)"></span>{{ cs.status }}</div>
               </div>
               <div style="padding-top:20px;border-top:1px solid rgba(27,24,18,.22);margin-top:18px">
                 <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8c8474;margin-bottom:12px">{{ cs.client }}</div>
-                <h3 style="font-size:clamp(20px,2.2vw,28px);line-height:1.08;letter-spacing:-.025em;font-weight:600;margin:0 0 22px">{{ cs.title }}</h3>
+                <h3 style="font-size:clamp(20px,2.2vw,28px);line-height:1.08;letter-spacing:-.025em;font-weight:600;margin:0 0 14px">{{ cs.title }}</h3>
                 <div style="display:flex;gap:30px;flex-wrap:wrap">
                   <sc-for list="{{ cs.metrics }}" as="mt" hint-placeholder-count="3">
                     <div><div style="font-weight:300;font-size:30px;letter-spacing:-.02em;color:#1b1812">{{ mt.v }}</div><div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8c8474;margin-top:4px">{{ mt.l }}</div></div>
@@ -204,8 +230,8 @@
             </article>
           </sc-for>
           <article style="flex:none;width:clamp(280px,30vw,400px);display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:22px;padding:0 20px">
-            <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#8c8474">end of reel</div>
-            <h3 style="font-size:clamp(24px,3vw,44px);line-height:1.0;letter-spacing:-.035em;font-weight:600;margin:0">ваш кейс — <span style="font-weight:700;color:var(--acc,#b9543f)">следующий</span>.</h3>
+            <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#8c8474">следующий слот — свободен</div>
+            <h3 style="font-size:clamp(24px,3vw,44px);line-height:1.05;letter-spacing:-.035em;font-weight:600;margin:0">здесь будет <span style="font-weight:700;color:var(--acc,#b9543f)">ваш кейс</span>.</h3>
             <a href="#brief" data-magnetic="1" style="display:inline-flex;align-items:center;gap:10px;background:#13110c;color:#e4ded2;padding:14px 24px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600" style-hover="background:var(--acc,#b9543f);color:#fff">обсудить задачу →</a>
           </article>
         </div>
@@ -337,7 +363,7 @@
     <div style="max-width:1100px;margin:0 auto">
       <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8c8474;margin-bottom:26px">fig.08 — бриф</div>
       <h2 data-rot-head="1" style="font-size:clamp(36px,7vw,104px);line-height:.94;letter-spacing:-.045em;font-weight:600;margin:0 0 20px;max-width:15ch">запустим ваш проект <span data-rot2="1" ref="{{ setRot2 }}" style="font-weight:700;color:var(--acc,#b9543f)">сегодня</span></h2>
-      <p data-reveal="1" style="margin:0 0 clamp(40px,6vw,64px);max-width:52ch;font-size:clamp(16px,1.8vw,20px);line-height:1.5;color:#5a5346;text-wrap:pretty">опишите задачу в двух строках — вернёмся с оценкой в течение 2 часов. без брифов на 10 страниц.</p>
+      <p data-reveal="1" style="margin:0 0 clamp(40px,6vw,64px);max-width:52ch;font-size:clamp(16px,1.8vw,20px);line-height:1.5;color:#5a5346;text-wrap:pretty">опишите задачу в двух строках — вернёмся с оценкой за 2 часа. без брифов на 10 страниц.</p>
 
       <form onSubmit="{{ onSubmit }}" data-brief="1" data-reveal="1" style="display:grid;grid-template-columns:1fr 1fr;gap:0 48px">
         <label style="display:flex;flex-direction:column;border-bottom:1px solid rgba(27,24,18,.3);padding-bottom:6px;margin-bottom:30px">
@@ -375,7 +401,7 @@
     <div style="max-width:1320px;margin:0 auto">
       <div data-speed="-1.4" data-pmax="120" style="font-weight:600;font-size:clamp(80px,22vw,300px);line-height:.78;letter-spacing:-.06em;margin-bottom:clamp(50px,7vw,90px);will-change:transform">vvid<span style="color:var(--acc,#b9543f)">.</span></div>
       <div style="display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;padding-bottom:50px;border-bottom:1px solid rgba(228,222,210,.14)">
-        <p style="margin:0;max-width:420px;font-size:15px;line-height:1.5;color:#b6ad9e;text-wrap:pretty">студия разработки цифровых продуктов: веб, мобайл, телеграм-боты, автоматизация. любой it-запрос — от идеи до прода.</p>
+        <p style="margin:0;max-width:380px;font-size:15px;line-height:1.5;color:#b6ad9e;text-wrap:pretty">студия инжиниринга и бизнес-автоматизации. строим то, чего не умеют коробки.</p>
         <div style="display:flex;gap:60px;flex-wrap:wrap;font-size:13px">
           <div style="display:flex;flex-direction:column;gap:14px">
             <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#6f685c;margin-bottom:2px">сайт</div>
@@ -392,8 +418,8 @@
         </div>
       </div>
       <div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-top:24px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#6f685c">
-        <span>© mmxxvi vvid — digital product studio</span>
-        <span>built for last-mile</span>
+        <span>© 2026 vvid — студия инжиниринга и автоматизации</span>
+        <span>built for the last mile</span>
       </div>
     </div>
   </footer>
@@ -467,6 +493,7 @@ class Component extends DCLogic {
   /* ---------- THREE.JS LIQUID-METAL HERO (full 3D · gated · throttled · calm/reduced-aware) ---------- */
   initThree(){
     if(this._three) return;
+    if(window.innerWidth < 760 || (window.matchMedia && window.matchMedia('(pointer:coarse)').matches)){ this._threeSkip=true; return; }
     const THREE = window.THREE;
     const canvas = this.root.querySelector('[data-hero-three]');
     if(!THREE || !canvas){ this._threeTries=(this._threeTries||0)+1; if(this._threeTries<120) setTimeout(()=>this.initThree(),100); return; }
@@ -476,16 +503,16 @@ class Component extends DCLogic {
     try{ renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:false, powerPreference:'high-performance' }); }catch(e){ return; }
     renderer.setClearColor(0x13110c, 1);
     if('outputEncoding' in renderer) renderer.outputEncoding = THREE.sRGBEncoding;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 0.98;
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100); camera.position.set(0,0,5);
     // warm equirect gradient → on-brand chrome reflections (no external assets)
     const ec = document.createElement('canvas'); ec.width=128; ec.height=256; const ex = ec.getContext('2d');
     const g = ex.createLinearGradient(0,0,0,256);
-    g.addColorStop(0,'#f4eee2'); g.addColorStop(.30,'#cdbfa6'); g.addColorStop(.52,'#b9543f'); g.addColorStop(.72,'#54301f'); g.addColorStop(1,'#0b0906');
+    g.addColorStop(0,'#d8cbb4'); g.addColorStop(.30,'#b3a486'); g.addColorStop(.52,'#b9543f'); g.addColorStop(.72,'#4a2a1b'); g.addColorStop(1,'#0b0906');
     ex.fillStyle=g; ex.fillRect(0,0,128,256);
     const blot=(x,y,r,c)=>{ const rg=ex.createRadialGradient(x,y,0,x,y,r); rg.addColorStop(0,c); rg.addColorStop(1,'rgba(0,0,0,0)'); ex.fillStyle=rg; ex.fillRect(0,0,128,256); };
-    blot(42,46,42,'rgba(255,250,240,.95)'); blot(98,150,34,'rgba(255,178,150,.45)');
+    blot(40,54,28,'rgba(242,226,206,.62)'); blot(98,150,34,'rgba(255,178,150,.4)');
     const envTex = new THREE.CanvasTexture(ec); envTex.mapping = THREE.EquirectangularReflectionMapping;
     let envMap = envTex;
     try{ const pm = new THREE.PMREMGenerator(renderer); envMap = pm.fromEquirectangular(envTex).texture; pm.dispose(); envTex.dispose(); }catch(e){}
@@ -493,11 +520,11 @@ class Component extends DCLogic {
     const key = new THREE.PointLight(0xffd9c0, 16, 60); key.position.set(4,5,6); scene.add(key);
     const rim = new THREE.PointLight(0x9fb4c4, 9, 60); rim.position.set(-6,-2,2); scene.add(rim);
     scene.add(new THREE.AmbientLight(0x3a332a, 0.5));
-    const geo = new THREE.SphereGeometry(1.45, 128, 96);
+    const geo = new THREE.SphereGeometry(1.2, 128, 96);
     const posAttr = geo.attributes.position; const base = posAttr.array.slice(0); const bn = new Float32Array(base.length);
     for(let i=0;i<base.length;i+=3){ const x=base[i],y=base[i+1],z=base[i+2]; const l=Math.hypot(x,y,z)||1; bn[i]=x/l; bn[i+1]=y/l; bn[i+2]=z/l; }
-    const mat = new THREE.MeshStandardMaterial({ color:0xc2bbac, metalness:1.0, roughness:0.08, envMapIntensity:1.6 });
-    const mesh = new THREE.Mesh(geo, mat); mesh.position.set(1.35,0.1,0); scene.add(mesh);
+    const mat = new THREE.MeshStandardMaterial({ color:0x88806f, metalness:1.0, roughness:0.12, envMapIntensity:1.3 });
+    const mesh = new THREE.Mesh(geo, mat); mesh.position.set(1.95,-0.14,0); scene.add(mesh);
     const noise = (x,y,z,t)=> ( Math.sin(x*1.7+t*0.7)+Math.sin(y*2.1-t*0.9)+Math.sin(z*1.9+t*0.6)+0.5*Math.sin((x+y)*2.6-t*1.1)+0.5*Math.sin((y+z)*2.3+t*0.8) )/3;
     const displace = (t, amp)=>{ const p=posAttr.array; for(let i=0;i<p.length;i+=3){ const d=amp*noise(base[i],base[i+1],base[i+2],t); p[i]=base[i]+bn[i]*d; p[i+1]=base[i+1]+bn[i+1]*d; p[i+2]=base[i+2]+bn[i+2]*d; } posAttr.needsUpdate=true; geo.computeVertexNormals(); };
     const resize = ()=>{ const w=(canvas.clientWidth||window.innerWidth), h=(canvas.clientHeight||window.innerHeight); renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.6)); renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); };
@@ -508,13 +535,13 @@ class Component extends DCLogic {
       self._three.raf = requestAnimationFrame(render);
       if(now-last < 15) return; last = now;
       const t = now*0.001; const k = Math.min(1, (window.scrollY||0)/((window.innerHeight||800)));
-      displace(t, 0.20*(1+k*0.5));
+      displace(t, 0.13*(1+k*0.5));
       mesh.rotation.y = t*0.16 + k*0.7; mesh.rotation.x = Math.sin(t*0.12)*0.16; camera.position.z = 5 - k*0.7;
       renderer.render(scene, camera);
     };
     const start = ()=>{ if(self._three && !self._three.raf && !self._calm && self._three.visible) self._three.raf = requestAnimationFrame(render); };
     this._three = { renderer, raf:null, io:null, visible:true, start };
-    displace(0, 0.12); renderer.render(scene, camera); // static frame so calm/reduced still shows the blob
+    displace(0, 0.09); renderer.render(scene, camera); // static frame so calm/reduced still shows the blob
     this._three.io = new IntersectionObserver((es)=>{ const e=es[0]; self._three.visible = e.intersectionRatio > 0.35; if(self._three.visible) start(); }, {threshold:[0,0.2,0.35,0.6,1]});
     this._three.io.observe(heroEl || canvas);
     if(!reduce && !this._calm) start();
@@ -1066,8 +1093,9 @@ class Component extends DCLogic {
     const stopVid = ()=>{ const pv=pre.querySelector('[data-prevideo]'); if(pv){ try{ pv.pause(); }catch(e){} } };
     const finish = ()=>{ if(this._preDone) return; this._preDone=true; pre.style.transition='transform .85s cubic-bezier(.76,0,.24,1)'; pre.style.transform='translateY(-100%)'; setTimeout(()=>{ pre.style.display='none'; stopVid(); },900); };
     if(reduce){ if(num) num.textContent='100'; if(bar) bar.style.width='100%'; stopVid(); pre.style.display='none'; return; }
-    const pv=pre.querySelector('[data-prevideo]'); if(pv){ try{ pv.muted=true; const pp=pv.play(); if(pp&&pp.catch) pp.catch(()=>{}); }catch(e){} }
-    const dur=3800; this._preT0=0;
+    const isMobile = window.innerWidth < 760 || (window.matchMedia && window.matchMedia('(pointer:coarse)').matches);
+    const pv=pre.querySelector('[data-prevideo]'); if(pv && !isMobile){ try{ pv.src=pv.getAttribute('data-src')||''; pv.muted=true; pv.load(); const pp=pv.play(); if(pp&&pp.catch) pp.catch(()=>{}); }catch(e){} }
+    const dur = isMobile ? 1500 : 3800; this._preT0=0;
     const step=(t)=>{ if(!this._preT0) this._preT0=t; const p=Math.min(1,(t-this._preT0)/dur); const e=1-Math.pow(1-p,3); const v=Math.round(e*100); if(num) num.textContent=String(v); if(bar) bar.style.width=v+'%'; if(p<1) requestAnimationFrame(step); else finish(); };
     requestAnimationFrame(step); setTimeout(finish,6000);
   }
@@ -1129,45 +1157,46 @@ class Component extends DCLogic {
       setTeamActive: (e)=>{ const t=e.currentTarget; const i=parseInt(t&&t.getAttribute('data-idx'),10)||0; if(this.switchTeam) this.switchTeam(i,true); },
 
       principles: [
-        {delay:0,   k:'01 / результат',     v:'не эстетика ради эстетики. каждый проект измеряется в сэкономленных часах, обороте и издержках.'},
-        {delay:100, k:'02 / last-mile',     v:'прототип и демо — это ещё не продукт. берём на себя надёжность, безопасность и довод до прода — то, на чём обычно всё застревает.'},
-        {delay:200, k:'03 / прозрачность',  v:'открытые вилки, прямой контакт с инженерами, договор и юрлицо. доверие вместо закрытого enterprise.'}
+        {delay:0,   k:'01 / результат',     v:'каждый проект меряем в часах, обороте и снятых издержках — не в словах.'},
+        {delay:100, k:'02 / довод до прода', v:'демо — это ещё не продукт. берём надёжность, интеграции и довод до прода.'},
+        {delay:200, k:'03 / прозрачность',  v:'открытые вилки, прямой контакт с инженерами, договор и юрлицо.'}
       ],
       capabilities: [
-        {n:'01', tag:'герой', title:'веб-приложения и сервисы', desc:'продуктовая разработка под ключ: saas, crm, erp, b2b-порталы, личные кабинеты, e-com. архитектура, которая растёт с бизнесом.', specs:['next.js · react','node · postgres','rbac · api','sla 99.9%']},
-        {n:'02', tag:'mobile', title:'мобильные приложения', desc:'ios, android и кроссплатформа. от mvp до релиза в сторах: интерфейсы, бэкенд, интеграции, аналитика.', specs:['react native','swift · kotlin','push · offline','app store / google play']},
-        {n:'03', tag:'bots', title:'телеграм-боты и mini apps', desc:'боты и web-app внутри telegram: продажи, поддержка, оплаты, crm-связки, внутренние процессы. там, где ваша аудитория.', specs:['bot api','mini apps','payments','crm-связки']},
-        {n:'04', tag:'data', title:'автоматизация · парсинг · ETL · интеграции', desc:'сбор и доставка данных, маркетплейс-автоматизация (wb/ozon), пайплайны отчётности, связки сервисов — рутина, которая иначе съедает часы вручную.', specs:['1.2m sku/day','etl · api','n8n · make','revenue-share']},
-        {n:'05', tag:'ai', title:'внедрение ии и обучение моделей', desc:'внедрение ии в ваш продукт: ассистенты, llm-сценарии, rag. обучение и дообучение моделей под вашу задачу и данные. плюс любой нестандартный it-запрос.', specs:['llm · rag','обучение моделей','fine-tuning','ассистенты']}
+        {n:'01', tag:'герой', title:'маркетплейс-автоматизация', desc:'кастом для селлеров wb/ozon: авто-дропшип китай→wb, репрайсинг, остатки, автоотчёты. то, чего не делает коробка.', specs:['wb · ozon · я.маркет','1688 → wb','автоотчёты · фнс','revenue-share']},
+        {n:'02', tag:'data', title:'парсинг · etl · api · интеграции', desc:'пайплайны данных, парсеры цен и остатков, связки сервисов — рутина, которая иначе съедает часы.', specs:['etl · api','парсинг','n8n · make','автоотчёты']},
+        {n:'03', tag:'разработка', title:'кастомная разработка', desc:'saas, crm, erp, e-com — web и mobile. архитектура, которая растёт с бизнесом.', specs:['react · next','node · postgres','ios · android','rbac · api']},
+        {n:'04', tag:'боты', title:'телеграм-боты и mini apps', desc:'боты и mini apps в telegram: продажи, поддержка, оплаты, crm-связки. там, где ваша аудитория.', specs:['bot api','mini apps','payments','crm-связки']},
+        {n:'05', tag:'сервис-линия', title:'внедрение ии и обучение моделей', desc:'ии в ваш продукт: ассистенты, llm, rag. обучение и дообучение моделей под вашу задачу.', specs:['llm · rag','обучение моделей','fine-tuning','ассистенты']}
       ],
       cases: [
-        {n:'look 01', slot:'case-1', title:'авто-дропшип 1688 → WB', client:'селлер, категория «дом»', status:'in prod', metrics:[{v:'+34%',l:'оборот'},{v:'−480ч',l:'/мес'},{v:'5 мин',l:'карточка'}]},
-        {n:'look 02', slot:'case-2', title:'ETL-пайплайн отчётности', client:'дистрибьютор fmcg', status:'in prod', metrics:[{v:'−92%',l:'время'},{v:'14',l:'источников'},{v:'0',l:'ручного'}]},
-        {n:'look 03', slot:'case-3', title:'парсер цен конкурентов', client:'маркетплейс-агрегатор', status:'in prod', metrics:[{v:'1.2м',l:'sku/день'},{v:'15 мин',l:'обновление'},{v:'99.4%',l:'точность'}]}
+        {n:'look 01', slot:'case-1', title:'авто-дропшип 1688 → WB', client:'селлер wb · категория «дом»', status:'in prod', metrics:[{v:'+34%',l:'оборот'},{v:'−480ч',l:'/мес'},{v:'5 мин',l:'карточка'}]},
+        {n:'look 02', slot:'case-2', title:'etl-пайплайн отчётности', client:'дистрибьютор fmcg', status:'in prod', metrics:[{v:'−92%',l:'время'},{v:'14',l:'источников'},{v:'0',l:'ручного'}]},
+        {n:'look 03', slot:'case-3', title:'парсер цен и остатков', client:'маркетплейс-агрегатор', status:'in prod', metrics:[{v:'1.2м',l:'sku/день'},{v:'15 мин',l:'обновление'},{v:'99.4%',l:'точность'}]}
       ],
       process: [
-        {n:'01', delay:0,   title:'discovery', desc:'карта процессов, узкие места, метрика результата. фикс объёма и точки измерения roi.', meta:'1–2 нед'},
-        {n:'02', delay:80,  title:'архитектура', desc:'чертёж системы: данные, интеграции, риски. прозрачная смета и план спринтов.', meta:'1 нед'},
-        {n:'03', delay:160, title:'спринты', desc:'двухнедельные итерации с демо. прямой контакт с инженерами в telegram — без прокладок.', meta:'2–8 нед'},
-        {n:'04', delay:240, title:'внедрение', desc:'релиз в прод, обучение команды, передача доступов и документации.', meta:'1 нед'},
-        {n:'05', delay:320, title:'поддержка · sla', desc:'retainer $2–6k/мес: мониторинг, доработки, гарантии. работаем как ваша команда.', meta:'ongoing'}
+        {n:'01', delay:0,   title:'discovery', desc:'карта процессов, узкие места, метрика результата. фиксируем объём и roi.', meta:'1–2 нед'},
+        {n:'02', delay:80,  title:'архитектура', desc:'чертёж системы: данные, интеграции, риски. прозрачная смета.', meta:'1 нед'},
+        {n:'03', delay:160, title:'спринты', desc:'двухнедельные итерации с демо. прямой контакт с инженерами — без прокладок.', meta:'2–8 нед'},
+        {n:'04', delay:240, title:'внедрение', desc:'релиз в прод, обучение команды, передача доступов.', meta:'1 нед'},
+        {n:'05', delay:320, title:'поддержка · sla', desc:'retainer: мониторинг, доработки, гарантии. работаем как ваша команда.', meta:'ongoing'}
       ],
       pricing: [
-        {n:'p0', title:'маркетплейс-автоматизация', range:'от $300 · пакеты · revenue-share', desc:'продуктизированные фикс-офферы под wb/ozon. для крупного — доля от прироста оборота селлера.', points:['точечный парсер / репрайсер — от $300','авто-дропшип под ключ — от $4 500','revenue-share: % от прироста','fixed-price, без менеджеров']},
-        {n:'p1', title:'кастомная разработка', range:'$18k–$100k · t&m / retainer', desc:'saas / crm / erp / e-com для smb и scale-up. гибрид fixed для скоупа + t&m для развития.', points:['mvp-скоуп — fixed-price','развитие — t&m по ставке','retainer $2–6k/мес','договор + юрлицо + гарантии']},
-        {n:'p2', title:'no-code · ETL-внедрение', range:'$300–$5k + retainer', desc:'быстрый вход: сценарии, интеграции, миграции. воронка в долгосрочное партнёрство.', points:['входной оффер — $300–$5k','интеграции сервисов','поддержка на retainer','апгрейд до кастома']}
+        {n:'p0', title:'маркетплейс-автоматизация', range:'от $300 · пакеты · revenue-share', desc:'фикс-офферы под wb/ozon. для крупного — доля от прироста оборота.', points:['парсер / репрайсер — от $300','авто-дропшип под ключ — от $4 500','revenue-share: % от прироста']},
+        {n:'p1', title:'кастомная разработка', range:'$18k–$100k · t&m / retainer', desc:'saas / crm / erp / e-com. fixed за скоуп + t&m за развитие.', points:['mvp-скоуп — fixed-price','развитие — t&m по ставке','договор + юрлицо + гарантии']},
+        {n:'p2', title:'no-code · etl-внедрение', range:'$300–$5k + retainer', desc:'быстрый вход: автоотчёты, интеграции, парсеры. апгрейд до кастома.', points:['входной оффер — $300–$5k','интеграции и автоотчёты','поддержка на retainer']}
       ],
       faq: [
         {q:'сколько стоит и почему вилки открыты?', a:'прозрачность = доверие. мелкие офферы — продуктизированный fixed-price (от $300). крупное — t&m / retainer $2–6k/мес. полностью закрытый прайс мы считаем сигналом недоступного enterprise — это не про нас.'},
+        {q:'есть же selsup и коробки за 1000 ₽ — зачем вы?', a:'коробка закрывает ~80% типового и в этом сильна. мы строим ваши 20% — кастомную логику, под которую коробка не заточена: нестандартный авто-дропшип, свои интеграции, парсинг и автоотчёты под вашу экономику.'},
         {q:'как быстро отвечаете и кто ведёт проект?', a:'founder-led: вы общаетесь напрямую с теми, кто строит, в telegram @vvid. ответ — менее 2 часов в рабочее время. никаких менеджеров-прокладок.'},
         {q:'есть ли договор, юрлицо, гарантии?', a:'да — официальный договор, юрлицо, nda по запросу, гарантийная поддержка. telegram оставляем как скорость, легитимность — отдельно.'},
         {q:'что такое revenue-share для маркетплейса?', a:'альтернатива фиксу для селлеров: мы берём долю от прироста оборота, который дала автоматизация. интересы совпадают — мы заинтересованы в вашем росте.'},
         {q:'работаете на русском и английском?', a:'да, билингва ru/en. ru — маркетплейс/парсинг-сегмент снг. en — глобальный data/automation/saas, адаптация под аудиторию, а не дословный перевод.'}
       ],
       team: [
-        {i:0, n:1, slot:'team-1', src:'team-cat.jpg', word:'автоматизация', name:'имя фамилия', role:'lead engineer', tg:'@vvid'},
-        {i:1, n:2, slot:'team-2', src:'', word:'данные',        name:'имя фамилия', role:'etl · parsing · api', tg:'@vvid'},
-        {i:2, n:3, slot:'team-3', src:'', word:'продукт',        name:'имя фамилия', role:'architect · full-cycle', tg:'@vvid'}
+        {i:0, n:1, slot:'team-1', src:'', word:'автоматизация', name:'имя фамилия', role:'lead engineer', tg:'@vvid'},
+        {i:1, n:2, slot:'team-2', src:'', word:'данные',        name:'имя фамилия', role:'etl · парсинг · api', tg:'@vvid'},
+        {i:2, n:3, slot:'team-3', src:'', word:'продукт',        name:'имя фамилия', role:'архитектура · разработка', tg:'@vvid'}
       ]
     };
   }
