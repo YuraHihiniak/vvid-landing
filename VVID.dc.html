@@ -689,8 +689,8 @@ class Component extends DCLogic {
 
     // prog: reveal 0..1 (scroll-driven) ; ts: time for live shimmer
     this._teamMouse = {x:-999, y:-999, on:false};
-    this._teamRenderStatic = (prog, ts)=>{
-      const lum = getLum();
+    this._teamRenderStatic = (prog, ts, lumOverride, band)=>{
+      const lum = lumOverride || getLum();
       const t = ts==null ? (performance.now()) : ts;
       const NR = RAMP.length;
       ctx.clearRect(0,0,W,H);
@@ -707,7 +707,7 @@ class Component extends DCLogic {
         const shown = prog>=1 || thr<prog;
         if(!shown){
           // leading decode edge: a band of scrambling glyphs just above the reveal front
-          if(prog<=0 || thr-prog>0.10) continue;
+          if(prog<=0 || thr-prog>(band||0.10)) continue;
           const gi=Math.floor(Math.random()*NR); const ch=RAMP[gi];
           if(ch!==' '){ ctx.fillStyle='rgba(185,84,63,0.6)'; if(curFont!==baseFont){ctx.font=baseFont;curFont=baseFont;} ctx.fillText(ch, x*cell, y*cell); }
           continue;
@@ -740,18 +740,31 @@ class Component extends DCLogic {
       }
     };
 
-    this._lastTeam = 0;
+    this._lastTeam = 0; this._teamTrans = null;
     this._teamAnim = (t)=>{
+      const tr = this._teamTrans;
       // throttle ~30fps (faster so the hover lens feels responsive)
-      if(t - this._lastTeam < 33){ if(!this._calm && this._teamVisible){ this._teamRaf=requestAnimationFrame(this._teamAnim); } return; }
+      if(t - this._lastTeam < 33){ if(!this._calm && (this._teamVisible||tr)){ this._teamRaf=requestAnimationFrame(this._teamAnim); } return; }
       this._lastTeam = t;
       const reveal = (this._teamReveal==null) ? 1 : this._teamReveal;
-      this._teamRenderStatic(reveal, t);
-      if(!this._calm && this._teamVisible){ this._teamRunning=true; this._teamRaf=requestAnimationFrame(this._teamAnim); }
+      if(tr){
+        // decode switch: old photo crumbles into glyph-noise → new photo decodes back in
+        const p = (t - tr.start) / tr.dur;
+        if(p>=1){ this._teamTrans=null; this._teamRenderStatic(reveal, t); }
+        else if(p<0.5){ this._teamRenderStatic((1-p/0.5)*reveal, t, tr.from, 0.28); }
+        else { this._teamRenderStatic(((p-0.5)/0.5)*reveal, t, tr.to); }
+      } else {
+        this._teamRenderStatic(reveal, t);
+      }
+      if(!this._calm && (this._teamVisible||this._teamTrans)){ this._teamRunning=true; this._teamRaf=requestAnimationFrame(this._teamAnim); }
       else { this._teamRunning=false; }
     };
     this.switchTeam = (idx, animate)=>{
       idx = Math.max(0, Math.min(this.teamNameBtns.length-1, idx));
+      const prev = this._teamActive;
+      const rev = (this._teamReveal==null) ? 1 : this._teamReveal;
+      const canTrans = animate!==false && !this._calm && this._teamSeen && this._teamVisible && rev>=0.5 && idx!==prev;
+      const fromLum = canTrans ? getLum() : null;
       this._teamActive = idx; this._teamLumKey='';
       this.teamNameBtns.forEach((b,i)=>{
         const word=b.querySelector('[data-team-word]'); const active=i===idx;
@@ -760,7 +773,8 @@ class Component extends DCLogic {
       });
       if(this.teamHint){ const wEl=this.teamNameBtns[idx]&&this.teamNameBtns[idx].querySelector('[data-team-word]'); this.teamHint.style.opacity='1'; this.teamHint.textContent='0'+(idx+1)+' · '+((wEl&&wEl.textContent)||''); }
       cancelAnimationFrame(this._teamRaf);
-      if(this._calm){ this._teamRunning=false; this._teamRenderStatic(this._teamReveal==null?1:this._teamReveal); return; }
+      if(this._calm){ this._teamRunning=false; this._teamTrans=null; this._teamRenderStatic(rev); return; }
+      this._teamTrans = canTrans ? {from:fromLum, to:getLum(), start:performance.now(), dur:650} : null;
       this._teamRunning=true; this._lastTeam=0; this._teamRaf=requestAnimationFrame(this._teamAnim);
     };
 
@@ -896,7 +910,7 @@ class Component extends DCLogic {
     const bctx = buf.getContext('2d',{willReadFrequently:true});
     const RAMP = ' .·:-=+*oахв#%@';
     let dpr=1, cell=8, W=1, H=1, cols=1, rows=1, randoms=null;
-    let active=0, reveal=0, lumCache=null, lumKey='';
+    let active=0, reveal=0, lumCache=null, lumKey='', trans=null;
     let raf=0, lastT=0, running=false, visible=false, seen=false;
     const imgs={}; const mouse={x:-999,y:-999,on:false};
 
@@ -947,8 +961,8 @@ class Component extends DCLogic {
       }
       lumCache=lum; lumKey=key; return lum;
     };
-    const renderStatic = (prog, ts)=>{
-      const lum = getLum();
+    const renderStatic = (prog, ts, lumOverride, band)=>{
+      const lum = lumOverride || getLum();
       const t = ts==null ? (performance.now()) : ts;
       const NR = RAMP.length;
       ctx.clearRect(0,0,W,H);
@@ -964,7 +978,7 @@ class Component extends DCLogic {
         const thr=randoms[i];
         const shown = prog>=1 || thr<prog;
         if(!shown){
-          if(prog<=0 || thr-prog>0.10) continue;
+          if(prog<=0 || thr-prog>(band||0.10)) continue;
           const gi=Math.floor(Math.random()*NR); const ch=RAMP[gi];
           if(ch!==' '){ ctx.fillStyle='rgba(185,84,63,0.6)'; if(curFont!==baseFont){ctx.font=baseFont;curFont=baseFont;} ctx.fillText(ch, x*cell, y*cell); }
           continue;
@@ -993,19 +1007,31 @@ class Component extends DCLogic {
       }
     };
     const anim = (t)=>{
-      if(t - lastT < 33){ if(!self._calm && visible){ raf=requestAnimationFrame(anim); } return; }
+      if(t - lastT < 33){ if(!self._calm && (visible||trans)){ raf=requestAnimationFrame(anim); } return; }
       lastT = t;
-      renderStatic(reveal, t);
-      if(!self._calm && visible){ running=true; raf=requestAnimationFrame(anim); }
+      if(trans){
+        // decode switch: old photo crumbles into glyph-noise → new photo decodes back in
+        const p = (t - trans.start) / trans.dur;
+        if(p>=1){ trans=null; renderStatic(reveal, t); }
+        else if(p<0.5){ renderStatic((1-p/0.5)*reveal, t, trans.from, 0.28); }
+        else { renderStatic(((p-0.5)/0.5)*reveal, t, trans.to); }
+      } else {
+        renderStatic(reveal, t);
+      }
+      if(!self._calm && (visible||trans)){ running=true; raf=requestAnimationFrame(anim); }
       else { running=false; }
     };
     const switchTo = (idx)=>{
       idx = Math.max(0, Math.min(nameBtns.length-1, idx));
+      const prev = active;
+      const canTrans = !self._calm && seen && visible && reveal>=0.5 && idx!==prev;
+      const fromLum = canTrans ? getLum() : null;
       active = idx; lumKey='';
       if(opts.onActivate) opts.onActivate(nameBtns, idx);
       if(hintEl){ hintEl.style.opacity='1'; hintEl.textContent = opts.hintText ? opts.hintText(idx, nameBtns) : ('0'+(idx+1)); }
       cancelAnimationFrame(raf);
-      if(self._calm){ running=false; renderStatic(reveal); return; }
+      if(self._calm){ running=false; trans=null; renderStatic(reveal); return; }
+      trans = canTrans ? {from:fromLum, to:getLum(), start:performance.now(), dur:650} : null;
       running=true; lastT=0; raf=requestAnimationFrame(anim);
     };
     const onResize = ()=>{ setup(); renderStatic(reveal); };
