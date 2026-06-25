@@ -29,14 +29,14 @@
 <meta name="twitter:image" content="https://vvid.solutions/og-image.png">
 <script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"VVID","url":"https://vvid.solutions/","description":"Студия веб-инжиниринга и бизнес-автоматизации: маркетплейсы, парсинг, ETL, интеграции, кастомная разработка.","email":"info@vvid.dev","sameAs":["https://t.me/vvid"],"areaServed":"RU","knowsLanguage":["ru","en"],"slogan":"Автоматизируем то, что съедает вашу прибыль"},{"@context":"https://schema.org","@type":"WebSite","name":"VVID","url":"https://vvid.solutions/","inLanguage":"ru"},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Сколько стоит и почему вилки открытые?","acceptedAnswer":{"@type":"Answer","text":"Открытые цены — чтобы вы сразу понимали, на что рассчитывать, без «оставьте заявку, и мы скажем». Небольшие задачи — фиксированная цена, от 20 000 ₽. Крупные — почасово или на ежемесячной поддержке, 150–450 тыс ₽/мес. Прайс обычно прячут там, где он кусается, — у нас не так."}},{"@type":"Question","name":"Есть же SelSup и коробки за пару тысяч в месяц — зачем вы?","acceptedAnswer":{"@type":"Answer","text":"Коробка отлично делает то, что нужно всем, — и это удобно. Но у каждого бизнеса есть свои 20%, под которые её не подгонишь: своя схема дропшипа, нестандартные интеграции, парсинг и отчёты под вашу экономику. Вот это собираем мы."}},{"@type":"Question","name":"Как быстро отвечаете и кто ведёт проект?","acceptedAnswer":{"@type":"Answer","text":"Вы общаетесь напрямую с теми, кто делает проект, — без менеджеров-посредников. Пишите в Telegram @vvid, в рабочее время отвечаем меньше чем за 2 часа."}},{"@type":"Question","name":"Есть договор, юрлицо, гарантии?","acceptedAnswer":{"@type":"Answer","text":"Да. Официальный договор, юрлицо, NDA по запросу и гарантийная поддержка. Telegram — это просто быстрый канал связи, а не замена документам."}},{"@type":"Question","name":"Что такое revenue-share для маркетплейса?","acceptedAnswer":{"@type":"Answer","text":"Вместо фиксированной оплаты берём долю от прироста оборота, который принесла автоматизация. То есть мы зарабатываем, только когда растёте вы, — интересы совпадают."}},{"@type":"Question","name":"Работаете на русском и английском?","acceptedAnswer":{"@type":"Answer","text":"Да. На русском — маркетплейсы и парсинг для СНГ. На английском — data, автоматизация и SaaS для глобального рынка. Не дословный перевод, а нормальный язык под каждую аудиторию."}}]}]</script>
 <script src="./support.js"></script>
-<script>(function(){try{var m=(window.innerWidth<760)||(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches);if(!m){['https://unpkg.com/three@0.149.0/build/three.min.js','https://unpkg.com/lenis@1.1.14/dist/lenis.min.js'].forEach(function(u){var s=document.createElement('script');s.defer=true;s.src=u;document.head.appendChild(s);});}}catch(e){}})();</script>
+<script>(function(){try{var m=(window.innerWidth<760)||(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches);if(!m){['https://unpkg.com/lenis@1.1.14/dist/lenis.min.js'].forEach(function(u){var s=document.createElement('script');s.defer=true;s.src=u;document.head.appendChild(s);});}}catch(e){}})();</script>
 </head>
 <body>
 <x-dc>
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap&subset=cyrillic,latin" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=Unbounded:wght@600;700;800&display=swap&subset=cyrillic,latin" rel="stylesheet">
 <style>
   *{box-sizing:border-box}
   html{scroll-behavior:smooth;scroll-padding-top:84px}
@@ -44,6 +44,14 @@
   ::selection{background:#1b1812;color:#e4ded2}
   a{color:inherit;text-decoration:none}
   button{font-family:inherit}
+  :root{--font-display:'Unbounded','Golos Text','Helvetica Neue',sans-serif}
+  /* premium hero backdrop (CSS-only → runs on desktop AND mobile) */
+  .hero-mesh,.hero-grid,.hero-grain{position:absolute;inset:0;pointer-events:none}
+  .hero-mesh{inset:-25%;background:radial-gradient(38% 48% at 76% 32%,rgba(185,84,63,.55),transparent 60%),radial-gradient(44% 52% at 90% 70%,rgba(185,84,63,.26),transparent 62%),radial-gradient(58% 66% at 56% 54%,rgba(120,52,38,.34),transparent 70%),radial-gradient(70% 80% at 28% 28%,rgba(36,28,21,.55),transparent 75%),#13110c;filter:blur(22px);animation:heroMesh 24s ease-in-out infinite alternate;will-change:transform}
+  @keyframes heroMesh{0%{transform:translate3d(0,0,0) scale(1.05)}100%{transform:translate3d(-5%,-4%,0) scale(1.18)}}
+  .hero-grid{background:linear-gradient(rgba(228,222,210,.045) 1px,transparent 1px) 0 0/100% clamp(56px,6vw,90px),linear-gradient(90deg,rgba(228,222,210,.045) 1px,transparent 1px) 0 0/clamp(56px,6vw,90px) 100%;-webkit-mask-image:radial-gradient(125% 110% at 72% 38%,#000 8%,transparent 72%);mask-image:radial-gradient(125% 110% at 72% 38%,#000 8%,transparent 72%)}
+  .hero-grain{opacity:.06;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  @media (prefers-reduced-motion:reduce){.hero-mesh{animation:none}}
   @keyframes vMarq{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
   @keyframes vFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
   @keyframes vPulse{0%,100%{opacity:.4}50%{opacity:1}}
@@ -60,6 +68,16 @@
   [data-lang-sw] [data-l]{opacity:.4;transition:opacity .3s}
   [data-lang-sw]:hover [data-l]{opacity:.7}
   html[lang="ru"] [data-lang-sw] [data-l="ru"],html[lang="en"] [data-lang-sw] [data-l="en"]{opacity:1}
+  /* FAQ accordion polish */
+  [data-faq-list]{counter-reset:vfaq}
+  [data-faq-list] [data-acc-head]{counter-increment:vfaq}
+  [data-faq-list] [data-faq-n]{color:#8f877a}
+  [data-faq-list] [data-faq-n]::before{content:counter(vfaq,decimal-leading-zero)}
+  [data-faq-list] [data-faq-item]{transition:background .35s}
+  [data-faq-list] [data-faq-item]:hover{background:rgba(228,222,210,.025)}
+  [data-faq-list] [data-acc-head]:hover{padding-left:12px !important}
+  [data-faq-list] [data-acc-head]:hover [data-faq-q]{color:#fff}
+  [data-faq-list] [data-acc-head][aria-expanded="true"] [data-faq-q],[data-faq-list] [data-acc-head][aria-expanded="true"] [data-faq-n],[data-faq-list] [data-acc-head][aria-expanded="true"] [data-chev]{color:var(--acc,#b9543f)}
 </style>
 <script src="./image-slot.js"></script>
 </helmet>
@@ -103,23 +121,24 @@
 
   <!-- 01 HERO — minimal -->
   <section id="top" data-screen-label="01 Hero" data-hero="1" ref="{{ setHero }}" style="position:relative;min-height:100vh;display:flex;flex-direction:column;background:#13110c;color:#e4ded2;overflow:hidden">
-    <canvas data-hero-three="1" style="position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0"></canvas>
-    <div style="position:absolute;inset:0;pointer-events:none;z-index:1;background:linear-gradient(90deg,rgba(19,17,12,.96),rgba(19,17,12,.88) 40%,rgba(19,17,12,.5) 64%,rgba(19,17,12,0) 88%),linear-gradient(0deg,rgba(19,17,12,.5),rgba(19,17,12,0) 26%)"></div>
+    <div data-hero-bg="1" aria-hidden="true" style="position:absolute;inset:0;z-index:0;overflow:hidden"><div class="hero-mesh" data-anim="1"></div><div class="hero-grid"></div><div class="hero-grain"></div></div>
+    <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;z-index:1;background:linear-gradient(90deg,rgba(19,17,12,.62),rgba(19,17,12,.28) 46%,rgba(19,17,12,0) 72%),linear-gradient(0deg,rgba(19,17,12,.55),rgba(19,17,12,0) 30%)"></div>
     <div style="position:relative;z-index:2;flex:1;display:flex;align-items:center;width:100%;max-width:1100px;margin:0 auto;padding:120px 26px 40px">
       <div style="width:100%">
         <div style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:#8f877a;margin-bottom:clamp(30px,5vw,54px)">{{ t.heroEyebrow }}</div>
-        <h1 style="font-size:clamp(38px,6.2vw,84px);line-height:1.06;letter-spacing:-.035em;font-weight:600;margin:0;max-width:17ch;text-shadow:0 2px 38px rgba(19,17,12,.8),0 1px 2px rgba(19,17,12,.6)">{{ t.heroH1a }}<span style="color:var(--acc,#b9543f)">{{ t.heroH1b }}</span></h1>
+        <h1 style="font-size:clamp(38px,6.4vw,88px);line-height:1.04;letter-spacing:-.04em;font-weight:800;margin:0;max-width:16ch;text-shadow:0 2px 26px rgba(19,17,12,.45)">{{ t.heroH1a }}<span style="color:var(--acc,#b9543f)">{{ t.heroH1b }}</span></h1>
         <p style="margin:clamp(28px,4vw,44px) 0 0;max-width:40ch;font-size:clamp(16px,1.5vw,19px);line-height:1.55;color:#b6ad9e;text-wrap:pretty;text-shadow:0 1px 20px rgba(19,17,12,.85)">{{ t.heroSub }}</p>
-        <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:clamp(38px,5vw,56px)">
-          <a href="#work" data-magnetic="1" style="display:inline-flex;align-items:center;gap:10px;background:#e4ded2;color:#13110c;padding:15px 28px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600" style-hover="background:var(--acc,#b9543f);color:#fff">{{ t.heroCta1 }}</a>
-          <a href="#brief" data-magnetic="1" style="display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(228,222,210,.4);color:#e4ded2;padding:15px 28px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600" style-hover="border-color:#e4ded2">{{ t.ctaTelegram }}</a>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:clamp(34px,5vw,52px)">
+          <a href="#brief" data-magnetic="1" style="display:inline-flex;align-items:center;gap:10px;background:var(--acc,#b9543f);color:#fff;padding:16px 30px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:600" style-hover="background:#c66048">{{ t.heroCtaPrimary }}</a>
+          <a href="#work" data-magnetic="1" style="display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(228,222,210,.35);color:#e4ded2;padding:16px 28px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:600" style-hover="border-color:#e4ded2;background:rgba(228,222,210,.05)">{{ t.heroCta1 }}</a>
         </div>
+        <div style="margin-top:clamp(22px,3vw,30px);font-size:12px;letter-spacing:.03em;color:#9a9286;max-width:46ch;text-wrap:pretty">{{ t.heroProof }}</div>
       </div>
     </div>
     <div style="position:relative;z-index:2;display:flex;justify-content:center;padding:0 26px 30px">
-      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#6f685c">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#8f877a">
         <span>scroll</span>
-        <span style="width:1px;height:30px;background:linear-gradient(#6f685c,transparent)"></span>
+        <span style="width:1px;height:30px;background:linear-gradient(#8f877a,transparent)"></span>
       </div>
     </div>
   </section>
@@ -220,8 +239,8 @@
 
         <div style="position:relative">
           <canvas data-ascii-canvas="1" style="width:100%;height:clamp(340px,44vw,540px);display:block;background:#0b0906"></canvas>
-          <div style="position:absolute;top:14px;left:14px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#6f685c">{{ t.fig04a }}</div>
-          <div data-case-hint style="position:absolute;bottom:14px;left:14px;right:14px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#6f685c"></div>
+          <div style="position:absolute;top:14px;left:14px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#8f877a">{{ t.fig04a }}</div>
+          <div data-case-hint style="position:absolute;bottom:14px;left:14px;right:14px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#8f877a"></div>
         </div>
       </div>
 
@@ -274,13 +293,15 @@
           <div style="border-bottom:1px solid rgba(27,24,18,.22)">
             <button data-acc-head="1" onClick="{{ toggleAcc }}" aria-expanded="false" style="width:100%;display:flex;align-items:center;gap:20px;background:none;border:none;color:#1b1812;text-align:left;padding:clamp(24px,3vw,34px) 2px;cursor:pointer">
               <span style="font-size:12px;letter-spacing:.1em;color:var(--acc,#b9543f);flex:none;width:34px">{{ pr.n }}</span>
-              <span style="flex:1;font-size:clamp(20px,2.8vw,34px);line-height:1.05;letter-spacing:-.03em;font-weight:600">{{ pr.title }}</span>
+              <span style="flex:1;display:flex;flex-direction:column;gap:7px">
+                <span style="font-size:clamp(20px,2.8vw,34px);line-height:1.05;letter-spacing:-.03em;font-weight:600">{{ pr.title }}</span>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.03em;color:#8c8474;text-transform:lowercase">{{ pr.range }}</span>
+              </span>
               <span data-chev style="flex:none;width:16px;height:16px;position:relative;transition:transform .5s cubic-bezier(.16,1,.3,1)"><span style="position:absolute;top:7px;left:0;width:16px;height:1px;background:#1b1812"></span><span style="position:absolute;top:0;left:7px;width:1px;height:16px;background:#1b1812"></span></span>
             </button>
             <div data-acc-panel style="max-height:0;overflow:hidden;opacity:0;transition:max-height .6s cubic-bezier(.16,1,.3,1),opacity .4s">
               <div style="display:flex;flex-wrap:wrap;gap:48px;padding:0 2px 36px 56px">
                 <div style="flex:1;min-width:240px">
-                  <div style="font-size:12px;letter-spacing:.06em;color:var(--acc,#b9543f);margin-bottom:14px">{{ pr.range }}</div>
                   <p style="margin:0;font-size:16px;line-height:1.55;color:#5a5346;max-width:44ch;text-wrap:pretty">{{ pr.desc }}</p>
                 </div>
                 <div style="flex:1;min-width:240px;display:flex;flex-direction:column;gap:11px">
@@ -309,7 +330,7 @@
           <sc-for list="{{ directions }}" as="mb" hint-placeholder-count="3">
             <button data-team-name="1" data-idx="{{ mb.i }}" onClick="{{ setTeamActive }}" onMouseEnter="{{ setTeamActive }}" style="display:block;width:100%;text-align:left;background:none;border:none;border-top:1px solid rgba(228,222,210,.16);color:inherit;cursor:pointer;padding:clamp(14px,1.8vw,22px) 0;transition:padding-left .5s cubic-bezier(.16,1,.3,1)">
               <span style="display:flex;align-items:baseline;gap:14px">
-                <span style="font-size:11px;letter-spacing:.1em;color:#6f685c;flex:none" data-team-idx>0{{ mb.n }}</span>
+                <span style="font-size:11px;letter-spacing:.1em;color:#8f877a;flex:none" data-team-idx>0{{ mb.n }}</span>
                 <span data-team-word style="font-size:clamp(30px,5vw,72px);line-height:.96;letter-spacing:-.04em;font-weight:700;text-transform:uppercase;transition:color .4s,background .4s;padding:0 .06em">{{ mb.word }}</span>
               </span>
               <span style="display:flex;flex-wrap:wrap;gap:6px 16px;padding-left:34px;margin-top:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#8f877a"><span data-team-person>{{ mb.desc }}</span></span>
@@ -320,21 +341,22 @@
 
         <div style="position:relative">
           <canvas data-ascii-canvas="1" style="width:100%;height:clamp(340px,44vw,540px);display:block;background:#0b0906"></canvas>
-          <div style="position:absolute;top:14px;left:14px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#6f685c">{{ t.fig07a }}</div>
-          <div data-team-hint style="position:absolute;bottom:14px;left:14px;right:14px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#6f685c"></div>
+          <div style="position:absolute;top:14px;left:14px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#8f877a">{{ t.fig07a }}</div>
+          <div data-team-hint style="position:absolute;bottom:14px;left:14px;right:14px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#8f877a"></div>
         </div>
       </div>
 
       <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8f877a;margin-bottom:28px">{{ t.faqLabel }}</div>
-      <div data-reveal="1" style="border-top:1px solid rgba(228,222,210,.18);max-width:920px">
+      <div data-reveal="1" data-faq-list="1" style="border-top:1px solid rgba(228,222,210,.14);max-width:920px">
         <sc-for list="{{ faq }}" as="fq" hint-placeholder-count="5">
-          <div style="border-bottom:1px solid rgba(228,222,210,.18)">
-            <button data-acc-head="1" onClick="{{ toggleAcc }}" aria-expanded="false" style="width:100%;display:flex;align-items:center;gap:18px;background:none;border:none;color:#e4ded2;text-align:left;padding:24px 2px;cursor:pointer">
-              <span style="flex:1;font-size:clamp(16px,2vw,22px);line-height:1.2;letter-spacing:-.02em;font-weight:500">{{ fq.q }}</span>
-              <span data-chev style="flex:none;width:15px;height:15px;position:relative;transition:transform .5s cubic-bezier(.16,1,.3,1)"><span style="position:absolute;top:7px;left:0;width:15px;height:1px;background:#e4ded2"></span><span style="position:absolute;top:0;left:7px;width:1px;height:15px;background:#e4ded2"></span></span>
+          <div data-faq-item="1" style="border-bottom:1px solid rgba(228,222,210,.14)">
+            <button data-acc-head="1" onClick="{{ toggleAcc }}" aria-expanded="false" style="width:100%;display:flex;align-items:center;gap:clamp(14px,2vw,26px);background:none;border:none;color:#e4ded2;text-align:left;padding:clamp(22px,2.6vw,30px) 2px;cursor:pointer;transition:padding-left .4s cubic-bezier(.16,1,.3,1)">
+              <span data-faq-n style="flex:none;min-width:22px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;transition:color .4s"></span>
+              <span data-faq-q style="flex:1;font-size:clamp(16px,2vw,22px);line-height:1.25;letter-spacing:-.02em;font-weight:500;transition:color .4s">{{ fq.q }}</span>
+              <span data-chev style="flex:none;width:15px;height:15px;position:relative;transition:transform .5s cubic-bezier(.16,1,.3,1)"><span style="position:absolute;top:7px;left:0;width:15px;height:1px;background:currentColor"></span><span style="position:absolute;top:0;left:7px;width:1px;height:15px;background:currentColor"></span></span>
             </button>
             <div data-acc-panel style="max-height:0;overflow:hidden;opacity:0;transition:max-height .6s cubic-bezier(.16,1,.3,1),opacity .4s">
-              <p style="margin:0;padding:0 40px 26px 2px;font-size:15px;line-height:1.6;color:#b6ad9e;max-width:64ch;text-wrap:pretty">{{ fq.a }}</p>
+              <p style="margin:0;padding:2px clamp(20px,4vw,44px) 30px clamp(34px,5vw,48px);font-size:15px;line-height:1.6;color:#b6ad9e;max-width:62ch;text-wrap:pretty">{{ fq.a }}</p>
             </div>
           </div>
         </sc-for>
@@ -350,9 +372,13 @@
       <p data-reveal="1" style="margin:0 0 clamp(40px,6vw,64px);max-width:52ch;font-size:clamp(16px,1.8vw,20px);line-height:1.5;color:#5a5346;text-wrap:pretty">{{ t.briefP }}</p>
 
       <form onSubmit="{{ onSubmit }}" data-brief="1" data-reveal="1" style="display:grid;grid-template-columns:1fr 1fr;gap:0 48px">
+        <label style="display:flex;flex-direction:column;grid-column:1 / -1;border-bottom:1px solid rgba(27,24,18,.3);padding-bottom:6px;margin-bottom:30px">
+          <span style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8c8474;margin-bottom:8px">{{ t.formL3 }}</span>
+          <textarea rows="2" placeholder="{{ t.formPh3 }}" style="border:none;background:none;padding:8px 0;font-size:17px;color:#1b1812;outline:none;font-family:inherit;resize:vertical"></textarea>
+        </label>
         <label style="display:flex;flex-direction:column;border-bottom:1px solid rgba(27,24,18,.3);padding-bottom:6px;margin-bottom:30px">
-          <span style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8c8474;margin-bottom:8px">{{ t.formL1 }}</span>
-          <input type="text" placeholder="{{ t.formPh1 }}" style="border:none;background:none;padding:8px 0;font-size:17px;color:#1b1812;outline:none;font-family:inherit">
+          <span style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8c8474;margin-bottom:8px">{{ t.formL4 }}</span>
+          <input type="text" placeholder="{{ t.formPh4 }}" style="border:none;background:none;padding:8px 0;font-size:17px;color:#1b1812;outline:none;font-family:inherit">
         </label>
         <label style="display:flex;flex-direction:column;border-bottom:1px solid rgba(27,24,18,.3);padding-bottom:6px;margin-bottom:30px">
           <span style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8c8474;margin-bottom:8px">{{ t.formL2 }}</span>
@@ -365,12 +391,8 @@
           </select>
         </label>
         <label style="display:flex;flex-direction:column;grid-column:1 / -1;border-bottom:1px solid rgba(27,24,18,.3);padding-bottom:6px;margin-bottom:30px">
-          <span style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8c8474;margin-bottom:8px">{{ t.formL3 }}</span>
-          <textarea rows="2" placeholder="{{ t.formPh3 }}" style="border:none;background:none;padding:8px 0;font-size:17px;color:#1b1812;outline:none;font-family:inherit;resize:vertical"></textarea>
-        </label>
-        <label style="display:flex;flex-direction:column;border-bottom:1px solid rgba(27,24,18,.3);padding-bottom:6px;margin-bottom:30px">
-          <span style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8c8474;margin-bottom:8px">{{ t.formL4 }}</span>
-          <input type="text" placeholder="{{ t.formPh4 }}" style="border:none;background:none;padding:8px 0;font-size:17px;color:#1b1812;outline:none;font-family:inherit">
+          <span style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8c8474;margin-bottom:8px">{{ t.formL1 }}</span>
+          <input type="text" placeholder="{{ t.formPh1 }}" style="border:none;background:none;padding:8px 0;font-size:17px;color:#1b1812;outline:none;font-family:inherit">
         </label>
         <button type="submit" data-submit-btn="1" data-magnetic="1" style="align-self:start;background:#13110c;color:#e4ded2;border:none;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;cursor:pointer;padding:17px 30px;margin-top:4px" style-hover="background:var(--acc,#b9543f);color:#fff">{{ t.formSubmit }}</button>
       </form>
@@ -383,25 +405,25 @@
   <!-- FOOTER -->
   <footer style="position:relative;z-index:10;background:#13110c;color:#e4ded2;padding:clamp(70px,9vw,120px) 26px 40px;overflow:hidden">
     <div style="max-width:1320px;margin:0 auto">
-      <div data-speed="-1.4" data-pmax="120" style="font-weight:600;font-size:clamp(80px,22vw,300px);line-height:.78;letter-spacing:-.06em;margin-bottom:clamp(50px,7vw,90px);will-change:transform">vvid<span style="color:var(--acc,#b9543f)">.</span></div>
+      <div data-speed="-1.4" data-pmax="120" style="font-family:var(--font-display);font-weight:800;font-size:clamp(66px,19vw,250px);line-height:.82;letter-spacing:-.05em;margin-bottom:clamp(50px,7vw,90px);will-change:transform">vvid<span style="color:var(--acc,#b9543f)">.</span></div>
       <div style="display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;padding-bottom:50px;border-bottom:1px solid rgba(228,222,210,.14)">
         <p style="margin:0;max-width:380px;font-size:15px;line-height:1.5;color:#b6ad9e;text-wrap:pretty">{{ t.footDesc }}</p>
         <div style="display:flex;gap:60px;flex-wrap:wrap;font-size:13px">
           <div style="display:flex;flex-direction:column;gap:14px">
-            <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#6f685c;margin-bottom:2px">{{ t.footSite }}</div>
+            <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#8f877a;margin-bottom:2px">{{ t.footSite }}</div>
             <a href="#capabilities" style="color:#cfc7b9" style-hover="color:#e4ded2">{{ t.navServices }}</a>
             <a href="#work" style="color:#cfc7b9" style-hover="color:#e4ded2">{{ t.navCases }}</a>
             <a href="#pricing" style="color:#cfc7b9" style-hover="color:#e4ded2">{{ t.navPricing }}</a>
           </div>
           <div style="display:flex;flex-direction:column;gap:14px">
-            <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#6f685c;margin-bottom:2px">{{ t.footContact }}</div>
+            <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#8f877a;margin-bottom:2px">{{ t.footContact }}</div>
             <a href="#brief" style="color:#cfc7b9" style-hover="color:#e4ded2">telegram @vvid</a>
             <a href="#brief" style="color:#cfc7b9" style-hover="color:#e4ded2">info@vvid.dev</a>
             <span style="color:#8f877a">ru / en</span>
           </div>
         </div>
       </div>
-      <div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-top:24px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#6f685c">
+      <div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-top:24px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#8f877a">
         <span>{{ t.footLegal }}</span>
         <span>built for the last mile</span>
       </div>
@@ -1192,8 +1214,9 @@ class Component extends DCLogic {
     const head=e.currentTarget; const panel=head.nextElementSibling; if(!panel) return;
     const open = panel.style.maxHeight && panel.style.maxHeight!=='0px';
     const chev = head.querySelector('[data-chev]');
-    if(open){ panel.style.maxHeight='0px'; panel.style.opacity='0'; head.setAttribute('aria-expanded','false'); if(chev) chev.style.transform='rotate(0deg)'; }
-    else { panel.style.maxHeight=panel.scrollHeight+40+'px'; panel.style.opacity='1'; head.setAttribute('aria-expanded','true'); if(chev) chev.style.transform='rotate(45deg)'; }
+    const fq = head.querySelector('[data-faq-q]'); const fn = head.querySelector('[data-faq-n]'); const acc='var(--acc,#b9543f)';
+    if(open){ panel.style.maxHeight='0px'; panel.style.opacity='0'; head.setAttribute('aria-expanded','false'); if(chev){ chev.style.transform='rotate(0deg)'; chev.style.color=''; } if(fq) fq.style.color=''; if(fn) fn.style.color=''; }
+    else { panel.style.maxHeight=panel.scrollHeight+40+'px'; panel.style.opacity='1'; head.setAttribute('aria-expanded','true'); if(chev){ chev.style.transform='rotate(45deg)'; chev.style.color=acc; } if(fq) fq.style.color=acc; if(fn) fn.style.color=acc; }
   }
   openFirstAcc(){ const first=this.root.querySelector('#pricing [data-acc-head]'); if(first) setTimeout(()=>this.toggleAcc({currentTarget:first}),400); }
   onSubmit(e){ e.preventDefault(); const b=this.submitBtn; if(b){ b.textContent='бриф отправлен ✓'; b.style.background='#1b1812'; b.style.color='#e4ded2'; } }
@@ -1233,7 +1256,7 @@ class Component extends DCLogic {
         heroEyebrow:'автоматизация бизнеса и маркетплейсов',
         heroH1a:'автоматизируем то, что ', heroH1b:'съедает вашу прибыль',
         heroSub:'wb/ozon, парсинг, интеграции, разработка — с измеримым результатом.',
-        heroCta1:'смотреть кейсы →', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'web-инжиниринг',
+        heroCta1:'смотреть кейсы →', heroCtaPrimary:'написать — оценка за 2 часа', heroProof:'договор + юрлицо · ответ в telegram < 2 часов · показываем вживую', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'web-инжиниринг',
         marquee:'маркетплейс-автоматизация · парсинг · data-engineering · интеграции  —  кастомная разработка  —  без менеджеров-посредников  —  договор + юрлицо + nda  —  ответ < 2 часов  —  русский и английский  —  показываем, а не рассказываем  —  ',
         fig02:'fig.02 — манифест',
         manifH2:'меньше слов — больше цифр, реальные кейсы, открытый прайс, работающие продукты.',
@@ -1250,9 +1273,9 @@ class Component extends DCLogic {
         fig07:'fig.07 — направления', fig07a:'fig.07.a — ascii / системы', faqLabel:'faq — частые вопросы',
         fig08:'fig.08 — бриф', briefH2a:'запустим ваш проект ', briefRot:'сегодня',
         briefP:'опишите задачу парой строк — вернёмся с оценкой за 2 часа. никаких брифов на 10 страниц.',
-        formL1:'01 / чем занимается бизнес', formPh1:'напр. селлер wb, категория «дом»', formL2:'02 / бюджет',
+        formL1:'04 / о бизнесе · по желанию', formPh1:'напр. селлер wb, категория «дом»', formL2:'03 / бюджет · по желанию',
         formOpt1:'20 000 – 350 000 ₽ · точечно / no-code', formOpt2:'350 тыс – 1,3 млн ₽ · маркетплейс-автоматизация', formOpt3:'1,3 – 6 млн ₽ · кастомная разработка', formOpt4:'revenue-share · для селлера', formOpt5:'пока не знаю',
-        formL3:'03 / задача', formPh3:'что съедает время или прибыль прямо сейчас?', formL4:'04 / контакт', formPh4:'telegram @ или email',
+        formL3:'01 / задача', formPh3:'что съедает время или прибыль прямо сейчас?', formL4:'02 / контакт', formPh4:'telegram @ или email',
         formSubmit:'отправить бриф →', briefBadge1:'— договор + юрлицо', briefBadge2:'— nda по запросу', briefBadge3:'— ответ < 2 часов',
         footDesc:'студия инжиниринга и бизнес-автоматизации. строим то, чего не умеют коробки.',
         footSite:'сайт', footContact:'контакт', footLegal:'© 2026 vvid — студия инжиниринга и автоматизации'
@@ -1263,7 +1286,7 @@ class Component extends DCLogic {
         heroEyebrow:'business & marketplace automation',
         heroH1a:'we automate what ', heroH1b:'eats your profit',
         heroSub:'wb/ozon, parsing, integrations, development — with measurable results.',
-        heroCta1:'see our work →', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'web-engineering',
+        heroCta1:'see our work →', heroCtaPrimary:'message us — estimate in 2h', heroProof:'contract + legal entity · telegram reply < 2 hours · we show, live', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'web-engineering',
         marquee:'marketplace automation · parsing · data engineering · integrations  —  custom development  —  no middlemen  —  contract + legal entity + nda  —  reply < 2 hours  —  russian & english  —  we show, not tell  —  ',
         fig02:'fig.02 — manifesto',
         manifH2:'fewer words — more numbers, real cases, open pricing, products that work.',
@@ -1280,9 +1303,9 @@ class Component extends DCLogic {
         fig07:'fig.07 — directions', fig07a:'fig.07.a — ascii / systems', faqLabel:'faq — common questions',
         fig08:'fig.08 — brief', briefH2a:'let’s launch your project ', briefRot:'today',
         briefP:'describe your task in a couple of lines — we’ll come back with an estimate within 2 hours. no 10-page briefs.',
-        formL1:'01 / what your business does', formPh1:'e.g. wb seller, “home” category', formL2:'02 / budget',
+        formL1:'04 / about the business · optional', formPh1:'e.g. wb seller, “home” category', formL2:'03 / budget · optional',
         formOpt1:'$250–4k · point / no-code', formOpt2:'$4k–15k · marketplace automation', formOpt3:'$15k–70k · custom development', formOpt4:'revenue-share · for sellers', formOpt5:'not sure yet',
-        formL3:'03 / task', formPh3:'what’s eating your time or profit right now?', formL4:'04 / contact', formPh4:'telegram @ or email',
+        formL3:'01 / task', formPh3:'what’s eating your time or profit right now?', formL4:'02 / contact', formPh4:'telegram @ or email',
         formSubmit:'send brief →', briefBadge1:'— contract + legal entity', briefBadge2:'— nda on request', briefBadge3:'— reply < 2 hours',
         footDesc:'engineering & business-automation studio. we build what boxed tools can’t.',
         footSite:'site', footContact:'contact', footLegal:'© 2026 vvid — engineering & automation studio'
