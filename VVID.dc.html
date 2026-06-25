@@ -100,18 +100,20 @@
 
   <!-- HEADER -->
   <header data-adaptive-hdr="1" style="position:fixed;top:0;left:0;right:0;z-index:8000;display:flex;align-items:center;justify-content:space-between;height:62px;padding:0 26px;color:#e4ded2">
-    <!-- frosted bar: true progressive blur. Each full-height layer carries a different
-         blur radius AND a soft gradient mask that fades it in/out over an overlapping
-         band. The bands chain top->bottom so the blur ramps smoothly from heavy at the
-         top to fully sharp at the bottom with no visible step edges. (A mask on a
-         backdrop-filter element works fine in current Chrome/Safari.) -->
-    <div aria-hidden="true" style="position:absolute;top:0;left:0;right:0;height:100px;z-index:0;pointer-events:none">
-      <div style="position:absolute;inset:0;backdrop-filter:blur(24px) saturate(1.1);-webkit-backdrop-filter:blur(24px) saturate(1.1);-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 10%,transparent 25%);mask-image:linear-gradient(to bottom,#000 0%,#000 10%,transparent 25%)"></div>
-      <div style="position:absolute;inset:0;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);-webkit-mask-image:linear-gradient(to bottom,transparent 5%,#000 18%,#000 30%,transparent 45%);mask-image:linear-gradient(to bottom,transparent 5%,#000 18%,#000 30%,transparent 45%)"></div>
-      <div style="position:absolute;inset:0;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);-webkit-mask-image:linear-gradient(to bottom,transparent 20%,#000 32%,#000 45%,transparent 58%);mask-image:linear-gradient(to bottom,transparent 20%,#000 32%,#000 45%,transparent 58%)"></div>
-      <div style="position:absolute;inset:0;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);-webkit-mask-image:linear-gradient(to bottom,transparent 33%,#000 46%,#000 58%,transparent 72%);mask-image:linear-gradient(to bottom,transparent 33%,#000 46%,#000 58%,transparent 72%)"></div>
-      <div style="position:absolute;inset:0;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);-webkit-mask-image:linear-gradient(to bottom,transparent 46%,#000 60%,#000 72%,transparent 85%);mask-image:linear-gradient(to bottom,transparent 46%,#000 60%,#000 72%,transparent 85%)"></div>
-      <div style="position:absolute;inset:0;backdrop-filter:blur(1.5px);-webkit-backdrop-filter:blur(1.5px);-webkit-mask-image:linear-gradient(to bottom,transparent 60%,#000 74%,#000 88%,transparent 100%);mask-image:linear-gradient(to bottom,transparent 60%,#000 74%,#000 88%,transparent 100%)"></div>
+    <!-- frosted bar: true progressive blur. 8 full-height layers, each a different blur
+         radius masked to an evenly-stepped 12.5% band. Consecutive bands cross-fade over
+         a matching 12.5% overlap, so coverage stays uniform (no jump) while the blur
+         ramps geometrically from heavy at the top to ~0 at the bottom over a tall 130px
+         span — a long, seam-free dissolve. (mask + backdrop-filter works in Chrome/Safari.) -->
+    <div aria-hidden="true" style="position:absolute;top:0;left:0;right:0;height:130px;z-index:0;pointer-events:none">
+      <div style="position:absolute;inset:0;backdrop-filter:blur(20px) saturate(1.08);-webkit-backdrop-filter:blur(20px) saturate(1.08);-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 12.5%,transparent 25%);mask-image:linear-gradient(to bottom,#000 0%,#000 12.5%,transparent 25%)"></div>
+      <div style="position:absolute;inset:0;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 12.5%,#000 25%,transparent 37.5%);mask-image:linear-gradient(to bottom,transparent 0%,#000 12.5%,#000 25%,transparent 37.5%)"></div>
+      <div style="position:absolute;inset:0;backdrop-filter:blur(9.5px);-webkit-backdrop-filter:blur(9.5px);-webkit-mask-image:linear-gradient(to bottom,transparent 12.5%,#000 25%,#000 37.5%,transparent 50%);mask-image:linear-gradient(to bottom,transparent 12.5%,#000 25%,#000 37.5%,transparent 50%)"></div>
+      <div style="position:absolute;inset:0;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);-webkit-mask-image:linear-gradient(to bottom,transparent 25%,#000 37.5%,#000 50%,transparent 62.5%);mask-image:linear-gradient(to bottom,transparent 25%,#000 37.5%,#000 50%,transparent 62.5%)"></div>
+      <div style="position:absolute;inset:0;backdrop-filter:blur(3.8px);-webkit-backdrop-filter:blur(3.8px);-webkit-mask-image:linear-gradient(to bottom,transparent 37.5%,#000 50%,#000 62.5%,transparent 75%);mask-image:linear-gradient(to bottom,transparent 37.5%,#000 50%,#000 62.5%,transparent 75%)"></div>
+      <div style="position:absolute;inset:0;backdrop-filter:blur(2.2px);-webkit-backdrop-filter:blur(2.2px);-webkit-mask-image:linear-gradient(to bottom,transparent 50%,#000 62.5%,#000 75%,transparent 87.5%);mask-image:linear-gradient(to bottom,transparent 50%,#000 62.5%,#000 75%,transparent 87.5%)"></div>
+      <div style="position:absolute;inset:0;backdrop-filter:blur(1.2px);-webkit-backdrop-filter:blur(1.2px);-webkit-mask-image:linear-gradient(to bottom,transparent 62.5%,#000 75%,#000 87.5%,transparent 100%);mask-image:linear-gradient(to bottom,transparent 62.5%,#000 75%,#000 87.5%,transparent 100%)"></div>
+      <div style="position:absolute;inset:0;backdrop-filter:blur(0.5px);-webkit-backdrop-filter:blur(0.5px);-webkit-mask-image:linear-gradient(to bottom,transparent 75%,#000 87.5%,#000 100%);mask-image:linear-gradient(to bottom,transparent 75%,#000 87.5%,#000 100%)"></div>
     </div>
     <a href="#top" style="position:relative;z-index:1;display:flex;align-items:baseline;gap:12px;color:inherit">
       <span style="font-weight:700;font-size:20px;letter-spacing:-.05em">vvid</span>
