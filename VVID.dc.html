@@ -203,7 +203,7 @@
   </div>
 
   <!-- HEADER -->
-  <header data-adaptive-hdr="1" style="position:fixed;top:0;left:0;right:0;z-index:8000;display:flex;align-items:center;justify-content:space-between;height:62px;padding:0 26px;color:#e4ded2">
+  <header data-adaptive-hdr="1" style="position:fixed;top:0;left:0;right:0;z-index:8000;height:62px;color:#e4ded2">
     <!-- frosted bar: true progressive blur. 8 full-height layers, each a different blur
          radius masked to an evenly-stepped 12.5% band. Consecutive bands cross-fade over
          a matching 12.5% overlap, so coverage stays uniform (no jump) while the blur
@@ -219,6 +219,7 @@
       <div style="position:absolute;inset:0;backdrop-filter:blur(1.2px);-webkit-backdrop-filter:blur(1.2px);-webkit-mask-image:linear-gradient(to bottom,transparent 62.5%,#000 75%,#000 87.5%,transparent 100%);mask-image:linear-gradient(to bottom,transparent 62.5%,#000 75%,#000 87.5%,transparent 100%)"></div>
       <div style="position:absolute;inset:0;backdrop-filter:blur(0.5px);-webkit-backdrop-filter:blur(0.5px);-webkit-mask-image:linear-gradient(to bottom,transparent 75%,#000 87.5%,#000 100%);mask-image:linear-gradient(to bottom,transparent 75%,#000 87.5%,#000 100%)"></div>
     </div>
+    <div style="position:relative;z-index:1;height:100%;max-width:1320px;margin:0 auto;padding:0 26px;display:flex;align-items:center;justify-content:space-between;gap:24px">
     <a href="#top" style="position:relative;z-index:1;display:flex;align-items:center;gap:12px;color:inherit">
       <span style="font-weight:700;font-size:20px;letter-spacing:-.05em;line-height:1">vvid</span>
       <span data-hdr-tag="1" style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:inherit;opacity:.55;line-height:1;padding-top:1px">{{ t.hdrTag }}</span>
@@ -234,6 +235,7 @@
       <button data-lang-sw="1" onClick="{{ toggleLang }}" aria-label="ru / en" style="display:flex;align-items:center;gap:5px;background:none;border:none;color:inherit;font-family:inherit;font-size:11px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer"><span data-l="ru">ru</span><span style="opacity:.35">/</span><span data-l="en">en</span></button>
       <a href="#brief" data-magnetic="1" style="display:inline-block;border:1px solid currentColor;padding:8px 15px;letter-spacing:.16em" style-hover="background:#e4ded2;color:#13110c">{{ t.navBrief }}</a>
     </nav>
+    </div>
   </header>
 
   <!-- 01 HERO — minimal -->
@@ -1347,8 +1349,6 @@ class Component extends DCLogic {
   }
   initWordSwap(){
     clearInterval(this._wi); clearInterval(this._wi2);
-    const words = (this._lang==='en') ? ['today','in weeks','no middlemen','with a guarantee'] : ['сегодня','за пару недель','без менеджеров','с гарантией'];
-    this._wi2 = this.makeSwap(this.rotEl2, words);
   }
 
   /* ---------- PRELOADER ---------- */
@@ -1431,7 +1431,7 @@ class Component extends DCLogic {
         fig06:'fig.06 — прайс', pricingH2:'прозрачный прайс. без «по запросу», где можно назвать цифру.',
         pricingFootnote:'гарантия 50 дней: после запуска поддержка бесплатно. дальше — по договорённости.',
         fig07:'fig.07 — направления', fig07a:'fig.07.a — ascii / системы', faqLabel:'faq — частые вопросы',
-        fig08:'fig.08 — бриф', briefH2a:'запустим ваш проект ', briefRot:'сегодня',
+        fig08:'fig.08 — бриф', briefH2a:'запустим ваш проект ', briefRot:'с гарантией',
         briefP:'опишите задачу парой строк — вернёмся с оценкой за 2 часа. никаких брифов на 10 страниц.',
         formL1:'04 / о бизнесе · по желанию', formPh1:'напр. опт / розница / услуги', formL2:'03 / бюджет · по желанию',
         formOpt1:'20 000 – 350 000 ₽ · лендинг / бот', formOpt2:'350 тыс – 1,3 млн ₽ · сайт / интернет-магазин', formOpt3:'1,3 – 6 млн ₽ · приложение / автоматизация', formOpt4:'долгое сотрудничество / поддержка', formOpt5:'пока не знаю',
@@ -1463,7 +1463,7 @@ class Component extends DCLogic {
         fig06:'fig.06 — pricing', pricingH2:'transparent pricing. no “on request” where we can name a number.',
         pricingFootnote:'50-day guarantee: free support after launch. beyond that — by agreement.',
         fig07:'fig.07 — directions', fig07a:'fig.07.a — ascii / systems', faqLabel:'faq — common questions',
-        fig08:'fig.08 — brief', briefH2a:'let’s launch your project ', briefRot:'today',
+        fig08:'fig.08 — brief', briefH2a:'let’s launch your project ', briefRot:'with a guarantee',
         briefP:'describe your task in a couple of lines — we’ll come back with an estimate within 2 hours. no 10-page briefs.',
         formL1:'04 / about the business · optional', formPh1:'e.g. wholesale / retail / services', formL2:'03 / budget · optional',
         formOpt1:'$250–4k · landing / bot', formOpt2:'$4k–15k · website / online store', formOpt3:'$15k–70k · app / automation', formOpt4:'long-term / retainer', formOpt5:'not sure yet',
