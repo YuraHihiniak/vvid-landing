@@ -119,7 +119,6 @@
   /* ===== hero — bold flood (BBDO-style) in brand terracotta ===== */
   #top.hero-bbdo{background:#b9543f;color:#fff}
   .hero-flood{position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(125% 120% at 80% 4%,#c9694e 0%,#b9543f 46%,#a4442d 100%)}
-  .hero-bgimg{position:absolute;inset:0;z-index:0;pointer-events:none;background:url(./hero/hero-bg.jpg) center/cover no-repeat;opacity:.6;mix-blend-mode:multiply;-webkit-mask-image:linear-gradient(to right,transparent 4%,#000 60%);mask-image:linear-gradient(to right,transparent 4%,#000 60%)}
   .hero-flood-grain{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.13;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
   .hero-vig{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(150% 92% at 50% 110%,rgba(86,28,16,.55),transparent 55%)}
   .hero-top{display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.72)}
@@ -261,7 +260,6 @@
   <!-- 01 HERO — minimal -->
   <section id="top" class="hero-bbdo" data-screen-label="01 Hero" data-hero="1" ref="{{ setHero }}" style="position:relative;min-height:100vh;display:flex;flex-direction:column;overflow:hidden">
     <div class="hero-flood" aria-hidden="true"></div>
-    <div class="hero-bgimg" aria-hidden="true"></div>
     <div class="hero-flood-grain" aria-hidden="true"></div>
     <div class="hero-vig" aria-hidden="true"></div>
     <div style="position:relative;z-index:2;flex:1;display:flex;flex-direction:column;width:100%;max-width:1320px;margin:0 auto;padding:clamp(86px,10vh,118px) 26px clamp(18px,3vh,30px)">
