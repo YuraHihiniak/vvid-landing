@@ -160,10 +160,8 @@
   .hero-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:clamp(26px,5vw,72px);flex-wrap:wrap;margin-top:clamp(18px,2.6vh,38px)}
   .hero-act{display:flex;flex-direction:column;align-items:flex-start}
   .hero-cta-row{margin-top:0}
-  .hero-cta-min{display:inline-flex;align-items:center;gap:11px;color:#fff;font-size:clamp(14px,1.15vw,16px);letter-spacing:.02em;font-weight:300;padding:13px 20px;transition:opacity .35s}
-  .hero-cta-min .hp-arr{color:#fff;transition:transform .45s cubic-bezier(.16,1,.3,1)}
-  .hero-cta-min:hover{opacity:.78}
-  .hero-cta-min:hover .hp-arr{transform:translateX(5px)}
+  .hero-cta-min{display:inline-flex;align-items:center;gap:11px;color:rgba(255,255,255,.86);font-size:clamp(13px,1vw,15px);letter-spacing:.05em;font-weight:300;padding:13px 18px;transition:opacity .35s,color .35s}
+  .hero-cta-min:hover{opacity:1;color:#fff}
   .hero-scrollcue{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:clamp(10px,1.6vh,20px);font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.62)}
   .hero-scrollcue .bar{width:1px;height:30px;background:linear-gradient(rgba(255,255,255,.6),transparent)}
   @media (max-width:820px){ .hero-foot{flex-direction:column;align-items:flex-start;gap:26px} .hero-lead p{max-width:54ch} }
@@ -186,6 +184,11 @@
   @media (hover:hover) and (pointer:fine){
     .float-tg:hover{background:var(--acc,#b9543f);color:#fff;box-shadow:0 22px 50px -12px rgba(185,84,63,.55)}
     .float-tg:hover svg{transform:translateX(4px);color:#fff}
+  }
+  @media (max-width:600px){
+    .float-tg{padding:0 !important;gap:0 !important;width:54px;height:54px;border-radius:50% !important;justify-content:center !important;bottom:18px !important;right:18px !important}
+    .float-tg span{display:none}
+    .float-tg svg{width:22px;height:22px}
   }
 </style>
 <script src="./image-slot.js"></script>
@@ -263,7 +266,7 @@
         <span class="kl"><span style="animation-delay:.28s">{{ t.heroBig4 }}</span></span>
       </h1>
       <div class="hero-cta-row" data-reveal="1" data-delay="120" style="justify-content:center;margin-bottom:clamp(16px,2.4vh,28px)">
-        <a class="hero-cta-min" href="#brief" data-magnetic="1">{{ t.heroCtaPrimary }} <span class="hp-arr">→</span></a>
+        <a class="hero-cta-min" href="#brief" data-magnetic="1">{{ t.heroCtaPrimary }}</a>
       </div>
       <div class="hero-scrollcue"><span>{{ t.scroll }}</span><span class="bar"></span></div>
     </div>
@@ -1423,7 +1426,7 @@ class Component extends DCLogic {
         heroBig1:'мы VVID', heroBig2:'мы делаем', heroBig3:'большие', heroBig4:'вещи', heroBigAria:'мы VVID, мы делаем большие вещи',
         heroLead2:'внедряем в уже работающий бизнес — автоматизируем процессы и усиливаем то, что приносит деньги.',
         heroSub:'веб- и мобильные приложения, сайты и интернет-магазины, телеграм-боты, дизайн — внедряем в готовый бизнес.',
-        heroCta1:'смотреть кейсы →', heroCtaPrimary:'написать — оценка за 2 часа', heroProof:'договор + юрлицо · ответ в telegram < 2 часов · показываем вживую', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'web-инжиниринг',
+        heroCta1:'смотреть кейсы →', heroCtaPrimary:'обсудить проект', heroProof:'договор + юрлицо · ответ в telegram < 2 часов · показываем вживую', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'web-инжиниринг',
         marquee:'веб- и мобильные приложения · интернет-магазины и сайты · лендинги · телеграм-боты · автоматизация бизнеса · ui/ux дизайн · дизайн-системы · frontend и backend · cms · интеграции · ',
         fig02:'fig.02 — манифест',
         manifH2:'меньше слов — больше цифр, реальные кейсы, открытый прайс, работающие продукты.',
@@ -1455,7 +1458,7 @@ class Component extends DCLogic {
         heroBig1:'we are VVID', heroBig2:'we do', heroBig3:'big', heroBig4:'things', heroBigAria:'we are VVID, we do big things',
         heroLead2:'built into your running business — we automate processes and amplify what already makes money.',
         heroSub:'web & mobile apps, websites and online stores, telegram bots, design — built into your existing business.',
-        heroCta1:'see our work →', heroCtaPrimary:'message us — estimate in 2h', heroProof:'contract + legal entity · telegram reply < 2 hours · we show, live', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'web-engineering',
+        heroCta1:'see our work →', heroCtaPrimary:'discuss your project', heroProof:'contract + legal entity · telegram reply < 2 hours · we show, live', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'web-engineering',
         marquee:'web & mobile apps · online stores & websites · landing pages · telegram bots · business automation · ui/ux design · design systems · frontend & backend · cms · integrations · ',
         fig02:'fig.02 — manifesto',
         manifH2:'fewer words — more numbers, real cases, open pricing, products that work.',
@@ -1483,14 +1486,14 @@ class Component extends DCLogic {
     const D = {
       principles:{
         ru:[
-          {delay:0,   k:'01 / результат',     v:'каждый проект меряем в часах, обороте и снятых издержках — не в словах.'},
-          {delay:100, k:'02 / выход в prod', v:'демо — это ещё не продукт. берём надёжность, интеграции и выход в prod.'},
-          {delay:200, k:'03 / прозрачность',  v:'открытые вилки, прямой контакт с инженерами.'}
+          {delay:0,   k:'01 / результат',     v:'считаем успех в ваших метриках — скорость, выручка и сэкономленные часы.'},
+          {delay:100, k:'02 / выход в prod', v:'доводим до боевого запуска: надёжность, интеграции и работа под нагрузкой.'},
+          {delay:200, k:'03 / прозрачность',  v:'открытые цены и прямой контакт с инженерами на каждом этапе.'}
         ],
         en:[
-          {delay:0,   k:'01 / results',       v:'we measure every project in hours, revenue and costs removed — not in words.'},
-          {delay:100, k:'02 / ship to prod',  v:'a demo isn’t a product yet. we own reliability, integrations and shipping to prod.'},
-          {delay:200, k:'03 / transparency',  v:'open price ranges, direct contact with the engineers.'}
+          {delay:0,   k:'01 / results',       v:'we count success in your metrics — speed, revenue and hours saved.'},
+          {delay:100, k:'02 / ship to prod',  v:'we take it all the way to launch: reliability, integrations and real load.'},
+          {delay:200, k:'03 / transparency',  v:'open prices and direct contact with the engineers, every step.'}
         ]
       },
       capabilities:{
