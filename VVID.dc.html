@@ -245,16 +245,15 @@
     <div class="hero-flood-grain" aria-hidden="true"></div>
     <div class="hero-vig" aria-hidden="true"></div>
     <div style="position:relative;z-index:2;flex:1;display:flex;flex-direction:column;width:100%;max-width:1320px;margin:0 auto;padding:clamp(86px,10vh,118px) 26px clamp(18px,3vh,30px)">
-      <h1 class="hero-kin" aria-label="{{ t.heroBigAria }}" style="flex:1;display:flex;flex-direction:column;justify-content:center;margin:0">
-        <span class="kl"><span style="animation-delay:.04s">{{ t.heroBig1 }}</span></span>
-        <span class="kl"><span style="animation-delay:.12s">{{ t.heroBig2 }}</span></span>
-        <span class="kl"><span style="animation-delay:.20s">{{ t.heroBig3 }}</span></span>
-        <span class="kl"><span style="animation-delay:.28s">{{ t.heroBig4 }}</span></span>
-      </h1>
-      <div class="hero-foot">
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:clamp(30px,5vh,56px)">
+        <h1 class="hero-kin" aria-label="{{ t.heroBigAria }}" style="margin:0">
+          <span class="kl"><span style="animation-delay:.04s">{{ t.heroBig1 }}</span></span>
+          <span class="kl"><span style="animation-delay:.12s">{{ t.heroBig2 }}</span></span>
+          <span class="kl"><span style="animation-delay:.20s">{{ t.heroBig3 }}</span></span>
+          <span class="kl"><span style="animation-delay:.28s">{{ t.heroBig4 }}</span></span>
+        </h1>
         <div class="hero-cta-row" data-reveal="1" data-delay="120">
           <a class="hero-pill" href="#brief" data-magnetic="1">{{ t.heroCtaPrimary }} <span class="hp-arr">→</span></a>
-          <a class="hero-textlink" href="#work">{{ t.heroCta1 }}</a>
         </div>
       </div>
       <div class="hero-scrollcue"><span>{{ t.scroll }}</span><span class="bar"></span></div>
@@ -1434,7 +1433,7 @@ class Component extends DCLogic {
         fig08:'fig.08 — бриф', briefH2a:'запустим ваш проект ', briefRot:'с гарантией',
         briefP:'опишите задачу парой строк — вернёмся с оценкой за 2 часа. никаких брифов на 10 страниц.',
         formL1:'04 / о бизнесе · по желанию', formPh1:'напр. опт / розница / услуги', formL2:'03 / бюджет · по желанию',
-        formOpt1:'20 000 – 350 000 ₽ · лендинг / бот', formOpt2:'350 тыс – 1,3 млн ₽ · сайт / интернет-магазин', formOpt3:'1,3 – 6 млн ₽ · приложение / автоматизация', formOpt4:'долгое сотрудничество / поддержка', formOpt5:'пока не знаю',
+        formOpt1:'20 000 – 140 000 ₽ · лендинг / бот', formOpt2:'140 000 – 700 000 ₽ · сайт / интернет-магазин', formOpt3:'от 700 000 ₽ · приложение / автоматизация', formOpt4:'долгое сотрудничество / поддержка', formOpt5:'пока не знаю',
         formL3:'01 / задача', formPh3:'что съедает время или прибыль прямо сейчас?', formL4:'02 / контакт', formPh4:'telegram @ или email',
         formSubmit:'отправить бриф →', briefBadge1:'— договор + юрлицо', briefBadge2:'— nda по запросу', briefBadge3:'— ответ < 2 часов',
         footDesc:'студия разработки и автоматизации. приложения, сайты и боты, которые улучшают готовый бизнес.',
@@ -1466,7 +1465,7 @@ class Component extends DCLogic {
         fig08:'fig.08 — brief', briefH2a:'let’s launch your project ', briefRot:'with a guarantee',
         briefP:'describe your task in a couple of lines — we’ll come back with an estimate within 2 hours. no 10-page briefs.',
         formL1:'04 / about the business · optional', formPh1:'e.g. wholesale / retail / services', formL2:'03 / budget · optional',
-        formOpt1:'$250–4k · landing / bot', formOpt2:'$4k–15k · website / online store', formOpt3:'$15k–70k · app / automation', formOpt4:'long-term / retainer', formOpt5:'not sure yet',
+        formOpt1:'$250 – $1,500 · landing / bot', formOpt2:'$1,500 – $8,000 · website / online store', formOpt3:'from $8,000 · app / automation', formOpt4:'long-term / retainer', formOpt5:'not sure yet',
         formL3:'01 / task', formPh3:'what’s eating your time or profit right now?', formL4:'02 / contact', formPh4:'telegram @ or email',
         formSubmit:'send brief →', briefBadge1:'— contract + legal entity', briefBadge2:'— nda on request', briefBadge3:'— reply < 2 hours',
         footDesc:'development & automation studio. apps, websites and bots that improve your existing business.',
