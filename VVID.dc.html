@@ -510,17 +510,18 @@
         <span aria-hidden="true" style="position:absolute;top:0;left:0;width:18px;height:18px;border-top:2px solid var(--acc,#b9543f);border-left:2px solid var(--acc,#b9543f)"></span>
         <span aria-hidden="true" style="position:absolute;bottom:0;right:0;width:18px;height:18px;border-bottom:2px solid var(--acc,#b9543f);border-right:2px solid var(--acc,#b9543f)"></span>
         <form onSubmit="{{ onSubmit }}" data-brief="1" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,2.6vw,34px) clamp(28px,4vw,56px)">
+          <input name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none">
           <label class="vf" style="grid-column:1 / -1">
             <span class="vf-lab">{{ t.formL3 }}</span>
-            <textarea class="vf-in" rows="2" placeholder="{{ t.formPh3 }}"></textarea>
+            <textarea class="vf-in" name="task" rows="2" placeholder="{{ t.formPh3 }}"></textarea>
           </label>
           <label class="vf">
             <span class="vf-lab">{{ t.formL4 }}</span>
-            <input class="vf-in" type="text" placeholder="{{ t.formPh4 }}">
+            <input class="vf-in" name="contact" type="text" placeholder="{{ t.formPh4 }}">
           </label>
           <label class="vf">
             <span class="vf-lab">{{ t.formL2 }}</span>
-            <select class="vf-in">
+            <select class="vf-in" name="budget">
               <option>{{ t.formOpt1 }}</option>
               <option>{{ t.formOpt2 }}</option>
               <option>{{ t.formOpt3 }}</option>
@@ -530,7 +531,7 @@
           </label>
           <label class="vf" style="grid-column:1 / -1">
             <span class="vf-lab">{{ t.formL1 }}</span>
-            <input class="vf-in" type="text" placeholder="{{ t.formPh1 }}">
+            <input class="vf-in" name="about" type="text" placeholder="{{ t.formPh1 }}">
           </label>
           <div style="grid-column:1 / -1;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-top:clamp(10px,1.6vw,18px)">
             <button type="submit" data-submit-btn="1" class="vf-submit" data-magnetic="1">{{ t.formSubmit }} <span class="vf-arr">→</span></button>
@@ -1425,7 +1426,28 @@ class Component extends DCLogic {
     else { panel.style.maxHeight=panel.scrollHeight+40+'px'; panel.style.opacity='1'; head.setAttribute('aria-expanded','true'); if(chev){ chev.style.transform='rotate(45deg)'; chev.style.color=acc; } if(fq) fq.style.color=acc; if(fn) fn.style.color=acc; }
   }
   openFirstAcc(){ const first=this.root.querySelector('#pricing [data-acc-head]'); if(first) setTimeout(()=>this.toggleAcc({currentTarget:first}),400); }
-  onSubmit(e){ e.preventDefault(); const b=this.submitBtn; if(b){ b.textContent='бриф отправлен ✓'; b.style.background='#1b1812'; b.style.color='#e4ded2'; } }
+  async onSubmit(e){
+    e.preventDefault();
+    const f=e.target, b=this.submitBtn;
+    if(!f || this._briefSent) return;
+    const en=(this._lang==='en');
+    const val=(n)=>{ const el=f.querySelector('[name="'+n+'"]'); return el ? (el.value||'').trim() : ''; };
+    const task=val('task'), contact=val('contact');
+    if(!task || !contact){ if(b) b.textContent=en?'fill task + contact →':'заполните задачу и контакт →'; return; }
+    this._briefSent=true;
+    if(b){ b.disabled=true; b.style.opacity='.7'; b.textContent=en?'sending…':'отправляем…'; }
+    try{
+      const r=await fetch('/api/brief',{ method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({ task, contact, budget:val('budget'), about:val('about'), hp:val('hp') }) });
+      const data=await r.json().catch(()=>({}));
+      if(!r.ok || !data.ok) throw new Error('rejected');
+      if(b){ b.disabled=true; b.style.opacity='1'; b.style.background='#1b1812'; b.style.color='#e4ded2';
+        b.textContent=(en?'brief sent':'бриф отправлен')+(data.ticket?(' · '+data.ticket):' ✓'); }
+    }catch(err){
+      this._briefSent=false;
+      if(b){ b.disabled=false; b.style.opacity='1'; b.textContent=en?'error — write @vvid →':'ошибка — напишите @vvid →'; }
+    }
+  }
 
   /* ---------- CALM MODE ---------- */
   setCalm(on){
