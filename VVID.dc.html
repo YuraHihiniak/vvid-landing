@@ -417,8 +417,9 @@
   </section>
 
   <!-- 06 PRICING -->
-  <section id="pricing" data-screen-label="06 Pricing" style="position:relative;z-index:10;background:#e4ded2;color:#1b1812;padding:clamp(90px,13vw,180px) 26px">
-    <div style="max-width:1320px;margin:0 auto">
+  <section id="pricing" data-screen-label="06 Pricing" style="position:relative;z-index:10;background:#e4ded2;color:#1b1812;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
+    <div data-speed="6" data-pmax="150" style="position:absolute;top:1vw;left:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(27,24,18,.04);pointer-events:none;user-select:none">06</div>
+    <div style="max-width:1320px;margin:0 auto;position:relative">
       <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8c8474;margin-bottom:24px">{{ t.fig06 }}</div>
       <h2 data-kinetic="1" data-i18n="pricingH2" style="font-size:clamp(28px,4.6vw,64px);line-height:1.02;letter-spacing:-.035em;font-weight:600;margin:0 0 clamp(50px,7vw,80px);max-width:18ch">{{ t.pricingH2 }}</h2>
       <div data-reveal="1" style="border-top:1px solid rgba(27,24,18,.22)">
@@ -592,7 +593,22 @@ class Component extends DCLogic {
     try{ localStorage.setItem('vvid-lang', lng); }catch(e){}
     try{ document.documentElement.lang = lng; }catch(e){}
     this.forceUpdate();
-    setTimeout(()=>{ this.refreshKinetic(); this.initWordSwap(); }, 30);
+    setTimeout(()=>{ this.refreshKinetic(); this.initWordSwap(); this.typografNbsp(); }, 40);
+  }
+  /* ---------- RU typography: hang short prepositions/conjunctions (non-breaking space) ---------- */
+  hangPrep(s){
+    if(!s) return s;
+    const re = /(^|[\s >«(„])((?:[а-яё]{1,2})|для|что|как|или|при|под|над|без|про|чем|это|так|чтобы|если) (?=[а-яёa-z0-9«])/gi;
+    const NB = String.fromCharCode(160); let prev;
+    do{ prev = s; s = s.replace(re, '$1$2'+NB); } while(s !== prev);
+    return s;
+  }
+  typografNbsp(){
+    const root = this.root; if(!root) return;
+    const re = /(^|[\s >«(„])((?:[а-яё]{1,2})|для|что|как|или|при|под|над|без|про|чем|это|так|чтобы|если) (?=[а-яёa-z0-9«])/gi;
+    let node; const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null); const nodes = [];
+    while(node = w.nextNode()){ const p = node.parentNode; if(!p) continue; const tg = p.nodeName; if(tg==='SCRIPT'||tg==='STYLE'||tg==='TEXTAREA') continue; if(/[а-яё]/i.test(node.nodeValue)) nodes.push(node); }
+    nodes.forEach(n=>{ let t = n.nodeValue, prev; do{ prev = t; t = t.replace(re, '$1$2 '); } while(t !== prev); if(t !== n.nodeValue) n.nodeValue = t; });
   }
   refreshKinetic(){
     const t = this._t || {};
@@ -644,6 +660,7 @@ class Component extends DCLogic {
     this.initWordSwap();
     this.openFirstAcc();
     if(reduce) this.setCalm(true);
+    setTimeout(()=>{ try{ this.typografNbsp(); }catch(e){} }, 160);
   }
 
   /* ---------- THREE.JS LIQUID-METAL HERO (full 3D · gated · throttled · calm/reduced-aware) ---------- */
@@ -789,7 +806,7 @@ class Component extends DCLogic {
     this._kinetic = [];
     for(const h of heads){
       if(h._kdone) continue; h._kdone=true;
-      const text=(h.textContent||'').trim(); const words=text.split(/\s+/);
+      const text=(h.textContent||'').trim(); const words=this.hangPrep(text).split(/\x20+/);
       h.textContent=''; h.style.display='block';
       const inners=[];
       words.forEach((w,i)=>{
