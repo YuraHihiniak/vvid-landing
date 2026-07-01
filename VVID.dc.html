@@ -34,6 +34,8 @@
 <script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"VVID","url":"https://vvid.solutions/","description":"Студия разработки и автоматизации: веб- и мобильные приложения, сайты и интернет-магазины, телеграм-боты, дизайн.","email":"info@vvid.dev","sameAs":["https://t.me/vvid"],"areaServed":[{"@type":"Country","name":"Россия"},{"@type":"Country","name":"Беларусь"},{"@type":"Country","name":"Казахстан"}],"knowsLanguage":["ru","en"],"knowsAbout":["веб-разработка","мобильные приложения","телеграм-боты","автоматизация бизнеса","интернет-магазины","UI/UX дизайн"],"priceRange":"от 20 000 ₽","slogan":"Разработка приложений, сайтов и автоматизация бизнеса"},{"@context":"https://schema.org","@type":"WebSite","name":"VVID","url":"https://vvid.solutions/","inLanguage":"ru"},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Сколько стоит и почему цены открытые?","acceptedAnswer":{"@type":"Answer","text":"Открытые цены — чтобы вы сразу понимали бюджет, без «оставьте заявку, и мы скажем». Лендинг — от 30 000 ₽, телеграм-бот — от 20 000 ₽, интернет-магазин — от 140 000 ₽, приложение — от 700 000 ₽. Поддержка — по договорённости. Прайс обычно прячут там, где он кусается, — у нас не так."}},{"@type":"Question","name":"Зачем заказывать разработку — есть же конструкторы и шаблоны?","acceptedAnswer":{"@type":"Answer","text":"Конструктор отлично подходит для типового сайта — и это удобно. Но когда нужна своя логика, внутренняя система, нестандартные интеграции или процесс под ваш бизнес, шаблон упирается в потолок. Вот это и делаем мы — под вашу задачу."}},{"@type":"Question","name":"Как быстро отвечаете и кто ведёт проект?","acceptedAnswer":{"@type":"Answer","text":"Вы общаетесь напрямую с теми, кто делает проект, — без менеджеров-посредников. Пишите в Telegram @vvid, в рабочее время отвечаем меньше чем за 2 часа."}},{"@type":"Question","name":"Есть договор, юрлицо, гарантии?","acceptedAnswer":{"@type":"Answer","text":"Да. Официальный договор, юрлицо, NDA по запросу. Гарантия 50 дней — после запуска поддержка бесплатно. Telegram — просто быстрый канал связи, а не замена документам."}},{"@type":"Question","name":"Работаете с готовым бизнесом или только с нуля?","acceptedAnswer":{"@type":"Answer","text":"И так, и так. Чаще приходят с уже работающим бизнесом — нужно автоматизировать процессы, доработать или улучшить то, что есть. Аккуратно внедряемся в существующее, не ломая рабочее."}},{"@type":"Question","name":"Работаете на русском и английском?","acceptedAnswer":{"@type":"Answer","text":"Да. Делаем проекты на русском и английском — сайт, приложение или бот можем запустить сразу на двух языках."}}]}]</script>
 <script src="./support.js"></script>
 <script>(function(){try{var m=(window.innerWidth<760)||(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches);if(!m){['https://unpkg.com/lenis@1.1.14/dist/lenis.min.js'].forEach(function(u){var s=document.createElement('script');s.defer=true;s.src=u;document.head.appendChild(s);});}}catch(e){}})();</script>
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.161.0/build/three.module.min.js","three/addons/":"https://unpkg.com/three@0.161.0/examples/jsm/"}}</script>
+<script>(function(){try{var m=(window.innerWidth<760)||(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches);if(m||window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;var s=document.createElement('script');s.type='module';s.textContent="import * as THREE from 'three';import { AsciiEffect } from 'three/addons/effects/AsciiEffect.js';window.THREE=THREE;window.AsciiEffect=AsciiEffect;window.dispatchEvent(new Event('three-ready'));";document.head.appendChild(s);}catch(e){}})();</script>
 </head>
 <body>
 <x-dc>
@@ -356,7 +358,7 @@
         </div>
 
         <div style="position:relative">
-          <canvas data-ascii-canvas="1" style="width:100%;height:clamp(340px,44vw,540px);display:block;background:#0b0906"></canvas>
+          <canvas data-ascii-canvas="1" style="width:100%;height:clamp(340px,44vw,540px);display:block"></canvas>
           <div style="position:absolute;top:14px;left:14px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#8f877a">{{ t.fig04a }}</div>
           <div data-case-hint style="position:absolute;bottom:14px;left:14px;right:14px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#8f877a"></div>
         </div>
@@ -459,7 +461,7 @@
         </div>
 
         <div style="position:relative">
-          <canvas data-ascii-canvas="1" style="width:100%;height:clamp(340px,44vw,540px);display:block;background:#0b0906"></canvas>
+          <canvas data-ascii-canvas="1" style="width:100%;height:clamp(340px,44vw,540px);display:block"></canvas>
           <div style="position:absolute;top:14px;left:14px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#8f877a">{{ t.fig07a }}</div>
           <div data-team-hint style="position:absolute;bottom:14px;left:14px;right:14px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#8f877a"></div>
         </div>
@@ -637,6 +639,7 @@ class Component extends DCLogic {
     (this._asciiPanels||[]).forEach(p=>p.destroy());
     window.removeEventListener('scroll', this._onScroll);
     this.destroySmoothScroll();
+    try{ if(this._a3d) this._a3d.forEach(t=>{ if(t._mo) t._mo.disconnect(); t.destroy(); }); }catch(e){}
   }
   boot(){
     const root = this.root || document.querySelector('[data-vvid-root]') || document;
@@ -658,6 +661,7 @@ class Component extends DCLogic {
     this.initHeroLetters();
     this.initAsciiTeam();
     this.initAsciiCases();
+    this.initAscii3D();
     this.initMagnetic();
     this.initFloatCTA();
     this.initWordSwap();
@@ -949,8 +953,9 @@ class Component extends DCLogic {
         if(prox>0.5){ ctx.fillStyle = '#fff'; }
         else if(spark>0.992 || prox>0.15){ ctx.fillStyle='rgba(185,84,63,0.92)'; }
         else { ctx.fillStyle = l>0.66 ? '#e4ded2' : (l>0.4 ? 'rgba(214,206,191,0.88)' : 'rgba(143,135,122,0.72)'); }
-        const off = prox>0.02 ? prox*cell*0.55 : 0;
-        ctx.fillText(ch, x*cell-off, y*cell-off);
+        let ox=0, oy=0;
+        if(prox>0.02){ const ddx=px-mx, ddy=py-my, dist=Math.sqrt(ddx*ddx+ddy*ddy)||1, push=prox*cell*0.95; ox=(ddx/dist)*push; oy=(ddy/dist)*push; }
+        ctx.fillText(ch, x*cell+ox, y*cell+oy);
       }
     };
 
@@ -1001,47 +1006,37 @@ class Component extends DCLogic {
       const w=240, h=300, c=document.createElement('canvas'); c.width=w; c.height=h;
       const g=c.getContext('2d'); const TAU=Math.PI*2;
       g.fillStyle='#0b0906'; g.fillRect(0,0,w,h); g.lineCap='round'; g.lineJoin='round';
-      const R=(a,b)=>a+Math.random()*(b-a);
-      if(kind==='flow'){
-        // автоматизация — пайплайн узлов со стрелками
-        [0.26,0.5,0.74].forEach((ly,li)=>{
-          const y=h*ly, n=4+(li%2);
-          g.strokeStyle='rgba(150,140,124,0.55)'; g.lineWidth=3;
-          g.beginPath(); g.moveTo(w*0.1,y); g.lineTo(w*0.9,y); g.stroke();
-          for(let k=0;k<n;k++){
-            const x=w*(0.14+0.72*k/(n-1));
-            if(k<n-1){ const xm=w*(0.14+0.72*(k+0.5)/(n-1)); g.strokeStyle='rgba(205,195,176,0.85)'; g.lineWidth=2.5;
-              g.beginPath(); g.moveTo(xm-5,y-5); g.lineTo(xm+4,y); g.lineTo(xm-5,y+5); g.stroke(); }
-            g.beginPath(); g.arc(x,y,7,0,TAU); g.fillStyle='#d8d0c0'; g.fill();
-            g.beginPath(); g.arc(x,y,11,0,TAU); g.strokeStyle='rgba(185,84,63,0.7)'; g.lineWidth=2; g.stroke();
-          }
-        });
-      } else if(kind==='grid'){
-        // данные — сетка ячеек / скан строки (датасет, парсинг)
-        const cols=8, rows=12, pad=w*0.1, gw=(w-pad*2)/cols, gh=(h-pad*2)/rows;
-        for(let yy=0;yy<rows;yy++) for(let xx=0;xx<cols;xx++){
-          const v=Math.random(), x=pad+xx*gw, y=pad+yy*gh;
-          g.fillStyle='rgba(216,208,192,'+(0.08+v*0.6).toFixed(3)+')'; g.fillRect(x+1,y+1,gw-2,gh-2);
-        }
-        const sy=pad+gh*Math.round(rows*0.42); g.fillStyle='rgba(255,250,240,0.9)'; g.fillRect(pad,sy,w-pad*2,gh);
-        g.strokeStyle='rgba(120,112,98,0.4)'; g.lineWidth=1;
-        for(let xx=0;xx<=cols;xx++){ g.beginPath(); g.moveTo(pad+xx*gw,pad); g.lineTo(pad+xx*gw,h-pad); g.stroke(); }
+      const cx=w/2, cy=h/2;
+      if(kind==='code'){
+        // Разработка — </> крупный однозначный глиф
+        g.strokeStyle='#e4ded2'; g.lineWidth=15;
+        g.beginPath(); g.moveTo(cx-34,cy-58); g.lineTo(cx-80,cy); g.lineTo(cx-34,cy+58); g.stroke();
+        g.beginPath(); g.moveTo(cx+34,cy-58); g.lineTo(cx+80,cy); g.lineTo(cx+34,cy+58); g.stroke();
+        g.strokeStyle='#c66048'; g.lineWidth=13;
+        g.beginPath(); g.moveTo(cx+15,cy-74); g.lineTo(cx-15,cy+74); g.stroke();
+      } else if(kind==='cycle'){
+        // Автоматизация — замкнутый цикл/петля с двумя наконечниками стрелок
+        g.strokeStyle='#e4ded2'; g.lineWidth=17;
+        g.beginPath(); g.arc(cx,cy,68,0.35*Math.PI,1.85*Math.PI); g.stroke();
+        g.strokeStyle='#c66048'; g.lineWidth=17;
+        g.beginPath(); g.arc(cx,cy,68,1.35*Math.PI,2.85*Math.PI); g.stroke();
+        const a1=1.85*Math.PI, x1=cx+68*Math.cos(a1), y1=cy+68*Math.sin(a1);
+        g.fillStyle='#e4ded2'; g.beginPath(); g.moveTo(x1,y1); g.lineTo(x1-20,y1-9); g.lineTo(x1-7,y1+20); g.closePath(); g.fill();
+        const a2=2.85*Math.PI, x2=cx+68*Math.cos(a2), y2=cy+68*Math.sin(a2);
+        g.fillStyle='#c66048'; g.beginPath(); g.moveTo(x2,y2); g.lineTo(x2+20,y2+9); g.lineTo(x2+7,y2-20); g.closePath(); g.fill();
       } else {
-        // продукт — каркас-схема системы / узлы-сеть
-        const nodes=[]; const N=9;
-        for(let k=0;k<N;k++) nodes.push({x:R(w*0.16,w*0.84), y:R(h*0.14,h*0.86)});
-        g.strokeStyle='rgba(150,140,124,0.5)'; g.lineWidth=2;
-        for(let k=0;k<N;k++){ const a=nodes[k], b=nodes[(k+1)%N], d=nodes[(k+3)%N];
-          g.beginPath(); g.moveTo(a.x,a.y); g.lineTo(b.x,b.y); g.stroke();
-          g.beginPath(); g.moveTo(a.x,a.y); g.lineTo(d.x,d.y); g.stroke(); }
-        nodes.forEach((nd,k)=>{ const r=(k%3===0)?9:6;
-          g.fillStyle=(k%3===0)?'#d8d0c0':'#9a9080'; g.beginPath(); g.arc(nd.x,nd.y,r,0,TAU); g.fill();
-          if(k%3===0){ g.strokeStyle='rgba(185,84,63,0.7)'; g.lineWidth=2; g.beginPath(); g.arc(nd.x,nd.y,r+4,0,TAU); g.stroke(); }
-        });
+        // Дизайн — перо поверх рамки-артборда с угловыми засечками
+        g.strokeStyle='#e4ded2'; g.lineWidth=6; g.strokeRect(cx-72,cy-92,144,184);
+        g.lineWidth=11;
+        [[cx-72,cy-92,26,0],[cx-72,cy-92,0,26],[cx+72,cy+92,-26,0],[cx+72,cy+92,0,-26]].forEach(([x,y,dx,dy])=>{
+          g.beginPath(); g.moveTo(x,y); g.lineTo(x+dx,y+dy); g.stroke(); });
+        g.fillStyle='#c66048';
+        g.beginPath(); g.moveTo(cx-48,cy+60); g.lineTo(cx+42,cy-72); g.lineTo(cx+58,cy-56); g.lineTo(cx-32,cy+76); g.closePath(); g.fill();
+        g.fillStyle='#e4ded2'; g.beginPath(); g.arc(cx-48,cy+60,8,0,TAU); g.fill();
       }
       return c;
     };
-    const kinds=['flow','grid','network'];
+    const kinds=['code','cycle','pen'];
     for(let i=0;i<this.teamNameBtns.length;i++) this._teamImgs[i]=motif(kinds[i%kinds.length]);
 
     // auto-cycle through directions; pause on hover, calm mode or hidden tab
@@ -1075,43 +1070,44 @@ class Component extends DCLogic {
     const w=240, h=300, c=document.createElement('canvas'); c.width=w; c.height=h;
     const g=c.getContext('2d'); const TAU=Math.PI*2;
     g.fillStyle='#0b0906'; g.fillRect(0,0,w,h); g.lineCap='round'; g.lineJoin='round';
-    const R=(a,b)=>a+Math.random()*(b-a);
-    if(kind==='bridge'){
-      // авто-дропшип 1688 → WB: источники слева → трансформация → грид маркетплейса справа
-      const sx=w*0.15, srcY=[h*0.30,h*0.5,h*0.70], mx=w*0.5, my=h*0.5;
-      srcY.forEach(y=>{ g.strokeStyle='rgba(205,195,176,0.8)'; g.lineWidth=2;
-        g.beginPath(); g.moveTo(sx+11,y); g.lineTo(mx-15,my+(y-my)*0.22); g.stroke(); });
-      srcY.forEach(y=>{ g.fillStyle='#d8d0c0'; g.beginPath(); g.arc(sx,y,7,0,TAU); g.fill();
-        g.strokeStyle='rgba(150,140,124,0.55)'; g.lineWidth=2; g.beginPath(); g.arc(sx,y,11,0,TAU); g.stroke(); });
-      g.fillStyle='#e8e0d0'; g.beginPath(); g.arc(mx,my,12,0,TAU); g.fill();
-      g.strokeStyle='rgba(185,84,63,0.78)'; g.lineWidth=2.5; g.beginPath(); g.arc(mx,my,17,0,TAU); g.stroke();
-      const gx=w*0.66, gw=w*0.26, gy=h*0.2, gh=h*0.6, cc=3, rr=4, cwd=gw/cc, chh=gh/rr;
-      g.strokeStyle='rgba(205,195,176,0.85)'; g.lineWidth=2.5; g.beginPath(); g.moveTo(mx+17,my); g.lineTo(gx-6,my); g.stroke();
-      g.beginPath(); g.moveTo(gx-12,my-5); g.lineTo(gx-3,my); g.lineTo(gx-12,my+5); g.stroke();
-      for(let r2=0;r2<rr;r2++) for(let c2=0;c2<cc;c2++){ const v=Math.random();
-        g.fillStyle='rgba(216,208,192,'+(0.12+v*0.55).toFixed(3)+')'; g.fillRect(gx+c2*cwd+1,gy+r2*chh+1,cwd-2,chh-2); }
-    } else if(kind==='converge'){
-      // etl: множество входных потоков сходятся в воронку → один отчёт справа
-      const fx=w*0.56, fy=h*0.5, n=7;
-      for(let k=0;k<n;k++){ const y=h*(0.14+0.72*k/(n-1));
-        g.strokeStyle='rgba(150,140,124,'+(0.38+0.32*Math.random()).toFixed(3)+')'; g.lineWidth=2;
-        g.beginPath(); g.moveTo(w*0.1,y); g.lineTo(fx,fy); g.stroke();
-        g.fillStyle='#cfc7b6'; g.beginPath(); g.arc(w*0.1,y,3.5,0,TAU); g.fill(); }
-      g.fillStyle='#e8e0d0'; g.beginPath(); g.arc(fx,fy,11,0,TAU); g.fill();
-      g.strokeStyle='rgba(185,84,63,0.78)'; g.lineWidth=2.5; g.beginPath(); g.arc(fx,fy,16,0,TAU); g.stroke();
-      const bx=w*0.7, bw=w*0.2, by=h*0.26, bh=h*0.48, bars=5, bgap=bh/bars;
-      g.strokeStyle='rgba(205,195,176,0.85)'; g.lineWidth=2.5; g.beginPath(); g.moveTo(fx+16,fy); g.lineTo(bx-4,fy); g.stroke();
-      for(let k=0;k<bars;k++){ const y=by+k*bgap+2, ln=bw*(0.4+0.6*Math.random());
-        g.fillStyle='rgba(216,208,192,0.7)'; g.fillRect(bx,y,ln,bgap-4); }
-    } else { // scanner — парсер цен/остатков: плотная матрица + бегущая строка + дельта-ячейки
-      const cc=9, rr=13, pad=w*0.08, gw=(w-pad*2)/cc, gh=(h-pad*2)/rr;
-      for(let yy=0;yy<rr;yy++) for(let xx=0;xx<cc;xx++){ const v=Math.random();
-        g.fillStyle='rgba(216,208,192,'+(0.07+v*0.5).toFixed(3)+')'; g.fillRect(pad+xx*gw+1,pad+yy*gh+1,gw-2,gh-2); }
-      const sy=pad+gh*Math.round(rr*0.46); g.fillStyle='rgba(255,250,240,0.92)'; g.fillRect(pad,sy,w-pad*2,gh);
-      for(let k=0;k<4;k++){ const xx=Math.floor(Math.random()*cc), yy=Math.floor(Math.random()*rr);
-        g.fillStyle='rgba(185,84,63,0.8)'; g.fillRect(pad+xx*gw+1,pad+yy*gh+1,gw-2,gh-2); }
-      g.strokeStyle='rgba(120,112,98,0.35)'; g.lineWidth=1;
-      for(let xx=0;xx<=cc;xx++){ g.beginPath(); g.moveTo(pad+xx*gw,pad); g.lineTo(pad+xx*gw,h-pad); g.stroke(); }
+    const cx=w/2, cy=h/2;
+    const rr=(x,y,ww,hh,r)=>{ g.beginPath(); g.moveTo(x+r,y); g.arcTo(x+ww,y,x+ww,y+hh,r); g.arcTo(x+ww,y+hh,x,y+hh,r); g.arcTo(x,y+hh,x,y,r); g.arcTo(x,y,x+ww,y,r); g.closePath(); };
+    if(kind==='ping'){
+      // ВМЕСТО — телефон + пинг события/нетворкинга: крупный, однозначный силуэт
+      const pw=104, ph=190, px=cx-pw/2-16, py=cy-ph/2+8;
+      g.fillStyle='#e4ded2'; rr(px,py,pw,ph,20); g.fill();
+      g.fillStyle='#0b0906'; rr(px+10,py+16,pw-20,ph-48,8); g.fill();
+      g.fillStyle='#c66048'; g.beginPath(); g.arc(px+pw/2,py+ph-18,6,0,TAU); g.fill();
+      const px0=px+pw*0.78, py0=py+ph*0.28;
+      [24,42,60].forEach((r2,i)=>{ g.strokeStyle='rgba(198,96,72,'+(0.9-i*0.24).toFixed(2)+')'; g.lineWidth=5; g.beginPath(); g.arc(px0,py0,r2,0,TAU); g.stroke(); });
+      g.fillStyle='#e4ded2'; g.beginPath(); g.arc(px0,py0,8,0,TAU); g.fill();
+    } else if(kind==='lamp'){
+      // Центр мебели и света — торшер: сплошной абажур + свет + стойка
+      g.fillStyle='#e4ded2'; g.beginPath(); g.moveTo(cx-32,cy-104); g.lineTo(cx+32,cy-104); g.lineTo(cx+66,cy-8); g.lineTo(cx-66,cy-8); g.closePath(); g.fill();
+      g.fillStyle='rgba(198,96,72,0.92)'; g.beginPath(); g.arc(cx,cy+2,22,0,TAU); g.fill();
+      g.strokeStyle='#cfc7b6'; g.lineWidth=8; g.beginPath(); g.moveTo(cx,cy+18); g.lineTo(cx,cy+112); g.stroke();
+      g.fillStyle='#cfc7b6'; rr(cx-50,cy+112,100,16,8); g.fill();
+    } else if(kind==='card'){
+      // Vitrina — карточка товара для маркетплейса: рамка + фото-плейсхолдер + цена
+      const cw=156, ch=200, cxx=cx-cw/2, cyy=cy-ch/2;
+      g.fillStyle='#e4ded2'; rr(cxx,cyy,cw,ch,16); g.fill();
+      g.fillStyle='#0b0906'; rr(cxx+16,cyy+16,cw-32,ch*0.5,10); g.fill();
+      g.fillStyle='rgba(198,96,72,0.92)'; g.beginPath(); g.moveTo(cxx+34,cyy+ch*0.42); g.lineTo(cxx+64,cyy+ch*0.20); g.lineTo(cxx+98,cyy+ch*0.42); g.closePath(); g.fill();
+      g.fillStyle='#0b0906'; g.beginPath(); g.arc(cxx+cw-48,cyy+38,10,0,TAU); g.fill();
+      g.fillStyle='rgba(11,9,6,0.88)'; g.fillRect(cxx+16,cyy+ch*0.60,cw-32,13); g.fillRect(cxx+16,cyy+ch*0.60+24,cw*0.5,13);
+      g.fillStyle='#c66048'; rr(cxx+16,cyy+ch-42,68,26,7); g.fill();
+    } else {
+      // 1kik «Компьютеры и кофе» — монитор + чашка: два ясных силуэта рядом
+      const mw=134, mh=98, mx=cx-mw/2-26, my=cy-mh/2-14;
+      g.fillStyle='#e4ded2'; rr(mx,my,mw,mh,12); g.fill();
+      g.fillStyle='#0b0906'; rr(mx+11,my+11,mw-22,mh-22,5); g.fill();
+      g.fillStyle='#cfc7b6'; g.fillRect(mx+mw/2-9,my+mh,18,20); g.fillRect(mx+mw/2-36,my+mh+20,72,10);
+      const cx2=mx+mw+40, cy2=my+mh-6;
+      g.fillStyle='#c66048'; rr(cx2-26,cy2-32,52,42,9); g.fill();
+      g.strokeStyle='#c66048'; g.lineWidth=8; g.beginPath(); g.arc(cx2+28,cy2-12,15,-0.9,0.9); g.stroke();
+      g.strokeStyle='rgba(228,222,210,0.9)'; g.lineWidth=4;
+      g.beginPath(); g.moveTo(cx2-13,cy2-44); g.quadraticCurveTo(cx2-6,cy2-56,cx2-15,cy2-64); g.stroke();
+      g.beginPath(); g.moveTo(cx2+5,cy2-44); g.quadraticCurveTo(cx2+12,cy2-56,cx2+3,cy2-64); g.stroke();
     }
     return c;
   }
@@ -1222,8 +1218,9 @@ class Component extends DCLogic {
         if(prox>0.5){ ctx.fillStyle = '#fff'; }
         else if(spark>0.992 || prox>0.15){ ctx.fillStyle='rgba(185,84,63,0.92)'; }
         else { ctx.fillStyle = l>0.66 ? '#e4ded2' : (l>0.4 ? 'rgba(214,206,191,0.88)' : 'rgba(143,135,122,0.72)'); }
-        const off = prox>0.02 ? prox*cell*0.55 : 0;
-        ctx.fillText(ch, x*cell-off, y*cell-off);
+        let ox=0, oy=0;
+        if(prox>0.02){ const ddx=px-mx, ddy=py-my, dist=Math.sqrt(ddx*ddx+ddy*ddy)||1, push=prox*cell*0.95; ox=(ddx/dist)*push; oy=(ddy/dist)*push; }
+        ctx.fillText(ch, x*cell+ox, y*cell+oy);
       }
     };
     const anim = (t)=>{
@@ -1294,12 +1291,207 @@ class Component extends DCLogic {
     };
   }
 
+  /* ---------- THREE.JS 3D-ASCII ICONS (toon-shaded, per-case/direction signature shapes+animation) ---------- */
+  buildAscii3DIcons(THREE, matCream, matDark, matTerra, matGlow){
+    function roundedRectShape(w,h,r){
+      const s = new THREE.Shape(); const x=-w/2, y=-h/2;
+      s.moveTo(x+r,y); s.lineTo(x+w-r,y); s.quadraticCurveTo(x+w,y,x+w,y+r);
+      s.lineTo(x+w,y+h-r); s.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+      s.lineTo(x+r,y+h); s.quadraticCurveTo(x,y+h,x,y+h-r);
+      s.lineTo(x,y+r); s.quadraticCurveTo(x,y,x+r,y); return s;
+    }
+    function triangleShape(w,h){ const s=new THREE.Shape(); s.moveTo(-w/2,-h/2); s.lineTo(w/2,-h/2); s.lineTo(0,h/2); s.lineTo(-w/2,-h/2); return s; }
+    function strokeMesh(length, thickness, depth, material){ const geo=new THREE.BoxGeometry(length,thickness,depth); geo.translate(length/2,0,0); return new THREE.Mesh(geo, material); }
+    const build = {
+      ping(){ // ВМЕСТО — телефон + пинг события/нетворкинга
+        const g = new THREE.Group();
+        const phoneGeo = new THREE.ExtrudeGeometry(roundedRectShape(1.35,2.35,0.32), {depth:0.22,bevelEnabled:true,bevelThickness:0.02,bevelSize:0.02,bevelSegments:4,curveSegments:12}); phoneGeo.center();
+        g.add(new THREE.Mesh(phoneGeo, matCream));
+        const screenGeo = new THREE.ExtrudeGeometry(roundedRectShape(1.13,1.92,0.16), {depth:0.06,bevelEnabled:false,curveSegments:10}); screenGeo.center();
+        const screen = new THREE.Mesh(screenGeo, matDark); screen.position.set(0,0.14,0.13); g.add(screen);
+        const homeGeo = new THREE.CylinderGeometry(0.045,0.045,0.05,20); homeGeo.rotateX(Math.PI/2);
+        const home = new THREE.Mesh(homeGeo, matTerra); home.position.set(0,-0.98,0.16); g.add(home);
+        const rings=[]; for(let i=0;i<2;i++){ const ring=new THREE.Mesh(new THREE.TorusGeometry(0.5,0.015,8,48), new THREE.MeshBasicMaterial({color:0xc0563f,transparent:true,opacity:0.9})); ring.position.set(0,0.14,0.2); ring.userData.phase=i/2; g.add(ring); rings.push(ring); }
+        const core = new THREE.Mesh(new THREE.SphereGeometry(0.11,24,24), matGlow); core.position.set(0,0.14,0.24); g.add(core);
+        const coreLight = new THREE.PointLight(0xffcaa6,3,3); coreLight.position.copy(core.position); g.add(coreLight);
+        return { group:g, tick(t){ rings.forEach(r=>{ const p=((t*0.35+r.userData.phase)%1); r.scale.setScalar(0.3+p*1.7); r.material.opacity=(1-p)*0.85; }); core.scale.setScalar(1+Math.sin(t*3)*0.12); } };
+      },
+      lamp(){ // Центр мебели и света — торшер
+        const g = new THREE.Group();
+        const shadeShape = new THREE.Shape();
+        shadeShape.moveTo(-0.32,0.62); shadeShape.lineTo(0.32,0.62); shadeShape.lineTo(0.66,-0.62); shadeShape.lineTo(-0.66,-0.62); shadeShape.closePath();
+        const shadeGeo = new THREE.ExtrudeGeometry(shadeShape, {depth:0.5,bevelEnabled:true,bevelThickness:0.03,bevelSize:0.03,bevelSegments:3,curveSegments:6}); shadeGeo.center();
+        const shade = new THREE.Mesh(shadeGeo, matCream); shade.position.y=0.55; g.add(shade);
+        const glow = new THREE.Mesh(new THREE.SphereGeometry(0.42,20,20), new THREE.MeshBasicMaterial({color:0xffb98f,transparent:true,opacity:0.55})); glow.position.set(0,0.05,0.15); g.add(glow);
+        const glowLight = new THREE.PointLight(0xffb98f,2.5,3.5); glowLight.position.copy(glow.position); g.add(glowLight);
+        const stand = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,1.05,16), matCream); stand.position.y=-0.55; g.add(stand);
+        const base = new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,0.09,28), matCream); base.position.y=-1.12; g.add(base);
+        return { group:g, tick(t){ glow.material.opacity = 0.45+Math.sin(t*1.4)*0.12; glowLight.intensity = 2.0+Math.sin(t*1.4)*0.7; } };
+      },
+      card(){ // Vitrina — карточка товара
+        const g = new THREE.Group();
+        const cardGeo = new THREE.ExtrudeGeometry(roundedRectShape(1.7,2.2,0.16), {depth:0.14,bevelEnabled:true,bevelThickness:0.015,bevelSize:0.015,bevelSegments:3,curveSegments:10}); cardGeo.center();
+        g.add(new THREE.Mesh(cardGeo, matCream));
+        const photoGeo = new THREE.ExtrudeGeometry(roundedRectShape(1.4,1.05,0.08), {depth:0.04,bevelEnabled:false,curveSegments:8}); photoGeo.center();
+        const photo = new THREE.Mesh(photoGeo, matDark); photo.position.set(0,0.42,0.09); g.add(photo);
+        const mtn = new THREE.Mesh(new THREE.ExtrudeGeometry(triangleShape(0.55,0.42), {depth:0.05,bevelEnabled:false}), matTerra); mtn.position.set(-0.1,0.15,0.12); g.add(mtn);
+        const sun = new THREE.Mesh(new THREE.SphereGeometry(0.09,16,16), matGlow); sun.position.set(0.48,0.68,0.12); g.add(sun);
+        const line1 = new THREE.Mesh(new THREE.BoxGeometry(1.2,0.07,0.03), matDark); line1.position.set(0,-0.32,0.08); g.add(line1);
+        const line2 = new THREE.Mesh(new THREE.BoxGeometry(0.7,0.07,0.03), new THREE.MeshBasicMaterial({color:0x1c1712,transparent:true,opacity:0.6})); line2.position.set(-0.25,-0.5,0.08); g.add(line2);
+        const priceGeo = new THREE.ExtrudeGeometry(roundedRectShape(0.5,0.24,0.06), {depth:0.06,bevelEnabled:false,curveSegments:6}); priceGeo.center();
+        const price = new THREE.Mesh(priceGeo, matTerra); price.position.set(-0.55,-0.85,0.1); g.add(price);
+        const shine = new THREE.Mesh(new THREE.PlaneGeometry(0.3,2.6), new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0})); shine.rotation.z=0.5; g.add(shine);
+        return { group:g, tick(t){ const p=(t*0.25)%1; shine.position.set(-1+p*2,0,0.16); shine.material.opacity=Math.sin(p*Math.PI)*0.22; } };
+      },
+      monitor(){ // 1kik «Компьютеры и кофе» — монитор + чашка
+        const g = new THREE.Group();
+        const monGeo = new THREE.ExtrudeGeometry(roundedRectShape(1.75,1.28,0.12), {depth:0.16,bevelEnabled:true,bevelThickness:0.015,bevelSize:0.015,bevelSegments:3,curveSegments:10}); monGeo.center();
+        const mon = new THREE.Mesh(monGeo, matCream); mon.position.set(-0.35,0.28,0); g.add(mon);
+        const scrGeo = new THREE.ExtrudeGeometry(roundedRectShape(1.5,1.02,0.06), {depth:0.05,bevelEnabled:false,curveSegments:8}); scrGeo.center();
+        const scr = new THREE.Mesh(scrGeo, matDark); scr.position.set(-0.35,0.28,0.11); g.add(scr);
+        const scrGlow = new THREE.Mesh(new THREE.PlaneGeometry(1.2,0.7), new THREE.MeshBasicMaterial({color:0xc0563f,transparent:true,opacity:0.18})); scrGlow.position.set(-0.35,0.28,0.14); g.add(scrGlow);
+        const neck = new THREE.Mesh(new THREE.BoxGeometry(0.14,0.22,0.1), matCream); neck.position.set(-0.35,-0.5,0); g.add(neck);
+        const base = new THREE.Mesh(new THREE.BoxGeometry(0.6,0.08,0.3), matCream); base.position.set(-0.35,-0.63,0); g.add(base);
+        const cupGeo = new THREE.ExtrudeGeometry(roundedRectShape(0.62,0.56,0.1), {depth:0.5,bevelEnabled:true,bevelThickness:0.02,bevelSize:0.02,bevelSegments:3,curveSegments:8}); cupGeo.center();
+        const cup = new THREE.Mesh(cupGeo, matTerra); cup.rotation.x=Math.PI/2; cup.position.set(0.68,-0.3,0.15); g.add(cup);
+        const handle = new THREE.Mesh(new THREE.TorusGeometry(0.16,0.045,10,20,Math.PI*1.3), matTerra); handle.rotation.y=Math.PI/2; handle.rotation.z=-0.6; handle.position.set(1.0,-0.3,0.15); g.add(handle);
+        const steam1 = new THREE.Mesh(new THREE.SphereGeometry(0.07,10,10), new THREE.MeshBasicMaterial({color:0xe4ded2,transparent:true,opacity:0}));
+        const steam2 = new THREE.Mesh(new THREE.SphereGeometry(0.06,10,10), new THREE.MeshBasicMaterial({color:0xe4ded2,transparent:true,opacity:0}));
+        steam1.position.set(0.6,0.05,0.2); steam2.position.set(0.76,0.15,0.2); g.add(steam1,steam2);
+        return { group:g, tick(t){ scrGlow.material.opacity=0.14+Math.sin(t*2.2)*0.05; [steam1,steam2].forEach((s,i)=>{ const p=((t*0.3+i*0.5)%1); s.position.y=0.05+i*0.1+p*0.55; s.material.opacity=Math.sin(p*Math.PI)*0.5; s.scale.setScalar(1+p*0.6); }); } };
+      },
+      code(){ // Разработка — </>
+        const g = new THREE.Group();
+        function chevron(vertexX, dir, material){
+          const grp = new THREE.Group();
+          const a1 = strokeMesh(0.42,0.17,0.26,material); a1.rotation.z = dir>0?0.6:Math.PI-0.6; a1.position.set(vertexX,0,0);
+          const a2 = strokeMesh(0.42,0.17,0.26,material); a2.rotation.z = dir>0?-0.6:Math.PI+0.6; a2.position.set(vertexX,0,0);
+          grp.add(a1,a2); return grp;
+        }
+        g.add(chevron(-0.82,1,matCream)); g.add(chevron(0.82,-1,matCream));
+        const slash = new THREE.Mesh(new THREE.BoxGeometry(1.0,0.19,0.28), matTerra); slash.rotation.z=1.15; g.add(slash);
+        return { group:g, tick(t){ slash.material.color.setHSL(0.03,0.55,0.44+Math.sin(t*2)*0.06); } };
+      },
+      cycle(){ // Автоматизация — зацепление колец
+        const g = new THREE.Group();
+        const r1 = new THREE.Mesh(new THREE.TorusGeometry(0.68,0.1,16,48), matCream); g.add(r1);
+        const r2 = new THREE.Mesh(new THREE.TorusGeometry(0.4,0.065,12,40), new THREE.MeshBasicMaterial({color:0xc0563f})); r2.rotation.x=Math.PI/2.3; r2.position.set(0.56,-0.42,0.3); g.add(r2);
+        return { group:g, tick(t){ r1.rotation.z=t*0.5; r2.rotation.y=-t*0.8; } };
+      },
+      pen(){ // Дизайн — артборд + перо
+        const g = new THREE.Group();
+        const cx=0.75, cy=0.95, len=0.36, thick=0.07, depth=0.16;
+        const cornerH=(x,y,rot)=>{ const s=strokeMesh(len,thick,depth,matCream); s.rotation.z=rot; s.position.set(x,y,0); g.add(s); };
+        cornerH(-cx,cy,0); cornerH(-cx,cy,-Math.PI/2);
+        cornerH(cx,cy,Math.PI); cornerH(cx,cy,-Math.PI/2);
+        cornerH(-cx,-cy,0); cornerH(-cx,-cy,Math.PI/2);
+        cornerH(cx,-cy,Math.PI); cornerH(cx,-cy,Math.PI/2);
+        const penGeo = new THREE.ExtrudeGeometry(roundedRectShape(0.34,1.55,0.13), {depth:0.16,bevelEnabled:true,bevelThickness:0.02,bevelSize:0.02,bevelSegments:3,curveSegments:8}); penGeo.center();
+        const pen = new THREE.Mesh(penGeo, matTerra); pen.rotation.z=-0.75; g.add(pen);
+        const tipGeo = new THREE.ConeGeometry(0.17,0.28,4); tipGeo.rotateX(Math.PI);
+        const tip = new THREE.Mesh(tipGeo, matCream); tip.rotation.z=-0.75; tip.position.set(-0.62,-0.72,0); g.add(tip);
+        const dot = new THREE.Mesh(new THREE.SphereGeometry(0.06,12,12), matGlow); dot.position.set(-0.72,-0.85,0.05); g.add(dot);
+        return { group:g, tick(t){ const w=Math.sin(t*1.6)*0.06; pen.position.set(w*0.6,w*0.3,0); tip.position.set(-0.62+w*0.6,-0.72+w*0.3,0); } };
+      }
+    };
+    return build;
+  }
+  makeAscii3D(canvas, role){
+    const self = this; const THREE = window.THREE, AsciiEffect = window.AsciiEffect;
+    if(!THREE || !AsciiEffect || !canvas) return null;
+    const host = canvas.parentNode; if(!host) return null;
+    const rect = canvas.getBoundingClientRect();
+    let W = Math.max(1, Math.round(rect.width)), H = Math.max(1, Math.round(rect.height||360));
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(38, W/H, 0.1, 100); camera.position.set(0,0,5.2);
+    let renderer;
+    try{ renderer = new THREE.WebGLRenderer({antialias:true, alpha:false, powerPreference:'low-power'}); }catch(e){ return null; }
+    renderer.setSize(W,H); renderer.setClearColor(0x0b0906,1);
+    scene.add(new THREE.AmbientLight(0x403428, 0.28));
+    const key = new THREE.DirectionalLight(0xfff2e0, 3.2); key.position.set(3,4,5); scene.add(key);
+    const rim = new THREE.DirectionalLight(0xc66048, 2.4); rim.position.set(-4,1.5,-3); scene.add(rim);
+    const fill = new THREE.DirectionalLight(0x9a8d7d, 0.55); fill.position.set(-2,-3,3); scene.add(fill);
+    const rampCanvas = document.createElement('canvas'); rampCanvas.width=4; rampCanvas.height=1;
+    const rctx = rampCanvas.getContext('2d'); [40,110,175,235].forEach((v,i)=>{ rctx.fillStyle='rgb('+v+','+v+','+v+')'; rctx.fillRect(i,0,1,1); });
+    const ramp = new THREE.CanvasTexture(rampCanvas); ramp.minFilter=THREE.NearestFilter; ramp.magFilter=THREE.NearestFilter; ramp.generateMipmaps=false;
+    const matCream = new THREE.MeshToonMaterial({ color:0xf0e8dc, gradientMap:ramp });
+    const matDark  = new THREE.MeshToonMaterial({ color:0x1c1712, gradientMap:ramp });
+    const matTerra = new THREE.MeshToonMaterial({ color:0xc0563f, gradientMap:ramp });
+    const matGlow  = new THREE.MeshBasicMaterial({ color:0xffcaa6 });
+    const KIND_SETS = { cases:['ping','lamp','card','monitor'], team:['code','cycle','pen'] };
+    const kinds = KIND_SETS[role] || ['ping'];
+    const build = this.buildAscii3DIcons(THREE, matCream, matDark, matTerra, matGlow);
+    const icons = kinds.map(k=> build[k] ? build[k]() : build.ping());
+    icons.forEach((ic,i)=>{ ic.group.visible=(i===0); scene.add(ic.group); });
+    let activeIdx = 0, pendingIdx = -1, morphT = -1;
+    const CHARS = ' .·:-=+*oxaев#%@';
+    const effect = new AsciiEffect(renderer, CHARS, {invert:true, resolution:0.19});
+    effect.setSize(W,H);
+    const dom = effect.domElement; dom.setAttribute('aria-hidden','true');
+    dom.style.cssText = 'position:absolute;inset:0;z-index:1;color:#c15a43;font-family:"IBM Plex Mono",ui-monospace,monospace;line-height:0.84;letter-spacing:0;text-align:left;pointer-events:none;overflow:hidden';
+    if(getComputedStyle(host).position === 'static') host.style.position = 'relative';
+    host.appendChild(dom); canvas.style.visibility = 'hidden';
+    const mouse = {x:0, y:0, tx:0, ty:0}; let raf=0, running=false, visible=false, t=0;
+    const MORPH_DUR = 0.6;
+    const render = ()=>{
+      if(self._calm || !visible){ running=false; return; }
+      raf = requestAnimationFrame(render); t += 0.016;
+      mouse.x += (mouse.tx-mouse.x)*0.06; mouse.y += (mouse.ty-mouse.y)*0.06;
+      const cur = icons[activeIdx];
+      if(morphT>=0){
+        morphT += 0.016/MORPH_DUR;
+        if(morphT<0.5){ const s=Math.max(0.001,1-(morphT/0.5)); cur.group.scale.setScalar(s); cur.group.rotation.y += 0.28; }
+        else {
+          if(cur.group.visible){ cur.group.visible=false; activeIdx=pendingIdx; icons[activeIdx].group.scale.setScalar(0.001); icons[activeIdx].group.visible=true; }
+          const s=Math.min(1,(morphT-0.5)/0.5); icons[activeIdx].group.scale.setScalar(s); icons[activeIdx].group.rotation.y -= 0.16*(1-s);
+        }
+        if(morphT>=1){ morphT=-1; icons[activeIdx].group.scale.setScalar(1); }
+      } else {
+        cur.group.rotation.y = Math.sin(t*0.4)*0.06 + mouse.x*0.12;
+        cur.group.rotation.x = Math.sin(t*0.3)*0.025 + mouse.y*0.08;
+        cur.tick(t);
+      }
+      effect.render(scene, camera);
+    };
+    const start = ()=>{ if(!running && !self._calm && visible){ running=true; raf=requestAnimationFrame(render); } };
+    const io = new IntersectionObserver((es)=>{ visible=es[0].isIntersecting; running=false; cancelAnimationFrame(raf); if(visible) start(); }, {threshold:0.06});
+    io.observe(dom);
+    const onMove = (e)=>{ const rr=dom.getBoundingClientRect(); if(!rr.width) return; mouse.tx=((e.clientX-rr.left)/rr.width-0.5)*2; mouse.ty=((e.clientY-rr.top)/rr.height-0.5)*2; };
+    host.addEventListener('mousemove', onMove, {passive:true});
+    const onResize = ()=>{ const rr=canvas.getBoundingClientRect(); W=Math.max(1,Math.round(rr.width)); H=Math.max(1,Math.round(rr.height||360)); camera.aspect=W/H; camera.updateProjectionMatrix(); renderer.setSize(W,H); effect.setSize(W,H); };
+    window.addEventListener('resize', onResize);
+    return {
+      morph(idx){ idx=Math.max(0,Math.min(icons.length-1,idx)); if(idx===activeIdx && morphT<0) return; pendingIdx=idx; morphT=0; },
+      tick(n){ n=n||1; for(let i=0;i<n;i++){ t+=0.05; const cur=icons[activeIdx]; if(morphT>=0){ morphT+=0.05/MORPH_DUR; if(morphT<0.5){ const s=Math.max(0.001,1-(morphT/0.5)); cur.group.scale.setScalar(s); cur.group.rotation.y+=0.28; } else { if(cur.group.visible){ cur.group.visible=false; activeIdx=pendingIdx; icons[activeIdx].group.scale.setScalar(0.001); icons[activeIdx].group.visible=true; } const s=Math.min(1,(morphT-0.5)/0.5); icons[activeIdx].group.scale.setScalar(s); icons[activeIdx].group.rotation.y-=0.16*(1-s); } if(morphT>=1){ morphT=-1; icons[activeIdx].group.scale.setScalar(1); } } else { icons[activeIdx].group.rotation.y=Math.sin(t*0.4)*0.06; icons[activeIdx].group.rotation.x=Math.sin(t*0.3)*0.025; icons[activeIdx].tick(t); } effect.render(scene,camera); } },
+      pause(){ cancelAnimationFrame(raf); running=false; },
+      resume(){ start(); },
+      destroy(){ try{io.disconnect();}catch(e){} cancelAnimationFrame(raf); window.removeEventListener('resize', onResize); host.removeEventListener('mousemove', onMove); try{dom.remove();}catch(e){} try{renderer.dispose(); icons.forEach(ic=>ic.group.traverse(o=>{ if(o.geometry) o.geometry.dispose(); if(o.material && o.material!==matCream && o.material!==matDark && o.material!==matTerra && o.material!==matGlow) o.material.dispose(); })); matCream.dispose(); matDark.dispose(); matTerra.dispose(); ramp.dispose(); }catch(e){} canvas.style.visibility=''; }
+    };
+  }
+  initAscii3D(){
+    if(window.innerWidth < 760 || (window.matchMedia && window.matchMedia('(pointer:coarse)').matches)) return;
+    if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if(this._a3dDone) return;
+    if(!window.THREE || !window.AsciiEffect){ this._a3dTries=(this._a3dTries||0)+1; if(this._a3dTries<160) setTimeout(()=>this.initAscii3D(),120); return; }
+    this._a3dDone = true; this._a3d = [];
+    Array.from(this.root.querySelectorAll('[data-ascii-canvas]')).forEach(cv=>{
+      const wrap = cv.closest('[data-ascii-cases],[data-ascii-team]');
+      const role = wrap ? (wrap.hasAttribute('data-ascii-cases') ? 'cases' : 'team') : null;
+      const three = this.makeAscii3D(cv, role); if(!three) return; this._a3d.push(three);
+      if(wrap){ let last=-1;
+        const check=()=>{ const btns=wrap.querySelectorAll('[data-case-name],[data-team-name]'); let act=-1; btns.forEach((b,i)=>{ if((parseFloat(b.style.paddingLeft)||0)>2) act=i; }); if(act>=0 && act!==last){ last=act; three.morph(act); } };
+        const mo=new MutationObserver(()=>check()); mo.observe(wrap,{attributes:true,subtree:true,attributeFilter:['style']}); three._mo=mo; check();
+      }
+    });
+    if(this._calm) this._a3d.forEach(t=>t.pause());
+  }
+
   initAsciiCases(){
     const wrap = this.root.querySelector('[data-ascii-cases]'); if(!wrap) return;
     const ctl = this.makeAsciiPanel(wrap, {
       nameSel: '[data-case-name]',
       hintEl: wrap.querySelector('[data-case-hint]'),
-      kinds: ['bridge','converge','scanner'],
+      kinds: ['ping','lamp','card','monitor'],
       rotate: 5200,
       onActivate: (btns, idx)=>{
         btns.forEach((b,i)=>{ const word=b.querySelector('[data-case-word]'); const mx=b.querySelector('[data-case-metrics]'); const on=i===idx;
@@ -1311,7 +1503,7 @@ class Component extends DCLogic {
       hintText: (idx, btns)=>{ const wEl=btns[idx]&&btns[idx].querySelector('[data-case-word]'); return '0'+(idx+1)+' / 0'+btns.length+' · '+((wEl&&wEl.textContent)||''); }
     });
     if(!ctl) return;
-    this._asciiCases = ctl;
+    this._asciiCases = ctl; try{window.__dbg=this;}catch(e){}
     (this._asciiPanels = this._asciiPanels || []).push(ctl);
   }
 
@@ -1407,6 +1599,7 @@ class Component extends DCLogic {
   setCalm(on){
     this._calm = on;
     try{ document.documentElement.classList.toggle('vcalm', !!on); }catch(e){}
+    try{ if(this._a3d) this._a3d.forEach(t=> on ? t.pause() : t.resume()); }catch(e){}
     if(on){
       if(this._three){ cancelAnimationFrame(this._three.raf); this._three.raf=null; }
       cancelAnimationFrame(this._teamRaf); this._teamRunning=false;
