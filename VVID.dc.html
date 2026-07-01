@@ -60,7 +60,7 @@
   @keyframes vFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
   @keyframes vPulse{0%,100%{opacity:.4}50%{opacity:1}}
   @media (max-width:880px){ [data-navgroup]{display:none !important} }
-  @media (max-width:760px){ form[data-brief]{grid-template-columns:1fr !important} [data-cap-inner]{grid-template-columns:1fr !important} [data-ascii-team]{grid-template-columns:1fr !important} [data-ascii-cases]{grid-template-columns:1fr !important} .proc-row{grid-template-columns:40px 1fr !important;gap:16px !important} .proc-meta{grid-column:2 !important;justify-self:start !important;margin-top:12px} [data-team-word]{-webkit-box-decoration-break:clone;box-decoration-break:clone} [data-acc-panel] p{padding-left:clamp(14px,4vw,34px) !important;padding-right:16px !important} }
+  @media (max-width:760px){ [data-cap-inner]{grid-template-columns:1fr !important} [data-ascii-team]{grid-template-columns:1fr !important} [data-ascii-cases]{grid-template-columns:1fr !important} .proc-row{grid-template-columns:40px 1fr !important;gap:16px !important} .proc-meta{grid-column:2 !important;justify-self:start !important;margin-top:12px} [data-team-word]{-webkit-box-decoration-break:clone;box-decoration-break:clone} [data-acc-panel] p{padding-left:clamp(14px,4vw,34px) !important;padding-right:16px !important} }
   @media (prefers-reduced-motion:reduce){ [data-anim]{animation:none !important} .hero-kin .kl>span,.hl-ch{transform:none !important;animation:none !important} }
   @media (max-width:680px){ [data-hdr-tag]{display:none !important} }
   @media (max-width:600px){ header nav{gap:14px !important} [data-calm-btn]{display:none !important} }
@@ -98,22 +98,6 @@
   [data-faq-list] [data-acc-head]:hover [data-faq-q]{color:#fff}
   [data-faq-list] [data-acc-head][aria-expanded="true"] [data-faq-q],[data-faq-list] [data-acc-head][aria-expanded="true"] [data-faq-n],[data-faq-list] [data-acc-head][aria-expanded="true"] [data-chev]{color:var(--acc,#b9543f)}
 
-  /* brief form — refined fields */
-  [data-brief]{--vf-bd:rgba(27,24,18,.18)}
-  [data-brief] .vf{position:relative;display:flex;flex-direction:column;padding:14px 0 11px;border-bottom:1px solid var(--vf-bd);transition:border-color .4s}
-  [data-brief] .vf::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--acc,#b9543f);transform:scaleX(0);transform-origin:left;transition:transform .55s cubic-bezier(.16,1,.3,1)}
-  [data-brief] .vf:focus-within{border-color:transparent}
-  [data-brief] .vf:focus-within::after{transform:scaleX(1)}
-  [data-brief] .vf:focus-within .vf-lab{color:var(--acc,#b9543f)}
-  [data-brief] .vf-lab{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8c8474;margin-bottom:9px;transition:color .4s}
-  [data-brief] .vf-in{border:none;background:none;padding:2px 0;font-size:clamp(16px,1.5vw,18px);line-height:1.4;color:#1b1812;outline:none;font-family:inherit;width:100%}
-  [data-brief] .vf-in::placeholder{color:#aaa091}
-  [data-brief] textarea.vf-in{resize:vertical;min-height:46px}
-  [data-brief] select.vf-in{cursor:pointer;-webkit-appearance:none;appearance:none;padding-right:26px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%231b1812' stroke-width='1.4'/%3E%3C/svg%3E") no-repeat right center}
-  [data-brief] .vf-submit{display:inline-flex;align-items:center;gap:14px;background:#13110c;color:#e4ded2;border:none;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;cursor:pointer;padding:18px 32px;transition:background .35s,color .35s,gap .35s}
-  [data-brief] .vf-submit:hover{background:var(--acc,#b9543f);color:#fff;gap:20px}
-  [data-brief] .vf-submit .vf-arr{transition:transform .4s cubic-bezier(.16,1,.3,1)}
-  [data-brief] .vf-submit:hover .vf-arr{transform:translateX(4px)}
 
   /* ===== hero — bold flood (BBDO-style) in brand terracotta ===== */
   #top.hero-bbdo{background:#b9543f;color:#fff}
@@ -251,7 +235,7 @@
         <span class="kl"><span style="animation-delay:.28s">{{ t.heroBig4 }}</span></span>
       </h1>
       <div class="hero-cta-row" data-reveal="1" data-delay="120" style="justify-content:center;margin-bottom:clamp(16px,2.4vh,28px)">
-        <a class="hero-cta-min" href="#brief" data-magnetic="1">{{ t.heroCtaPrimary }}</a>
+        <a class="hero-cta-min" href="https://t.me/vvid_helper_bot" target="_blank" rel="noopener noreferrer" data-magnetic="1">{{ t.heroCtaPrimary }}</a>
       </div>
       <div class="hero-scrollcue"><span>{{ t.scroll }}</span><span class="bar"></span></div>
     </div>
@@ -367,7 +351,7 @@
           <span style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#8c8474">{{ t.caseCloserEyebrow }}</span>
           <h3 style="font-size:clamp(22px,3vw,40px);line-height:1.05;letter-spacing:-.035em;font-weight:600;margin:0">{{ t.caseCloserA }}<span style="font-weight:700;color:var(--acc,#b9543f)">{{ t.caseCloserB }}</span>.</h3>
         </div>
-        <a href="#brief" data-magnetic="1" style="display:inline-flex;align-items:center;gap:10px;background:#13110c;color:#e4ded2;padding:14px 24px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600" style-hover="background:var(--acc,#b9543f);color:#fff">{{ t.caseCloserCta }}</a>
+        <a href="https://t.me/vvid_helper_bot" target="_blank" rel="noopener noreferrer" data-magnetic="1" style="display:inline-flex;align-items:center;gap:10px;background:#13110c;color:#e4ded2;padding:14px 24px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600" style-hover="background:var(--acc,#b9543f);color:#fff">{{ t.caseCloserCta }}</a>
       </div>
     </div>
   </section>
@@ -490,40 +474,13 @@
       <h2 data-rot-head="1" style="font-size:clamp(36px,7vw,104px);line-height:.94;letter-spacing:-.045em;font-weight:600;margin:0 0 20px;max-width:15ch">{{ t.briefH2a }}<span data-rot2="1" ref="{{ setRot2 }}" style="font-weight:700;color:var(--acc,#b9543f)">{{ t.briefRot }}</span></h2>
       <p data-reveal="1" style="margin:0 0 clamp(40px,6vw,64px);max-width:52ch;font-size:clamp(16px,1.8vw,20px);line-height:1.5;color:#5a5346;text-wrap:pretty">{{ t.briefP }}</p>
 
-      <div data-reveal="1" data-delay="80" style="position:relative;background:#ece7db;border:1px solid rgba(27,24,18,.12);box-shadow:0 44px 90px -54px rgba(27,24,18,.6);padding:clamp(24px,4vw,52px)">
+      <div data-reveal="1" data-delay="80" style="position:relative;background:#ece7db;border:1px solid rgba(27,24,18,.12);box-shadow:0 44px 90px -54px rgba(27,24,18,.6);padding:clamp(28px,5vw,56px);display:flex;align-items:center;justify-content:space-between;gap:clamp(24px,4vw,40px);flex-wrap:wrap">
         <span aria-hidden="true" style="position:absolute;top:0;left:0;width:18px;height:18px;border-top:2px solid var(--acc,#b9543f);border-left:2px solid var(--acc,#b9543f)"></span>
         <span aria-hidden="true" style="position:absolute;bottom:0;right:0;width:18px;height:18px;border-bottom:2px solid var(--acc,#b9543f);border-right:2px solid var(--acc,#b9543f)"></span>
-        <form onSubmit="{{ onSubmit }}" data-brief="1" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,2.6vw,34px) clamp(28px,4vw,56px)">
-          <input name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none">
-          <label class="vf" style="grid-column:1 / -1">
-            <span class="vf-lab">{{ t.formL3 }}</span>
-            <textarea class="vf-in" name="task" rows="2" placeholder="{{ t.formPh3 }}"></textarea>
-          </label>
-          <label class="vf">
-            <span class="vf-lab">{{ t.formL4 }}</span>
-            <input class="vf-in" name="contact" type="text" placeholder="{{ t.formPh4 }}">
-          </label>
-          <label class="vf">
-            <span class="vf-lab">{{ t.formL2 }}</span>
-            <select class="vf-in" name="budget">
-              <option>{{ t.formOpt1 }}</option>
-              <option>{{ t.formOpt2 }}</option>
-              <option>{{ t.formOpt3 }}</option>
-              <option>{{ t.formOpt4 }}</option>
-              <option>{{ t.formOpt5 }}</option>
-            </select>
-          </label>
-          <label class="vf" style="grid-column:1 / -1">
-            <span class="vf-lab">{{ t.formL1 }}</span>
-            <input class="vf-in" name="about" type="text" placeholder="{{ t.formPh1 }}">
-          </label>
-          <div style="grid-column:1 / -1;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-top:clamp(10px,1.6vw,18px)">
-            <button type="submit" data-submit-btn="1" class="vf-submit" data-magnetic="1">{{ t.formSubmit }} <span class="vf-arr">→</span></button>
-            <div style="display:flex;gap:22px;flex-wrap:wrap;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#8c8474">
-              <span>{{ t.briefBadge1 }}</span><span>{{ t.briefBadge2 }}</span><span>{{ t.briefBadge3 }}</span>
-            </div>
-          </div>
-        </form>
+        <a href="https://t.me/vvid_helper_bot" target="_blank" rel="noopener noreferrer" data-magnetic="1" style="display:inline-flex;align-items:center;gap:12px;background:#13110c;color:#e4ded2;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:18px 34px;transition:background .35s,color .35s" style-hover="background:var(--acc,#b9543f);color:#fff"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex:none"><path fill="currentColor" d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>{{ t.ctaTelegram }}</a>
+        <div style="display:flex;gap:22px;flex-wrap:wrap;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#8c8474">
+          <span>{{ t.briefBadge1 }}</span><span>{{ t.briefBadge2 }}</span><span>{{ t.briefBadge3 }}</span>
+        </div>
       </div>
     </div>
   </section>
@@ -556,7 +513,7 @@
     </div>
   </footer>
 
-  <a href="#brief" data-float-cta="1" data-magnetic="1" class="float-tg" style="position:fixed;bottom:24px;right:24px;z-index:8500;display:inline-flex;align-items:center;gap:10px;background:#13110c;color:#e4ded2;padding:13px 22px 13px 17px;border-radius:50px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;box-shadow:0 16px 40px -12px rgba(19,17,12,.5)"><svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true" style="flex:none;color:#c66048"><path fill="currentColor" d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg><span>{{ t.ctaTelegram }}</span></a>
+  <a href="https://t.me/vvid_helper_bot" target="_blank" rel="noopener noreferrer" data-float-cta="1" data-magnetic="1" class="float-tg" style="position:fixed;bottom:24px;right:24px;z-index:8500;display:inline-flex;align-items:center;gap:10px;background:#13110c;color:#e4ded2;padding:13px 22px 13px 17px;border-radius:50px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;box-shadow:0 16px 40px -12px rgba(19,17,12,.5)"><svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true" style="flex:none;color:#c66048"><path fill="currentColor" d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg><span>{{ t.ctaTelegram }}</span></a>
 
 
 </div>
@@ -646,7 +603,6 @@ class Component extends DCLogic {
     this.rotEl2      = this.rotEl2      || q('[data-rot2]');
     this.calmBtn     = this.calmBtn     || q('[data-calm-btn]');
     this.calmLabel   = this.calmLabel   || q('[data-calm-label]');
-    this.submitBtn   = this.submitBtn   || q('[data-submit-btn]');
     this._asciiPanels = [];
     try{ root.style && root.style.setProperty('--acc', this.props.accent || '#b9543f'); }catch(e){}
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1380,28 +1336,6 @@ class Component extends DCLogic {
     else { panel.style.maxHeight=panel.scrollHeight+40+'px'; panel.style.opacity='1'; head.setAttribute('aria-expanded','true'); if(chev){ chev.style.transform='rotate(45deg)'; chev.style.color=acc; } if(fq) fq.style.color=acc; if(fn) fn.style.color=acc; }
   }
   openFirstAcc(){ const first=this.root.querySelector('#pricing [data-acc-head]'); if(first) setTimeout(()=>this.toggleAcc({currentTarget:first}),400); }
-  async onSubmit(e){
-    e.preventDefault();
-    const f=e.target, b=this.submitBtn;
-    if(!f || this._briefSent) return;
-    const en=(this._lang==='en');
-    const val=(n)=>{ const el=f.querySelector('[name="'+n+'"]'); return el ? (el.value||'').trim() : ''; };
-    const task=val('task'), contact=val('contact');
-    if(!task || !contact){ if(b) b.textContent=en?'fill task + contact →':'заполните задачу и контакт →'; return; }
-    this._briefSent=true;
-    if(b){ b.disabled=true; b.style.opacity='.7'; b.textContent=en?'sending…':'отправляем…'; }
-    try{
-      const r=await fetch('/api/brief',{ method:'POST', headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({ task, contact, budget:val('budget'), about:val('about'), hp:val('hp') }) });
-      const data=await r.json().catch(()=>({}));
-      if(!r.ok || !data.ok) throw new Error('rejected');
-      if(b){ b.disabled=true; b.style.opacity='1'; b.style.background='#1b1812'; b.style.color='#e4ded2';
-        b.textContent=(en?'brief sent':'бриф отправлен')+(data.ticket?(' · '+data.ticket):' ✓'); }
-    }catch(err){
-      this._briefSent=false;
-      if(b){ b.disabled=false; b.style.opacity='1'; b.textContent=en?'error — write @vvid →':'ошибка — напишите @vvid →'; }
-    }
-  }
 
   /* ---------- CALM MODE ---------- */
   setCalm(on){
@@ -1457,11 +1391,8 @@ class Component extends DCLogic {
         pricingFootnote:'гарантия 50 дней: после запуска поддержка бесплатно. дальше — по договорённости.',
         fig07:'fig.07 — направления', fig07a:'fig.07.a — ascii / системы', faqLabel:'faq — частые вопросы',
         fig08:'fig.08 — бриф', briefH2a:'запустим ваш проект ', briefRot:'с гарантией',
-        briefP:'опишите задачу парой строк — вернёмся с оценкой за 2 часа. никаких брифов на 10 страниц.',
-        formL1:'04 / о бизнесе · по желанию', formPh1:'напр. опт / розница / услуги', formL2:'03 / бюджет · по желанию',
-        formOpt1:'20 000 – 140 000 ₽ · лендинг / бот', formOpt2:'140 000 – 700 000 ₽ · сайт / интернет-магазин', formOpt3:'от 700 000 ₽ · приложение / автоматизация', formOpt4:'долгое сотрудничество / поддержка', formOpt5:'пока не знаю',
-        formL3:'01 / задача', formPh3:'что съедает время или прибыль прямо сейчас?', formL4:'02 / контакт', formPh4:'telegram @ или email',
-        formSubmit:'отправить бриф →', briefBadge1:'— договор + юрлицо', briefBadge2:'— nda по запросу', briefBadge3:'— ответ < 2 часов',
+        briefP:'напишите боту пару строк о задаче — вернёмся с оценкой за 2 часа. никаких форм и брифов на 10 страниц.',
+        briefBadge1:'— договор + юрлицо', briefBadge2:'— nda по запросу', briefBadge3:'— ответ < 2 часов',
         footDesc:'студия разработки и автоматизации. приложения, сайты и боты, которые улучшают готовый бизнес.',
         footSite:'сайт', footContact:'контакт', footLegal:'© 2026 vvid — студия разработки и автоматизации'
       },
@@ -1489,11 +1420,8 @@ class Component extends DCLogic {
         pricingFootnote:'50-day guarantee: free support after launch. beyond that — by agreement.',
         fig07:'fig.07 — directions', fig07a:'fig.07.a — ascii / systems', faqLabel:'faq — common questions',
         fig08:'fig.08 — brief', briefH2a:'let’s launch your project ', briefRot:'with a guarantee',
-        briefP:'describe your task in a couple of lines — we’ll come back with an estimate within 2 hours. no 10-page briefs.',
-        formL1:'04 / about the business · optional', formPh1:'e.g. wholesale / retail / services', formL2:'03 / budget · optional',
-        formOpt1:'$250 – $1,500 · landing / bot', formOpt2:'$1,500 – $8,000 · website / online store', formOpt3:'from $8,000 · app / automation', formOpt4:'long-term / retainer', formOpt5:'not sure yet',
-        formL3:'01 / task', formPh3:'what’s eating your time or profit right now?', formL4:'02 / contact', formPh4:'telegram @ or email',
-        formSubmit:'send brief →', briefBadge1:'— contract + legal entity', briefBadge2:'— nda on request', briefBadge3:'— reply < 2 hours',
+        briefP:'message the bot a couple of lines about your task — we’ll come back with an estimate within 2 hours. no forms, no 10-page briefs.',
+        briefBadge1:'— contract + legal entity', briefBadge2:'— nda on request', briefBadge3:'— reply < 2 hours',
         footDesc:'development & automation studio. apps, websites and bots that improve your existing business.',
         footSite:'site', footContact:'contact', footLegal:'© 2026 vvid — development & automation studio'
       }
@@ -1607,11 +1535,9 @@ class Component extends DCLogic {
       setRot2: el=>{ this.rotEl2=el; },
       setCalmBtn: el=>{ this.calmBtn=el; },
       setCalmLabel: el=>{ this.calmLabel=el; },
-      setSubmitBtn: el=>{ this.submitBtn=el; },
       setLangBtn: el=>{ this.langBtn=el; },
       toggleCalm: ()=> this.setCalm(!this._calm),
       toggleAcc: (e)=> this.toggleAcc(e),
-      onSubmit: (e)=> this.onSubmit(e),
       setLang: (lng)=> this.setLang(lng),
       toggleLang: ()=> this.setLang(this._lang==='en'?'ru':'en'),
       toggleMenu: ()=>{ const h=this.root.querySelector('[data-adaptive-hdr]'); if(h) h.classList.toggle('m-open'); },
