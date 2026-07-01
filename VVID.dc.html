@@ -374,7 +374,7 @@
         </div>
 
         <div style="position:relative">
-          <canvas data-ascii-canvas="1" style="width:100%;height:clamp(340px,44vw,540px);display:block;background:#0b0906"></canvas>
+          <canvas data-ascii-canvas="1" style="width:100%;height:clamp(340px,44vw,540px);display:block"></canvas>
           <div style="position:absolute;top:14px;left:14px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#8f877a">{{ t.fig04a }}</div>
           <div data-case-hint style="position:absolute;bottom:14px;left:14px;right:14px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#8f877a"></div>
         </div>
@@ -477,7 +477,7 @@
         </div>
 
         <div style="position:relative">
-          <canvas data-ascii-canvas="1" style="width:100%;height:clamp(340px,44vw,540px);display:block;background:#0b0906"></canvas>
+          <canvas data-ascii-canvas="1" style="width:100%;height:clamp(340px,44vw,540px);display:block"></canvas>
           <div style="position:absolute;top:14px;left:14px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#8f877a">{{ t.fig07a }}</div>
           <div data-team-hint style="position:absolute;bottom:14px;left:14px;right:14px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#8f877a"></div>
         </div>
@@ -1447,7 +1447,7 @@ class Component extends DCLogic {
     const effect = new AsciiEffect(renderer, CHARS, {invert:true, resolution:0.19});
     effect.setSize(W,H);
     const dom = effect.domElement; dom.setAttribute('aria-hidden','true');
-    dom.style.cssText = 'position:absolute;inset:0;z-index:1;color:#c15a43;background:#0b0906;font-family:"IBM Plex Mono",ui-monospace,monospace;line-height:0.84;letter-spacing:0;text-align:left;pointer-events:none;overflow:hidden';
+    dom.style.cssText = 'position:absolute;inset:0;z-index:1;color:#c15a43;font-family:"IBM Plex Mono",ui-monospace,monospace;line-height:0.84;letter-spacing:0;text-align:left;pointer-events:none;overflow:hidden';
     if(getComputedStyle(host).position === 'static') host.style.position = 'relative';
     host.appendChild(dom); canvas.style.visibility = 'hidden';
     const mouse = {x:0, y:0, tx:0, ty:0}; let raf=0, running=false, visible=false, t=0;
