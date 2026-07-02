@@ -1492,12 +1492,13 @@ class Component extends DCLogic {
       const cur = icons[activeIdx];
       if(morphT>=0){
         morphT += 0.016/MORPH_DUR;
-        if(morphT<0.5){ const s=Math.max(0.001,1-(morphT/0.5)); cur.group.scale.setScalar(s); cur.group.rotation.y += 0.28; }
+        // повороты морфа — детерминированные (присваивание, не накопление): модель всегда возвращается лицом
+        if(morphT<0.5){ const s=Math.max(0.001,1-(morphT/0.5)); cur.group.scale.setScalar(s); cur.group.rotation.y = (1-s)*2.4; }
         else {
-          if(cur.group.visible){ cur.group.visible=false; activeIdx=pendingIdx; icons[activeIdx].group.scale.setScalar(0.001); icons[activeIdx].group.visible=true; }
-          const s=Math.min(1,(morphT-0.5)/0.5); icons[activeIdx].group.scale.setScalar(s); icons[activeIdx].group.rotation.y -= 0.16*(1-s);
+          if(cur.group.visible){ cur.group.visible=false; activeIdx=pendingIdx; icons[activeIdx].group.scale.setScalar(0.001); icons[activeIdx].group.visible=true; icons[activeIdx].group.rotation.set(0,0,0); }
+          const s=Math.min(1,(morphT-0.5)/0.5); icons[activeIdx].group.scale.setScalar(s); icons[activeIdx].group.rotation.y = -(1-s)*1.1;
         }
-        if(morphT>=1){ morphT=-1; icons[activeIdx].group.scale.setScalar(1); }
+        if(morphT>=1){ morphT=-1; icons[activeIdx].group.scale.setScalar(1); icons[activeIdx].group.rotation.y = 0; }
       } else {
         cur.group.rotation.y = Math.sin(t*0.4)*0.06 + mouse.x*(cur.ma||0.12);
         cur.group.rotation.x = Math.sin(t*0.3)*0.025 + mouse.y*(cur.mb||0.08);
@@ -1514,7 +1515,7 @@ class Component extends DCLogic {
     window.addEventListener('resize', onResize);
     return {
       morph(idx){ if(icons.length===1){ if(icons[0].kick) icons[0].kick(); return; } idx=Math.max(0,Math.min(icons.length-1,idx)); if(idx===activeIdx && morphT<0) return; pendingIdx=idx; morphT=0; },
-      tick(n){ n=n||1; for(let i=0;i<n;i++){ t+=0.05; const cur=icons[activeIdx]; if(morphT>=0){ morphT+=0.05/MORPH_DUR; if(morphT<0.5){ const s=Math.max(0.001,1-(morphT/0.5)); cur.group.scale.setScalar(s); cur.group.rotation.y+=0.28; } else { if(cur.group.visible){ cur.group.visible=false; activeIdx=pendingIdx; icons[activeIdx].group.scale.setScalar(0.001); icons[activeIdx].group.visible=true; } const s=Math.min(1,(morphT-0.5)/0.5); icons[activeIdx].group.scale.setScalar(s); icons[activeIdx].group.rotation.y-=0.16*(1-s); } if(morphT>=1){ morphT=-1; icons[activeIdx].group.scale.setScalar(1); } } else { icons[activeIdx].group.rotation.y=Math.sin(t*0.4)*0.06; icons[activeIdx].group.rotation.x=Math.sin(t*0.3)*0.025; icons[activeIdx].tick(t); } effect.render(scene,camera); } },
+      tick(n){ n=n||1; for(let i=0;i<n;i++){ t+=0.05; const cur=icons[activeIdx]; if(morphT>=0){ morphT+=0.05/MORPH_DUR; if(morphT<0.5){ const s=Math.max(0.001,1-(morphT/0.5)); cur.group.scale.setScalar(s); cur.group.rotation.y=(1-s)*2.4; } else { if(cur.group.visible){ cur.group.visible=false; activeIdx=pendingIdx; icons[activeIdx].group.scale.setScalar(0.001); icons[activeIdx].group.visible=true; icons[activeIdx].group.rotation.set(0,0,0); } const s=Math.min(1,(morphT-0.5)/0.5); icons[activeIdx].group.scale.setScalar(s); icons[activeIdx].group.rotation.y=-(1-s)*1.1; } if(morphT>=1){ morphT=-1; icons[activeIdx].group.scale.setScalar(1); icons[activeIdx].group.rotation.y=0; } } else { icons[activeIdx].group.rotation.y=Math.sin(t*0.4)*0.06; icons[activeIdx].group.rotation.x=Math.sin(t*0.3)*0.025; icons[activeIdx].tick(t); } effect.render(scene,camera); } },
       pause(){ cancelAnimationFrame(raf); running=false; },
       resume(){ start(); },
       destroy(){ try{io.disconnect();}catch(e){} cancelAnimationFrame(raf); window.removeEventListener('resize', onResize); host.removeEventListener('mousemove', onMove); try{dom.remove();}catch(e){} try{renderer.dispose(); icons.forEach(ic=>ic.group.traverse(o=>{ if(o.geometry) o.geometry.dispose(); if(o.material && o.material!==matCream && o.material!==matDark && o.material!==matTerra && o.material!==matGlow) o.material.dispose(); })); matCream.dispose(); matDark.dispose(); matTerra.dispose(); ramp.dispose(); }catch(e){} canvas.style.visibility=''; }
