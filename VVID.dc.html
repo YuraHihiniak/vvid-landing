@@ -1414,15 +1414,16 @@ class Component extends DCLogic {
       },
       bust(){ // Дизайн — мраморный бюст (CC0 Poly Haven): скульптура = форма/искусство
         const g = loadScan('./models/marble_bust/marble_bust_01_1k.gltf', { rotY: Math.PI, size: 2.05 });
-        return { group:g, ma:0.55, mb:0.3, tick(t){ g.rotation.y += t*0.06; } };
+        // ограниченное покачивание вокруг лицевого ракурса — модель всегда смотрит на зрителя
+        return { group:g, ma:0.55, mb:0.3, tick(t){ g.rotation.y += Math.sin(t*0.22)*0.3; } };
       },
       circuit(){ // Разработка — печатная плата (CC0 Poly Haven): инженерия/системы
         const g = loadScan('./models/circuit_board/circuit_board_1k.gltf', { rotX: -1.25, size: 2.3 });
-        return { group:g, ma:0.5, mb:0.3, tick(t){ g.rotation.z = Math.sin(t*0.45)*0.05; g.rotation.y += t*0.05; } };
+        return { group:g, ma:0.5, mb:0.3, tick(t){ g.rotation.z = Math.sin(t*0.45)*0.05; g.rotation.y += Math.sin(t*0.3)*0.22; } };
       },
       watch(){ // Автоматизация — карманный хронометр (CC0 Poly Haven): механизм/процессы/точность
         const g = loadScan('./models/pocket_watch/vintage_pocket_watch_1k.gltf', { rotY: Math.PI, size: 2.1 });
-        return { group:g, ma:0.5, mb:0.3, tick(t){ g.rotation.z = Math.sin(t*1.1)*0.07; } };
+        return { group:g, ma:0.5, mb:0.3, tick(t){ g.rotation.z = Math.sin(t*1.1)*0.07; g.rotation.y += Math.sin(t*0.28)*0.18; } };
       }
     };
     function loadScan(url, opts){
@@ -1458,10 +1459,10 @@ class Component extends DCLogic {
     try{ renderer = new THREE.WebGLRenderer({antialias:true, alpha:false, powerPreference:'low-power'}); }catch(e){ return null; }
     renderer.setSize(W,H); renderer.setClearColor(0x0b0906,1);
     const isBust = role==='team';
-    scene.add(new THREE.AmbientLight(0x403428, isBust?0.16:0.28));
-    const key = new THREE.DirectionalLight(0xfff2e0, isBust?4.6:3.2); key.position.set(3,4,5); scene.add(key);
-    const rim = new THREE.DirectionalLight(0xc66048, isBust?2.0:2.4); rim.position.set(-4,1.5,-3); scene.add(rim);
-    const fill = new THREE.DirectionalLight(0x9a8d7d, 0.55); fill.position.set(-2,-3,3); scene.add(fill);
+    scene.add(new THREE.AmbientLight(0x403428, isBust?0.3:0.28));
+    const key = new THREE.DirectionalLight(0xfff2e0, isBust?5.6:3.2); key.position.set(3,4,5); scene.add(key);
+    const rim = new THREE.DirectionalLight(0xc66048, isBust?2.2:2.4); rim.position.set(-4,1.5,-3); scene.add(rim);
+    const fill = new THREE.DirectionalLight(0x9a8d7d, isBust?0.9:0.55); fill.position.set(-2,-3,3); scene.add(fill);
     const rampCanvas = document.createElement('canvas'); rampCanvas.width=4; rampCanvas.height=1;
     const rctx = rampCanvas.getContext('2d'); [40,110,175,235].forEach((v,i)=>{ rctx.fillStyle='rgb('+v+','+v+','+v+')'; rctx.fillRect(i,0,1,1); });
     const ramp = new THREE.CanvasTexture(rampCanvas); ramp.minFilter=THREE.NearestFilter; ramp.magFilter=THREE.NearestFilter; ramp.generateMipmaps=false;
@@ -1479,7 +1480,7 @@ class Component extends DCLogic {
     const effect = new AsciiEffect(renderer, CHARS, {invert:true, resolution: role==='team' ? 0.24 : 0.19});
     effect.setSize(W,H);
     const dom = effect.domElement; dom.setAttribute('aria-hidden','true');
-    dom.style.cssText = 'position:absolute;inset:0;z-index:1;color:#c15a43;font-family:"IBM Plex Mono",ui-monospace,monospace;line-height:0.84;letter-spacing:0;text-align:left;pointer-events:none;overflow:hidden';
+    dom.style.cssText = 'position:absolute;inset:0;z-index:1;color:'+(isBust?'#d87a60':'#c15a43')+';font-family:"IBM Plex Mono",ui-monospace,monospace;font-weight:600;line-height:0.84;letter-spacing:0;text-align:left;pointer-events:none;overflow:hidden';
     if(getComputedStyle(host).position === 'static') host.style.position = 'relative';
     host.appendChild(dom); canvas.style.visibility = 'hidden';
     const mouse = {x:0, y:0, tx:0, ty:0}; let raf=0, running=false, visible=false, t=0;
