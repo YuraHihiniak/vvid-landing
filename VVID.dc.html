@@ -1821,6 +1821,7 @@ class Component extends DCLogic {
       toggleCalm: ()=> this.setCalm(!this._calm),
       toggleAcc: (e)=> this.toggleAcc(e),
       onSubmit: (e)=> this.onSubmit(e),
+      trackTelegramClick: ()=> this.trackTelegramClick(),
       setLang: (lng)=> this.setLang(lng),
       toggleLang: ()=> this.setLang(this._lang==='en'?'ru':'en'),
       toggleMenu: ()=>{ const h=this.root.querySelector('[data-adaptive-hdr]'); if(h) h.classList.toggle('m-open'); },
