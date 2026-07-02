@@ -1600,6 +1600,7 @@ class Component extends DCLogic {
         body:JSON.stringify({ task, contact, budget:val('budget'), about:val('about'), hp:val('hp') }) });
       const data=await r.json().catch(()=>({}));
       if(!r.ok || !data.ok) throw new Error('rejected');
+      try{ window.ym && window.ym(110339563,'reachGoal','brief_submit'); }catch(e){}
       if(b){ b.disabled=true; b.style.opacity='1'; b.style.background='#1b1812'; b.style.color='#e4ded2';
         b.textContent=(en?'brief sent':'бриф отправлен')+(data.ticket?(' · '+data.ticket):' ✓'); }
     }catch(err){
