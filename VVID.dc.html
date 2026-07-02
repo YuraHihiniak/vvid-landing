@@ -35,7 +35,7 @@
 <script src="./support.js"></script>
 <script>(function(){try{var m=(window.innerWidth<760)||(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches);if(!m){['https://unpkg.com/lenis@1.1.14/dist/lenis.min.js'].forEach(function(u){var s=document.createElement('script');s.defer=true;s.src=u;document.head.appendChild(s);});}}catch(e){}})();</script>
 <script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.161.0/build/three.module.min.js","three/addons/":"https://unpkg.com/three@0.161.0/examples/jsm/"}}</script>
-<script>(function(){try{var m=(window.innerWidth<760)||(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches);if(m||window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;var s=document.createElement('script');s.type='module';s.textContent="import * as THREE from 'three';import { AsciiEffect } from 'three/addons/effects/AsciiEffect.js';window.THREE=THREE;window.AsciiEffect=AsciiEffect;window.dispatchEvent(new Event('three-ready'));";document.head.appendChild(s);}catch(e){}})();</script>
+<script>(function(){try{var m=(window.innerWidth<760)||(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches);if(m||window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;var s=document.createElement('script');s.type='module';s.textContent="import * as THREE from 'three';import { AsciiEffect } from 'three/addons/effects/AsciiEffect.js';import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';window.THREE=THREE;window.AsciiEffect=AsciiEffect;window.GLTFLoader=GLTFLoader;window.dispatchEvent(new Event('three-ready'));";document.head.appendChild(s);}catch(e){}})();</script>
 </head>
 <body>
 <x-dc>
@@ -1411,6 +1411,28 @@ class Component extends DCLogic {
         const tip = new THREE.Mesh(tipGeo, matCream); tip.rotation.z=-0.75; tip.position.set(-0.62,-0.72,0); g.add(tip);
         const dot = new THREE.Mesh(new THREE.SphereGeometry(0.06,12,12), matGlow); dot.position.set(-0.72,-0.85,0.05); g.add(dot);
         return { group:g, tick(t){ const w=Math.sin(t*1.6)*0.06; pen.position.set(w*0.6,w*0.3,0); tip.position.set(-0.62+w*0.6,-0.72+w*0.3,0); } };
+      },
+      bust(){ // Направления — детализированный мраморный бюст (CC0 Poly Haven), скан с богатой поверхностью
+        const g = new THREE.Group();
+        let spin=0, spinV=0;
+        if(window.GLTFLoader){
+          const loader = new window.GLTFLoader();
+          loader.load('./models/marble_bust/marble_bust_01_1k.gltf', (gltf)=>{
+            const model = gltf.scene;
+            model.rotation.y = Math.PI; // скан по умолчанию смотрит от камеры — разворачиваем лицом
+            const box = new THREE.Box3().setFromObject(model);
+            const sphere = box.getBoundingSphere(new THREE.Sphere());
+            if(sphere.radius>0) model.scale.setScalar(2.05/sphere.radius);
+            const box2 = new THREE.Box3().setFromObject(model);
+            const c = box2.getCenter(new THREE.Vector3());
+            model.position.sub(c);
+            model.traverse(o=>{ if(o.isMesh && o.material){ o.material.roughness = Math.min(0.75, (o.material.roughness??0.5)+0.15); } });
+            g.add(model);
+          });
+        }
+        return { group:g, ma:0.55, mb:0.3,
+          kick(){ spinV += 1.6; },
+          tick(t){ spinV *= 0.94; spin += spinV*0.016; g.rotation.y += spin + t*0.06; } };
       }
     };
     return build;
@@ -1426,9 +1448,10 @@ class Component extends DCLogic {
     let renderer;
     try{ renderer = new THREE.WebGLRenderer({antialias:true, alpha:false, powerPreference:'low-power'}); }catch(e){ return null; }
     renderer.setSize(W,H); renderer.setClearColor(0x0b0906,1);
-    scene.add(new THREE.AmbientLight(0x403428, 0.28));
-    const key = new THREE.DirectionalLight(0xfff2e0, 3.2); key.position.set(3,4,5); scene.add(key);
-    const rim = new THREE.DirectionalLight(0xc66048, 2.4); rim.position.set(-4,1.5,-3); scene.add(rim);
+    const isBust = role==='team';
+    scene.add(new THREE.AmbientLight(0x403428, isBust?0.16:0.28));
+    const key = new THREE.DirectionalLight(0xfff2e0, isBust?4.6:3.2); key.position.set(3,4,5); scene.add(key);
+    const rim = new THREE.DirectionalLight(0xc66048, isBust?2.0:2.4); rim.position.set(-4,1.5,-3); scene.add(rim);
     const fill = new THREE.DirectionalLight(0x9a8d7d, 0.55); fill.position.set(-2,-3,3); scene.add(fill);
     const rampCanvas = document.createElement('canvas'); rampCanvas.width=4; rampCanvas.height=1;
     const rctx = rampCanvas.getContext('2d'); [40,110,175,235].forEach((v,i)=>{ rctx.fillStyle='rgb('+v+','+v+','+v+')'; rctx.fillRect(i,0,1,1); });
@@ -1437,14 +1460,14 @@ class Component extends DCLogic {
     const matDark  = new THREE.MeshToonMaterial({ color:0x1c1712, gradientMap:ramp });
     const matTerra = new THREE.MeshToonMaterial({ color:0xc0563f, gradientMap:ramp });
     const matGlow  = new THREE.MeshBasicMaterial({ color:0xffcaa6 });
-    const KIND_SETS = { cases:['ping','lamp','card','monitor'], team:['code','cycle','pen'] };
+    const KIND_SETS = { cases:['ping','lamp','card','monitor'], team:['bust'] };
     const kinds = KIND_SETS[role] || ['ping'];
     const build = this.buildAscii3DIcons(THREE, matCream, matDark, matTerra, matGlow);
     const icons = kinds.map(k=> build[k] ? build[k]() : build.ping());
     icons.forEach((ic,i)=>{ ic.group.visible=(i===0); scene.add(ic.group); });
     let activeIdx = 0, pendingIdx = -1, morphT = -1;
     const CHARS = ' .·:-=+*oxaев#%@';
-    const effect = new AsciiEffect(renderer, CHARS, {invert:true, resolution:0.19});
+    const effect = new AsciiEffect(renderer, CHARS, {invert:true, resolution: role==='team' ? 0.24 : 0.19});
     effect.setSize(W,H);
     const dom = effect.domElement; dom.setAttribute('aria-hidden','true');
     dom.style.cssText = 'position:absolute;inset:0;z-index:1;color:#c15a43;font-family:"IBM Plex Mono",ui-monospace,monospace;line-height:0.84;letter-spacing:0;text-align:left;pointer-events:none;overflow:hidden';
@@ -1466,8 +1489,8 @@ class Component extends DCLogic {
         }
         if(morphT>=1){ morphT=-1; icons[activeIdx].group.scale.setScalar(1); }
       } else {
-        cur.group.rotation.y = Math.sin(t*0.4)*0.06 + mouse.x*0.12;
-        cur.group.rotation.x = Math.sin(t*0.3)*0.025 + mouse.y*0.08;
+        cur.group.rotation.y = Math.sin(t*0.4)*0.06 + mouse.x*(cur.ma||0.12);
+        cur.group.rotation.x = Math.sin(t*0.3)*0.025 + mouse.y*(cur.mb||0.08);
         cur.tick(t);
       }
       effect.render(scene, camera);
@@ -1480,7 +1503,7 @@ class Component extends DCLogic {
     const onResize = ()=>{ const rr=canvas.getBoundingClientRect(); W=Math.max(1,Math.round(rr.width)); H=Math.max(1,Math.round(rr.height||360)); camera.aspect=W/H; camera.updateProjectionMatrix(); renderer.setSize(W,H); effect.setSize(W,H); };
     window.addEventListener('resize', onResize);
     return {
-      morph(idx){ idx=Math.max(0,Math.min(icons.length-1,idx)); if(idx===activeIdx && morphT<0) return; pendingIdx=idx; morphT=0; },
+      morph(idx){ if(icons.length===1){ if(icons[0].kick) icons[0].kick(); return; } idx=Math.max(0,Math.min(icons.length-1,idx)); if(idx===activeIdx && morphT<0) return; pendingIdx=idx; morphT=0; },
       tick(n){ n=n||1; for(let i=0;i<n;i++){ t+=0.05; const cur=icons[activeIdx]; if(morphT>=0){ morphT+=0.05/MORPH_DUR; if(morphT<0.5){ const s=Math.max(0.001,1-(morphT/0.5)); cur.group.scale.setScalar(s); cur.group.rotation.y+=0.28; } else { if(cur.group.visible){ cur.group.visible=false; activeIdx=pendingIdx; icons[activeIdx].group.scale.setScalar(0.001); icons[activeIdx].group.visible=true; } const s=Math.min(1,(morphT-0.5)/0.5); icons[activeIdx].group.scale.setScalar(s); icons[activeIdx].group.rotation.y-=0.16*(1-s); } if(morphT>=1){ morphT=-1; icons[activeIdx].group.scale.setScalar(1); } } else { icons[activeIdx].group.rotation.y=Math.sin(t*0.4)*0.06; icons[activeIdx].group.rotation.x=Math.sin(t*0.3)*0.025; icons[activeIdx].tick(t); } effect.render(scene,camera); } },
       pause(){ cancelAnimationFrame(raf); running=false; },
       resume(){ start(); },
