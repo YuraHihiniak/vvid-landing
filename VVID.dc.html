@@ -1413,7 +1413,7 @@ class Component extends DCLogic {
         return { group:g, tick(t){ const w=Math.sin(t*1.6)*0.06; pen.position.set(w*0.6,w*0.3,0); tip.position.set(-0.62+w*0.6,-0.72+w*0.3,0); } };
       },
       bust(){ // Дизайн — мраморный бюст (CC0 Poly Haven): скульптура = форма/искусство
-        const g = loadScan('./models/marble_bust/marble_bust_01_1k.gltf', { rotY: Math.PI, size: 2.05 });
+        const g = loadScan('./models/marble_bust/marble_bust_01_1k.gltf', { size: 2.05 }); // native-ориентация = лицом (PI разворачивал спиной)
         // ограниченное покачивание вокруг лицевого ракурса — модель всегда смотрит на зрителя
         return { group:g, ma:0.55, mb:0.3, tick(t){ g.rotation.y += Math.sin(t*0.22)*0.3; } };
       },
@@ -1422,7 +1422,7 @@ class Component extends DCLogic {
         return { group:g, ma:0.5, mb:0.3, tick(t){ g.rotation.z = Math.sin(t*0.45)*0.05; g.rotation.y += Math.sin(t*0.3)*0.22; } };
       },
       watch(){ // Автоматизация — карманный хронометр (CC0 Poly Haven): механизм/процессы/точность
-        const g = loadScan('./models/pocket_watch/vintage_pocket_watch_1k.gltf', { rotY: Math.PI, size: 2.1 });
+        const g = loadScan('./models/pocket_watch/vintage_pocket_watch_1k.gltf', { size: 2.1 }); // native = циферблатом
         return { group:g, ma:0.5, mb:0.3, tick(t){ g.rotation.z = Math.sin(t*1.1)*0.07; g.rotation.y += Math.sin(t*0.28)*0.18; } };
       }
     };
