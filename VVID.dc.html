@@ -1457,7 +1457,7 @@ class Component extends DCLogic {
     const camera = new THREE.PerspectiveCamera(38, W/H, 0.1, 100); camera.position.set(0,0,5.2);
     let renderer;
     try{ renderer = new THREE.WebGLRenderer({antialias:true, alpha:false, powerPreference:'low-power'}); }catch(e){ return null; }
-    renderer.setSize(W,H); renderer.setClearColor(0x0b0906,1);
+    renderer.setSize(W,H); renderer.setClearColor(0x000000,1); // чисто чёрный фон → пустые клетки = пробел, без точечной сетки
     const isBust = role==='team';
     scene.add(new THREE.AmbientLight(0x403428, isBust?0.3:0.28));
     const key = new THREE.DirectionalLight(0xfff2e0, isBust?5.6:3.2); key.position.set(3,4,5); scene.add(key);
