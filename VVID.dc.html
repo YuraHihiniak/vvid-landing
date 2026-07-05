@@ -170,12 +170,12 @@
   .proc-row{transition:padding-left .55s cubic-bezier(.16,1,.3,1)}
   .proc-title{transition:color .4s}
   .proc-num{transition:color .4s,opacity .4s}
-  .proc-meta{justify-self:end;border:1px solid rgba(228,222,210,.2);border-radius:50px;padding:7px 15px;transition:color .4s,border-color .4s,background .4s}
+  .proc-meta{justify-self:end;border:1px solid rgba(27,24,18,.25);border-radius:50px;padding:7px 15px;transition:color .4s,border-color .4s,background .4s}
   @media (hover:hover) and (pointer:fine){
     .proc-row:hover{padding-left:clamp(10px,1.4vw,24px)}
     .proc-row:hover .proc-title{color:var(--acc,#c66048)}
-    .proc-row:hover .proc-num{color:#e4ded2;opacity:1}
-    .proc-row:hover .proc-meta{color:#13110c;background:var(--acc,#b9543f);border-color:var(--acc,#b9543f)}
+    .proc-row:hover .proc-num{color:#1b1812;opacity:1}
+    .proc-row:hover .proc-meta{color:#fff;background:var(--acc,#b9543f);border-color:var(--acc,#b9543f)}
   }
 
   /* floating telegram CTA */
@@ -236,8 +236,8 @@
       <span data-navgroup="1" style="display:flex;align-items:center;gap:30px">
         <a href="#capabilities" style="opacity:.7" style-hover="opacity:1">{{ t.navServices }}</a>
         <a href="#work" style="opacity:.7" style-hover="opacity:1">{{ t.navCases }}</a>
-        <a href="#process" style="opacity:.7" style-hover="opacity:1">{{ t.navProcess }}</a>
         <a href="#pricing" style="opacity:.7" style-hover="opacity:1">{{ t.navPricing }}</a>
+        <a href="#process" style="opacity:.7" style-hover="opacity:1">{{ t.navProcess }}</a>
       </span>
       <button data-calm-btn="1" ref="{{ setCalmBtn }}" onClick="{{ toggleCalm }}" aria-pressed="false" style="display:flex;align-items:center;gap:7px;background:none;border:none;color:inherit;font-family:inherit;font-size:11px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;opacity:.7" style-hover="opacity:1"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;display:inline-block"></span>motion <span data-calm-label="1" ref="{{ setCalmLabel }}">on</span></button>
       <button data-lang-sw="1" onClick="{{ toggleLang }}" aria-label="ru / en" style="display:flex;align-items:center;gap:5px;background:none;border:none;color:inherit;font-family:inherit;font-size:11px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer"><span data-l="ru">ru</span><span style="opacity:.35">/</span><span data-l="en">en</span></button>
@@ -246,8 +246,8 @@
       <div class="m-panel">
         <a href="#capabilities" onClick="{{ closeMenu }}">{{ t.navServices }}</a>
         <a href="#work" onClick="{{ closeMenu }}">{{ t.navCases }}</a>
-        <a href="#process" onClick="{{ closeMenu }}">{{ t.navProcess }}</a>
         <a href="#pricing" onClick="{{ closeMenu }}">{{ t.navPricing }}</a>
+        <a href="#process" onClick="{{ closeMenu }}">{{ t.navProcess }}</a>
       </div>
     </nav>
     </div>
@@ -387,60 +387,31 @@
     </div>
   </section>
 
-  <!-- 05 PROCESS -->
-  <section id="process" data-screen-label="05 Process" style="position:relative;z-index:10;background:#13110c;color:#e4ded2;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
-    <div data-speed="6" data-pmax="150" style="position:absolute;bottom:-4vw;right:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(228,222,210,.04);pointer-events:none;user-select:none">05</div>
+  <!-- 05 PRICING -->
+  <section id="pricing" data-screen-label="05 Pricing" style="position:relative;z-index:10;background:#13110c;color:#e4ded2;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
+    <div data-speed="6" data-pmax="150" style="position:absolute;top:1vw;left:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(228,222,210,.04);pointer-events:none;user-select:none">05</div>
     <div style="max-width:1320px;margin:0 auto;position:relative">
-      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:clamp(50px,7vw,90px)">
-        <div>
-          <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8f877a;margin-bottom:24px">{{ t.fig05 }}</div>
-          <h2 data-kinetic="1" data-i18n="procH2" style="font-size:clamp(28px,4.6vw,64px);line-height:1.02;letter-spacing:-.035em;font-weight:600;margin:0;max-width:18ch">{{ t.procH2 }}</h2>
-        </div>
-        <div data-reveal="1" style="max-width:280px">
-          <div style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--acc,#b9543f);margin-bottom:12px">{{ t.procRetLabel }}</div>
-          <div style="font-size:15px;line-height:1.5;color:#b6ad9e">{{ t.procRetText }}</div>
-        </div>
-      </div>
-      <div style="border-top:1px solid rgba(228,222,210,.18)">
-        <sc-for list="{{ process }}" as="st" hint-placeholder-count="5">
-          <div class="proc-row" data-reveal="1" data-delay="{{ st.delay }}" style="display:grid;grid-template-columns:60px 1fr auto;gap:clamp(20px,4vw,60px);align-items:baseline;padding:clamp(24px,3.4vw,40px) 0;border-bottom:1px solid rgba(228,222,210,.18)">
-            <div class="proc-num" style="font-family:'IBM Plex Mono',monospace;font-size:14px;letter-spacing:.05em;color:var(--acc,#b9543f)">{{ st.n }}</div>
-            <div>
-              <h3 class="proc-title" style="font-size:clamp(20px,2.4vw,30px);line-height:1.05;letter-spacing:-.03em;font-weight:600;margin:0 0 10px">{{ st.title }}</h3>
-              <p style="margin:0;font-size:15px;line-height:1.5;color:#b6ad9e;max-width:60ch;text-wrap:pretty">{{ st.desc }}</p>
-            </div>
-            <div class="proc-meta" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#8f877a;white-space:nowrap">{{ st.meta }}</div>
-          </div>
-        </sc-for>
-      </div>
-    </div>
-  </section>
-
-  <!-- 06 PRICING -->
-  <section id="pricing" data-screen-label="06 Pricing" style="position:relative;z-index:10;background:#e4ded2;color:#1b1812;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
-    <div data-speed="6" data-pmax="150" style="position:absolute;top:1vw;left:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(27,24,18,.04);pointer-events:none;user-select:none">06</div>
-    <div style="max-width:1320px;margin:0 auto;position:relative">
-      <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8c8474;margin-bottom:24px">{{ t.fig06 }}</div>
+      <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8f877a;margin-bottom:24px">{{ t.fig05 }}</div>
       <h2 data-kinetic="1" data-i18n="pricingH2" style="font-size:clamp(28px,4.6vw,64px);line-height:1.02;letter-spacing:-.035em;font-weight:600;margin:0 0 clamp(50px,7vw,80px);max-width:18ch">{{ t.pricingH2 }}</h2>
-      <div data-reveal="1" style="border-top:1px solid rgba(27,24,18,.22)">
+      <div data-reveal="1" style="border-top:1px solid rgba(228,222,210,.18)">
         <sc-for list="{{ pricing }}" as="pr" hint-placeholder-count="3">
-          <div style="border-bottom:1px solid rgba(27,24,18,.22)">
-            <button data-acc-head="1" onClick="{{ toggleAcc }}" aria-expanded="false" style="width:100%;display:flex;align-items:center;gap:20px;background:none;border:none;color:#1b1812;text-align:left;padding:clamp(24px,3vw,34px) 2px;cursor:pointer">
+          <div style="border-bottom:1px solid rgba(228,222,210,.18)">
+            <button data-acc-head="1" onClick="{{ toggleAcc }}" aria-expanded="false" style="width:100%;display:flex;align-items:center;gap:20px;background:none;border:none;color:#e4ded2;text-align:left;padding:clamp(24px,3vw,34px) 2px;cursor:pointer">
               <span style="font-size:12px;letter-spacing:.1em;color:var(--acc,#b9543f);flex:none;width:34px">{{ pr.n }}</span>
               <span style="flex:1;display:flex;flex-direction:column;gap:7px">
                 <span style="font-size:clamp(20px,2.8vw,34px);line-height:1.05;letter-spacing:-.03em;font-weight:600">{{ pr.title }}</span>
-                <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.03em;color:#8c8474;text-transform:lowercase">{{ pr.range }}</span>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.03em;color:#8f877a;text-transform:lowercase">{{ pr.range }}</span>
               </span>
-              <span data-chev style="flex:none;width:16px;height:16px;position:relative;transition:transform .5s cubic-bezier(.16,1,.3,1)"><span style="position:absolute;top:7px;left:0;width:16px;height:1px;background:#1b1812"></span><span style="position:absolute;top:0;left:7px;width:1px;height:16px;background:#1b1812"></span></span>
+              <span data-chev style="flex:none;width:16px;height:16px;position:relative;transition:transform .5s cubic-bezier(.16,1,.3,1)"><span style="position:absolute;top:7px;left:0;width:16px;height:1px;background:#e4ded2"></span><span style="position:absolute;top:0;left:7px;width:1px;height:16px;background:#e4ded2"></span></span>
             </button>
             <div data-acc-panel style="max-height:0;overflow:hidden;opacity:0;transition:max-height .6s cubic-bezier(.16,1,.3,1),opacity .4s">
               <div style="display:flex;flex-wrap:wrap;gap:48px;padding:0 2px 36px 56px">
                 <div style="flex:1;min-width:240px">
-                  <p style="margin:0;font-size:16px;line-height:1.55;color:#5a5346;max-width:44ch;text-wrap:pretty">{{ pr.desc }}</p>
+                  <p style="margin:0;font-size:16px;line-height:1.55;color:#b6ad9e;max-width:44ch;text-wrap:pretty">{{ pr.desc }}</p>
                 </div>
                 <div style="flex:1;min-width:240px;display:flex;flex-direction:column;gap:11px">
                   <sc-for list="{{ pr.points }}" as="pt" hint-placeholder-count="4">
-                    <div style="display:flex;align-items:flex-start;gap:11px;font-size:14px;color:#3a352c;border-bottom:1px solid rgba(27,24,18,.1);padding-bottom:11px"><span style="color:var(--acc,#b9543f);flex:none">—</span>{{ pt }}</div>
+                    <div style="display:flex;align-items:flex-start;gap:11px;font-size:14px;color:#cfc7b9;border-bottom:1px solid rgba(228,222,210,.1);padding-bottom:11px"><span style="color:var(--acc,#b9543f);flex:none">—</span>{{ pt }}</div>
                   </sc-for>
                 </div>
               </div>
@@ -448,7 +419,36 @@
           </div>
         </sc-for>
       </div>
-      <div data-reveal="1" style="margin-top:30px;font-size:12px;letter-spacing:.06em;color:#8c8474;display:flex;align-items:center;gap:10px"><span style="color:var(--acc,#b9543f)">—</span>{{ t.pricingFootnote }}</div>
+      <div data-reveal="1" style="margin-top:30px;font-size:12px;letter-spacing:.06em;color:#8f877a;display:flex;align-items:center;gap:10px"><span style="color:var(--acc,#b9543f)">—</span>{{ t.pricingFootnote }}</div>
+    </div>
+  </section>
+
+  <!-- 06 PROCESS -->
+  <section id="process" data-screen-label="06 Process" style="position:relative;z-index:10;background:#e4ded2;color:#1b1812;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
+    <div data-speed="6" data-pmax="150" style="position:absolute;bottom:-4vw;right:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(27,24,18,.04);pointer-events:none;user-select:none">06</div>
+    <div style="max-width:1320px;margin:0 auto;position:relative">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:clamp(50px,7vw,90px)">
+        <div>
+          <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8c8474;margin-bottom:24px">{{ t.fig06 }}</div>
+          <h2 data-kinetic="1" data-i18n="procH2" style="font-size:clamp(28px,4.6vw,64px);line-height:1.02;letter-spacing:-.035em;font-weight:600;margin:0;max-width:18ch">{{ t.procH2 }}</h2>
+        </div>
+        <div data-reveal="1" style="max-width:280px">
+          <div style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--acc,#b9543f);margin-bottom:12px">{{ t.procRetLabel }}</div>
+          <div style="font-size:15px;line-height:1.5;color:#5a5346">{{ t.procRetText }}</div>
+        </div>
+      </div>
+      <div style="border-top:1px solid rgba(27,24,18,.22)">
+        <sc-for list="{{ process }}" as="st" hint-placeholder-count="5">
+          <div class="proc-row" data-reveal="1" data-delay="{{ st.delay }}" style="display:grid;grid-template-columns:60px 1fr auto;gap:clamp(20px,4vw,60px);align-items:baseline;padding:clamp(24px,3.4vw,40px) 0;border-bottom:1px solid rgba(27,24,18,.22)">
+            <div class="proc-num" style="font-family:'IBM Plex Mono',monospace;font-size:14px;letter-spacing:.05em;color:var(--acc,#b9543f)">{{ st.n }}</div>
+            <div>
+              <h3 class="proc-title" style="font-size:clamp(20px,2.4vw,30px);line-height:1.05;letter-spacing:-.03em;font-weight:600;margin:0 0 10px">{{ st.title }}</h3>
+              <p style="margin:0;font-size:15px;line-height:1.5;color:#5a5346;max-width:60ch;text-wrap:pretty">{{ st.desc }}</p>
+            </div>
+            <div class="proc-meta" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#8c8474;white-space:nowrap">{{ st.meta }}</div>
+          </div>
+        </sc-for>
+      </div>
     </div>
   </section>
 
@@ -1660,9 +1660,9 @@ class Component extends DCLogic {
         fig04:'fig.04 — кейсы', casesH2a:'наши проекты.', casesH2b:'живые — можно открыть.',
         contractBadge:'договор + юрлицо', fig04a:'fig.04.a — ascii / пайплайн',
         caseCloserEyebrow:'следующий слот — свободен', caseCloserA:'здесь будет ', caseCloserB:'ваш кейс', caseCloserCta:'обсудить задачу →',
-        fig05:'fig.05 — процесс', procH2:'работаем как ваша команда — прозрачно, итерациями.',
+        fig05:'fig.05 — прайс', procH2:'работаем как ваша команда — прозрачно, итерациями.',
         procRetLabel:'поддержка / retainer', procRetText:'поддержка по договорённости: мониторинг, доработки, гарантии. прямой контакт в telegram.',
-        fig06:'fig.06 — прайс', pricingH2:'прозрачный прайс. без «по запросу», где можно назвать цифру.',
+        fig06:'fig.06 — процесс', pricingH2:'прозрачный прайс. без «по запросу», где можно назвать цифру.',
         pricingFootnote:'гарантия 50 дней: после запуска поддержка бесплатно. дальше — по договорённости.',
         fig07:'fig.07 — направления', fig07a:'fig.07.a — ascii / системы', faqLabel:'faq — частые вопросы',
         fig08:'fig.08 — бриф', briefH2a:'запустим ваш проект ', briefRot:'с гарантией',
@@ -1692,9 +1692,9 @@ class Component extends DCLogic {
         fig04:'fig.04 — work', casesH2a:'our work.', casesH2b:'live — open and see.',
         contractBadge:'contract + legal entity', fig04a:'fig.04.a — ascii / pipeline',
         caseCloserEyebrow:'next slot — open', caseCloserA:'this could be ', caseCloserB:'your case', caseCloserCta:'discuss your task →',
-        fig05:'fig.05 — process', procH2:'we work as your team — transparent, in iterations.',
+        fig05:'fig.05 — pricing', procH2:'we work as your team — transparent, in iterations.',
         procRetLabel:'support / retainer', procRetText:'support by agreement: monitoring, improvements, guarantees. direct contact on telegram.',
-        fig06:'fig.06 — pricing', pricingH2:'transparent pricing. no “on request” where we can name a number.',
+        fig06:'fig.06 — process', pricingH2:'transparent pricing. no “on request” where we can name a number.',
         pricingFootnote:'50-day guarantee: free support after launch. beyond that — by agreement.',
         fig07:'fig.07 — directions', fig07a:'fig.07.a — ascii / systems', faqLabel:'faq — common questions',
         fig08:'fig.08 — brief', briefH2a:'let’s launch your project ', briefRot:'with a guarantee',
