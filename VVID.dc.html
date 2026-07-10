@@ -343,9 +343,8 @@
 
   <!-- 04 CASES — lookbook (artefakt-style: case list + ASCII tech motifs, native scroll) -->
   <section id="work" data-screen-label="04 Cases" style="position:relative;z-index:10;background:#e4ded2;color:#1b1812;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
-    <canvas data-cases-fluid="1" style="position:absolute;inset:0;z-index:0;display:block;width:100%;height:100%;pointer-events:none"></canvas>
-    <div data-speed="6" data-pmax="150" style="position:absolute;top:1vw;right:-2vw;z-index:1;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(27,24,18,.035);pointer-events:none;user-select:none">04</div>
-    <div style="max-width:1320px;margin:0 auto;position:relative;z-index:2">
+    <div data-speed="6" data-pmax="150" style="position:absolute;top:1vw;right:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(27,24,18,.035);pointer-events:none;user-select:none">04</div>
+    <div style="max-width:1320px;margin:0 auto;position:relative">
       <div data-reveal="1" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:clamp(48px,7vw,84px)">
         <div>
           <div style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8c8474;margin-bottom:18px">{{ t.fig04 }}</div>
@@ -683,7 +682,6 @@ class Component extends DCLogic {
     this.initAsciiCases();
     this.initAscii3D();
     this.initHeroFluid();
-    this.initCasesFluid();
     this.initMagnetic();
     this.initCursor();
     this.initFloatCTA();
@@ -775,59 +773,6 @@ class Component extends DCLogic {
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     this._heroFluid={ start, pause:()=>{ if(state.raf){cancelAnimationFrame(state.raf); state.raf=null;} }, resume:start, resize };
     if(!reduce && !this._calm) start();
-  }
-
-  /* CASES — интерактивная жидкая рябь фоном секции (курсор оставляет волны + всплеск на смене кейса; RGB-split) */
-  initCasesFluid(){
-    if(this._casesFluid) return;
-    if(window.matchMedia && window.matchMedia('(pointer:coarse)').matches) return;  // hover-эффект → только точный указатель (мышь)
-    const canvas = this.root.querySelector('[data-cases-fluid]');
-    const host = this.root.querySelector('#work');
-    if(!canvas || !host) return;
-    const N=10;
-    const frag=[
-      'precision highp float;',
-      'uniform vec2 u_res; uniform float u_time; uniform vec3 u_drops['+N+'];',
-      'float ripple(vec2 uv){ float h=0.0; for(int i=0;i<'+N+';i++){ vec3 d=u_drops[i]; if(d.z<0.0) continue; vec2 dp=uv-d.xy; float r=length(dp); float age=d.z; float ring=sin(r*44.0-age*9.0); float env=exp(-r*6.5)*exp(-age*2.5)*smoothstep(0.0,0.05,age); h+=ring*env; } return h; }',
-      'void main(){',
-      '  vec2 uv=gl_FragCoord.xy/u_res.xy; float ar=u_res.x/max(u_res.y,1.0); vec2 p=vec2(uv.x*ar,uv.y);',
-      '  float e=0.0016;',
-      '  float h=ripple(p);',
-      '  float hx=ripple(p+vec2(e,0.0))-ripple(p-vec2(e,0.0));',
-      '  float hy=ripple(p+vec2(0.0,e))-ripple(p-vec2(0.0,e));',
-      '  vec2 grad=vec2(hx,hy)/(2.0*e);',
-      '  vec3 terra=vec3(0.725,0.329,0.247); vec3 cream=vec3(0.894,0.871,0.824);',
-      '  float sr=clamp(length(grad)*0.008,0.0,0.14);',
-      '  float base=clamp(h*1.1,0.0,1.0);',
-      '  vec3 col;',
-      '  col.r=mix(cream.r,terra.r,clamp(base+sr,0.0,1.0));',
-      '  col.g=mix(cream.g,terra.g,base);',
-      '  col.b=mix(cream.b,terra.b,clamp(base-sr,0.0,1.0));',
-      '  float a=clamp(abs(h)*0.78+length(grad)*0.010,0.0,0.68);',
-      '  gl_FragColor=vec4(col,a);',
-      '}'
-    ].join('\n');
-    const P=this._glQuad(canvas,frag);
-    if(!P){ canvas.style.display='none'; return; }
-    const {gl}=P; gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
-    const U={ res:P.u('u_res'), time:P.u('u_time'), drops:[] }; for(let i=0;i<N;i++)U.drops.push(P.u('u_drops['+i+']'));
-    const drops=[]; for(let i=0;i<N;i++)drops.push({x:0,y:0,birth:-99});
-    let di=0; const self=this; const state={raf:null,visible:false};
-    const now0=()=> (performance.now?performance.now():Date.now())*0.001;
-    const addDrop=(nx,ny)=>{ drops[di]={x:nx,y:ny,birth:now0()}; di=(di+1)%N; if(!state.raf) start(); };
-    const resize=()=>{ const w=canvas.clientWidth||host.clientWidth, h=canvas.clientHeight||host.clientHeight; const dpr=Math.min(window.devicePixelRatio||1,1.4); canvas.width=Math.round(w*dpr); canvas.height=Math.round(h*dpr); gl.viewport(0,0,canvas.width,canvas.height); gl.uniform2f(U.res,canvas.width,canvas.height); };
-    let last=0;
-    const ensure=()=>{ const cw=canvas.clientWidth||host.clientWidth, ch=canvas.clientHeight||host.clientHeight; const dpr=Math.min(window.devicePixelRatio||1,1.4); const nw=Math.round(cw*dpr),nh=Math.round(ch*dpr); if(nw>0&&(canvas.width!==nw||canvas.height!==nh)){ canvas.width=nw;canvas.height=nh;gl.viewport(0,0,nw,nh);gl.uniform2f(U.res,nw,nh); } };
-    const draw=(now)=>{ ensure(); const t=now*0.001; const ar=(canvas.width/Math.max(canvas.height,1)); for(let i=0;i<N;i++){ const d=drops[i]; gl.uniform3f(U.drops[i], d.x*ar, d.y, d.birth<0?-1:(t-d.birth)); } gl.uniform1f(U.time,t); gl.clearColor(0,0,0,0); gl.clear(gl.COLOR_BUFFER_BIT); gl.drawArrays(gl.TRIANGLES,0,3); };
-    const frame=(now)=>{ if(self._calm||!state.visible){ state.raf=null; return; } state.raf=requestAnimationFrame(frame); if(now-last<16)return; last=now; draw(now); };
-    const start=()=>{ if(!state.raf && !self._calm && state.visible) state.raf=requestAnimationFrame(frame); };
-    let lx=0,ly=0;
-    this._casesFluidMove=(e)=>{ const rc=canvas.getBoundingClientRect(); if(!rc.height)return; const nx=(e.clientX-rc.left)/rc.width, ny=1.0-(e.clientY-rc.top)/rc.height; if(nx<0||nx>1||ny<0||ny>1)return; if(Math.hypot(nx-lx,ny-ly)>0.02){ addDrop(nx,ny); lx=nx; ly=ny; } };
-    host.addEventListener('mousemove',this._casesFluidMove,{passive:true});
-    this.casesBurst=(nx,ny)=>{ addDrop(nx==null?0.5:nx, ny==null?0.6:ny); };   // всплеск при смене кейса
-    window.addEventListener('resize',resize); resize();
-    const io=new IntersectionObserver((es)=>{ state.visible=es[0].isIntersecting; if(state.visible) start(); },{threshold:0.05}); io.observe(host);
-    this._casesFluid={ start, pause:()=>{ if(state.raf){cancelAnimationFrame(state.raf); state.raf=null;} }, resume:start, resize };
   }
 
   /* ---------- THREE.JS LIQUID-METAL HERO (full 3D · gated · throttled · calm/reduced-aware) ---------- */
@@ -1800,7 +1745,6 @@ class Component extends DCLogic {
     try{ document.documentElement.classList.toggle('vcalm', !!on); }catch(e){}
     try{ if(this._a3d) this._a3d.forEach(t=> on ? t.pause() : t.resume()); }catch(e){}
     try{ if(this._heroFluid) on ? this._heroFluid.pause() : this._heroFluid.resume(); }catch(e){}
-    try{ if(this._casesFluid) on ? this._casesFluid.pause() : this._casesFluid.resume(); }catch(e){}
     if(on){
       if(this._three){ cancelAnimationFrame(this._three.raf); this._three.raf=null; }
       cancelAnimationFrame(this._teamRaf); this._teamRunning=false;
@@ -2011,7 +1955,7 @@ class Component extends DCLogic {
       toggleMenu: ()=>{ const h=this.root.querySelector('[data-adaptive-hdr]'); if(h) h.classList.toggle('m-open'); },
       closeMenu: ()=>{ const h=this.root.querySelector('[data-adaptive-hdr]'); if(h) h.classList.remove('m-open'); },
       setTeamActive: (e)=>{ const t=e.currentTarget; const i=parseInt(t&&t.getAttribute('data-idx'),10)||0; if(this.switchTeam) this.switchTeam(i,true); },
-      setCaseActive: (e)=>{ const t=e.currentTarget; const i=parseInt(t&&t.getAttribute('data-idx'),10)||0; if(this._asciiCases) this._asciiCases.switchTo(i); try{ if(this.casesBurst){ const cv=this.root.querySelector('[data-cases-fluid]'); if(cv){ const rc=cv.getBoundingClientRect(); let cx=e.clientX,cy=e.clientY; if(!cx){ const br=t.getBoundingClientRect(); cx=br.left+br.width*0.5; cy=br.top+br.height*0.5; } this.casesBurst((cx-rc.left)/rc.width, 1.0-(cy-rc.top)/rc.height); } } }catch(_){} },
+      setCaseActive: (e)=>{ const t=e.currentTarget; const i=parseInt(t&&t.getAttribute('data-idx'),10)||0; if(this._asciiCases) this._asciiCases.switchTo(i); },
       lang: L, t: T[L],
       principles: D.principles[L],
       capabilities: D.capabilities[L],
