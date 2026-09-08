@@ -178,6 +178,9 @@
   .hero-kin,.hero-scrollcue{transition:opacity .55s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
   html.film-run .hero-kin{opacity:0;transform:translateY(-28px);pointer-events:none}
   html.film-run .hero-scrollcue{opacity:0}
+  /* scene-wipe: следующая секция наезжает на приколоченный пэйофф фильма (высота обёртки уже включает этот хвост) */
+  #top + section{margin-top:calc(-1 * var(--film-overlap, 0px))}
+  [data-film-canvas]{transform-origin:50% 50%;will-change:transform,opacity}
   .film-skip{background:none;border:1px solid rgba(255,255,255,.35);color:rgba(255,255,255,.85);font:500 10px/1 'IBM Plex Mono',ui-monospace,monospace;letter-spacing:.2em;text-transform:uppercase;padding:10px 14px;cursor:pointer;border-radius:50px;transition:opacity .4s,background .35s,color .35s}
   .film-skip:hover{background:rgba(255,255,255,.12);color:#fff}
   @media (pointer:coarse){ .film-cap{top:clamp(96px,17vh,150px);bottom:auto;max-width:min(88vw,22ch)} .film-cap .fc-t{font-size:clamp(26px,7.4vw,44px)} html.film-end .film-cap[data-cap="end"] .fc-t{font-size:clamp(30px,9vw,56px)} .film-skip{top:74px;right:16px} }
@@ -279,6 +282,7 @@
     <canvas data-film-canvas="1" aria-hidden="true" style="position:absolute;inset:0;z-index:1;display:block;width:100%;height:100%;pointer-events:none;opacity:0"></canvas>
     <div class="hero-flood-grain" aria-hidden="true" style="z-index:2"></div>
     <div class="hero-vig" aria-hidden="true" style="z-index:2"></div>
+    <div data-film-dim="1" aria-hidden="true" style="position:absolute;inset:0;z-index:2;background:#13110c;opacity:0;pointer-events:none"></div>
     <div data-film-copy="1" style="position:relative;z-index:3;flex:1;display:flex;flex-direction:column;width:100%;max-width:1320px;margin:0 auto;padding:clamp(86px,10vh,118px) 26px clamp(18px,3vh,30px)">
       <h1 class="hero-kin" aria-label="{{ t.heroBigAria }}" style="flex:1;display:flex;flex-direction:column;justify-content:center;margin:0">
         <span class="kl"><span style="animation-delay:.04s">{{ t.heroBig1 }}</span></span>
@@ -636,7 +640,7 @@ class VFilm {
     this.loaded=true;
   }
   slice(b,ab){ let off=0; b.sizes.forEach((sz,k)=>{ this.buf[b.first+k]=ab.slice(off,off+sz); off+=sz; }); if(this.cur<0) this.cur=0; this.fill(); }
-  layout(){ if(!this.frames||!this.wrap) return; this.wrap.style.height=Math.round((this.sticky.clientHeight||innerHeight)+this.frames*this.pxPerFrame)+'px'; }
+  layout(){ if(!this.frames||!this.wrap) return; const sh=this.sticky.clientHeight||innerHeight; this.overlap=Math.round(sh*(this.overlapVh||0)); this.wrap.style.height=Math.round(sh+this.frames*this.pxPerFrame+this.overlap)+'px'; try{ document.documentElement.style.setProperty('--film-overlap', this.overlap+'px'); }catch(e){} }
   ready(frac,first){ return new Promise(res=>{ const tick=()=>{ if(this.destroyed) return res(); const okB=this.m?(this.loadedBytes/this.m.totalBytes>=frac):false; let okF=!!this.m; if(okF){ for(let i=0;i<first;i++){ if(!this.bmp.has(i)){ okF=false; break; } } } (okB&&okF)?res():setTimeout(tick,60); }; tick(); }); }
   inWindow(i){ const lo=this.cur-(this.dir>0?this.windowBehind:this.windowAhead), hi=this.cur+(this.dir>0?this.windowAhead:this.windowBehind); return i>=lo&&i<=hi; }
   fill(){ if(this.cur<0||!this.m) return; for(const [i,b] of this.bmp){ if(!this.inWindow(i)){ b.close(); this.bmp.delete(i); } }
@@ -645,7 +649,9 @@ class VFilm {
   mapTime(p){ for(const h of this.holds){ if(p>=h[0]&&p<=h[1]) return h[2]; }
     let pP=0,pT=0,nP=1,nT=1; for(const h of this.holds){ if(h[1]<=p&&h[1]>=pP){ pP=h[1]; pT=h[2]; } if(h[0]>=p&&h[0]<=nP){ nP=h[0]; nT=h[2]; } }
     return pT+(p-pP)/Math.max(1e-6,nP-pP)*(nT-pT); }
-  progress(){ const r=this.wrap.getBoundingClientRect(); const range=r.height-(this.sticky.clientHeight||innerHeight); return range>0?Math.min(1,Math.max(0,-r.top/range)):0; }
+  progress(){ const r=this.wrap.getBoundingClientRect(); const range=r.height-(this.sticky.clientHeight||innerHeight); const ov=this.overlap||0; const fr=Math.max(1,range-ov);
+    this.tail = ov>0 ? Math.min(1,Math.max(0,(-r.top-fr)/ov)) : 0;                 // 0..1 — насколько следующая секция наехала на фильм
+    return Math.min(1,Math.max(0,-r.top/fr)); }
   start(){ if(this.raf||this.destroyed) return; const loop=(now)=>{ this.raf=requestAnimationFrame(loop); this.tick(now); }; this.raf=requestAnimationFrame(loop); }
   stop(){ if(this.raf) cancelAnimationFrame(this.raf); this.raf=0; this.prev=0; }
   tick(now){
@@ -657,7 +663,7 @@ class VFilm {
     const N=this.frames||240; if(Math.abs(this.tTarget-this.tSmooth)<0.25/N) this.tSmooth=this.tTarget;
     const f=Math.round(this.tSmooth*(N-1));
     if(f!==this.cur){ this.dir=f>this.cur?1:-1; this.cur=f; this.fill(); this.dirty=true; }
-    this.onFrame&&this.onFrame(p,f);
+    this.onFrame&&this.onFrame(p,f,this.tail||0);
     if(this.dirty) this.draw();
   }
   draw(){ const b=this.bmp.get(this.cur)||this.nearest(); if(!b) return; this.dirty=false;
@@ -1809,7 +1815,7 @@ class Component extends DCLogic {
   /* ---------- SCROLL FILM (desktop · sticky hero · живой fluid = состояние покоя · главы поверх) ---------- */
   initFilm(){
     if(this._film) return;
-    const root=this.root; const wrap=root.querySelector('[data-film-wrap]'), sticky=root.querySelector('[data-film-sticky]'), canvas=root.querySelector('[data-film-canvas]'), skip=root.querySelector('[data-film-skip]');
+    const root=this.root; const wrap=root.querySelector('[data-film-wrap]'), sticky=root.querySelector('[data-film-sticky]'), canvas=root.querySelector('[data-film-canvas]'), skip=root.querySelector('[data-film-skip]'), dim=root.querySelector('[data-film-dim]');
     if(!wrap||!sticky||!canvas) return;
     const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const coarse=!!(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches);   // по типу указателя, не по ширине окна
@@ -1822,12 +1828,14 @@ class Component extends DCLogic {
     const smooth=(a,b,x)=>{ const t=Math.min(1,Math.max(0,(x-a)/(b-a))); return t*t*(3-2*t); };
     let ch=''; const setCh=(c)=>{ if(c===ch) return; ['film-c1','film-c2','film-c3','film-end'].forEach(k=>html.classList.remove(k)); if(c) html.classList.add(c); ch=c; };
     const film=this._film=new VFilm({
-      base: lite?'./film/mobile/':'./film/desktop/', manifestUrl: lite?'./film/mobile/film.json':'./film/desktop/film.json', canvas, wrap, sticky, pxPerFrame: lite?9:14,
+      base: lite?'./film/mobile/':'./film/desktop/', manifestUrl: lite?'./film/mobile/film.json':'./film/desktop/film.json', canvas, wrap, sticky, pxPerFrame: lite?9:14, overlapVh: lite?0.45:0.55,   // хвост: страница наезжает на пэйофф
       lerp:1,                                                             // одно сглаживание — Lenis; без него см. ниже
       holds:[[0,0.06,0],[0.34,0.38,0.30],[0.62,0.66,0.70],[0.94,1,1]],    // плато: старт · трещина (глава 01→02) · собранная кладка (03) · пэйофф
       onProgress:(f)=>{ this._filmBytes=f; },
-      onFrame:(p)=>{
+      onFrame:(p,f,tail)=>{
         canvas.style.opacity=String(smooth(0.04,0.12,p));                 // кроссфейд fluid → фильм
+        if(dim){ dim.style.opacity=(tail*0.78).toFixed(3); }               // страница наезжает — фильм гаснет и отходит вглубь
+        canvas.style.transform = tail>0 ? 'scale('+(1-tail*0.05).toFixed(4)+')' : '';
         html.classList.toggle('film-run', p>0.06);
         setCh(p>=0.90?'film-end': p>=0.66?'film-c3': p>=0.38?'film-c2': p>=0.12?'film-c1':'');
         if(this._heroFluid&&this._heroFluid.suspend) this._heroFluid.suspend(p>0.18);
@@ -1839,7 +1847,7 @@ class Component extends DCLogic {
     if(!this._lenis) film.lerp=0.16;
     const io=new IntersectionObserver((es)=>{ film.visible=es[0].isIntersecting; if(film.visible) film.start(); else film.stop(); },{threshold:0});
     io.observe(sticky); this._filmIO=io;
-    if(skip){ skip.addEventListener('click',()=>{ const y=wrap.offsetTop+wrap.offsetHeight-(sticky.clientHeight||innerHeight); if(this._lenis) this._lenis.scrollTo(y,{duration:1.1}); else window.scrollTo({top:y,behavior:'smooth'}); }); }
+    if(skip){ skip.addEventListener('click',()=>{ const y=wrap.offsetTop+wrap.offsetHeight-(sticky.clientHeight||innerHeight)-(film.overlap||0); if(this._lenis) this._lenis.scrollTo(y,{duration:1.1}); else window.scrollTo({top:y,behavior:'smooth'}); }); }
     this._filmResize=()=>film.layout(); window.addEventListener('resize',this._filmResize);
   }
 
