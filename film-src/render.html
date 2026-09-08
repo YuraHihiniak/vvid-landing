@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8"><title>VVID film — «расплав → форма» renderer</title>
+<style>body{margin:0;background:#111;color:#cfc7b9;font:12px/1.4 ui-monospace,monospace}#c{display:block;width:800px;height:450px;background:#000}#ui{padding:10px}input[type=range]{width:780px}</style>
+</head><body>
+<canvas id="c" width="1600" height="900"></canvas>
+<div id="ui"><div id="st">—</div><input id="sl" type="range" min="0" max="239" value="0"><span id="fi"></span></div>
+<script>
+/* Детерминированный офлайн-рендер scroll-фильма для VVID hero.
+   Тот же fluid-шейдер, что живёт на сайте (домен-варп FBM терракоты), расширенный
+   прогрессом u_p: расплав (0) → кристаллизация → брутальный монолит (1).
+   Кадр i: u_time = i/24, u_p = i/(N-1). Без зерна/виньетки (они в рантайме). */
+const N = 240, W = 1600, H = 900, FPS = 24;
+const Q = new URLSearchParams(location.search);
+const cv = document.getElementById('c');
+const gl = cv.getContext('webgl', { antialias: false, alpha: false, preserveDrawingBuffer: true, depth: false, stencil: false });
+const FRAG = `
+precision highp float;
+uniform vec2 u_res; uniform float u_time; uniform float u_p;
+float hash(vec2 p){ p=fract(p*vec2(123.34,456.21)); p+=dot(p,p+45.32); return fract(p.x*p.y); }
+float vnoise(vec2 p){ vec2 i=floor(p),f=fract(p); f=f*f*(3.0-2.0*f); float a=hash(i),b=hash(i+vec2(1.,0.)),c=hash(i+vec2(0.,1.)),d=hash(i+vec2(1.,1.)); return mix(mix(a,b,f.x),mix(c,d,f.x),f.y); }
+float fbm(vec2 p){ float s=0.0,a=0.5; for(int i=0;i<5;i++){ s+=a*vnoise(p); p*=2.03; a*=0.5; } return s; }
+float sdBox(vec2 p, vec2 b){ vec2 d=abs(p)-b; return length(max(d,0.0))+min(max(d.x,d.y),0.0); }
+float smin(float a,float b,float k){ float h=clamp(0.5+0.5*(b-a)/k,0.0,1.0); return mix(b,a,h)-k*h*(1.0-h); }
+/* брутальный монолит: слаб + боковой блок + два малых куба; k — мягкость слияния */
+float sdForm(vec2 c, float k){
+  float a = sdBox(c-vec2(0.16,-0.03), vec2(0.13,0.31));   /* слаб */
+  float b = sdBox(c-vec2(0.37,-0.19), vec2(0.105,0.15));  /* правый нижний блок */
+  float d = sdBox(c-vec2(-0.03,-0.25), vec2(0.09,0.09));  /* левый нижний куб */
+  float e = sdBox(c-vec2(0.16, 0.325), vec2(0.06,0.05));  /* шапка сидит на слабе */
+  float s = smin(a,b,k); s = smin(s,d,k); s = smin(s,e,k*0.6); return s;
+}
+void main(){
+  vec2 uv = gl_FragCoord.xy/u_res; float ar=u_res.x/u_res.y;
+  float P = clamp(u_p,0.0,1.0); float ps = smoothstep(0.0,1.0,P);
+  float zoom = mix(1.0, 0.80, ps); vec2 drift = vec2(-0.07,0.02)*ps;         /* медленный push-in; форма уезжает вправо — слева место под текст */
+  vec2 c = (uv-0.5); c.x*=ar; c = c*zoom + drift;
+  vec2 p = vec2(c.x + 0.5*ar, c.y + 0.5);
+  /* --- расплав (идентичен живому hero при P=0) --- */
+  float t = u_time*0.045;
+  float warp = mix(1.0, 0.12, smoothstep(0.22,0.85,P));
+  float freq = mix(1.7, 2.6, smoothstep(0.30,0.90,P));
+  vec2 q=vec2(fbm(p*freq+vec2(0.0,t)), fbm(p*freq+vec2(5.2,-t)));
+  vec2 r=vec2(fbm(p*freq+2.6*warp*q+vec2(1.7,9.2)+t*0.6), fbm(p*freq+2.6*warp*q+vec2(8.3,2.8)-t*0.6));
+  float f=fbm(p*freq+2.4*warp*r);
+  vec3 cDark=vec3(0.352,0.176,0.106), cBase=vec3(0.725,0.329,0.247), cLite=vec3(0.788,0.412,0.306), cHot=vec3(0.917,0.612,0.427), cInk=vec3(0.075,0.067,0.047);
+  float v=clamp(f*1.12,0.0,1.0);
+  vec3 fluid=mix(cDark,cBase,smoothstep(0.14,0.5,v)); fluid=mix(fluid,cLite,smoothstep(0.5,0.8,v)); fluid=mix(fluid,cHot,smoothstep(0.8,1.0,v));
+  float grad=smoothstep(1.05,0.0,distance(uv,vec2(0.8,1.02))); fluid=mix(fluid,cHot,grad*0.34);
+  /* --- форма --- */
+  float presence = smoothstep(0.30,0.72,P);
+  float k = mix(0.16, 0.004, smoothstep(0.30,0.90,P));
+  float sd = sdForm(c,k);
+  float sharp = mix(0.30, 0.006, smoothstep(0.28,0.86,P));
+  float inside = 1.0 - smoothstep(-sharp, sharp, sd);
+  float e=0.002;
+  vec2 g = vec2(sdForm(c+vec2(e,0.0),k)-sdForm(c-vec2(e,0.0),k), sdForm(c+vec2(0.0,e),k)-sdForm(c-vec2(0.0,e),k))/(2.0*e);
+  /* плоские плиты с узким фаском у кромки (не пирамидки): наклон нормали только в полосе bevel */
+  float bevel = mix(0.16, 0.022, presence);
+  float tilt = 1.0 - smoothstep(0.0, bevel, -sd);
+  vec3 n = normalize(vec3(g*tilt*0.9, 1.0));
+  float diff = max(0.0, dot(n, normalize(vec3(0.45,0.72,0.72))));
+  float tex = fbm(c*9.0)*0.06 - 0.03;
+  vec3 form = mix(cDark*0.85, cBase, diff) + tex*presence;
+  form = mix(form, cLite, smoothstep(0.90,1.0,diff)*0.55);                        /* блик на фаске */
+  /* 2.5D: тёмная «толщина» блоков, сдвинутая вниз-влево */
+  float sd2 = sdForm(c+vec2(0.045,0.06)*presence, k);
+  float side = (1.0 - smoothstep(-sharp, sharp, sd2)) * (1.0 - inside) * presence;
+  float edge = exp(-abs(sd)*26.0);
+  float melt = presence*(1.0-presence)*4.0;                                      /* пик кристаллизации */
+  vec3 col = fluid;
+  col = mix(col, mix(cInk,cDark,0.22), presence*0.74);                             /* фон гаснет чище и темнее */
+  col = mix(col, cDark*0.55, side);                                                /* боковая толщина */
+  vec3 insideCol = mix(fluid*mix(1.0,1.25,melt), form, presence);
+  col = mix(col, insideCol, inside);
+  col += cHot*edge*(0.42*melt + 0.07*presence);                                    /* раскалённая кромка → тёплый rim */
+  col += cHot*grad*0.12*presence;
+  float vig = smoothstep(1.35, 0.35, length(c*vec2(0.7,1.0))); col *= mix(0.85,1.0,vig);
+  gl_FragColor = vec4(col,1.0);
+}`;
+function sh(t,s){ const o=gl.createShader(t); gl.shaderSource(o,s); gl.compileShader(o); if(!gl.getShaderParameter(o,gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(o)); return o; }
+const pr=gl.createProgram(); gl.attachShader(pr,sh(gl.VERTEX_SHADER,'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}')); gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FRAG)); gl.linkProgram(pr); gl.useProgram(pr);
+const b=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,b); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+const loc=gl.getAttribLocation(pr,'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+const U={res:gl.getUniformLocation(pr,'u_res'),time:gl.getUniformLocation(pr,'u_time'),p:gl.getUniformLocation(pr,'u_p')};
+gl.viewport(0,0,W,H); gl.uniform2f(U.res,W,H);
+function draw(i){ gl.uniform1f(U.time,i/FPS); gl.uniform1f(U.p,i/(N-1)); gl.drawArrays(gl.TRIANGLES,0,3); document.getElementById('fi').textContent=' кадр '+i+' / p='+(i/(N-1)).toFixed(3); }
+const blob=()=>new Promise(r=>cv.toBlob(r,'image/png'));
+const st=(m)=>{ document.getElementById('st').textContent=m; document.title=m; };
+const sl=document.getElementById('sl'); sl.oninput=()=>draw(+sl.value);
+(async()=>{
+  if(Q.has('frame')){ const i=+Q.get('frame'); sl.value=i; draw(i); st('кадр '+i); return; }
+  if(Q.get('auto')==='1'){
+    const from=+(Q.get('from')||0), to=+(Q.get('to')||N-1);
+    for(let i=from;i<=to;i++){ draw(i); const bl=await blob();
+      await fetch('/frame?i='+i,{method:'POST',body:bl,headers:{'Content-Type':'image/png'}});
+      st('рендер '+(i+1)+'/'+N); }
+    await fetch('/done',{method:'POST'}); st('ГОТОВО '+N); return;
+  }
+  draw(0); st('ручной режим — слайдер');
+})();
+</script>
+</body></html>
