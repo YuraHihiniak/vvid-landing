@@ -180,6 +180,7 @@
   html.film-run .hero-scrollcue{opacity:0}
   .film-skip{background:none;border:1px solid rgba(255,255,255,.35);color:rgba(255,255,255,.85);font:500 10px/1 'IBM Plex Mono',ui-monospace,monospace;letter-spacing:.2em;text-transform:uppercase;padding:10px 14px;cursor:pointer;border-radius:50px;transition:opacity .4s,background .35s,color .35s}
   .film-skip:hover{background:rgba(255,255,255,.12);color:#fff}
+  @media (pointer:coarse){ .film-cap{top:clamp(96px,17vh,150px);bottom:auto;max-width:min(88vw,22ch)} .film-cap .fc-t{font-size:clamp(26px,7.4vw,44px)} html.film-end .film-cap[data-cap="end"] .fc-t{font-size:clamp(30px,9vw,56px)} .film-skip{top:74px;right:16px} }
   @media (prefers-reduced-motion:reduce){ .film-cap,.hero-kin,.hero-scrollcue{transition:none} }
   @media (max-width:820px){ .hero-foot{flex-direction:column;align-items:flex-start;gap:26px} .hero-lead p{max-width:54ch} }
 
@@ -1813,15 +1814,17 @@ class Component extends DCLogic {
     const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const coarse=!!(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches);   // по типу указателя, не по ширине окна
     const nav=navigator, weak=(nav.connection&&(nav.connection.saveData||/2g/.test(nav.connection.effectiveType||'')))||(nav.deviceMemory&&nav.deviceMemory<4);
-    if(reduce||coarse||weak){ this._filmMode='static'; return; }          // мобайл / reduced / слабая сеть → живой hero как есть
-    this._filmMode='full';
+    const force=/[?&]film=force\b/.test(location.search);                  // QA-обход гейтов сети/памяти (не reduced-motion)
+    if(reduce||(weak&&!force)){ this._filmMode='static'; return; }         // reduced-motion / слабая сеть или память → живой hero как есть
+    this._filmMode = coarse ? 'lite' : 'full';                              // touch → портретный лёгкий фильм (film/mobile), нет файлов → static
+    const lite = this._filmMode==='lite';
     const html=document.documentElement;
     const smooth=(a,b,x)=>{ const t=Math.min(1,Math.max(0,(x-a)/(b-a))); return t*t*(3-2*t); };
     let ch=''; const setCh=(c)=>{ if(c===ch) return; ['film-c1','film-c2','film-c3','film-end'].forEach(k=>html.classList.remove(k)); if(c) html.classList.add(c); ch=c; };
     const film=this._film=new VFilm({
-      base:'./film/desktop/', manifestUrl:'./film/desktop/film.json', canvas, wrap, sticky, pxPerFrame:14,
+      base: lite?'./film/mobile/':'./film/desktop/', manifestUrl: lite?'./film/mobile/film.json':'./film/desktop/film.json', canvas, wrap, sticky, pxPerFrame: lite?9:14,
       lerp:1,                                                             // одно сглаживание — Lenis; без него см. ниже
-      holds:[[0,0.06,0],[0.34,0.38,0.44],[0.62,0.66,0.72],[0.94,1,1]],    // плато: старт · две главы · пэйофф
+      holds:[[0,0.06,0],[0.34,0.38,0.30],[0.62,0.66,0.70],[0.94,1,1]],    // плато: старт · трещина (глава 01→02) · собранная кладка (03) · пэйофф
       onProgress:(f)=>{ this._filmBytes=f; },
       onFrame:(p)=>{
         canvas.style.opacity=String(smooth(0.04,0.12,p));                 // кроссфейд fluid → фильм
@@ -1858,7 +1861,7 @@ class Component extends DCLogic {
     const step=(t)=>{ if(this._preDone) return; const e=1-Math.pow(1-Math.min(1,(t-t0)/minMs),3); const shown=Math.min(0.99, Math.max(e*0.86, this._filmBytes||0)); const v=Math.round(shown*100); if(num) num.textContent=String(v); if(bar) bar.style.width=v+'%'; requestAnimationFrame(step); };
     requestAnimationFrame(step);
     setTimeout(()=>{
-      const filmReady = (this._film && this._filmMode==='full') ? this._film.ready(0.28, 20) : Promise.resolve();
+      const filmReady = (this._film && this._filmMode!=='static') ? this._film.ready(this._filmMode==='lite'?0.2:0.28, this._filmMode==='lite'?12:20) : Promise.resolve();
       const minT = new Promise(r=>setTimeout(r, Math.max(0, minMs-(performance.now()-t0))));
       Promise.race([Promise.all([filmReady,minT]), new Promise(r=>setTimeout(r, capMs))]).then(()=>{ if(num) num.textContent='100'; if(bar) bar.style.width='100%'; finish(); });
     }, 0);
@@ -1916,7 +1919,7 @@ class Component extends DCLogic {
         heroBig1:'мы VVID', heroBig2:'мы делаем', heroBig3:'большие', heroBig4:'вещи', heroBigAria:'мы VVID, мы делаем большие вещи',
         heroLead2:'внедряем в уже работающий бизнес — автоматизируем процессы и усиливаем то, что приносит деньги.',
         heroSub:'веб- и мобильные приложения, сайты и интернет-магазины, телеграм-боты, дизайн — внедряем в готовый бизнес.',
-        heroCta1:'смотреть кейсы →', heroCtaPrimary:'обсудить проект', heroProof:'договор + юрлицо · ответ в telegram < 2 часов · показываем вживую', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'web-инжиниринг', filmK1:'01 — рутина', filmT1:'ручные процессы съедают прибыль', filmK2:'02 — система', filmT2:'приложения · сайты · боты · автоматизация', filmK3:'03 — запуск', filmT3:'прямой контакт с инженерами — до прода', filmKEnd:'vvid · студия разработки', filmTEnd:'мы делаем большие вещи', filmSkip:'пропустить ↓',
+        heroCta1:'смотреть кейсы →', heroCtaPrimary:'обсудить проект', heroProof:'договор + юрлицо · ответ в telegram < 2 часов · показываем вживую', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'web-инжиниринг', filmK1:'01 — рутина', filmT1:'ручные процессы съедают прибыль', filmK2:'02 — разбор', filmT2:'разбираем процесс на детали', filmK3:'03 — система', filmT3:'собираем в продукт, который работает', filmKEnd:'04 — запуск · vvid, студия разработки и автоматизации', filmTEnd:'мы делаем большие вещи', filmSkip:'пропустить ↓',
         marquee:'веб- и мобильные приложения · интернет-магазины и сайты · лендинги · телеграм-боты · автоматизация бизнеса · ui/ux дизайн · дизайн-системы · frontend и backend · cms · интеграции · ',
         fig02:'fig.02 — манифест',
         manifH2:'меньше слов — больше цифр, реальные кейсы, открытый прайс, работающие продукты.',
@@ -1948,7 +1951,7 @@ class Component extends DCLogic {
         heroBig1:'we are VVID', heroBig2:'we do', heroBig3:'big', heroBig4:'things', heroBigAria:'we are VVID, we do big things',
         heroLead2:'built into your running business — we automate processes and amplify what already makes money.',
         heroSub:'web & mobile apps, websites and online stores, telegram bots, design — built into your existing business.',
-        heroCta1:'see our work →', heroCtaPrimary:'discuss your project', heroProof:'contract + legal entity · telegram reply < 2 hours · we show, live', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'web-engineering', filmK1:'01 — routine', filmT1:'manual processes eat your profit', filmK2:'02 — system', filmT2:'apps · sites · bots · automation', filmK3:'03 — launch', filmT3:'a direct line to engineers — all the way to production', filmKEnd:'vvid · engineering studio', filmTEnd:'we do big things', filmSkip:'skip ↓',
+        heroCta1:'see our work →', heroCtaPrimary:'discuss your project', heroProof:'contract + legal entity · telegram reply < 2 hours · we show, live', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'web-engineering', filmK1:'01 — routine', filmT1:'manual processes eat your profit', filmK2:'02 — teardown', filmT2:'we take the process apart', filmK3:'03 — system', filmT3:'and rebuild it as a product that works', filmKEnd:'04 — launch · vvid, engineering & automation studio', filmTEnd:'we do big things', filmSkip:'skip ↓',
         marquee:'web & mobile apps · online stores & websites · landing pages · telegram bots · business automation · ui/ux design · design systems · frontend & backend · cms · integrations · ',
         fig02:'fig.02 — manifesto',
         manifH2:'fewer words — more numbers, real cases, open pricing, products that work.',
