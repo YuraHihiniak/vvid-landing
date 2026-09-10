@@ -171,8 +171,9 @@
   /* ===== scroll-film (desktop): sticky hero, fluid = состояние покоя, главы поверх кадров ===== */
   html:not(.pre-done){overflow:hidden}
   .film-cap{position:absolute;left:26px;right:26px;bottom:clamp(96px,16vh,170px);max-width:min(46vw,40ch);color:#fff;opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);pointer-events:none}
-  .film-cap .fc-k{display:block;font:500 11px/1 'IBM Plex Mono',ui-monospace,monospace;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:16px}
-  .film-cap .fc-t{display:block;font-family:var(--font-display);font-weight:700;text-transform:uppercase;font-size:clamp(24px,3.4vw,54px);line-height:.98;letter-spacing:-.03em;text-wrap:balance}
+  .mini-cap{max-width:min(46vw,40ch);color:#fff;opacity:0;transform:translateY(22px);will-change:opacity,transform}
+  .film-cap .fc-k,.mini-cap .fc-k{display:block;font:500 11px/1 'IBM Plex Mono',ui-monospace,monospace;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:16px}
+  .film-cap .fc-t,.mini-cap .fc-t{display:block;font-family:var(--font-display);font-weight:700;text-transform:uppercase;font-size:clamp(24px,3.4vw,54px);line-height:.98;letter-spacing:-.03em;text-wrap:balance}
   html.film-c1 .film-cap[data-cap="1"],html.film-c2 .film-cap[data-cap="2"],html.film-c3 .film-cap[data-cap="3"],html.film-end .film-cap[data-cap="end"]{opacity:1;transform:none}
   html.film-end .film-cap[data-cap="end"] .fc-t{font-size:clamp(30px,5.2vw,86px)}
   .hero-kin,.hero-scrollcue{transition:opacity .55s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
@@ -206,6 +207,21 @@
   [data-film-cta2]{display:none} html.film-end [data-film-cta2]{display:inline-flex}
   [data-case-link][data-live="0"]{color:#6f6659}
   @media (max-width:880px){ .proof-grid{grid-template-columns:repeat(2,1fr)} .proof-grid a:last-child{grid-column:1 / -1} .proof-grid a{min-height:88px;padding:16px 18px} }
+  /* ===== immersion layer: зерно на всю страницу, шов-таймкод, плашки ===== */
+  .page-grain{position:fixed;inset:0;z-index:7990;pointer-events:none;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .rail{position:fixed;right:26px;top:50%;transform:translateY(-50%);z-index:7995;display:flex;flex-direction:column;gap:8px;padding-left:16px;font:500 10px/1 'IBM Plex Mono',ui-monospace,monospace;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55);mix-blend-mode:difference;opacity:0;transition:opacity .8s;pointer-events:none}
+  html.pre-done .rail{opacity:1;pointer-events:auto}
+  html.film-run:not(.film-end) .rail{opacity:.35}
+  .rail-item{display:flex;align-items:center;gap:10px;color:inherit;padding:4px 0;transition:color .35s}
+  .rail-n{min-width:2ch}
+  .rail-l{opacity:0;transform:translateX(6px);transition:opacity .35s,transform .5s cubic-bezier(.16,1,.3,1)}
+  .rail:hover .rail-l,.rail-item.is-active .rail-l{opacity:1;transform:none}
+  .rail-item.is-active{color:#fff}
+  .rail-line{position:absolute;left:0;top:4px;bottom:4px;width:1px;background:rgba(255,255,255,.22)}
+  .rail-line i{position:absolute;left:0;top:0;width:100%;height:0;background:var(--acc,#b9543f);box-shadow:0 0 8px rgba(185,84,63,.9);transition:height .25s linear}
+  @media (max-width:1023px),(pointer:coarse){ .rail,.page-grain{display:none} }
+  [data-plate] img{transform:scale(1.04)}
+  [data-depth]{will-change:transform}
   /* process steps — interactive refine */
   .proc-row{transition:padding-left .55s cubic-bezier(.16,1,.3,1)}
   .proc-title{transition:color .4s}
@@ -235,6 +251,15 @@
 </helmet>
 
 <div data-vvid-root="1" ref="{{ setRoot }}" style="position:relative;background:#e4ded2;color:#1b1812;min-height:100vh;overflow-x:clip">
+  <!-- AMBIENT WORLD: одна материя за всеми секциями (сквозь полупрозрачные фоны) + след курсора -->
+  <canvas data-ambient="1" aria-hidden="true" style="position:fixed;inset:0;z-index:0;width:100%;height:100%;display:block;pointer-events:none;opacity:0;transition:opacity 1.4s ease"></canvas>
+  <div class="page-grain" aria-hidden="true"></div>
+  <nav data-rail="1" class="rail" aria-label="главы">
+    <span class="rail-line"><i data-rail-fill="1"></i></span>
+    <sc-for list="{{ rail }}" as="r" hint-placeholder-count="8">
+      <a href="{{ r.href }}" data-rail-link="{{ r.id }}" class="rail-item"><span class="rail-n">{{ r.n }}</span><span class="rail-l">{{ r.l }}</span></a>
+    </sc-for>
+  </nav>
 
   <!-- INTRO PRELOADER -->
   <div data-preloader="1" style="position:fixed;inset:0;z-index:9600;background:#13110c;color:#e4ded2;display:flex;flex-direction:column;justify-content:space-between;padding:30px 26px;overflow:hidden">
@@ -294,7 +319,7 @@
   </header>
 
   <!-- 01 HERO — minimal -->
-  <section id="top" class="hero-bbdo" data-screen-label="01 Hero" data-hero="1" data-film-wrap="1" ref="{{ setHero }}" style="position:relative;min-height:100vh;overflow:clip">
+  <section id="top" class="hero-bbdo" data-screen-label="01 Hero" data-hero="1" data-film-wrap="1" ref="{{ setHero }}" style="position:relative;z-index:1;min-height:100vh;overflow:clip">
    <div data-film-sticky="1" style="position:sticky;top:0;height:100vh;height:100svh;display:flex;flex-direction:column;overflow:clip;background:#b9543f">
     <div class="hero-flood" aria-hidden="true"></div>
     <canvas data-hero-fluid="1" style="position:absolute;inset:0;z-index:0;display:block;width:100%;height:100%;pointer-events:none;opacity:0;transition:opacity .8s ease"></canvas>
@@ -330,8 +355,8 @@
 
   <!-- TRUST MARQUEE -->
   <!-- 01.a PROOF STRIP — факты сразу после фильма, каждый пункт — ссылка на доказательство -->
-  <section id="proof" data-screen-label="01a Proof" style="position:relative;z-index:10;background:#13110c;color:#e4ded2;border-top:1px solid rgba(228,222,210,.12);padding:clamp(28px,4vw,52px) 26px;overflow:hidden">
-    <div style="max-width:1320px;margin:0 auto;position:relative">
+  <section id="proof" data-screen-label="01a Proof" style="position:relative;z-index:10;background:rgba(19,17,12,.9);color:#e4ded2;border-top:1px solid rgba(228,222,210,.12);padding:clamp(28px,4vw,52px) 26px;overflow:hidden">
+    <div data-depth="1" style="max-width:1320px;margin:0 auto;position:relative;z-index:1">
       <div data-reveal="1" style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8f877a;margin-bottom:clamp(18px,2.4vw,28px)">
         <span>{{ t.proofLabel }}</span><span>{{ t.proofNote }}</span>
       </div>
@@ -346,7 +371,7 @@
     </div>
   </section>
 
-  <section data-screen-label="SLA bar" style="position:relative;z-index:10;background:#13110c;color:#e4ded2;border-top:1px solid rgba(228,222,210,.12);overflow:hidden">
+  <section data-screen-label="SLA bar" style="position:relative;z-index:10;background:rgba(19,17,12,.9);color:#e4ded2;border-top:1px solid rgba(228,222,210,.12);overflow:hidden">
     <div style="display:flex;white-space:nowrap;padding:15px 0;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#b6ad9e">
       <div data-anim="1" style="display:flex;animation:vMarq 48s linear infinite;flex:none">
         <span>{{ t.marquee }}</span>
@@ -358,9 +383,10 @@
   </section>
 
   <!-- 02 MANIFESTO -->
-  <section id="manifesto" data-screen-label="02 Manifesto" style="position:relative;z-index:10;background:#e4ded2;color:#1b1812;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
+  <section id="manifesto" data-screen-label="02 Manifesto" style="position:relative;z-index:10;background:rgba(228,222,210,.93);color:#1b1812;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
     <div data-speed="6" data-pmax="150" style="position:absolute;top:0;right:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(27,24,18,.045);pointer-events:none;user-select:none">02</div>
-    <div style="max-width:1320px;margin:0 auto;position:relative">
+    <figure data-plate="1" data-reveal="1" data-delay="220" data-speed="3" data-pmax="80" style="position:absolute;right:2vw;bottom:-1vw;z-index:0;width:clamp(160px,22vw,340px);aspect-ratio:4/5;margin:0;overflow:hidden;pointer-events:none;filter:saturate(.92)"><img src="./img/plate-stack.webp" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></figure>
+    <div data-depth="1" style="max-width:1320px;margin:0 auto;position:relative;z-index:1">
       <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#6f6659;margin-bottom:clamp(40px,6vw,80px)">{{ t.fig02 }}</div>
       <h2 data-kinetic="1" data-i18n="manifH2" style="font-size:clamp(30px,5.6vw,84px);line-height:1.0;letter-spacing:-.04em;font-weight:600;margin:0;max-width:20ch">{{ t.manifH2 }}</h2>
       <p data-reveal="1" data-delay="120" style="margin:clamp(30px,4vw,56px) 0 0;max-width:60ch;font-size:clamp(16px,1.7vw,21px);line-height:1.5;color:#5a5346;text-wrap:pretty">{{ t.manifPa }}<span style="font-weight:700;color:#1b1812">{{ t.manifPb }}</span>.</p>
@@ -376,9 +402,9 @@
   </section>
 
   <!-- 03 CAPABILITIES -->
-  <section id="capabilities" data-screen-label="03 Capabilities" style="position:relative;z-index:10;background:#13110c;color:#e4ded2;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
+  <section id="capabilities" data-screen-label="03 Capabilities" style="position:relative;z-index:10;background:rgba(19,17,12,.9);color:#e4ded2;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
     <div data-speed="6" data-pmax="150" style="position:absolute;top:2vw;left:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(228,222,210,.04);pointer-events:none;user-select:none">03</div>
-    <div style="max-width:1320px;margin:0 auto;position:relative">
+    <div data-depth="1" style="max-width:1320px;margin:0 auto;position:relative;z-index:1">
       <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:clamp(50px,7vw,90px)">
         <div>
           <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8f877a;margin-bottom:24px">{{ t.fig03 }}</div>
@@ -411,9 +437,20 @@
   </section>
 
   <!-- 04 CASES — lookbook (artefakt-style: case list + ASCII tech motifs, native scroll) -->
-  <section id="work" data-screen-label="04 Cases" style="position:relative;z-index:10;background:#e4ded2;color:#1b1812;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
+  <!-- MINI-FILM A — материя между главами -->
+  <section data-mini-film="a" data-screen-label="04a Inside" style="position:relative;z-index:10;min-height:0;overflow:clip;background:rgba(19,17,12,.9);color:#e4ded2">
+    <div data-mini-sticky="1" style="position:sticky;top:0;height:100vh;height:100svh;overflow:clip;display:flex;align-items:flex-end">
+      <canvas data-mini-canvas="1" aria-hidden="true" style="position:absolute;inset:0;z-index:0;display:block;width:100%;height:100%;pointer-events:none;opacity:0"></canvas>
+      <div class="hero-vig" aria-hidden="true" style="z-index:1"></div>
+      <div style="position:relative;z-index:2;width:100%;max-width:1320px;margin:0 auto;padding:0 26px clamp(60px,10vh,110px)">
+        <div class="mini-cap"><span class="fc-k">{{ t.miniK1 }}</span><span class="fc-t">{{ t.miniT1 }}</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work" data-screen-label="04 Cases" style="position:relative;z-index:10;background:rgba(228,222,210,.93);color:#1b1812;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
     <div data-speed="6" data-pmax="150" style="position:absolute;top:1vw;right:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(27,24,18,.035);pointer-events:none;user-select:none">04</div>
-    <div style="max-width:1320px;margin:0 auto;position:relative">
+    <div data-depth="1" style="max-width:1320px;margin:0 auto;position:relative;z-index:1">
       <div data-reveal="1" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:clamp(48px,7vw,84px)">
         <div>
           <div style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#6f6659;margin-bottom:18px">{{ t.fig04 }}</div>
@@ -462,9 +499,10 @@
   </section>
 
   <!-- 05 PROCESS -->
-  <section id="process" data-screen-label="05 Process" style="position:relative;z-index:10;background:#13110c;color:#e4ded2;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
+  <section id="process" data-screen-label="05 Process" style="position:relative;z-index:10;background:rgba(19,17,12,.9);color:#e4ded2;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
     <div data-speed="6" data-pmax="150" style="position:absolute;bottom:-4vw;right:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(228,222,210,.04);pointer-events:none;user-select:none">05</div>
-    <div style="max-width:1320px;margin:0 auto;position:relative">
+    <figure data-plate="1" data-reveal="1" data-delay="220" data-speed="-2" data-pmax="70" style="position:absolute;left:1vw;top:6vw;z-index:0;width:clamp(140px,18vw,280px);aspect-ratio:1;margin:0;overflow:hidden;pointer-events:none;opacity:.55"><img src="./img/plate-crack.webp" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></figure>
+    <div data-depth="1" style="max-width:1320px;margin:0 auto;position:relative;z-index:1">
       <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:clamp(50px,7vw,90px)">
         <div>
           <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8f877a;margin-bottom:24px">{{ t.fig05 }}</div>
@@ -491,9 +529,9 @@
   </section>
 
   <!-- 06 PRICING -->
-  <section id="pricing" data-screen-label="06 Pricing" style="position:relative;z-index:10;background:#e4ded2;color:#1b1812;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
+  <section id="pricing" data-screen-label="06 Pricing" style="position:relative;z-index:10;background:rgba(228,222,210,.93);color:#1b1812;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
     <div data-speed="6" data-pmax="150" style="position:absolute;top:1vw;left:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(27,24,18,.04);pointer-events:none;user-select:none">06</div>
-    <div style="max-width:1320px;margin:0 auto;position:relative">
+    <div data-depth="1" style="max-width:1320px;margin:0 auto;position:relative;z-index:1">
       <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#6f6659;margin-bottom:24px">{{ t.fig06 }}</div>
       <h2 data-kinetic="1" data-i18n="pricingH2" style="font-size:clamp(28px,4.6vw,64px);line-height:1.02;letter-spacing:-.035em;font-weight:600;margin:0 0 clamp(50px,7vw,80px);max-width:18ch">{{ t.pricingH2 }}</h2>
       <div data-reveal="1" style="border-top:1px solid rgba(27,24,18,.22)">
@@ -528,9 +566,9 @@
   </section>
 
   <!-- 07 TEAM + FAQ -->
-  <section id="team" data-screen-label="07 Team + FAQ" style="position:relative;z-index:10;background:#13110c;color:#e4ded2;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
+  <section id="team" data-screen-label="07 Team + FAQ" style="position:relative;z-index:10;background:rgba(19,17,12,.9);color:#e4ded2;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
     <div data-speed="6" data-pmax="150" style="position:absolute;top:1vw;right:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(228,222,210,.035);pointer-events:none;user-select:none">07</div>
-    <div style="max-width:1320px;margin:0 auto;position:relative">
+    <div data-depth="1" style="max-width:1320px;margin:0 auto;position:relative;z-index:1">
       <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8f877a;margin-bottom:24px">{{ t.fig07 }}</div>
       <p data-reveal="1" data-delay="60" style="margin:-6px 0 clamp(28px,4vw,44px);max-width:44ch;font-size:15px;line-height:1.55;color:#b6ad9e">{{ t.teamLead }}</p>
 
@@ -575,7 +613,18 @@
   </section>
 
   <!-- 08 CLOSER -->
-  <section id="brief" data-screen-label="08 Closer" style="position:relative;z-index:10;background:#e4ded2;color:#1b1812;padding:clamp(90px,13vw,180px) 26px">
+  <!-- MINI-FILM B — материя между главами -->
+  <section data-mini-film="b" data-screen-label="07a Launch" style="position:relative;z-index:10;min-height:0;overflow:clip;background:rgba(19,17,12,.9);color:#e4ded2">
+    <div data-mini-sticky="1" style="position:sticky;top:0;height:100vh;height:100svh;overflow:clip;display:flex;align-items:flex-end">
+      <canvas data-mini-canvas="1" aria-hidden="true" style="position:absolute;inset:0;z-index:0;display:block;width:100%;height:100%;pointer-events:none;opacity:0"></canvas>
+      <div class="hero-vig" aria-hidden="true" style="z-index:1"></div>
+      <div style="position:relative;z-index:2;width:100%;max-width:1320px;margin:0 auto;padding:0 26px clamp(60px,10vh,110px)">
+        <div class="mini-cap"><span class="fc-k">{{ t.miniK2 }}</span><span class="fc-t">{{ t.miniT2 }}</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="brief" data-screen-label="08 Closer" style="position:relative;z-index:10;background:rgba(228,222,210,.93);color:#1b1812;padding:clamp(90px,13vw,180px) 26px">
     <div style="max-width:1320px;margin:0 auto">
       <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#6f6659;margin-bottom:26px">{{ t.fig08 }}</div>
       <h2 data-rot-head="1" style="font-size:clamp(36px,7vw,104px);line-height:.94;letter-spacing:-.045em;font-weight:600;margin:0 0 20px;max-width:15ch">{{ t.briefH2a }}<span data-rot2="1" ref="{{ setRot2 }}" style="font-weight:700;color:var(--acc,#b9543f)">{{ t.briefRot }}</span></h2>
@@ -735,7 +784,7 @@ class Component extends DCLogic {
     try{ localStorage.setItem('vvid-lang', lng); }catch(e){}
     try{ document.documentElement.lang = lng; }catch(e){}
     this.forceUpdate();
-    setTimeout(()=>{ this.refreshKinetic(); this.initWordSwap(); this.typografNbsp(); try{ this._film && this._film.rebind(this.root); }catch(e){} try{ (this._asciiPanels||[]).forEach(p=>p.switchTo&&p.switchTo(0)); }catch(e){} try{ if(this.switchTeam) this.switchTeam(this._teamActive||0,false); }catch(e){} try{ if(this._floatIO){ this._floatIO.disconnect(); this.initFloatCTA(); } }catch(e){} try{ this.openFirstAcc(); }catch(e){}
+    setTimeout(()=>{ this.refreshKinetic(); this.initWordSwap(); this.typografNbsp(); try{ this._film && this._film.rebind(this.root); }catch(e){} try{ this.rebindMinis(); }catch(e){} try{ (this._asciiPanels||[]).forEach(p=>p.switchTo&&p.switchTo(0)); }catch(e){} try{ if(this.switchTeam) this.switchTeam(this._teamActive||0,false); }catch(e){} try{ if(this._floatIO){ this._floatIO.disconnect(); this.initFloatCTA(); } }catch(e){} try{ this.openFirstAcc(); }catch(e){}
       try{ const hb=[this._t&&this._t.heroBig1,this._t&&this._t.heroBig2,this._t&&this._t.heroBig3,this._t&&this._t.heroBig4]; this.root.querySelectorAll('.hero-kin .kl > span').forEach((s,i)=>{ s._lsplit=false; if(hb[i]!=null) s.textContent=hb[i]; }); this.initHeroLetters(); }catch(e){}
     }, 40);
   }
@@ -782,6 +831,8 @@ class Component extends DCLogic {
   }
   componentWillUnmount(){
     cancelAnimationFrame(this._sraf);
+    try{ if(this._ambient) this._ambient.destroy(); }catch(e){}
+    try{ (this._minis||[]).forEach(m=>{ m.io.disconnect(); m.film.destroy(); }); }catch(e){}
     try{ if(this._film) this._film.destroy(); if(this._filmIO) this._filmIO.disconnect(); if(this._filmResize) window.removeEventListener('resize', this._filmResize); }catch(e){}
     if(this._three){ cancelAnimationFrame(this._three.raf); if(this._three.io) this._three.io.disconnect(); window.removeEventListener('resize', this._threeResize); try{ this._three.renderer.dispose(); }catch(e){} }
     clearInterval(this._wi); clearInterval(this._wi2);
@@ -809,6 +860,7 @@ class Component extends DCLogic {
     this.calmLabel   = this.calmLabel   || q('[data-calm-label]');
     this.submitBtn   = this.submitBtn   || q('[data-submit-btn]');
     this._asciiPanels = [];
+    try{ window.__vvid=this; }catch(e){}
     this._coarse = !!(window.matchMedia && window.matchMedia('(pointer:coarse)').matches);
     try{ root.style && root.style.setProperty('--acc', this.props.accent || '#b9543f'); }catch(e){}
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -823,6 +875,8 @@ class Component extends DCLogic {
     this.initAscii3D();
     this.initHeroFluid();
     this.initFilm();
+    this.initMiniFilms();
+    this.initAmbient();
     this.initMagnetic();
     this.initCursor();
     this.initFloatCTA();
@@ -925,6 +979,9 @@ class Component extends DCLogic {
       sp: parseFloat(el.getAttribute('data-speed'))||0,
       cap: parseFloat(el.getAttribute('data-pmax')) || 60
     }));
+    this._depth = Array.from(this.root.querySelectorAll('[data-depth]')).map(el=>({ el, host: el.closest('section')||el.parentElement||el, k: parseFloat(el.getAttribute('data-depth'))||1 }));
+    this._railItems = Array.from(this.root.querySelectorAll('[data-rail-link]')); this._railFill = this.root.querySelector('[data-rail-fill]');
+    this._railSecs = this._railItems.map(a=>this.root.querySelector('#'+a.getAttribute('data-rail-link')));
     const onScroll = ()=>{ if(this._scrollPending) return; this._scrollPending=true; this._sraf=requestAnimationFrame(()=>{ this._scrollPending=false; this.applyScroll(); }); };
     this._onScroll = onScroll;
     window.addEventListener('scroll', onScroll, {passive:true});
@@ -943,7 +1000,7 @@ class Component extends DCLogic {
     let lenis;
     try{ lenis = new L({ lerp:0.085, wheelMultiplier:1, smoothWheel:true, syncTouch:false }); }catch(e){ return; }
     this._lenis = lenis;
-    if(this._film) this._film.lerp = 1;                                    // Lenis появился позже initFilm → снять второй демпфер
+    if(this._film) this._film.lerp = 1; (this._minis||[]).forEach(m=>m.film.lerp=1);                                    // Lenis появился позже initFilm → снять второй демпфер
     if(!this._preDone){ try{ lenis.stop(); }catch(e){} }   // под прелоадером скролл заморожен; finish() → start()
     const raf=(t)=>{ if(!this._lenis){ this._lenisRaf=null; return; } lenis.raf(t); this._lenisRaf=requestAnimationFrame(raf); };
     this._lenisRaf=requestAnimationFrame(raf);
@@ -957,7 +1014,7 @@ class Component extends DCLogic {
     if(this._lenis){ try{ this._lenis.destroy(); }catch(e){} this._lenis=null; }
   }
   applyScroll(){
-    const vh = window.innerHeight;
+    const vh = window.innerHeight || 900;
     // ASCII portrait: reveal char-by-char as the canvas scrolls up through the viewport
     if(this.teamCanvas){
       const r = this.teamCanvas.getBoundingClientRect();
@@ -973,9 +1030,11 @@ class Component extends DCLogic {
     // reusable ASCII panels (cases lookbook) — same scroll-driven reveal, native scroll
     const panels = this._asciiPanels;
     if(panels) for(let i=0;i<panels.length;i++) panels[i].updateReveal(vh);
+    this.applyRail(vh);                                   // навигация-шов работает и в calm
     if(this._calm) return;
     // read-фаза (все rect'ы), потом write-фаза — без чередования layout/paint
     const reads = this._para.map(it=>({ it, hr: it.host.getBoundingClientRect() }));
+    const dreads = (this._depth||[]).map(d=>({ d, hr: d.host.getBoundingClientRect() }));
     for(const {it,hr} of reads){
       if(hr.bottom < -40 || hr.top > vh + 40) continue;
       const prog = (hr.top + hr.height/2 - vh/2) / (vh/2 + hr.height/2);
@@ -983,7 +1042,21 @@ class Component extends DCLogic {
       let off = prog * it.sp * 26; if(off>cap) off=cap; else if(off<-cap) off=-cap;
       it.el.style.transform = 'translate3d(0,'+off.toFixed(1)+'px,0)';
     }
+    for(const {d,hr} of dreads){                          // контент чуть отстаёт от края секции — глубина
+      if(hr.bottom < -60 || hr.top > vh + 60) continue;
+      let pr=(hr.top + hr.height/2 - vh/2)/vh; pr=Math.max(-1,Math.min(1,pr));
+      d.el.style.transform = 'translate3d(0,'+(pr*-22*d.k).toFixed(1)+'px,0)';
+    }
     this.applyVelocity();
+  }
+  /* шов-таймкод: заливка = прогресс страницы, активная глава = секция под серединой экрана */
+  applyRail(vh){
+    if(!this._railItems || !this._railItems.length) return;
+    const max=(document.documentElement.scrollHeight - vh)||1; const pct=Math.min(100,Math.max(0,(window.scrollY||0)/max*100));
+    if(this._railFill) this._railFill.style.height = pct.toFixed(2)+'%';
+    let act=-1; const mid=vh*0.5;
+    for(let i=0;i<this._railSecs.length;i++){ const sec=this._railSecs[i]; if(!sec) continue; const r=sec.getBoundingClientRect(); if(r.top<=mid && r.bottom>mid){ act=i; break; } }
+    if(act!==this._railAct){ this._railAct=act; this._railItems.forEach((a,i)=>a.classList.toggle('is-active', i===act)); }
   }
   /* ОДИН сигнал скорости скролла с одним демпфированием → marquee (темп/направление) + skew списка кейсов */
   applyVelocity(){
@@ -1811,6 +1884,75 @@ class Component extends DCLogic {
     clearInterval(this._wi); clearInterval(this._wi2);
   }
 
+  /* ---------- AMBIENT WORLD — одна материя за всеми секциями + жар от скорости + след курсора (desktop) ---------- */
+  initAmbient(){
+    if(this._ambient) return;
+    const canvas=this.root.querySelector('[data-ambient]'); if(!canvas) return;
+    const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(this._coarse||reduce){ canvas.style.display='none'; return; }
+    const N=8;
+    const frag=[
+      'precision highp float;',
+      'uniform vec2 u_res; uniform float u_time; uniform float u_heat; uniform float u_scroll; uniform vec3 u_trail['+N+'];',
+      'float hash(vec2 p){ p=fract(p*vec2(123.34,456.21)); p+=dot(p,p+45.32); return fract(p.x*p.y); }',
+      'float vnoise(vec2 p){ vec2 i=floor(p),f=fract(p); f=f*f*(3.0-2.0*f); float a=hash(i),b=hash(i+vec2(1.,0.)),c=hash(i+vec2(0.,1.)),d=hash(i+vec2(1.,1.)); return mix(mix(a,b,f.x),mix(c,d,f.x),f.y); }',
+      'float fbm(vec2 p){ float s=0.0,a=0.5; for(int i=0;i<4;i++){ s+=a*vnoise(p); p*=2.03; a*=0.5; } return s; }',
+      'void main(){',
+      '  vec2 uv=gl_FragCoord.xy/u_res.xy; float ar=u_res.x/max(u_res.y,1.0); vec2 p=vec2(uv.x*ar, uv.y + u_scroll*0.28);',
+      '  float t=u_time*0.03;',
+      '  vec2 q=vec2(fbm(p*1.25+vec2(0.0,t)), fbm(p*1.25+vec2(5.2,-t)));',
+      '  vec2 r=vec2(fbm(p*1.25+2.2*q+vec2(1.7,9.2)+t*0.5), fbm(p*1.25+2.2*q+vec2(8.3,2.8)-t*0.5));',
+      '  float f=fbm(p*1.25+2.0*r);',
+      '  vec3 cDark=vec3(0.352,0.176,0.106), cBase=vec3(0.725,0.329,0.247), cHot=vec3(0.917,0.612,0.427);',
+      '  float v=clamp(f*1.1+u_heat*0.22,0.0,1.0);',
+      '  vec3 col=mix(cDark,cBase,smoothstep(0.2,0.75,v)); col=mix(col,cHot,smoothstep(0.72,1.0,v)*(0.35+u_heat*0.65));',
+      '  float g=0.0; for(int i=0;i<'+N+';i++){ vec3 d=u_trail[i]; if(d.z<0.0) continue; float dist=distance(vec2(uv.x*ar,uv.y), vec2(d.x*ar,d.y)); g+=exp(-dist*6.5)*exp(-d.z*1.3); }',
+      '  col+=vec3(1.0,0.84,0.68)*min(1.2,g);',
+      '  gl_FragColor=vec4(col,1.0);',
+      '}'
+    ].join('\n');
+    const P=this._glQuad(canvas,frag); if(!P){ canvas.style.display='none'; return; }
+    const {gl}=P; const U={ res:P.u('u_res'), time:P.u('u_time'), heat:P.u('u_heat'), scroll:P.u('u_scroll'), trail:[] }; for(let i=0;i<N;i++) U.trail.push(P.u('u_trail['+i+']'));
+    const trail=[]; for(let i=0;i<N;i++) trail.push({x:0,y:0,birth:-99}); let ti=0, lx=0, ly=0;
+    const now0=()=> (performance.now?performance.now():Date.now())*0.001;
+    const state={ raf:null, heat:0, on:false };
+    const ensure=()=>{ const w=canvas.clientWidth||innerWidth, h=canvas.clientHeight||innerHeight; const dpr=Math.min(window.devicePixelRatio||1,1.0); const nw=Math.round(w*dpr), nh=Math.round(h*dpr); if(nw>0&&(canvas.width!==nw||canvas.height!==nh)){ canvas.width=nw; canvas.height=nh; gl.viewport(0,0,nw,nh); gl.uniform2f(U.res,nw,nh); } };
+    const self=this; let last=0;
+    const draw=(now)=>{
+      ensure(); const t=now*0.001; const target=Math.min(1,Math.abs(self._vel||0)/55); state.heat+=(target-state.heat)*0.08;
+      gl.uniform1f(U.time,t); gl.uniform1f(U.heat,state.heat); gl.uniform1f(U.scroll,(window.scrollY||0)/(window.innerHeight||900));
+      const tn=now0(); for(let i=0;i<N;i++){ const d=trail[i]; gl.uniform3f(U.trail[i], d.x, d.y, d.birth<0?-1:(tn-d.birth)); }
+      gl.drawArrays(gl.TRIANGLES,0,3);
+      if(!state.on){ state.on=true; canvas.style.opacity='1'; }
+    };
+    const heroCovers=()=> (window.scrollY||0) < (window.innerHeight||900)*0.45;   // под hero ambient не виден — не рисуем
+    const frame=(now)=>{ if(self._calm||document.hidden){ state.raf=null; return; } state.raf=requestAnimationFrame(frame); if(now-last<33) return; last=now; if(heroCovers()) return; draw(now); };
+    const start=()=>{ if(!state.raf && !self._calm) state.raf=requestAnimationFrame(frame); };
+    this._ambientMove=(e)=>{ const nx=e.clientX/(innerWidth||1), ny=1-e.clientY/(innerHeight||1); if(Math.hypot(nx-lx,ny-ly)>0.012){ trail[ti]={x:nx,y:ny,birth:now0()}; ti=(ti+1)%N; lx=nx; ly=ny; } };
+    window.addEventListener('mousemove',this._ambientMove,{passive:true});
+    this._ambientVis=()=>{ if(!document.hidden) start(); }; document.addEventListener('visibilitychange',this._ambientVis);
+    this._ambient={ start, pause:()=>{ if(state.raf){ cancelAnimationFrame(state.raf); state.raf=null; } }, resume:start, destroy:()=>{ if(state.raf) cancelAnimationFrame(state.raf); state.raf=null; window.removeEventListener('mousemove',self._ambientMove); document.removeEventListener('visibilitychange',self._ambientVis); } };
+    start();
+  }
+
+  /* ---------- MINI-FILMS — короткие sticky-биты между главами (тот же VFilm, свои бандлы) ---------- */
+  initMiniFilms(){
+    if(this._minis) return; this._minis=[];
+    const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const secs=Array.from(this.root.querySelectorAll('[data-mini-film]'));
+    if(this._coarse||reduce){ secs.forEach(s=>{ s.style.display='none'; }); return; }
+    secs.forEach(sec=>{
+      const key=sec.getAttribute('data-mini-film'); const sticky=sec.querySelector('[data-mini-sticky]'), canvas=sec.querySelector('[data-mini-canvas]');
+      if(!sticky||!canvas) return;
+      const film=new VFilm({ base:'./film/mini-'+key+'/', manifestUrl:'./film/mini-'+key+'/film.json', canvas, wrap:sec, sticky, pxPerFrame:10, lerp:this._lenis?1:0.12, holds:[[0,0.05,0],[0.92,1,1]],
+        onFrame:(p)=>{ canvas.style.opacity=String(Math.min(1,p*6)); const cap=sec.querySelector('.mini-cap'); if(cap){ const o=Math.min(1,Math.max(0,(p-0.12)/0.25)); cap.style.opacity=o.toFixed(3); cap.style.transform='translateY('+((1-o)*22).toFixed(1)+'px)'; } } });
+      film.load().catch(()=>{ sec.style.display='none'; });
+      const io=new IntersectionObserver((es)=>{ film.visible=es[0].isIntersecting; if(film.visible) film.start(); else film.stop(); },{threshold:0}); io.observe(sticky);
+      this._minis.push({ key, film, io });
+    });
+  }
+  rebindMinis(){ (this._minis||[]).forEach(m=>{ const sec=this.root.querySelector('[data-mini-film="'+m.key+'"]'); if(!sec) return; const c=sec.querySelector('[data-mini-canvas]'); m.film.wrap=sec; m.film.sticky=sec.querySelector('[data-mini-sticky]')||m.film.sticky; if(c&&c!==m.film.canvas){ m.film.canvas=c; m.film.ctx=null; m.film.dirty=true; } m.film.layout(); if(m.film.dirty) m.film.draw(); }); }
+
   /* ---------- SCROLL FILM (desktop · sticky hero · живой fluid = состояние покоя · главы поверх) ---------- */
   initFilm(){
     if(this._film) return;
@@ -1902,6 +2044,8 @@ class Component extends DCLogic {
     try{ if(this._a3d) this._a3d.forEach(t=> on ? t.pause() : t.resume()); }catch(e){}
     try{ if(this._heroFluid) on ? this._heroFluid.pause() : this._heroFluid.resume(); }catch(e){}
     if(on){
+      if(this._ambient) this._ambient.pause();
+      (this._minis||[]).forEach(m=>{ try{ m.film.stop(); m.film.canvas.style.opacity='0'; }catch(e){} });
       if(this._film){ try{ this._film.stop(); this._film.canvas.style.opacity='0'; this._film.canvas.style.transform=''; ['film-run','film-c1','film-c2','film-c3','film-end'].forEach(k=>document.documentElement.classList.remove(k)); this._film.wrap.style.height=''; document.documentElement.style.setProperty('--film-overlap','0px'); const dm=this.root.querySelector('[data-film-dim]'); if(dm) dm.style.opacity='0'; }catch(e){} }
       if(this._three){ cancelAnimationFrame(this._three.raf); this._three.raf=null; }
       cancelAnimationFrame(this._teamRaf); this._teamRunning=false;
@@ -1916,6 +2060,8 @@ class Component extends DCLogic {
     } else {
       this.initSmoothScroll();
       if(this._film){ try{ this._film.layout(); this._film.visible=true; this._film.start(); }catch(e){} }
+      if(this._ambient) this._ambient.resume();
+      (this._minis||[]).forEach(m=>{ try{ m.film.visible=true; m.film.start(); }catch(e){} });
       if(this._three && this._three.start) this._three.start();
       if(this._teamAnim && this._teamVisible && !this._teamRunning){ this._teamRunning=true; this._lastTeam=0; this._teamRaf=requestAnimationFrame(this._teamAnim); }
       (this._asciiPanels||[]).forEach(p=>p.kick());
@@ -1937,7 +2083,7 @@ class Component extends DCLogic {
         heroBig1:'мы VVID', heroBig2:'мы делаем', heroBig3:'большие', heroBig4:'вещи', heroBigAria:'мы VVID, мы делаем большие вещи',
         heroLead2:'внедряем в уже работающий бизнес — автоматизируем процессы и усиливаем то, что приносит деньги.',
         heroSub:'веб- и мобильные приложения, сайты и интернет-магазины, телеграм-боты, дизайн — внедряем в готовый бизнес.',
-        heroCta1:'смотреть кейсы →', heroCtaPrimary:'написать в telegram ↗', heroProof:'договор + юрлицо · ответ в telegram < 2 часов · показываем вживую', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'разработка · автоматизация', filmK1:'01 — рутина', filmT1:'ручные процессы съедают прибыль', filmK2:'02 — разбор', filmT2:'разбираем процесс на детали', filmK3:'03 — система', filmT3:'собираем в продукт, который работает', filmKEnd:'04 — запуск · vvid, студия разработки и автоматизации', filmTEnd:'мы делаем большие вещи', filmSkip:'пропустить ↓', proofLabel:'fig.01.a — факты', proofNote:'каждый пункт — ссылка, проверьте', filmCta2:'оставить бриф ↓', teamLead:'три ремесла — одна команда. те же люди на созвоне и в коде.', briefAlt:'быстрее — в telegram @vvid ↗', footTag:'из хаоса — система', pricingCta:'оценить мою задачу →', formSent:'письмо с брифом открыто ✓',
+        heroCta1:'смотреть кейсы →', heroCtaPrimary:'написать в telegram ↗', heroProof:'договор + юрлицо · ответ в telegram < 2 часов · показываем вживую', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'разработка · автоматизация', filmK1:'01 — рутина', filmT1:'ручные процессы съедают прибыль', filmK2:'02 — разбор', filmT2:'разбираем процесс на детали', filmK3:'03 — система', filmT3:'собираем в продукт, который работает', filmKEnd:'04 — запуск · vvid, студия разработки и автоматизации', filmTEnd:'мы делаем большие вещи', filmSkip:'пропустить ↓', proofLabel:'fig.01.a — факты', proofNote:'каждый пункт — ссылка, проверьте', filmCta2:'оставить бриф ↓', teamLead:'три ремесла — одна команда. те же люди на созвоне и в коде.', briefAlt:'быстрее — в telegram @vvid ↗', footTag:'из хаоса — система', pricingCta:'оценить мою задачу →', formSent:'письмо с брифом открыто ✓', miniK1:'внутри системы', miniT1:'данные · интеграции · автоматизация — то, что вы не видите, но что делает работу', miniK2:'запуск', miniT2:'шов загорается — система в проде. следующая — ваша.',
         marquee:'веб- и мобильные приложения · интернет-магазины и сайты · лендинги · телеграм-боты · автоматизация бизнеса · ui/ux дизайн · дизайн-системы · frontend и backend · cms · интеграции · ',
         fig02:'fig.02 — манифест',
         manifH2:'ваш бизнес уже работает. мы снимаем его с ручного привода.',
@@ -1969,7 +2115,7 @@ class Component extends DCLogic {
         heroBig1:'we are VVID', heroBig2:'we do', heroBig3:'big', heroBig4:'things', heroBigAria:'we are VVID, we do big things',
         heroLead2:'built into your running business — we automate processes and amplify what already makes money.',
         heroSub:'web & mobile apps, websites and online stores, telegram bots, design — built into your existing business.',
-        heroCta1:'see our work →', heroCtaPrimary:'message us on telegram ↗', heroProof:'contract + legal entity · telegram reply < 2 hours · we show, live', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'development · automation', filmK1:'01 — routine', filmT1:'manual processes eat your profit', filmK2:'02 — teardown', filmT2:'we take the process apart', filmK3:'03 — system', filmT3:'and rebuild it as a product that works', filmKEnd:'04 — launch · vvid, development & automation studio', filmTEnd:'we do big things', filmSkip:'skip ↓', proofLabel:'fig.01.a — facts', proofNote:'every item is a link — check it', filmCta2:'leave a brief ↓', teamLead:'three crafts — one team. the same people on the call and in the code.', briefAlt:'faster on telegram @vvid ↗', footTag:'from chaos — a system', pricingCta:'estimate my task →', formSent:'brief email opened ✓',
+        heroCta1:'see our work →', heroCtaPrimary:'message us on telegram ↗', heroProof:'contract + legal entity · telegram reply < 2 hours · we show, live', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'development · automation', filmK1:'01 — routine', filmT1:'manual processes eat your profit', filmK2:'02 — teardown', filmT2:'we take the process apart', filmK3:'03 — system', filmT3:'and rebuild it as a product that works', filmKEnd:'04 — launch · vvid, development & automation studio', filmTEnd:'we do big things', filmSkip:'skip ↓', proofLabel:'fig.01.a — facts', proofNote:'every item is a link — check it', filmCta2:'leave a brief ↓', teamLead:'three crafts — one team. the same people on the call and in the code.', briefAlt:'faster on telegram @vvid ↗', footTag:'from chaos — a system', pricingCta:'estimate my task →', formSent:'brief email opened ✓', miniK1:'inside the system', miniT1:'data · integrations · automation — what you never see, and what does the work', miniK2:'launch', miniT2:'the seam lights up — the system is live. the next one is yours.',
         marquee:'web & mobile apps · online stores & websites · landing pages · telegram bots · business automation · ui/ux design · design systems · frontend & backend · cms · integrations · ',
         fig02:'fig.02 — manifesto',
         manifH2:'your business already runs. we take it off manual.',
@@ -2105,6 +2251,10 @@ class Component extends DCLogic {
           {d:240, v:'contract',    l:'legal entity · nda on request',       href:'#faq'}
         ]
       },
+      rail:{
+        ru:[{n:'01',id:'top',href:'#top',l:'старт'},{n:'02',id:'manifesto',href:'#manifesto',l:'манифест'},{n:'03',id:'capabilities',href:'#capabilities',l:'услуги'},{n:'04',id:'work',href:'#work',l:'кейсы'},{n:'05',id:'process',href:'#process',l:'процесс'},{n:'06',id:'pricing',href:'#pricing',l:'прайс'},{n:'07',id:'team',href:'#team',l:'команда'},{n:'08',id:'brief',href:'#brief',l:'бриф'}],
+        en:[{n:'01',id:'top',href:'#top',l:'start'},{n:'02',id:'manifesto',href:'#manifesto',l:'manifesto'},{n:'03',id:'capabilities',href:'#capabilities',l:'services'},{n:'04',id:'work',href:'#work',l:'cases'},{n:'05',id:'process',href:'#process',l:'process'},{n:'06',id:'pricing',href:'#pricing',l:'pricing'},{n:'07',id:'team',href:'#team',l:'team'},{n:'08',id:'brief',href:'#brief',l:'brief'}]
+      },
       directions:{
         ru:[
           {i:0, n:1, word:'разработка',    desc:'веб · мобильные · внутренние системы'},
@@ -2141,6 +2291,7 @@ class Component extends DCLogic {
       capabilities: D.capabilities[L],
       cases: D.cases[L],
       proof: D.proof[L],
+      rail: D.rail[L],
       process: D.process[L],
       pricing: D.pricing[L],
       faq: D.faq[L],
