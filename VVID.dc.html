@@ -702,19 +702,30 @@
 /* ---------- SCROLL-FILM PLAYER: кадровые бандлы · декод в воркере · окно ± · холды в маппинге · sticky-пин ---------- */
 class VFilm {
   constructor(o){
-    Object.assign(this,{ lerp:1, pxPerFrame:14, windowAhead:24, windowBehind:8, holds:[] }, o);
-    this.buf=[]; this.bmp=new Map(); this.pending=new Set();
-    this.cur=-1; this.tSmooth=0; this.tTarget=0; this.dir=1; this.visible=false; this.raf=0; this.destroyed=false; this.loadedBytes=0; this.dirty=false; this.p=0;
-    this.worker=VFilm.worker();
-    this.worker.onmessage=(e)=>{ const {i,bitmap}=e.data; this.pending.delete(i); if(this.destroyed||!this.inWindow(i)){ if(bitmap) bitmap.close(); return; } if(bitmap){ this.bmp.set(i,bitmap); if(i===this.cur||!this.bmp.has(this.cur)){ this.dirty=true; if(!this.raf) this.draw(); } } };
+    Object.assign(this,{ lerp:1, pxPerFrame:14, windowAhead:24, windowBehind:8, keepBehind:16, pwin:64, workers:2, perWorker:2, pInflight:6, near:2, holds:[] }, o);
+    this.buf=[]; this.bmp=new Map(); this.pending=new Set(); this.bad=new Set();
+    this.pbuf=[]; this.pbmp=new Map(); this.ppending=new Set(); this.pbad=new Set(); this.pm=null;
+    this.cur=-1; this.tSmooth=0; this.tTarget=0; this.dir=1; this.visible=false; this.raf=0; this.destroyed=false; this.loadedBytes=0; this.dirty=false; this.p=0; this.rr=0;
+    this.pool=[]; for(let k=0;k<this.workers;k++){ const w=VFilm.worker(); w.onmessage=(e)=>this.onHi(e.data); this.pool.push(w); }           // чёткие кадры: пул → декод в 2 потока
+    this.maxInflight=this.workers*this.perWorker;
+    this.pworker=this.proxyBase?VFilm.worker():null;                                                                                          // прокси: свой воркер, не стоит в очереди за чёткими
+    if(this.pworker) this.pworker.onmessage=(e)=>this.onPx(e.data);
   }
   static worker(){
     const src="self.onmessage=async(e)=>{const{i,buf,type}=e.data;try{const bitmap=await createImageBitmap(new Blob([buf],{type}));self.postMessage({i,bitmap},[bitmap]);}catch(err){self.postMessage({i,bitmap:null});}};";
     return new Worker(URL.createObjectURL(new Blob([src],{type:'text/javascript'})));
   }
+  onHi({i,bitmap}){ this.pending.delete(i); if(this.destroyed){ if(bitmap) bitmap.close(); return; }
+    if(!bitmap){ this.bad.add(i); } else if(!this.inKeep(i)){ bitmap.close(); } else { this.bmp.set(i,bitmap); if(i===this.cur||!this.bmp.has(this.cur)) this.redraw(); }
+    this.pump(); }
+  onPx({i,bitmap}){ this.ppending.delete(i); if(this.destroyed){ if(bitmap) bitmap.close(); return; }
+    if(!bitmap){ this.pbad.add(i); } else if(Math.abs(i-this.cur)>this.pwin){ bitmap.close(); } else { this.pbmp.set(i,bitmap); if(i===this.cur&&!this.bmp.has(i)) this.redraw(); }
+    this.ppump(); }
+  redraw(){ this.dirty=true; if(!this.raf) this.draw(); }
   async load(){
     const m=await (await fetch(this.manifestUrl)).json();
     this.m=m; this.frames=m.frames; this.layout();
+    if(this.proxyBase) this.loadProxy().catch(()=>{});                     // параллельно: ~2 МБ прокси приходят за секунду и страхуют любой скраб
     for(const b of m.bundles){ if(this.destroyed) return;
       const res=await fetch(this.base+b.url);
       if(!res.body){ this.slice(b, await res.arrayBuffer()); continue; }
@@ -725,13 +736,27 @@ class VFilm {
     }
     this.loaded=true;
   }
+  async loadProxy(){                                                        // ¼-кадры (~5 КБ, декод <1 мс): рисуются мгновенно, пока чёткий подъезжает
+    const pm=await (await fetch(this.proxyBase+'film.json')).json(); if(this.destroyed) return; this.pm=pm;
+    for(const b of pm.bundles){ if(this.destroyed) return; const ab=await (await fetch(this.proxyBase+b.url)).arrayBuffer(); let off=0; b.sizes.forEach((sz,k)=>{ this.pbuf[b.first+k]=ab.slice(off,off+sz); off+=sz; }); this.ppump(); }
+  }
   slice(b,ab){ let off=0; b.sizes.forEach((sz,k)=>{ this.buf[b.first+k]=ab.slice(off,off+sz); off+=sz; }); if(this.cur<0) this.cur=0; this.fill(); }
   layout(){ if(!this.frames||!this.wrap) return; const sh=this.sticky.clientHeight||innerHeight; this.overlap=Math.round(sh*(this.overlapVh||0)); this.wrap.style.height=Math.round(sh+this.frames*this.pxPerFrame+this.overlap)+'px'; try{ document.documentElement.style.setProperty('--film-overlap', this.overlap+'px'); }catch(e){} }
   ready(frac,first){ return new Promise(res=>{ const tick=()=>{ if(this.destroyed) return res(); const okB=this.m?(this.loadedBytes/this.m.totalBytes>=frac):false; let okF=!!this.m; if(okF){ for(let i=0;i<first;i++){ if(!this.bmp.has(i)){ okF=false; break; } } } (okB&&okF)?res():setTimeout(tick,60); }; tick(); }); }
   inWindow(i){ const lo=this.cur-(this.dir>0?this.windowBehind:this.windowAhead), hi=this.cur+(this.dir>0?this.windowAhead:this.windowBehind); return i>=lo&&i<=hi; }
-  fill(){ if(this.cur<0||!this.m) return; for(const [i,b] of this.bmp){ if(!this.inWindow(i)){ b.close(); this.bmp.delete(i); } }
-    const order=[]; for(let d=0; d<=this.windowAhead; d++){ order.push(this.cur+d*this.dir); if(d>0&&d<=this.windowBehind) order.push(this.cur-d*this.dir); }
-    for(const i of order){ if(i<0||i>=this.frames||this.bmp.has(i)||this.pending.has(i)||!this.buf[i]) continue; this.pending.add(i); this.worker.postMessage({i,buf:this.buf[i],type:this.m.type}); } }
+  inKeep(i){ const d=(i-this.cur)*this.dir; return d>=-this.keepBehind&&d<=this.windowAhead; }   // держим чуть больше, чем декодим: разворот скролла не сбрасывает готовые кадры
+  fill(){ if(this.cur<0||!this.m) return;
+    for(const [i,b] of this.bmp){ if(!this.inKeep(i)){ b.close(); this.bmp.delete(i); } }
+    if(this.pm){ for(const [i,b] of this.pbmp){ if(Math.abs(i-this.cur)>this.pwin){ b.close(); this.pbmp.delete(i); } } }
+    this.pump(); this.ppump(); }
+  want(i){ return i>=0&&i<this.frames&&!!this.buf[i]&&!this.bmp.has(i)&&!this.pending.has(i)&&!this.bad.has(i); }
+  next(){ for(let d=0; d<=this.windowAhead; d++){ const a=this.cur+d*this.dir; if(this.want(a)) return a; if(d>0&&d<=this.windowBehind){ const b=this.cur-d*this.dir; if(this.want(b)) return b; } } return -1; }
+  pump(){ if(this.cur<0||!this.m||this.destroyed) return;                 // в очереди ≤ maxInflight кадров: после прыжка/разворота теряем 4 устаревших декода, а не всё окно
+    while(this.pending.size<this.maxInflight){ const i=this.next(); if(i<0) break; this.pending.add(i); this.pool[this.rr++%this.pool.length].postMessage({i,buf:this.buf[i],type:this.m.type}); } }
+  pwant(i){ return i>=0&&i<this.frames&&!!this.pbuf[i]&&!this.pbmp.has(i)&&!this.ppending.has(i)&&!this.pbad.has(i); }
+  pnext(){ for(let d=0; d<=this.pwin; d++){ const a=this.cur+d*this.dir; if(this.pwant(a)) return a; if(d>0){ const b=this.cur-d*this.dir; if(this.pwant(b)) return b; } } return -1; }
+  ppump(){ if(!this.pworker||!this.pm||this.cur<0||this.destroyed) return;
+    while(this.ppending.size<this.pInflight){ const i=this.pnext(); if(i<0) break; this.ppending.add(i); this.pworker.postMessage({i,buf:this.pbuf[i],type:this.pm.type}); } }
   mapTime(p){ for(const h of this.holds){ if(p>=h[0]&&p<=h[1]) return h[2]; }
     let pP=0,pT=0,nP=1,nT=1; for(const h of this.holds){ if(h[1]<=p&&h[1]>=pP){ pP=h[1]; pT=h[2]; } if(h[0]>=p&&h[0]<=nP){ nP=h[0]; nT=h[2]; } }
     return pT+(p-pP)/Math.max(1e-6,nP-pP)*(nT-pT); }
@@ -752,16 +777,22 @@ class VFilm {
     this.onFrame&&this.onFrame(p,f,this.tail||0);
     if(this.dirty) this.draw();
   }
-  draw(){ const b=this.bmp.get(this.cur)||this.nearest(); if(!b) return; this.dirty=false;
+  pick(){                                                                   // чёткий кадр → чёткий сосед (≤near) → прокси этого кадра → ближайший чёткий → ближайший прокси
+    const c=this.cur; let b=this.bmp.get(c); if(b) return b;
+    for(let d=1; d<=this.near; d++){ b=this.bmp.get(c-d*this.dir)||this.bmp.get(c+d*this.dir); if(b) return b; }
+    b=this.pbmp.get(c); if(b) return b;
+    return this.nearest(this.bmp)||this.nearest(this.pbmp); }
+  draw(){ const b=this.pick(); if(!b) return; this.dirty=false;
     const c=this.canvas; const ctx=this.ctx||(this.ctx=c.getContext('2d',{alpha:false,desynchronized:true}));
     const dpr=Math.min(window.devicePixelRatio||1,1.5); const W=c.clientWidth||innerWidth, H=c.clientHeight||innerHeight;
-    const cw=Math.round(W*dpr), ch=Math.round(H*dpr); if(c.width!==cw||c.height!==ch){ c.width=cw; c.height=ch; }
+    const cw=Math.round(W*dpr), ch=Math.round(H*dpr); if(c.width!==cw||c.height!==ch){ c.width=cw; c.height=ch; ctx.imageSmoothingQuality='high'; }
     const s=Math.max(cw/b.width, ch/b.height); const dw=b.width*s, dh=b.height*s;
     ctx.drawImage(b,(cw-dw)/2,(ch-dh)/2,dw,dh); }
-  nearest(){ let best=null,bd=1e9; for(const [i,b] of this.bmp){ const d=Math.abs(i-this.cur); if(d<bd){ bd=d; best=b; } } return best; }
+  nearest(map){ let best=null,bd=1e9; for(const [i,b] of map){ const d=Math.abs(i-this.cur); if(d<bd){ bd=d; best=b; } } return best; }
   rebind(root){ const c=root.querySelector('[data-film-canvas]'); if(c&&c!==this.canvas){ this.canvas=c; this.ctx=null; this.dirty=true; }
     this.wrap=root.querySelector('[data-film-wrap]')||this.wrap; this.sticky=root.querySelector('[data-film-sticky]')||this.sticky; this.layout(); if(this.dirty) this.draw(); }
-  destroy(){ this.destroyed=true; this.stop(); for(const b of this.bmp.values()) b.close(); this.bmp.clear(); try{ this.worker.terminate(); }catch(e){} this.buf=[]; }
+  destroy(){ this.destroyed=true; this.stop(); for(const b of this.bmp.values()) b.close(); this.bmp.clear(); for(const b of this.pbmp.values()) b.close(); this.pbmp.clear();
+    this.pool.forEach(w=>{ try{ w.terminate(); }catch(e){} }); try{ if(this.pworker) this.pworker.terminate(); }catch(e){} this.buf=[]; this.pbuf=[]; }
 }
 
 class Component extends DCLogic {
@@ -938,7 +969,7 @@ class Component extends DCLogic {
     canvas.style.opacity='1';
     const {gl}=P; const U={ res:P.u('u_res'), time:P.u('u_time'), mouse:P.u('u_mouse'), mouseOn:P.u('u_mouseOn'), scroll:P.u('u_scroll') };
     const isMobile = window.innerWidth<760 || (window.matchMedia && window.matchMedia('(pointer:coarse)').matches);
-    const dprCap = isMobile?1.0:1.5;
+    const dprCap = 1.0;                                            // FBM-жидкость мягкая: 2× апскейл не читается, а GPU-нагрузка ×2.25 меньше
     const state={ raf:null, visible:true, mx:0.5, my:0.6, tmx:0.5, tmy:0.6, mon:0.0, tmon:0.0 };
     const resize=()=>{ const w=canvas.clientWidth||heroEl.clientWidth||innerWidth, h=canvas.clientHeight||heroEl.clientHeight||innerHeight; const dpr=Math.min(window.devicePixelRatio||1,dprCap); canvas.width=Math.round(w*dpr); canvas.height=Math.round(h*dpr); gl.viewport(0,0,canvas.width,canvas.height); gl.uniform2f(U.res,canvas.width,canvas.height); };
     const self=this; let last=0;
@@ -950,7 +981,7 @@ class Component extends DCLogic {
       gl.uniform1f(U.time,t); gl.uniform2f(U.mouse,state.mx,state.my); gl.uniform1f(U.mouseOn,state.mon); gl.uniform1f(U.scroll,k);
       gl.drawArrays(gl.TRIANGLES,0,3);
     };
-    const frame=(now)=>{ if(self._calm||!state.visible){ state.raf=null; return; } state.raf=requestAnimationFrame(frame); if(now-last<(isMobile?32:16))return; last=now; draw(now); };
+    const frame=(now)=>{ if(self._calm||!state.visible){ state.raf=null; return; } state.raf=requestAnimationFrame(frame); if(now-last<((isMobile||document.documentElement.classList.contains('film-run'))?32:16))return; last=now; draw(now); };
     const start=()=>{ if(!state.raf && !self._calm && state.visible && !state.susp) state.raf=requestAnimationFrame(frame); };
     this._heroFluidMove=(e)=>{ const rc=canvas.getBoundingClientRect(); if(!rc.height)return; state.tmx=(e.clientX-rc.left)/rc.width; state.tmy=1.0-(e.clientY-rc.top)/rc.height; state.tmon=1.0; };
     this._heroFluidLeave=()=>{ state.tmon=0.0; };
@@ -1962,7 +1993,8 @@ class Component extends DCLogic {
     const smooth=(a,b,x)=>{ const t=Math.min(1,Math.max(0,(x-a)/(b-a))); return t*t*(3-2*t); };
     let ch=''; const setCh=(c)=>{ if(c===ch) return; ['film-c1','film-c2','film-c3','film-end'].forEach(k=>html.classList.remove(k)); if(c) html.classList.add(c); ch=c; };
     const film=this._film=new VFilm({
-      base: lite?'./film/mobile/':'./film/desktop/', manifestUrl: lite?'./film/mobile/film.json':'./film/desktop/film.json', canvas, wrap, sticky, pxPerFrame: lite?9:7, overlapVh: lite?0.32:0.38,   // desktop-фильм 48 fps → 7px/кадр   // хвост: страница наезжает на пэйофф
+      base: lite?'./film/mobile/':'./film/desktop/', manifestUrl: lite?'./film/mobile/film.json':'./film/desktop/film.json', proxyBase: lite?'./film/mobile/proxy/':'./film/desktop/proxy/', canvas, wrap, sticky, pxPerFrame: lite?9:7, overlapVh: lite?0.32:0.38,
+      windowAhead: lite?18:24, windowBehind:8, keepBehind: lite?12:16, pwin: lite?48:64,                                  // окно чётких кадров (память) · окно прокси   // desktop-фильм 48 fps → 7px/кадр   // хвост: страница наезжает на пэйофф
       lerp:1,                                                             // одно сглаживание — Lenis; без него см. ниже
       holds:[[0,0.06,0],[0.36,0.40,0.40],[0.64,0.68,0.74],[0.88,1,1]],    // плато: старт · бутон · раскрытие · цветок    // плато: старт · трещина (глава 01→02) · собранная кладка (03) · пэйофф
       onProgress:(f)=>{ this._filmBytes=f; },
@@ -1972,7 +2004,7 @@ class Component extends DCLogic {
         canvas.style.transform = tail>0 ? 'scale('+(1-tail*0.035).toFixed(4)+')' : '';
         html.classList.toggle('film-run', p>0.06);
         setCh(p>=0.86?'film-end': p>=0.68?'film-c3': p>=0.40?'film-c2': p>=0.12?'film-c1':'');
-        if(this._heroFluid&&this._heroFluid.suspend) this._heroFluid.suspend(p>0.18);
+        if(this._heroFluid&&this._heroFluid.suspend) this._heroFluid.suspend(p>0.12);                 // фильм уже непрозрачен → fluid спит, GPU фильму
         if(skip) skip.style.opacity=(p>0.02&&p<0.9)?'1':'0';
       }
     });
