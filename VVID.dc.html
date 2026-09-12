@@ -171,6 +171,47 @@
   /* ===== scroll-film (desktop): sticky hero, fluid = состояние покоя, главы поверх кадров ===== */
   html:not(.pre-done){overflow:hidden}
   .film-cap{position:absolute;left:26px;right:26px;bottom:clamp(96px,16vh,170px);max-width:min(46vw,40ch);color:#fff;opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);pointer-events:none}
+  /* спуск: один фильм, узлы с информацией внутри кадра, линия стебля, глубина */
+  .ds-wrap{position:relative;z-index:0;overflow:clip;background:#100d0a;color:#efe9df}
+  #top + .ds-wrap{margin-top:-100vh}                                          /* стик спуска уже под hero: последний кадр hero = первый кадр спуска */
+  .ds-sticky{position:sticky;top:0;height:100vh;height:100svh;overflow:clip;background:#100d0a}
+  .ds-still{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;display:block}
+  .ds-scrim{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0}
+  .ds-scrim-l{background:linear-gradient(90deg,rgba(16,13,10,.86) 0%,rgba(16,13,10,.58) 32%,rgba(16,13,10,0) 58%)}
+  .ds-scrim-r{background:linear-gradient(270deg,rgba(16,13,10,.86) 0%,rgba(16,13,10,.58) 32%,rgba(16,13,10,0) 58%)}
+  .ds-spine{position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(239,233,223,.26);z-index:3;pointer-events:none}
+  .ds-tick{position:absolute;left:50%;z-index:3;font:500 10px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:rgba(239,233,223,.62);white-space:nowrap;opacity:0;pointer-events:none}
+  .ds-tick::before{content:"";position:absolute;top:.45em;width:22px;height:1px;background:rgba(239,233,223,.55)}
+  .ds-tick.l{transform:translateX(calc(-100% - 34px))} .ds-tick.l::before{right:-30px}
+  .ds-tick.r{transform:translateX(34px)} .ds-tick.r::before{left:-30px}
+  .ds-depth{position:absolute;right:26px;bottom:26px;z-index:3;text-align:right;font:500 10px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:rgba(239,233,223,.6)}
+  .ds-depth b{display:block;font-family:var(--font-accent);font-style:italic;font-weight:300;font-size:clamp(22px,2.4vw,34px);letter-spacing:-.01em;color:#efe9df;text-transform:none;line-height:1;margin-top:8px;font-variant-numeric:tabular-nums}
+  .ds-node{position:absolute;z-index:4;width:min(42vw,600px);opacity:0;pointer-events:none;color:#efe9df;will-change:opacity,transform}
+  .ds-node.on{pointer-events:auto}
+  .ds-left{left:clamp(26px,4vw,64px);bottom:clamp(64px,11vh,130px)}
+  .ds-right{right:clamp(26px,4vw,64px);top:clamp(96px,14vh,150px)}
+  .ds-eyebrow{display:block;font:500 11px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.2em;text-transform:uppercase;color:rgba(239,233,223,.62);margin-bottom:18px}
+  .ds-h{font-family:var(--font-display);font-weight:600;font-size:clamp(26px,2.9vw,44px);line-height:1.02;letter-spacing:-.035em;margin:0 0 14px;text-wrap:balance;color:#efe9df}
+  .ds-p{margin:0 0 22px;font-size:clamp(15px,1.15vw,17px);line-height:1.5;color:rgba(239,233,223,.8);max-width:44ch;text-wrap:pretty}
+  .ds-p b{color:#efe9df;font-weight:600}
+  .ds-facts{display:flex;flex-wrap:wrap;gap:14px 28px;border-top:1px solid rgba(239,233,223,.24);padding-top:14px}
+  .ds-fact{display:flex;flex-direction:column;gap:5px;color:inherit;text-decoration:none}
+  .ds-fact .v{font-family:var(--font-accent);font-style:italic;font-size:clamp(18px,1.8vw,26px);line-height:1;white-space:nowrap;transition:color .3s}
+  .ds-fact:hover .v{color:var(--acc,#b9543f)}
+  .ds-fact .l{font:500 9.5px/1.4 'PT Mono',ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;color:rgba(239,233,223,.55)}
+  .ds-rows{border-top:1px solid rgba(239,233,223,.24)}
+  .ds-row{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:14px;align-items:baseline;padding:11px 0;border-bottom:1px solid rgba(239,233,223,.16);color:inherit;text-decoration:none}
+  .ds-row .n{font:500 10px/1 'PT Mono',ui-monospace,monospace;color:rgba(239,233,223,.5)}
+  .ds-row .t{font-family:var(--font-display);font-weight:500;font-size:clamp(17px,1.5vw,22px);letter-spacing:-.02em;line-height:1.08;transition:color .3s}
+  .ds-row:hover .t{color:#fff}
+  .ds-row .t small{display:block;font-family:'Wix Madefor Text','Wix Madefor Display',sans-serif;font-weight:400;font-size:13.5px;color:rgba(239,233,223,.62);margin-top:4px;letter-spacing:0;line-height:1.35}
+  .ds-row .pr{font-family:var(--font-accent);font-style:italic;font-size:clamp(15px,1.3vw,19px);white-space:nowrap;color:#e6b79c}
+  .ds-foot{margin:16px 0 0;font:500 10px/1.6 'PT Mono',ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;color:rgba(239,233,223,.5);max-width:60ch}
+  @media (max-width:900px){ .ds-node{width:auto;left:20px;right:20px} .ds-left{bottom:clamp(56px,9vh,100px)} .ds-right{top:auto;bottom:clamp(56px,9vh,100px)} .ds-h{font-size:clamp(22px,5.6vw,30px)} .ds-facts{gap:12px 24px} .ds-row .t small{display:none} .ds-depth,.ds-tick,.ds-spine{display:none} .ds-scrim-l,.ds-scrim-r{background:linear-gradient(0deg,rgba(16,13,10,.92) 0%,rgba(16,13,10,.62) 42%,rgba(16,13,10,0) 72%)} }
+  .ds-static .ds-sticky{position:relative;height:auto;display:grid}
+  .ds-static .ds-still{position:relative;inset:auto;height:auto;aspect-ratio:16/9}
+  .ds-static .ds-node{position:relative;left:auto;right:auto;top:auto;bottom:auto;width:auto;opacity:1 !important;transform:none !important;pointer-events:auto;padding:28px 26px}
+  .ds-static .ds-scrim,.ds-static .ds-spine,.ds-static .ds-tick,.ds-static .ds-depth,.ds-static canvas{display:none}
   /* сцены фильма между блоками: прилипающий экран, стилл под кадрами, подпись от прогресса, занавес следующего блока */
   .sc-wrap{position:relative;z-index:9;overflow:clip;background:#13110c;color:#e4ded2;min-height:100vh}
   .sc-sticky{position:sticky;top:0;height:100vh;height:100svh;overflow:clip;background:#13110c}
@@ -455,96 +496,50 @@
 
   <!-- TRUST MARQUEE -->
   <!-- 01.a PROOF STRIP — факты сразу после фильма, каждый пункт — ссылка на доказательство -->
-  <!-- 02 WHO WE ARE — манифест + факты + три ремесла + принципы (впитал proof-полосу, бегущую строку и командную часть 07) -->
-  <section id="about" data-screen-label="02 Who we are" style="display:none;position:relative;z-index:10;background:#e4ded2;color:#1b1812;box-shadow:0 -34px 70px -24px rgba(19,17,12,.45);padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
-    <div data-speed="6" data-pmax="150" style="position:absolute;top:0;right:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(27,24,18,.045);pointer-events:none;user-select:none">02</div>
-    <div data-depth="1" style="max-width:1320px;margin:0 auto;position:relative;z-index:1">
-      <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#6f6659;margin-bottom:clamp(40px,6vw,80px)">{{ t.fig02 }}</div>
-      <div class="ab-head">
-        <h2 data-kinetic="1" data-i18n="manifH2" class="ab-h2">{{ t.manifH2 }}</h2>
-        <p data-reveal="1" data-delay="120" class="ab-p">{{ t.manifPa }}<span style="font-weight:600;color:#1b1812">{{ t.manifPb }}</span>.</p>
-      </div>
-      <div class="ab-facts">
-        <sc-for list="{{ proof }}" as="pf" hint-placeholder-count="5">
-          <a href="{{ pf.href }}" class="ab-fact" data-reveal="1" data-delay="{{ pf.d }}"><span class="ab-v">{{ pf.v }}</span><span class="ab-l">{{ pf.l }}</span></a>
-        </sc-for>
-      </div>
-      <div class="ab-team">
-        <p class="ab-lead" data-reveal="1">{{ t.teamLead }}</p>
-        <div class="ab-crafts" data-reveal="1" data-delay="80">
-          <sc-for list="{{ directions }}" as="mb" hint-placeholder-count="3">
-            <div class="ab-craft"><span class="ab-cn">0{{ mb.n }}</span><span class="ab-cw">{{ mb.word }}</span><span class="ab-cd">{{ mb.desc }}</span></div>
-          </sc-for>
-        </div>
-      </div>
-      <div class="ab-principles">
-        <sc-for list="{{ principles }}" as="pr" hint-placeholder-count="3">
-          <div class="ab-pr" data-reveal="1" data-delay="{{ pr.delay }}"><div class="ab-pk">{{ pr.k }}</div><p class="ab-pv">{{ pr.v }}</p></div>
-        </sc-for>
-      </div>
-    </div>
-  </section>
 
   <!-- 03 CAPABILITIES -->
-  <!-- СЦЕНА 01 «Разбор» — продолжение фильма между «кто мы» и «что делаем»: тот же VFilm, бандлы в film/scene-01 (нет бандлов → секция прячется) -->
-  <section data-scene="01" data-screen-label="S01 Разбор" class="sc-wrap">
-    <div data-scene-sticky="1" class="sc-sticky">
-      <img data-scene-still="1" class="sc-still" src="./film/scene-01/still.jpg" alt="" loading="lazy" decoding="async">
-      <canvas data-scene-canvas="1" aria-hidden="true" style="position:absolute;inset:0;z-index:1;display:block;width:100%;height:100%;pointer-events:none;opacity:0"></canvas>
-      <div class="hero-flood-grain" aria-hidden="true" style="z-index:2"></div>
-      <div class="hero-vig" aria-hidden="true" style="z-index:2"></div>
-      <div data-scene-dim="1" aria-hidden="true" style="position:absolute;inset:0;z-index:2;background:#13110c;opacity:0;pointer-events:none"></div>
-      <div data-scene-scrim="1" class="sc-scrim" aria-hidden="true"></div>
-      <div data-scene-info="1" class="sc-info">
-        <span class="sc-eyebrow">{{ t.sc1K }}</span>
-        <h2 class="sc-h2">{{ t.manifH2 }}</h2>
-        <p class="sc-p">{{ t.manifPa }}<b>{{ t.manifPb }}</b>.</p>
-        <div class="sc-facts">
-          <sc-for list="{{ proof }}" as="pf" hint-placeholder-count="5">
-            <a href="{{ pf.href }}" class="sc-fact"><span class="v">{{ pf.v }}</span><span class="l">{{ pf.l }}</span></a>
-          </sc-for>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="capabilities" data-screen-label="03 What we do" data-ascii-wd="1" style="position:relative;z-index:10;background:#282620;color:#e4ded2;padding:clamp(90px,13vw,180px) 0;overflow:hidden">
-    <div data-speed="6" data-pmax="150" style="position:absolute;top:2vw;left:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(228,222,210,.04);pointer-events:none;user-select:none">03</div>
-    <div data-wd-plate="1" class="wd-plate" aria-hidden="true"></div>
-    <div data-depth="1" style="max-width:1372px;margin:0 auto;position:relative;z-index:1;padding:0 26px">
-      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:clamp(50px,7vw,90px)">
-        <div>
-          <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8f877a;margin-bottom:24px">{{ t.fig03 }}</div>
-          <h2 data-kinetic="1" data-i18n="capH2" style="font-size:clamp(28px,4.6vw,64px);line-height:1.02;letter-spacing:-.035em;font-weight:600;margin:0;max-width:18ch">{{ t.capH2 }}</h2>
-        </div>
-        <div data-reveal="1" style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#8f877a">{{ t.capSide1 }}<br>{{ t.capSide2 }}</div>
-      </div>
-      <div data-wd-rows="1" class="wd-rows">
-        <sc-for list="{{ capabilities }}" as="cap" hint-placeholder-count="5">
-          <a href="#brief" class="wd-row" data-wd-row="1" data-reveal="1">
-            <span class="wd-n">({{ cap.n }})</span>
-            <span class="wd-main">
-              <span class="wd-title">{{ cap.title }}</span>
-              <span class="wd-words"><sc-for list="{{ cap.specs }}" as="spec" hint-placeholder-count="4"><span>{{ spec }}</span></sc-for></span>
-              <span class="wd-desc">{{ cap.desc }}</span>
-            </span>
-            <span class="wd-price {{ cap.soft }}">{{ cap.price }}</span>
-          </a>
-        </sc-for>
-      </div>
-      <div class="wd-foot">
-        <div data-reveal="1"><div class="wd-foot-l">{{ t.wdProcLabel }}</div><div class="wd-foot-t">{{ t.procH2 }}</div></div>
-        <div data-reveal="1" data-delay="80"><div class="wd-foot-l">{{ t.procRetLabel }}</div><div class="wd-foot-t">{{ t.procRetText }}</div></div>
-      </div>
-    </div>
-    <div class="wd-preview" aria-hidden="true">
-      <canvas data-ascii-canvas="1" style="width:100%;height:100%;display:block"></canvas>
-    </div>
-  </section>
 
   <!-- 04 CASES — lookbook (artefakt-style: case list + ASCII tech motifs, native scroll) -->
 
-  <section id="work" data-screen-label="04 Cases" style="position:relative;z-index:10;background:#e4ded2;color:#1b1812;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
+  <!-- СПУСК — один фильм из склеенных клипов (сцена 01 → клип A → …); информация в узлах внутри кадра; последний кадр hero = первый кадр спуска -->
+  <section id="descent" data-descent="1" data-screen-label="02 Descent" class="ds-wrap">
+    <div data-ds-sticky="1" class="ds-sticky">
+      <img data-ds-still="1" class="ds-still" src="./film/descent/still.jpg" alt="" loading="lazy" decoding="async">
+      <canvas data-ds-canvas="1" aria-hidden="true" style="position:absolute;inset:0;z-index:1;display:block;width:100%;height:100%;pointer-events:none;opacity:0"></canvas>
+      <div class="hero-flood-grain" aria-hidden="true" style="z-index:2"></div>
+      <div class="hero-vig" aria-hidden="true" style="z-index:2"></div>
+      <div data-ds-scrim="l" class="ds-scrim ds-scrim-l" aria-hidden="true"></div>
+      <div data-ds-scrim="r" class="ds-scrim ds-scrim-r" aria-hidden="true"></div>
+      <div class="ds-spine" aria-hidden="true"></div>
+      <div data-ds-tick="01" class="ds-tick l" style="top:50%">{{ t.dsT1 }}</div>
+      <div data-ds-tick="02" class="ds-tick r" style="top:22%">{{ t.dsT2 }}</div>
+      <div class="ds-depth"><span>{{ t.dsDepth }}</span><b data-ds-depth="1">−0,0 м</b></div>
+
+      <div data-node="01" data-range="0.10,0.46" id="about" class="ds-node ds-left">
+        <span class="ds-eyebrow">{{ t.dsK1 }}</span>
+        <h2 class="ds-h">{{ t.manifH2 }}</h2>
+        <p class="ds-p">{{ t.manifPa }}<b>{{ t.manifPb }}</b>. {{ t.teamLead }}</p>
+        <div class="ds-facts">
+          <sc-for list="{{ proof }}" as="pf" hint-placeholder-count="5">
+            <a href="{{ pf.href }}" class="ds-fact"><span class="v">{{ pf.v }}</span><span class="l">{{ pf.l }}</span></a>
+          </sc-for>
+        </div>
+      </div>
+
+      <div data-node="02" data-range="0.60,0.97" id="capabilities" class="ds-node ds-right">
+        <span class="ds-eyebrow">{{ t.dsK2 }}</span>
+        <h2 class="ds-h">{{ t.capH2 }}</h2>
+        <div class="ds-rows">
+          <sc-for list="{{ capabilities }}" as="cap" hint-placeholder-count="5">
+            <a href="#brief" class="ds-row"><span class="n">{{ cap.n }}</span><span class="t">{{ cap.title }}<small>{{ cap.desc }}</small></span><span class="pr">{{ cap.price }}</span></a>
+          </sc-for>
+        </div>
+        <p class="ds-foot">{{ t.procH2 }}</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="work" data-screen-label="04 Cases" style="position:relative;z-index:10;background:#e4ded2;box-shadow:0 -34px 70px -24px rgba(19,17,12,.5);color:#1b1812;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
     <div data-speed="6" data-pmax="150" style="position:absolute;top:1vw;right:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(27,24,18,.035);pointer-events:none;user-select:none">04</div>
     <div data-depth="1" style="max-width:1320px;margin:0 auto;position:relative;z-index:1">
       <div data-reveal="1" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:clamp(48px,7vw,84px)">
@@ -726,7 +721,7 @@
 /* ---------- SCROLL-FILM PLAYER: кадровые бандлы · декод в воркере · окно ± · холды в маппинге · sticky-пин ---------- */
 class VFilm {
   constructor(o){
-    Object.assign(this,{ lerp:1, pxPerFrame:14, windowAhead:24, windowBehind:8, keepBehind:16, pwin:64, workers:2, perWorker:2, pInflight:6, near:2, holds:[] }, o);
+    Object.assign(this,{ lerp:1, pxPerFrame:14, windowAhead:24, windowBehind:8, keepBehind:16, pwin:64, workers:2, perWorker:2, pInflight:6, near:2, holds:[], zones:null }, o);
     this.buf=[]; this.bmp=new Map(); this.pending=new Set(); this.bad=new Set();
     this.pbuf=[]; this.pbmp=new Map(); this.ppending=new Set(); this.pbad=new Set(); this.pm=null;
     this.cur=-1; this.tSmooth=0; this.tTarget=0; this.dir=1; this.visible=false; this.raf=0; this.destroyed=false; this.loadedBytes=0; this.dirty=false; this.p=0; this.rr=0;
@@ -748,7 +743,7 @@ class VFilm {
   redraw(){ this.dirty=true; if(!this.raf) this.draw(); }
   async load(){
     const m=await (await fetch(this.manifestUrl)).json();
-    this.m=m; this.frames=m.frames; this.layout();
+    this.m=m; this.frames=m.frames; if(this.zonesFrac&&this.frames){ const N=this.frames-1; this.zones=this.zonesFrac.map(z=>[Math.round(z[0]*N),Math.round(z[1]*N),z[2]]); } this.layout();
     if(this.proxyBase) this.loadProxy().catch(()=>{});                     // параллельно: ~2 МБ прокси приходят за секунду и страхуют любой скраб
     for(const b of m.bundles){ if(this.destroyed) return;
       const res=await fetch(this.base+b.url);
@@ -765,7 +760,8 @@ class VFilm {
     for(const b of pm.bundles){ if(this.destroyed) return; const ab=await (await fetch(this.proxyBase+b.url)).arrayBuffer(); let off=0; b.sizes.forEach((sz,k)=>{ this.pbuf[b.first+k]=ab.slice(off,off+sz); off+=sz; }); this.ppump(); }
   }
   slice(b,ab){ let off=0; b.sizes.forEach((sz,k)=>{ this.buf[b.first+k]=ab.slice(off,off+sz); off+=sz; }); if(this.cur<0) this.cur=0; this.fill(); }
-  layout(){ if(!this.frames||!this.wrap) return; const sh=this.sticky.clientHeight||innerHeight; this.overlap=Math.round(sh*(this.overlapVh||0)); this.wrap.style.height=Math.round(sh+this.frames*this.pxPerFrame+this.overlap)+'px'; try{ document.documentElement.style.setProperty('--film-overlap', this.overlap+'px'); }catch(e){} }
+  extraPx(){ let e=0; if(this.zones) for(const z of this.zones) e+=Math.max(0,z[1]-z[0])*this.pxPerFrame*(Math.max(1,z[2])-1); return e; }
+  layout(){ if(!this.frames||!this.wrap) return; const sh=this.sticky.clientHeight||innerHeight; this.overlap=Math.round(sh*(this.overlapVh||0)); this.lead=Math.round(sh*(this.leadVh||0)); this.wrap.style.height=Math.round(sh+this.lead+this.frames*this.pxPerFrame+this.extraPx()+this.overlap)+'px'; if(!this.noGlobalVar){ try{ document.documentElement.style.setProperty('--film-overlap', this.overlap+'px'); }catch(e){} } }
   ready(frac,first){ return new Promise(res=>{ const tick=()=>{ if(this.destroyed) return res(); const okB=this.m?(this.loadedBytes/this.m.totalBytes>=frac):false; let okF=!!this.m; if(okF){ for(let i=0;i<first;i++){ if(!this.bmp.has(i)){ okF=false; break; } } } (okB&&okF)?res():setTimeout(tick,60); }; tick(); }); }
   inWindow(i){ const lo=this.cur-(this.dir>0?this.windowBehind:this.windowAhead), hi=this.cur+(this.dir>0?this.windowAhead:this.windowBehind); return i>=lo&&i<=hi; }
   inKeep(i){ const d=(i-this.cur)*this.dir; return d>=-this.keepBehind&&d<=this.windowAhead; }   // держим чуть больше, чем декодим: разворот скролла не сбрасывает готовые кадры
@@ -781,12 +777,19 @@ class VFilm {
   pnext(){ for(let d=0; d<=this.pwin; d++){ const a=this.cur+d*this.dir; if(this.pwant(a)) return a; if(d>0){ const b=this.cur-d*this.dir; if(this.pwant(b)) return b; } } return -1; }
   ppump(){ if(!this.pworker||!this.pm||this.cur<0||this.destroyed) return;
     while(this.ppending.size<this.pInflight){ const i=this.pnext(); if(i<0) break; this.ppending.add(i); this.pworker.postMessage({i,buf:this.pbuf[i],type:this.pm.type}); } }
-  mapTime(p){ for(const h of this.holds){ if(p>=h[0]&&p<=h[1]) return h[2]; }
+  frameAt(s){ const px=this.pxPerFrame, N=this.frames||1; let f=0, acc=0;                  // px скролла внутри фильма → кадр (с учётом медленных зон)
+    for(const z of (this.zones||[])){ const before=Math.max(0,z[0]-f)*px; if(s<acc+before) return f+(s-acc)/px; acc+=before; f=Math.max(f,z[0]); const zl=Math.max(0,z[1]-f)*px*Math.max(1,z[2]); if(s<acc+zl) return f+(s-acc)/(px*Math.max(1,z[2])); acc+=zl; f=Math.max(f,z[1]); }
+    return Math.min(N-1, f+(s-acc)/px); }
+  scrollAt(f){ const px=this.pxPerFrame; let acc=0, cur=0;                                         // кадр → px скролла внутри фильма
+    for(const z of (this.zones||[])){ if(f<=z[0]) break; acc+=Math.max(0,z[0]-cur)*px; cur=Math.max(cur,z[0]); const m=Math.max(1,z[2]); if(f<=z[1]){ return acc+(f-cur)*px*m; } acc+=Math.max(0,z[1]-cur)*px*m; cur=Math.max(cur,z[1]); }
+    return acc+Math.max(0,f-cur)*px; }
+  mapTime(p){ if(this.zones&&this.frames){ const L=this.frames*this.pxPerFrame+this.extraPx(); return Math.min(1,Math.max(0,this.frameAt(p*L)/((this.frames-1)||1))); }
+    for(const h of this.holds){ if(p>=h[0]&&p<=h[1]) return h[2]; }
     let pP=0,pT=0,nP=1,nT=1; for(const h of this.holds){ if(h[1]<=p&&h[1]>=pP){ pP=h[1]; pT=h[2]; } if(h[0]>=p&&h[0]<=nP){ nP=h[0]; nT=h[2]; } }
     return pT+(p-pP)/Math.max(1e-6,nP-pP)*(nT-pT); }
-  progress(){ const r=this.wrap.getBoundingClientRect(); const range=r.height-(this.sticky.clientHeight||innerHeight); const ov=this.overlap||0; const fr=Math.max(1,range-ov);
-    this.tail = ov>0 ? Math.min(1,Math.max(0,(-r.top-fr)/ov)) : 0;                 // 0..1 — насколько следующая секция наехала на фильм
-    return Math.min(1,Math.max(0,-r.top/fr)); }
+  progress(){ const r=this.wrap.getBoundingClientRect(); const range=r.height-(this.sticky.clientHeight||innerHeight); const ov=this.overlap||0, lead=this.lead||0; const fr=Math.max(1,range-ov-lead);
+    this.tail = ov>0 ? Math.min(1,Math.max(0,(-r.top-lead-fr)/ov)) : 0;            // 0..1 — насколько следующая секция наехала на фильм
+    return Math.min(1,Math.max(0,(-r.top-lead)/fr)); }
   start(){ if(this.raf||this.destroyed) return; const loop=(now)=>{ this.raf=requestAnimationFrame(loop); this.tick(now); }; this.raf=requestAnimationFrame(loop); }
   stop(){ if(this.raf) cancelAnimationFrame(this.raf); this.raf=0; this.prev=0; }
   tick(now){
@@ -926,6 +929,7 @@ class Component extends DCLogic {
     this.initHeroFluid();
     this.initFilm();
     this.initScenes();
+    this.initDescent();
     this.initAmbient();
     this.initMagnetic();
     this.initCursor();
@@ -1050,7 +1054,7 @@ class Component extends DCLogic {
     let lenis;
     try{ lenis = new L({ lerp:0.085, wheelMultiplier:1, smoothWheel:true, syncTouch:false }); }catch(e){ return; }
     this._lenis = lenis;
-    if(this._film) this._film.lerp = 1; (this._scenes||[]).forEach(x=>x.film.lerp=1);                                    // Lenis появился позже initFilm → снять второй демпфер
+    if(this._film) this._film.lerp = 1; (this._scenes||[]).forEach(x=>x.film.lerp=1); if(this._descent) this._descent.film.lerp=1;                                    // Lenis появился позже initFilm → снять второй демпфер
     if(!this._preDone){ try{ lenis.stop(); }catch(e){} }   // под прелоадером скролл заморожен; finish() → start()
     const raf=(t)=>{ if(!this._lenis){ this._lenisRaf=null; return; } lenis.raf(t); this._lenisRaf=requestAnimationFrame(raf); };
     this._lenisRaf=requestAnimationFrame(raf);
@@ -2024,6 +2028,39 @@ class Component extends DCLogic {
     start();
   }
 
+  /* ---------- СПУСК — один фильм из склеенных клипов; узлы с информацией внутри кадра; медленные зоны под чтение; линия стебля и глубина ---------- */
+  initDescent(){
+    const sec=this.root.querySelector('[data-descent]'); if(!sec||this._descent) return;
+    const sticky=sec.querySelector('[data-ds-sticky]'), canvas=sec.querySelector('[data-ds-canvas]'), depthEl=sec.querySelector('[data-ds-depth]'), scrimL=sec.querySelector('[data-ds-scrim="l"]'), scrimR=sec.querySelector('[data-ds-scrim="r"]');
+    if(!sticky||!canvas) return;
+    const nodes=Array.from(sec.querySelectorAll('[data-node]')).map(el=>{ const r=(el.getAttribute('data-range')||'0,1').split(',').map(Number); return { el, a:r[0], b:r[1], side:el.classList.contains('ds-right')?'r':'l', tick:sec.querySelector('[data-ds-tick="'+el.getAttribute('data-node')+'"]') }; });
+    const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const coarse=!!(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches);
+    const nav=navigator, weak=(nav.connection&&(nav.connection.saveData||/2g/.test(nav.connection.effectiveType||'')))||(nav.deviceMemory&&nav.deviceMemory<4);
+    const force=/[?&]film=force\b/.test(location.search);
+    const sm=(a,b,x)=>{ const t=Math.min(1,Math.max(0,(x-a)/(b-a))); return t*t*(3-2*t); };
+    if(reduce||(weak&&!force)){ sec.classList.add('ds-static'); return; }                          // статичная версия: стилл + узлы столбиком
+    const base = coarse ? './film/descent/mobile/' : './film/descent/';
+    const film=new VFilm({ base, manifestUrl:base+'film.json', proxyBase:base+'proxy/', canvas, wrap:sec, sticky, pxPerFrame: coarse?4:6, overlapVh:0, leadVh:1, noGlobalVar:true, lerp:this._lenis?1:0.12,
+      windowAhead: coarse?16:20, windowBehind:8, keepBehind: coarse?10:12, pwin: coarse?40:48,
+      zonesFrac: nodes.map(n=>[n.a+0.05, n.b-0.05, 3]),                       // пока узел на экране — фильм идёт втрое медленнее, но не стоит
+      onFrame:(p,f)=>{
+        if(canvas.style.opacity!=='1' && f>=0 && (film.bmp.has(f)||film.pbmp.has(f))) canvas.style.opacity='1';
+        let vl=0, vr=0;
+        nodes.forEach(n=>{ const v=sm(n.a,n.a+0.05,p)*(1-sm(n.b-0.05,n.b,p)); n.el.style.opacity=v.toFixed(3); n.el.style.transform='translateY('+((1-v)*16).toFixed(1)+'px)'; n.el.classList.toggle('on',v>0.5); if(n.tick) n.tick.style.opacity=v.toFixed(3); if(n.side==='l') vl=Math.max(vl,v); else vr=Math.max(vr,v); });
+        if(scrimL) scrimL.style.opacity=vl.toFixed(3); if(scrimR) scrimR.style.opacity=vr.toFixed(3);
+        if(depthEl){ const clips=(film.m&&film.m.clips)||2; const d=p*6.0*clips/5; depthEl.textContent='−'+d.toFixed(1).replace('.',',')+' м'; }
+      } });
+    let loading=false; const load=()=>{ if(loading) return; loading=true; film.load().catch(()=>{ sec.classList.add('ds-static'); }); };
+    const near=new IntersectionObserver((es)=>{ if(es.some(e=>e.isIntersecting)){ load(); near.disconnect(); } },{rootMargin:'100% 0px'}); near.observe(sec);
+    const io=new IntersectionObserver((es)=>{ film.visible=es[0].isIntersecting; if(film.visible) film.start(); else film.stop(); },{threshold:0}); io.observe(sticky);
+    const gotoNode=(id)=>{ const n=nodes.find(x=>x.el.id===id); if(!n||!film.frames) return false; const sh=sticky.clientHeight||innerHeight; const lead=film.lead||0; const fr=sec.offsetHeight-sh-lead; const y=sec.getBoundingClientRect().top+scrollY+lead+(n.a+0.09)*fr; if(this._lenis) this._lenis.scrollTo(y,{duration:1.2}); else window.scrollTo({top:y,behavior:'smooth'}); return true; };
+    this._dsClick=(e)=>{ const a=e.target&&e.target.closest&&e.target.closest('a[href^="#"]'); if(!a) return; const id=a.getAttribute('href').slice(1); if(nodes.some(n=>n.el.id===id)){ if(gotoNode(id)) e.preventDefault(); } };
+    document.addEventListener('click', this._dsClick);
+    this._descent={ film, nodes, io, near, sec, gotoNode };
+    this._dsResize=()=>film.layout(); window.addEventListener('resize', this._dsResize);
+  }
+
   /* ---------- СЦЕНЫ ФИЛЬМА между блоками — тот же VFilm (бандлы + прокси), свои папки film/scene-XX/; нет бандлов → секция прячется ---------- */
   initScenes(){
     if(this._scenes) return; this._scenes=[];
@@ -2074,7 +2111,7 @@ class Component extends DCLogic {
     const smooth=(a,b,x)=>{ const t=Math.min(1,Math.max(0,(x-a)/(b-a))); return t*t*(3-2*t); };
     let ch=''; const setCh=(c)=>{ if(c===ch) return; ['film-c1','film-c2','film-c3','film-end'].forEach(k=>html.classList.remove(k)); if(c) html.classList.add(c); ch=c; };
     const film=this._film=new VFilm({
-      base: lite?'./film/mobile/':'./film/desktop/', manifestUrl: lite?'./film/mobile/film.json':'./film/desktop/film.json', proxyBase: lite?'./film/mobile/proxy/':'./film/desktop/proxy/', canvas, wrap, sticky, pxPerFrame: lite?9:7, overlapVh: lite?0.32:0.38,
+      base: lite?'./film/mobile/':'./film/desktop/', manifestUrl: lite?'./film/mobile/film.json':'./film/desktop/film.json', proxyBase: lite?'./film/mobile/proxy/':'./film/desktop/proxy/', canvas, wrap, sticky, pxPerFrame: lite?9:7, overlapVh: root.querySelector('[data-descent]') ? 0 : (lite?0.32:0.38),
       windowAhead: lite?18:24, windowBehind:8, keepBehind: lite?12:16, pwin: lite?48:64,                                  // окно чётких кадров (память) · окно прокси   // desktop-фильм 48 fps → 7px/кадр   // хвост: страница наезжает на пэйофф
       lerp:1,                                                             // одно сглаживание — Lenis; без него см. ниже
       holds:[[0,0.06,0],[0.36,0.40,0.40],[0.64,0.68,0.74],[0.88,1,1]],    // плато: старт · бутон · раскрытие · цветок    // плато: старт · трещина (глава 01→02) · собранная кладка (03) · пэйофф
@@ -2154,6 +2191,7 @@ class Component extends DCLogic {
       if(this._ambient) this._ambient.pause();
       if(this._film){ try{ this._film.stop(); this._film.canvas.style.opacity='0'; this._film.canvas.style.transform=''; ['film-run','film-c1','film-c2','film-c3','film-end'].forEach(k=>document.documentElement.classList.remove(k)); this._film.wrap.style.height=''; document.documentElement.style.setProperty('--film-overlap','0px'); const dm=this.root.querySelector('[data-film-dim]'); if(dm) dm.style.opacity='0'; }catch(e){} }
       (this._scenes||[]).forEach(x=>{ try{ x.film.stop(); }catch(e){} });
+      if(this._descent){ try{ this._descent.film.stop(); }catch(e){} }
       if(this._three){ cancelAnimationFrame(this._three.raf); this._three.raf=null; }
       cancelAnimationFrame(this._teamRaf); this._teamRunning=false;
       clearInterval(this._wi); clearInterval(this._wi2);
@@ -2169,6 +2207,7 @@ class Component extends DCLogic {
       if(this._film){ try{ this._film.layout(); this._film.visible=true; this._film.start(); }catch(e){} }
       if(this._ambient) this._ambient.resume();
       (this._scenes||[]).forEach(x=>{ try{ x.film.layout(); if(x.film.visible) x.film.start(); }catch(e){} });
+      if(this._descent){ try{ this._descent.film.layout(); if(this._descent.film.visible) this._descent.film.start(); }catch(e){} }
       if(this._three && this._three.start) this._three.start();
       if(this._teamAnim && this._teamVisible && !this._teamRunning){ this._teamRunning=true; this._lastTeam=0; this._teamRaf=requestAnimationFrame(this._teamAnim); }
       (this._asciiPanels||[]).forEach(p=>p.kick());
@@ -2190,7 +2229,7 @@ class Component extends DCLogic {
         heroBig1:'мы VVID', heroBig2:'мы делаем', heroBig3:'большие', heroBig4:'вещи', heroBigAria:'мы VVID, мы делаем большие вещи',
         heroLead2:'внедряем в уже работающий бизнес — автоматизируем процессы и усиливаем то, что приносит деньги.',
         heroSub:'веб- и мобильные приложения, сайты и интернет-магазины, телеграм-боты, дизайн — внедряем в готовый бизнес.',
-        heroCta1:'смотреть кейсы →', heroCtaPrimary:'написать в telegram ↗', heroProof:'договор + юрлицо · ответ в telegram < 2 часов · показываем вживую', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'разработка · автоматизация', sc1K:'глава 01 — кто мы', sc1T:'смотрим внутрь — до самого ядра', filmK1:'01 — замысел', filmT1:'всё начинается с одной точки', filmK2:'02 — раскрытие', filmT2:'деталь за деталью — до готовой формы', filmK3:'03 — результат', filmT3:'4 проекта в проде · гарантия 50 дней', filmKEnd:'04 · vvid — студия разработки и автоматизации', filmTEnd:'следующий проект — ваш', filmSkip:'пропустить ↓', filmCta2:'оставить бриф ↓', teamLead:'три ремесла — одна команда. те же люди на созвоне и в коде.', briefAlt:'быстрее — в telegram @vvid ↗', footTag:'из хаоса — система', pricingCta:'оценить мою задачу →', formSent:'письмо с брифом открыто ✓',
+        heroCta1:'смотреть кейсы →', heroCtaPrimary:'написать в telegram ↗', heroProof:'договор + юрлицо · ответ в telegram < 2 часов · показываем вживую', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'разработка · автоматизация', dsK1:'01 — кто мы · Минск', dsK2:'02 — что делаем · пять услуг · цены открыты', dsT1:'узел 01 — кто мы', dsT2:'узел 02 — что делаем', dsDepth:'глубина', sc1K:'глава 01 — кто мы', sc1T:'смотрим внутрь — до самого ядра', filmK1:'01 — замысел', filmT1:'всё начинается с одной точки', filmK2:'02 — раскрытие', filmT2:'деталь за деталью — до готовой формы', filmK3:'03 — результат', filmT3:'4 проекта в проде · гарантия 50 дней', filmKEnd:'04 · vvid — студия разработки и автоматизации', filmTEnd:'следующий проект — ваш', filmSkip:'пропустить ↓', filmCta2:'оставить бриф ↓', teamLead:'три ремесла — одна команда. те же люди на созвоне и в коде.', briefAlt:'быстрее — в telegram @vvid ↗', footTag:'из хаоса — система', pricingCta:'оценить мою задачу →', formSent:'письмо с брифом открыто ✓',
         fig02:'fig.02 — кто мы',
         manifH2:'ваш бизнес уже работает. мы снимаем его с ручного привода.',
         manifPa:'разбираем процесс на детали и собираем систему, которая держит нагрузку — ', manifPb:'приложение, сайт, бот или интеграция',
@@ -2218,7 +2257,7 @@ class Component extends DCLogic {
         heroBig1:'we are VVID', heroBig2:'we do', heroBig3:'big', heroBig4:'things', heroBigAria:'we are VVID, we do big things',
         heroLead2:'built into your running business — we automate processes and amplify what already makes money.',
         heroSub:'web & mobile apps, websites and online stores, telegram bots, design — built into your existing business.',
-        heroCta1:'see our work →', heroCtaPrimary:'message us on telegram ↗', heroProof:'contract + legal entity · telegram reply < 2 hours · we show, live', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'development · automation', sc1K:'chapter 01 — who we are', sc1T:'we look inside — down to the core', filmK1:'01 — intent', filmT1:'it all starts from a single point', filmK2:'02 — unfolding', filmT2:'detail by detail — to the finished form', filmK3:'03 — result', filmT3:'4 projects live · 50-day guarantee', filmKEnd:'04 · vvid — development & automation studio', filmTEnd:'the next project is yours', filmSkip:'skip ↓', filmCta2:'leave a brief ↓', teamLead:'three crafts — one team. the same people on the call and in the code.', briefAlt:'faster on telegram @vvid ↗', footTag:'from chaos — a system', pricingCta:'estimate my task →', formSent:'brief email opened ✓',
+        heroCta1:'see our work →', heroCtaPrimary:'message us on telegram ↗', heroProof:'contract + legal entity · telegram reply < 2 hours · we show, live', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'development · automation', dsK1:'01 — who we are · Minsk', dsK2:'02 — what we do · five services · prices are open', dsT1:'node 01 — who we are', dsT2:'node 02 — what we do', dsDepth:'depth', sc1K:'chapter 01 — who we are', sc1T:'we look inside — down to the core', filmK1:'01 — intent', filmT1:'it all starts from a single point', filmK2:'02 — unfolding', filmT2:'detail by detail — to the finished form', filmK3:'03 — result', filmT3:'4 projects live · 50-day guarantee', filmKEnd:'04 · vvid — development & automation studio', filmTEnd:'the next project is yours', filmSkip:'skip ↓', filmCta2:'leave a brief ↓', teamLead:'three crafts — one team. the same people on the call and in the code.', briefAlt:'faster on telegram @vvid ↗', footTag:'from chaos — a system', pricingCta:'estimate my task →', formSent:'brief email opened ✓',
         fig02:'fig.02 — who we are',
         manifH2:'your business already runs. we take it off manual.',
         manifPa:'we take the process apart and rebuild it as a system that holds the load — ', manifPb:'an app, a site, a bot or an integration',
