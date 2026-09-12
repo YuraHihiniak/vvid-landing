@@ -41,10 +41,15 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400..800&family=Wix+Madefor+Text:wght@400..700&family=Literata:ital,opsz,wght@0,7..72,300..600;1,7..72,300..500&family=PT+Mono&display=swap" rel="stylesheet">
+<link rel="preload" href="./fonts/WixMadeforDisplay-VF.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="./fonts/WixMadeforText-VF.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+  /* шрифты self-hosted: вариативные woff2 из google/fonts (GitHub), сабсет латиница+кириллица, лицензии в fonts/OFL-*.txt */
+  @font-face{font-family:'Wix Madefor Display';src:url('./fonts/WixMadeforDisplay-VF.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap}
+  @font-face{font-family:'Wix Madefor Text';src:url('./fonts/WixMadeforText-VF.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap}
+  @font-face{font-family:'Literata';src:url('./fonts/Literata-VF.woff2') format('woff2');font-weight:200 900;font-style:normal;font-display:swap}
+  @font-face{font-family:'Literata';src:url('./fonts/Literata-Italic-VF.woff2') format('woff2');font-weight:200 900;font-style:italic;font-display:swap}
+  @font-face{font-family:'PT Mono';src:url('./fonts/PTMono.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
   *{box-sizing:border-box}
   html{scroll-behavior:smooth;scroll-padding-top:78px}
   body{margin:0;background:#e4ded2;color:#1b1812;font-family:'Wix Madefor Text','Wix Madefor Display','Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip}
