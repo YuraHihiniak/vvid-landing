@@ -166,6 +166,29 @@
   /* ===== scroll-film (desktop): sticky hero, fluid = состояние покоя, главы поверх кадров ===== */
   html:not(.pre-done){overflow:hidden}
   .film-cap{position:absolute;left:26px;right:26px;bottom:clamp(96px,16vh,170px);max-width:min(46vw,40ch);color:#fff;opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);pointer-events:none}
+  /* «кто мы» — манифест, факты, три ремесла, принципы: одна типографика, без карточек */
+  .ab-head{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(24px,5vw,80px);align-items:end}
+  .ab-h2{font-size:clamp(30px,5.6vw,84px);line-height:1.0;letter-spacing:-.04em;font-weight:600;margin:0;max-width:18ch}
+  .ab-p{margin:0;max-width:44ch;font-size:clamp(16px,1.6vw,20px);line-height:1.5;color:#5a5346;text-wrap:pretty}
+  .ab-facts{display:grid;grid-template-columns:repeat(5,max-content);justify-content:space-between;gap:0 clamp(16px,2vw,32px);margin-top:clamp(56px,8vw,110px);border-top:1px solid rgba(27,24,18,.22)}
+  .ab-fact{display:flex;flex-direction:column;gap:10px;padding:22px 0 6px;color:inherit;text-decoration:none;border-top:1px solid transparent;margin-top:-1px;transition:border-color .4s}
+  .ab-fact:hover,.ab-fact:focus-visible{border-top-color:var(--acc,#b9543f);outline:none}
+  .ab-v{font-family:var(--font-accent);font-style:italic;font-weight:400;font-size:clamp(28px,3.3vw,50px);line-height:1;letter-spacing:-.015em;white-space:nowrap;font-variant-numeric:tabular-nums;transition:color .4s}
+  .ab-fact:hover .ab-v,.ab-fact:focus-visible .ab-v{color:var(--acc,#b9543f)}
+  .ab-l{font-family:'PT Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#6f6659;line-height:1.5}
+  .ab-team{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,5vw,80px);margin-top:clamp(70px,10vw,130px);align-items:start}
+  .ab-lead{margin:0;font-family:var(--font-display);font-weight:600;font-size:clamp(22px,2.6vw,38px);line-height:1.1;letter-spacing:-.03em;max-width:16ch;text-wrap:balance}
+  .ab-crafts{border-top:1px solid rgba(27,24,18,.22)}
+  .ab-craft{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:16px;align-items:baseline;padding:18px 0;border-bottom:1px solid rgba(27,24,18,.22)}
+  .ab-cn{font-family:'PT Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.1em;color:#6f6659}
+  .ab-cw{font-family:var(--font-display);font-weight:600;font-size:clamp(26px,3.4vw,48px);line-height:1;letter-spacing:-.035em}
+  .ab-cd{font-family:'PT Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6f6659;text-align:right}
+  .ab-principles{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,48px);margin-top:clamp(56px,8vw,100px);border-top:1px solid rgba(27,24,18,.22)}
+  .ab-pr{padding-top:22px}
+  .ab-pk{font-family:'PT Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,#b9543f);margin-bottom:14px}
+  .ab-pv{margin:0;font-size:15px;line-height:1.5;color:#5a5346;max-width:34ch;text-wrap:pretty}
+  @media (max-width:900px){ .ab-head,.ab-team{grid-template-columns:1fr} .ab-facts{grid-template-columns:repeat(2,1fr);justify-content:start} .ab-principles{grid-template-columns:1fr;gap:0} .ab-pr{border-bottom:1px solid rgba(27,24,18,.16);padding-bottom:22px} .ab-pr:last-child{border-bottom:none} }
+  @media (max-width:760px){ .ab-craft{grid-template-columns:36px 1fr} .ab-cd{grid-column:2;text-align:left} .ab-v{font-size:30px} }
   /* «что делаем» — строки по Hobro: скользящая терракотовая плашка во всю ширину, слова и описание на ховере, превью-скан за курсором */
   .wd-plate{position:absolute;left:0;right:0;top:0;height:0;background:var(--acc,#b9543f);opacity:0;transition:opacity .3s;will-change:transform,height;z-index:0;pointer-events:none}
   .wd-rows{border-top:1px solid rgba(228,222,210,.18)}
@@ -378,47 +401,31 @@
 
   <!-- TRUST MARQUEE -->
   <!-- 01.a PROOF STRIP — факты сразу после фильма, каждый пункт — ссылка на доказательство -->
-  <section id="proof" data-screen-label="01a Proof" style="position:relative;z-index:10;background:rgba(19,17,12,.9);color:#e4ded2;border-top:1px solid rgba(228,222,210,.12);padding:clamp(28px,4vw,52px) 26px;overflow:hidden">
-    <div data-depth="1" style="max-width:1320px;margin:0 auto;position:relative;z-index:1">
-      <div data-reveal="1" style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8f877a;margin-bottom:clamp(18px,2.4vw,28px)">
-        <span>{{ t.proofLabel }}</span><span>{{ t.proofNote }}</span>
-      </div>
-      <div class="proof-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:rgba(228,222,210,.18)">
-        <sc-for list="{{ proof }}" as="pf" hint-placeholder-count="5">
-          <a href="{{ pf.href }}" data-reveal="1" data-delay="{{ pf.d }}" data-proof-item="1" style="display:flex;flex-direction:column;justify-content:flex-end;gap:8px;min-height:104px;padding:20px 22px 22px;background:#13110c;color:inherit;transition:background .5s,padding-left .5s cubic-bezier(.16,1,.3,1)" style-hover="background:rgba(228,222,210,.04);padding-left:28px">
-            <span style="font-family:var(--font-accent);font-style:italic;font-weight:400;font-size:clamp(24px,2.4vw,34px);line-height:1.05;letter-spacing:-.01em;color:#e4ded2;font-variant-numeric:tabular-nums">{{ pf.v }}</span>
-            <span style="font:500 10px/1.5 'PT Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:#8f877a">{{ pf.l }}</span>
-          </a>
-        </sc-for>
-      </div>
-    </div>
-  </section>
-
-  <section data-screen-label="SLA bar" style="position:relative;z-index:10;background:rgba(19,17,12,.9);color:#e4ded2;border-top:1px solid rgba(228,222,210,.12);overflow:hidden">
-    <div style="display:flex;white-space:nowrap;padding:15px 0;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#b6ad9e">
-      <div data-anim="1" style="display:flex;animation:vMarq 48s linear infinite;flex:none">
-        <span>{{ t.marquee }}</span>
-        <span>{{ t.marquee }}</span>
-        <span>{{ t.marquee }}</span>
-        <span>{{ t.marquee }}</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- 02 MANIFESTO -->
-  <section id="manifesto" data-screen-label="02 Manifesto" style="position:relative;z-index:10;background:rgba(228,222,210,.93);color:#1b1812;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
+  <!-- 02 WHO WE ARE — манифест + факты + три ремесла + принципы (впитал proof-полосу, бегущую строку и командную часть 07) -->
+  <section id="about" data-screen-label="02 Who we are" style="position:relative;z-index:10;background:rgba(228,222,210,.93);color:#1b1812;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
     <div data-speed="6" data-pmax="150" style="position:absolute;top:0;right:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(27,24,18,.045);pointer-events:none;user-select:none">02</div>
-    <figure data-plate="1" data-reveal="1" data-delay="220" data-speed="3" data-pmax="80" style="position:absolute;right:2vw;bottom:-1vw;z-index:0;width:clamp(160px,22vw,340px);aspect-ratio:4/5;margin:0;overflow:hidden;pointer-events:none;filter:saturate(.92)"><img src="./img/plate-stack.webp" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></figure>
     <div data-depth="1" style="max-width:1320px;margin:0 auto;position:relative;z-index:1">
       <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#6f6659;margin-bottom:clamp(40px,6vw,80px)">{{ t.fig02 }}</div>
-      <h2 data-kinetic="1" data-i18n="manifH2" style="font-size:clamp(30px,5.6vw,84px);line-height:1.0;letter-spacing:-.04em;font-weight:600;margin:0;max-width:20ch">{{ t.manifH2 }}</h2>
-      <p data-reveal="1" data-delay="120" style="margin:clamp(30px,4vw,56px) 0 0;max-width:60ch;font-size:clamp(16px,1.7vw,21px);line-height:1.5;color:#5a5346;text-wrap:pretty">{{ t.manifPa }}<span style="font-weight:700;color:#1b1812">{{ t.manifPb }}</span>.</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:rgba(27,24,18,.18);margin-top:clamp(60px,9vw,110px)">
+      <div class="ab-head">
+        <h2 data-kinetic="1" data-i18n="manifH2" class="ab-h2">{{ t.manifH2 }}</h2>
+        <p data-reveal="1" data-delay="120" class="ab-p">{{ t.manifPa }}<span style="font-weight:600;color:#1b1812">{{ t.manifPb }}</span>.</p>
+      </div>
+      <div class="ab-facts">
+        <sc-for list="{{ proof }}" as="pf" hint-placeholder-count="5">
+          <a href="{{ pf.href }}" class="ab-fact" data-reveal="1" data-delay="{{ pf.d }}"><span class="ab-v">{{ pf.v }}</span><span class="ab-l">{{ pf.l }}</span></a>
+        </sc-for>
+      </div>
+      <div class="ab-team">
+        <p class="ab-lead" data-reveal="1">{{ t.teamLead }}</p>
+        <div class="ab-crafts" data-reveal="1" data-delay="80">
+          <sc-for list="{{ directions }}" as="mb" hint-placeholder-count="3">
+            <div class="ab-craft"><span class="ab-cn">0{{ mb.n }}</span><span class="ab-cw">{{ mb.word }}</span><span class="ab-cd">{{ mb.desc }}</span></div>
+          </sc-for>
+        </div>
+      </div>
+      <div class="ab-principles">
         <sc-for list="{{ principles }}" as="pr" hint-placeholder-count="3">
-          <div data-reveal="1" data-delay="{{ pr.delay }}" style="background:#e4ded2;padding:36px 30px 40px">
-            <div style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--acc,#b9543f);margin-bottom:16px">{{ pr.k }}</div>
-            <p style="margin:0;font-size:16px;line-height:1.5;color:#5a5346;max-width:34ch;text-wrap:pretty">{{ pr.v }}</p>
-          </div>
+          <div class="ab-pr" data-reveal="1" data-delay="{{ pr.delay }}"><div class="ab-pk">{{ pr.k }}</div><p class="ab-pv">{{ pr.v }}</p></div>
         </sc-for>
       </div>
     </div>
@@ -550,34 +557,9 @@
   </section>
 
   <!-- 07 TEAM + FAQ -->
-  <section id="team" data-screen-label="07 Team + FAQ" style="position:relative;z-index:10;background:rgba(19,17,12,.9);color:#e4ded2;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
+  <section id="team" data-screen-label="07 FAQ" style="position:relative;z-index:10;background:rgba(19,17,12,.9);color:#e4ded2;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
     <div data-speed="6" data-pmax="150" style="position:absolute;top:1vw;right:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(228,222,210,.035);pointer-events:none;user-select:none">07</div>
     <div data-depth="1" style="max-width:1320px;margin:0 auto;position:relative;z-index:1">
-      <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8f877a;margin-bottom:24px">{{ t.fig07 }}</div>
-      <p data-reveal="1" data-delay="60" style="margin:-6px 0 clamp(28px,4vw,44px);max-width:44ch;font-size:15px;line-height:1.55;color:#b6ad9e">{{ t.teamLead }}</p>
-
-      <!-- artefakt-style: giant direction words + ASCII tech motifs -->
-      <div data-ascii-team="1" style="display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(24px,5vw,72px);align-items:center;margin-bottom:clamp(70px,10vw,120px)">
-        <div data-team-names style="display:flex;flex-direction:column">
-          <sc-for list="{{ directions }}" as="mb" hint-placeholder-count="3">
-            <button data-team-name="1" data-idx="{{ mb.i }}" onClick="{{ setTeamActive }}" onMouseEnter="{{ setTeamActive }}" style="display:block;width:100%;text-align:left;background:none;border:none;border-top:1px solid rgba(228,222,210,.16);color:inherit;cursor:pointer;padding:clamp(14px,1.8vw,22px) 0;transition:padding-left .5s cubic-bezier(.16,1,.3,1)">
-              <span style="display:flex;align-items:baseline;gap:14px">
-                <span style="font-size:11px;letter-spacing:.1em;color:#8f877a;flex:none" data-team-idx>0{{ mb.n }}</span>
-                <span data-team-word style="font-size:clamp(30px,5vw,72px);line-height:.96;letter-spacing:-.04em;font-weight:700;text-transform:uppercase;transition:color .4s,background .4s;padding:0 .06em">{{ mb.word }}</span>
-              </span>
-              <span style="display:flex;flex-wrap:wrap;gap:6px 16px;padding-left:34px;margin-top:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#8f877a"><span data-team-person>{{ mb.desc }}</span></span>
-            </button>
-          </sc-for>
-          <div style="border-top:1px solid rgba(228,222,210,.16)"></div>
-        </div>
-
-        <div style="position:relative">
-          <canvas data-ascii-canvas="1" style="width:100%;height:clamp(340px,44vw,540px);display:block"></canvas>
-          <div style="position:absolute;top:14px;left:14px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#8f877a">{{ t.fig07a }}</div>
-          <div data-team-hint style="position:absolute;bottom:14px;left:14px;right:14px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#8f877a"></div>
-        </div>
-      </div>
-
       <div id="faq" data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8f877a;margin-bottom:28px">{{ t.faqLabel }}</div>
       <div data-reveal="1" data-faq-list="1" style="border-top:1px solid rgba(228,222,210,.14)">
         <sc-for list="{{ faq }}" as="fq" hint-placeholder-count="5">
@@ -1774,7 +1756,8 @@ class Component extends DCLogic {
         cur.group.rotation.x = Math.sin(t*0.3)*0.025 + mouse.y*(cur.mb||0.08);
         cur.tick(t);
       }
-      effect.render(scene, camera);
+      if(W<8||H<8){ onResize(); if(W<8||H<8) return; }                  // канвас ещё без размера → перемерить, кадр пропустить
+      try{ effect.render(scene, camera); }catch(err){ /* деградация размера между кадрами — не роняем цикл */ }
     };
     const start = ()=>{ if(!running && !self._calm && visible){ running=true; raf=requestAnimationFrame(render); } };
     const io = new IntersectionObserver((es)=>{ visible=es[0].isIntersecting; running=false; cancelAnimationFrame(raf); if(visible) start(); }, {threshold:0.06});
@@ -2106,9 +2089,8 @@ class Component extends DCLogic {
         heroBig1:'мы VVID', heroBig2:'мы делаем', heroBig3:'большие', heroBig4:'вещи', heroBigAria:'мы VVID, мы делаем большие вещи',
         heroLead2:'внедряем в уже работающий бизнес — автоматизируем процессы и усиливаем то, что приносит деньги.',
         heroSub:'веб- и мобильные приложения, сайты и интернет-магазины, телеграм-боты, дизайн — внедряем в готовый бизнес.',
-        heroCta1:'смотреть кейсы →', heroCtaPrimary:'написать в telegram ↗', heroProof:'договор + юрлицо · ответ в telegram < 2 часов · показываем вживую', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'разработка · автоматизация', filmK1:'01 — замысел', filmT1:'всё начинается с одной точки', filmK2:'02 — раскрытие', filmT2:'деталь за деталью — до готовой формы', filmK3:'03 — результат', filmT3:'4 проекта в проде · гарантия 50 дней', filmKEnd:'04 · vvid — студия разработки и автоматизации', filmTEnd:'следующий проект — ваш', filmSkip:'пропустить ↓', proofLabel:'fig.01.a — факты', proofNote:'каждый пункт — ссылка, проверьте', filmCta2:'оставить бриф ↓', teamLead:'три ремесла — одна команда. те же люди на созвоне и в коде.', briefAlt:'быстрее — в telegram @vvid ↗', footTag:'из хаоса — система', pricingCta:'оценить мою задачу →', formSent:'письмо с брифом открыто ✓', 
-        marquee:'веб- и мобильные приложения · интернет-магазины и сайты · лендинги · телеграм-боты · автоматизация бизнеса · ui/ux дизайн · дизайн-системы · frontend и backend · cms · интеграции · ',
-        fig02:'fig.02 — манифест',
+        heroCta1:'смотреть кейсы →', heroCtaPrimary:'написать в telegram ↗', heroProof:'договор + юрлицо · ответ в telegram < 2 часов · показываем вживую', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'разработка · автоматизация', filmK1:'01 — замысел', filmT1:'всё начинается с одной точки', filmK2:'02 — раскрытие', filmT2:'деталь за деталью — до готовой формы', filmK3:'03 — результат', filmT3:'4 проекта в проде · гарантия 50 дней', filmKEnd:'04 · vvid — студия разработки и автоматизации', filmTEnd:'следующий проект — ваш', filmSkip:'пропустить ↓', filmCta2:'оставить бриф ↓', teamLead:'три ремесла — одна команда. те же люди на созвоне и в коде.', briefAlt:'быстрее — в telegram @vvid ↗', footTag:'из хаоса — система', pricingCta:'оценить мою задачу →', formSent:'письмо с брифом открыто ✓',
+        fig02:'fig.02 — кто мы',
         manifH2:'ваш бизнес уже работает. мы снимаем его с ручного привода.',
         manifPa:'разбираем процесс на детали и собираем систему, которая держит нагрузку — ', manifPb:'приложение, сайт, бот или интеграция',
         fig03:'fig.03 — что делаем', capH2:'строим то, что не умеют готовые решения.',
@@ -2118,8 +2100,7 @@ class Component extends DCLogic {
         caseCloserEyebrow:'кейс 05 — свободен', caseCloserA:'здесь будет ', caseCloserB:'ваш кейс', caseCloserCta:'оставить бриф →', procH2:'разбор → чертёж → сборка → запуск. 5 шагов, от 5 недель до прода.',
         wdProcLabel:'как работаем', procRetLabel:'кто на связи', procRetText:'между вами и кодом — ноль менеджеров. пишете инженеру в telegram @vvid, в рабочее время отвечаем меньше чем за 2 часа.',
         fig06:'fig.06 — прайс', pricingH2:'прозрачный прайс. без «по запросу», где можно назвать цифру.',
-        pricingFootnote:'гарантия 50 дней: после запуска поддержка бесплатно. дальше — по договорённости.',
-        fig07:'fig.07 — команда · три ремесла', fig07a:'fig.07.a — ascii / системы', faqLabel:'faq — что спрашивают до старта',
+        pricingFootnote:'гарантия 50 дней: после запуска поддержка бесплатно. дальше — по договорённости.', faqLabel:'faq — что спрашивают до старта',
         fig08:'fig.08 — бриф', briefH2a:'следующий запуск — ', briefRot:'ваш',
         briefP:'опишите задачу парой строк. в рабочее время ответим меньше чем за 2 часа; цифру назовём, когда поймём процесс, — не «на глаз». никаких брифов на 10 страниц.',
         formL1:'04 / о бизнесе · по желанию', formPh1:'напр. опт / розница / услуги', formL2:'03 / бюджет · по желанию',
@@ -2137,9 +2118,8 @@ class Component extends DCLogic {
         heroBig1:'we are VVID', heroBig2:'we do', heroBig3:'big', heroBig4:'things', heroBigAria:'we are VVID, we do big things',
         heroLead2:'built into your running business — we automate processes and amplify what already makes money.',
         heroSub:'web & mobile apps, websites and online stores, telegram bots, design — built into your existing business.',
-        heroCta1:'see our work →', heroCtaPrimary:'message us on telegram ↗', heroProof:'contract + legal entity · telegram reply < 2 hours · we show, live', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'development · automation', filmK1:'01 — intent', filmT1:'it all starts from a single point', filmK2:'02 — unfolding', filmT2:'detail by detail — to the finished form', filmK3:'03 — result', filmT3:'4 projects live · 50-day guarantee', filmKEnd:'04 · vvid — development & automation studio', filmTEnd:'the next project is yours', filmSkip:'skip ↓', proofLabel:'fig.01.a — facts', proofNote:'every item is a link — check it', filmCta2:'leave a brief ↓', teamLead:'three crafts — one team. the same people on the call and in the code.', briefAlt:'faster on telegram @vvid ↗', footTag:'from chaos — a system', pricingCta:'estimate my task →', formSent:'brief email opened ✓', 
-        marquee:'web & mobile apps · online stores & websites · landing pages · telegram bots · business automation · ui/ux design · design systems · frontend & backend · cms · integrations · ',
-        fig02:'fig.02 — manifesto',
+        heroCta1:'see our work →', heroCtaPrimary:'message us on telegram ↗', heroProof:'contract + legal entity · telegram reply < 2 hours · we show, live', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'development · automation', filmK1:'01 — intent', filmT1:'it all starts from a single point', filmK2:'02 — unfolding', filmT2:'detail by detail — to the finished form', filmK3:'03 — result', filmT3:'4 projects live · 50-day guarantee', filmKEnd:'04 · vvid — development & automation studio', filmTEnd:'the next project is yours', filmSkip:'skip ↓', filmCta2:'leave a brief ↓', teamLead:'three crafts — one team. the same people on the call and in the code.', briefAlt:'faster on telegram @vvid ↗', footTag:'from chaos — a system', pricingCta:'estimate my task →', formSent:'brief email opened ✓',
+        fig02:'fig.02 — who we are',
         manifH2:'your business already runs. we take it off manual.',
         manifPa:'we take the process apart and rebuild it as a system that holds the load — ', manifPb:'an app, a site, a bot or an integration',
         fig03:'fig.03 — what we do', capH2:'we build what off-the-shelf tools can’t.',
@@ -2149,8 +2129,7 @@ class Component extends DCLogic {
         caseCloserEyebrow:'case 05 — open', caseCloserA:'this could be ', caseCloserB:'your case', caseCloserCta:'leave a brief →', procH2:'teardown → blueprint → assembly → launch. 5 steps, 5+ weeks to production.',
         wdProcLabel:'how we work', procRetLabel:'who you talk to', procRetText:'zero managers between you and the code. you message the engineer on telegram @vvid; we reply within 2 hours in work hours.',
         fig06:'fig.06 — pricing', pricingH2:'transparent pricing. no “on request” where we can name a number.',
-        pricingFootnote:'50-day guarantee: free support after launch. beyond that — by agreement.',
-        fig07:'fig.07 — team · three crafts', fig07a:'fig.07.a — ascii / systems', faqLabel:'faq — what people ask before starting',
+        pricingFootnote:'50-day guarantee: free support after launch. beyond that — by agreement.', faqLabel:'faq — what people ask before starting',
         fig08:'fig.08 — brief', briefH2a:'the next launch — ', briefRot:'yours',
         briefP:'describe the task in a couple of lines. we reply within 2 hours in work hours; we name a number once we understand the process — no guessing. no 10-page briefs.',
         formL1:'04 / about the business · optional', formPh1:'e.g. wholesale / retail / services', formL2:'03 / budget · optional',
@@ -2273,8 +2252,8 @@ class Component extends DCLogic {
         ]
       },
       rail:{
-        ru:[{n:'01',id:'top',href:'#top',l:'старт'},{n:'02',id:'manifesto',href:'#manifesto',l:'манифест'},{n:'03',id:'capabilities',href:'#capabilities',l:'что делаем'},{n:'04',id:'work',href:'#work',l:'кейсы'},{n:'05',id:'pricing',href:'#pricing',l:'прайс'},{n:'06',id:'team',href:'#team',l:'команда'},{n:'07',id:'brief',href:'#brief',l:'бриф'}],
-        en:[{n:'01',id:'top',href:'#top',l:'start'},{n:'02',id:'manifesto',href:'#manifesto',l:'manifesto'},{n:'03',id:'capabilities',href:'#capabilities',l:'what we do'},{n:'04',id:'work',href:'#work',l:'cases'},{n:'05',id:'pricing',href:'#pricing',l:'pricing'},{n:'06',id:'team',href:'#team',l:'team'},{n:'07',id:'brief',href:'#brief',l:'brief'}]
+        ru:[{n:'01',id:'top',href:'#top',l:'старт'},{n:'02',id:'about',href:'#about',l:'кто мы'},{n:'03',id:'capabilities',href:'#capabilities',l:'что делаем'},{n:'04',id:'work',href:'#work',l:'кейсы'},{n:'05',id:'pricing',href:'#pricing',l:'прайс'},{n:'06',id:'team',href:'#team',l:'вопросы'},{n:'07',id:'brief',href:'#brief',l:'бриф'}],
+        en:[{n:'01',id:'top',href:'#top',l:'start'},{n:'02',id:'about',href:'#about',l:'who we are'},{n:'03',id:'capabilities',href:'#capabilities',l:'what we do'},{n:'04',id:'work',href:'#work',l:'cases'},{n:'05',id:'pricing',href:'#pricing',l:'pricing'},{n:'06',id:'team',href:'#team',l:'faq'},{n:'07',id:'brief',href:'#brief',l:'brief'}]
       },
       directions:{
         ru:[
