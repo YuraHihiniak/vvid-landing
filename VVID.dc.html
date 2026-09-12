@@ -140,7 +140,7 @@
   .hero-flood-grain{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.13;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
   .hero-vig{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(150% 92% at 50% 110%,rgba(86,28,16,.55),transparent 55%)}
   .hero-top{display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.72)}
-  .hero-kin{font-family:var(--font-display);font-weight:800;text-transform:none;line-height:.92;letter-spacing:-.04em;font-size:clamp(38px,9.4vw,156px);margin:0;color:#fff}
+  .hero-kin{font-family:var(--font-display);font-weight:800;text-transform:none;line-height:.92;letter-spacing:-.04em;font-size:clamp(33px,min(9.4vw,12vh),156px);margin:0;color:#fff;min-height:0}
   .hero-kin .kl{display:block;overflow:hidden;padding-bottom:.045em}
   .hero-kin .kl > span{display:inline-block;white-space:nowrap}
   .hl-ch{display:inline-block;will-change:transform}
@@ -160,17 +160,17 @@
   .hero-pill:hover .hp-arr{transform:translateX(6px)}
   .hero-textlink{display:inline-flex;align-items:center;gap:9px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:#fff;padding-bottom:6px;border-bottom:1.5px solid rgba(255,255,255,.3);background-image:linear-gradient(#fff,#fff);background-repeat:no-repeat;background-position:left 100%;background-size:0 1.5px;transition:background-size .55s cubic-bezier(.16,1,.3,1),opacity .3s}
   .hero-textlink:hover{background-size:100% 1.5px}
-  .hero-proof{margin-top:clamp(14px,1.8vw,20px);font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.72);max-width:42ch;text-wrap:pretty}
+  .hero-proof{margin:0 0 clamp(34px,6vh,60px);font:500 11px/1.6 'PT Mono',ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85);max-width:60ch;transition:opacity .5s}
   .hero-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:clamp(26px,5vw,72px);flex-wrap:wrap;margin-top:clamp(18px,2.6vh,38px)}
   .hero-act{display:flex;flex-direction:column;align-items:flex-start}
   .hero-cta-row{margin-top:0}
-  .hero-cta-min{display:inline-flex;align-items:center;gap:11px;color:rgba(255,255,255,.86);font-size:clamp(13px,1vw,15px);letter-spacing:.05em;font-weight:300;padding:13px 18px;transition:opacity .35s,color .35s}
+  .hero-cta-min{display:inline-flex;align-items:center;gap:11px;color:#fff;font-size:clamp(13px,1vw,15px);letter-spacing:.05em;font-weight:300;padding:13px 18px;transition:opacity .35s,color .35s}
   .hero-cta-min:hover{opacity:1;color:#fff}
-  .hero-scrollcue{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:clamp(10px,1.6vh,20px);font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.62)}
+  .hero-scrollcue{position:absolute;left:0;right:0;bottom:clamp(14px,2.4vh,26px);z-index:2;display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:0;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.62)}
   .hero-scrollcue .bar{width:1px;height:30px;background:linear-gradient(rgba(255,255,255,.6),transparent)}
   /* ===== scroll-film (desktop): sticky hero, fluid = состояние покоя, главы поверх кадров ===== */
   html:not(.pre-done){overflow:hidden}
-  .film-cap{position:absolute;left:26px;right:26px;bottom:clamp(96px,16vh,170px);max-width:min(46vw,40ch);color:#fff;opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);pointer-events:none}
+  .film-cap{position:absolute;left:26px;right:26px;bottom:clamp(96px,16vh,170px);max-width:min(52vw,640px);color:#fff;opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);pointer-events:none}
   /* временная тёмная кожа хвостовых секций (прайс, вопросы, бриф): один мир с фильмом, пока они не стали узлами 04–05 */
   #pricing,#team,#brief{background:#100d0a !important;color:#efe9df !important;box-shadow:0 -34px 70px -24px rgba(0,0,0,.6)}
   #pricing [style*="color:#1b1812"],#brief [style*="color:#1b1812"],#pricing [style*="color:#3a352c"],#brief [style*="color:#3a352c"]{color:#efe9df !important}
@@ -187,42 +187,46 @@
   /* спуск: один фильм, узлы с информацией внутри кадра, линия стебля, глубина */
   #top.hero-bbdo{background:transparent}                                     /* фон обёртки hero не должен закрывать спуск в момент передачи (стик уже скрыт) */
   .ds-wrap{position:relative;z-index:0;overflow:clip;background:#100d0a;color:#efe9df}
-  #top + .ds-wrap{margin-top:-100vh}                                          /* стик спуска уже под hero: последний кадр hero = первый кадр спуска */
+  #top + .ds-wrap{margin-top:-100vh}
+  #top + .ds-wrap.ds-static{margin-top:0}                                          /* стик спуска уже под hero: последний кадр hero = первый кадр спуска */
   .ds-sticky{position:sticky;top:0;height:100vh;height:100svh;overflow:clip;background:#100d0a}
   .ds-still{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;display:block}
   .ds-scrim{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0}
-  .ds-scrim-l{background:linear-gradient(90deg,rgba(16,13,10,.86) 0%,rgba(16,13,10,.58) 32%,rgba(16,13,10,0) 58%)}
-  .ds-scrim-r{background:linear-gradient(270deg,rgba(16,13,10,.86) 0%,rgba(16,13,10,.58) 32%,rgba(16,13,10,0) 58%)}
-  .ds-depth{position:absolute;right:26px;bottom:26px;z-index:3;text-align:right;font:500 10px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:rgba(239,233,223,.6)}
+  .ds-scrim-l{background:linear-gradient(90deg,rgba(16,13,10,.92) 0%,rgba(16,13,10,.72) 32%,rgba(16,13,10,0) 58%)}
+  .ds-scrim-r{background:linear-gradient(270deg,rgba(16,13,10,.92) 0%,rgba(16,13,10,.72) 32%,rgba(16,13,10,0) 58%)}
+  .ds-depth{position:absolute;right:26px;bottom:26px;z-index:3;text-align:right;font:500 11px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.18em;text-transform:uppercase;color:rgba(239,233,223,.72)}
   .ds-depth b{display:block;font-family:var(--font-accent);font-style:italic;font-weight:300;font-size:clamp(22px,2.4vw,34px);letter-spacing:-.01em;color:#efe9df;text-transform:none;line-height:1;margin-top:8px;font-variant-numeric:tabular-nums}
   .ds-node{position:absolute;z-index:4;width:min(42vw,600px);opacity:0;pointer-events:none;color:#efe9df;will-change:opacity,transform}
   .ds-node.on{pointer-events:auto}
+  .ds-node :focus-visible{outline:2px solid #efe9df;outline-offset:2px}
   .ds-left{left:clamp(26px,4vw,64px);bottom:clamp(64px,11vh,130px)}
-  .ds-right{right:clamp(26px,4vw,64px);top:clamp(96px,14vh,150px)}
-  .ds-eyebrow{display:block;font:500 11px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.2em;text-transform:uppercase;color:rgba(239,233,223,.62);margin-bottom:18px}
+  .ds-right{right:clamp(26px,4vw,64px);top:clamp(138px,16vh,172px)}
+  .ds-eyebrow{display:block;font:500 11px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.18em;text-transform:uppercase;color:rgba(239,233,223,.72);margin-bottom:18px}
   .ds-h{font-family:var(--font-display);font-weight:600;font-size:clamp(26px,2.9vw,44px);line-height:1.02;letter-spacing:-.035em;margin:0 0 14px;text-wrap:balance;color:#efe9df}
-  .ds-p{margin:0 0 22px;font-size:clamp(15px,1.15vw,17px);line-height:1.5;color:rgba(239,233,223,.8);max-width:44ch;text-wrap:pretty}
+  .ds-p{margin:0 0 22px;font-size:clamp(15px,1.15vw,17px);line-height:1.5;color:rgba(239,233,223,.8);max-width:100%;text-wrap:pretty}
   .ds-p b{color:#efe9df;font-weight:600}
-  .ds-crafts{margin:-8px 0 20px;font:500 10.5px/1.6 'PT Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:rgba(239,233,223,.6)}
-  .ds-facts{display:flex;flex-wrap:wrap;gap:14px 28px;border-top:1px solid rgba(239,233,223,.24);padding-top:14px}
-  .ds-fact{display:flex;flex-direction:column;gap:5px;color:inherit;text-decoration:none}
+  .ds-crafts{margin:-8px 0 20px;font:500 11px/1.6 'PT Mono',ui-monospace,monospace;letter-spacing:.18em;text-transform:uppercase;color:rgba(239,233,223,.72)}
+  .ds-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 20px}
+  .ds-fact{display:flex;flex-direction:column;gap:6px;color:inherit;text-decoration:none;border-top:1px solid rgba(239,233,223,.18);padding-top:10px}
   .ds-fact .v{font-family:var(--font-accent);font-style:italic;font-size:clamp(18px,1.8vw,26px);line-height:1;white-space:nowrap;transition:color .3s}
   .ds-fact:hover .v{color:var(--acc,#b9543f)}
-  .ds-fact .l{font:500 9.5px/1.4 'PT Mono',ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;color:rgba(239,233,223,.55)}
+  .ds-fact .l{font:500 10.5px/1.4 'PT Mono',ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;color:rgba(239,233,223,.72)}
   .ds-rows{border-top:1px solid rgba(239,233,223,.24)}
   .ds-row{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:14px;align-items:baseline;padding:11px 0;border-bottom:1px solid rgba(239,233,223,.16);color:inherit;text-decoration:none}
-  .ds-row .n{font:500 10px/1 'PT Mono',ui-monospace,monospace;color:rgba(239,233,223,.5)}
+  .ds-row .n{font:500 10.5px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.14em;color:rgba(239,233,223,.72)}
   .ds-row .t{font-family:var(--font-display);font-weight:500;font-size:clamp(17px,1.5vw,22px);letter-spacing:-.02em;line-height:1.08;transition:color .3s}
   .ds-row:hover .t{color:#fff}
-  .ds-row .t small{display:block;font-family:'Wix Madefor Text','Wix Madefor Display',sans-serif;font-weight:400;font-size:13.5px;color:rgba(239,233,223,.62);margin-top:4px;letter-spacing:0;line-height:1.35}
-  .ds-row .pr{font-family:var(--font-accent);font-style:italic;font-size:clamp(15px,1.3vw,19px);white-space:nowrap;color:#e6b79c}
-  .ds-case{grid-template-columns:auto minmax(0,1fr) auto}
+  .ds-row .t small{display:block;font-family:'Wix Madefor Text','Wix Madefor Display',sans-serif;font-weight:400;font-size:13.5px;color:rgba(239,233,223,.72);margin-top:4px;letter-spacing:0;line-height:1.35}
+  .ds-row .t small span+span::before{content:" · "}
+  .ds-row .pr{font-family:var(--font-accent);font-style:italic;font-size:clamp(15px,1.3vw,19px);white-space:nowrap;color:#efe9df}
+  .ds-case{grid-template-columns:28px minmax(0,1fr) auto;min-height:44px;align-content:center}
   .ds-case .n{letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
-  .ds-case .pr{font-family:'PT Mono',ui-monospace,monospace;font-style:normal;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#e6b79c;transition:color .3s}
+  .ds-case .pr{font-family:'PT Mono',ui-monospace,monospace;font-style:normal;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(239,233,223,.85);transition:color .3s}
   .ds-case:hover .pr{color:#fff}
-  .ds-foot{margin:16px 0 0;font:500 10px/1.6 'PT Mono',ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;color:rgba(239,233,223,.5);max-width:60ch}
-  @media (max-width:900px){ .ds-node{width:auto;left:20px;right:20px} .ds-left{bottom:clamp(56px,9vh,100px)} .ds-right{top:auto;bottom:clamp(56px,9vh,100px)} .ds-h{font-size:clamp(22px,5.6vw,30px)} .ds-facts{gap:12px 24px} .ds-row .t small{display:none} .ds-depth{display:none} .ds-case{grid-template-columns:auto minmax(0,1fr)} .ds-case .pr{grid-column:2;white-space:normal;justify-self:start;margin-top:-2px} .ds-scrim-l,.ds-scrim-r{background:linear-gradient(0deg,rgba(16,13,10,.92) 0%,rgba(16,13,10,.62) 42%,rgba(16,13,10,0) 72%)} }
+  .ds-foot{margin:16px 0 0;font:400 13px/1.5 'Wix Madefor Text','Wix Madefor Display',sans-serif;letter-spacing:0;text-transform:none;color:rgba(239,233,223,.78);max-width:100%}
+  @media (max-width:900px){ .ds-node{width:auto;left:20px;right:20px} .ds-left{bottom:clamp(56px,9vh,100px)} .ds-right{top:auto;bottom:clamp(56px,9vh,100px)} .ds-h{font-size:clamp(22px,5.6vw,30px)} .ds-facts{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px} .ds-row .t small{display:none} .ds-depth{right:16px;bottom:auto;top:74px;font-size:9.5px} .ds-depth b{font-size:20px;margin-top:4px} .ds-case{grid-template-columns:auto minmax(0,1fr)} .ds-case .pr{grid-column:2;white-space:normal;justify-self:start;margin-top:-2px} .ds-scrim-l,.ds-scrim-r{background:linear-gradient(0deg,rgba(16,13,10,.92) 0%,rgba(16,13,10,.62) 42%,rgba(16,13,10,0) 72%)} }
   html.ds-on .rail,html.ds-on [data-float-cta]{opacity:0 !important;pointer-events:none !important;transition:opacity .3s}
+  @media (max-height:820px){ .ds-h{font-size:clamp(22px,2.2vw,32px)} .ds-eyebrow{margin-bottom:12px} .ds-row{padding:9px 0} .ds-row .t small{font-size:12.5px} .ds-p{margin-bottom:16px} }
   .ds-static .ds-sticky{position:relative;height:auto;display:grid}
   .ds-static .ds-still{position:relative;inset:auto;height:auto;aspect-ratio:16/9}
   .ds-static .ds-node{position:relative;left:auto;right:auto;top:auto;bottom:auto;width:auto;opacity:1 !important;transform:none !important;pointer-events:auto;padding:28px 26px}
@@ -340,11 +344,11 @@
   html.film-run .hero-cta-row{opacity:0 !important;transform:translateY(-18px) !important;pointer-events:none}
   html.film-end .hero-cta-row{opacity:calc(1 - var(--film-tail,0)*1.8) !important;transform:none !important;pointer-events:auto;transition:opacity .25s linear,transform .9s cubic-bezier(.16,1,.3,1) !important}   /* быстрый отклик на скролл-затухание под занавесом */
   /* мобильный подзаголовок: чем занимается студия (десктопу это говорит фильм) */
-  .hero-sub{display:block;margin:18px 0 0;max-width:34ch;font-size:clamp(15px,1.15vw,17px);line-height:1.45;color:rgba(255,255,255,.88);transition:opacity .5s;text-wrap:pretty}
-  html.film-run .hero-sub{opacity:0}
+  .hero-sub{display:block;margin:18px 0 0;max-width:38ch;font-size:clamp(17px,1.5vw,22px);line-height:1.4;color:#fff;transition:opacity .5s;text-wrap:pretty}
+  html.film-run .hero-sub,html.film-run .hero-proof,html.film-run .hero-scrim{opacity:0}
   @media (pointer:coarse){ .hero-sub{max-width:26ch;font-size:15px} }
   /* тач-таргеты mono-ссылок и фокус */
-  [data-case-link],[data-brief-alt]{display:inline-flex !important;align-items:center;min-height:32px}
+  [data-case-link]:not(.ds-row),[data-brief-alt]{display:inline-flex !important;align-items:center;min-height:32px}
   :focus-visible{outline:2px solid var(--acc,#b9543f);outline-offset:3px;border-radius:2px}
   .film-skip:focus-visible{opacity:1 !important;outline-color:#fff}
   html.has-cursor:not(.vcalm) input,html.has-cursor:not(.vcalm) textarea,html.has-cursor:not(.vcalm) select{cursor:auto}
@@ -357,14 +361,15 @@
   [data-film-canvas]{transform-origin:50% 50%;will-change:transform,opacity}
   .film-skip{background:none;border:1px solid rgba(255,255,255,.35);color:rgba(255,255,255,.85);font:500 10px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.2em;text-transform:uppercase;padding:10px 14px;cursor:pointer;border-radius:50px;transition:opacity .4s,background .35s,color .35s}
   .film-skip:hover{background:rgba(255,255,255,.12);color:#fff}
-  @media (pointer:coarse){ .film-cap{top:clamp(96px,17vh,150px);bottom:auto;max-width:min(88vw,22ch)} .film-cap .fc-t{font-size:clamp(26px,7.4vw,44px)} html.film-end .film-cap[data-cap="end"] .fc-t{font-size:clamp(30px,9vw,56px)} .film-skip{top:74px;right:16px} }
+  @media (pointer:coarse){ .film-cap{top:clamp(96px,17vh,150px);bottom:auto;max-width:min(88vw,420px)} .film-cap .fc-t{font-size:clamp(26px,7.4vw,44px)} html.film-end .film-cap[data-cap="end"] .fc-t{font-size:clamp(30px,9vw,56px)} .film-skip{top:74px;right:16px} }
   @media (prefers-reduced-motion:reduce){ .film-cap,.hero-kin,.hero-scrollcue{transition:none} }
   @media (max-width:820px){ .hero-foot{flex-direction:column;align-items:flex-start;gap:26px} .hero-lead p{max-width:54ch} }
 
   /* proof strip — факты после фильма */
   .proof-grid a:first-child span:first-child{color:var(--acc,#b9543f)}
   [data-film-cta2]{display:none} html.film-end [data-film-cta2]{display:inline-flex}
-  [data-case-link][data-live="0"]{color:#6f6659}
+  [data-case-link][data-live="0"]:not(.ds-row){color:#6f6659}
+  .ds-case[data-live="0"]{color:rgba(239,233,223,.75)}
   @media (max-width:880px){ .proof-grid{grid-template-columns:repeat(2,1fr)} .proof-grid a:last-child{grid-column:1 / -1} .proof-grid a{min-height:88px;padding:16px 18px} }
   /* ===== immersion layer: зерно на всю страницу, шов-таймкод, плашки ===== */
   .page-grain{position:fixed;inset:0;z-index:7990;pointer-events:none;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
@@ -484,6 +489,7 @@
     <div class="hero-flood-grain" aria-hidden="true" style="z-index:2"></div>
     <div class="hero-vig" aria-hidden="true" style="z-index:2"></div>
     <div data-film-dim="1" aria-hidden="true" style="position:absolute;inset:0;z-index:2;background:#13110c;opacity:0;pointer-events:none"></div>
+    <div class="hero-scrim" aria-hidden="true" style="position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(70% 62% at 30% 55%,rgba(74,22,12,.38),transparent 70%);transition:opacity .6s"></div>
     <div data-film-copy="1" style="position:relative;z-index:3;flex:1;display:flex;flex-direction:column;width:100%;max-width:1320px;margin:0 auto;padding:clamp(86px,10vh,118px) 26px clamp(18px,3vh,30px)">
       <h1 class="hero-kin" aria-label="{{ t.heroBigAria }}" style="flex:1;display:flex;flex-direction:column;justify-content:center;margin:0">
         <span class="kl"><span style="animation-delay:.04s">{{ t.heroBig1 }}</span></span>
@@ -492,10 +498,11 @@
         <span class="kl"><span style="animation-delay:.28s">{{ t.heroBig4 }}</span></span>
       </h1>
       <p class="hero-sub">{{ t.heroSub }}</p>
-      <div class="hero-cta-row" data-reveal="1" data-delay="120" style="justify-content:center;margin-bottom:clamp(16px,2.4vh,28px)">
+      <div class="hero-cta-row" data-reveal="1" data-delay="120" style="justify-content:flex-start;margin-bottom:clamp(10px,1.6vh,18px)">
         <a class="hero-cta-min" href="https://t.me/vvid" target="_blank" rel="noopener noreferrer" data-magnetic="1">{{ t.heroCtaPrimary }}</a>
         <a class="hero-cta-min" href="#brief" data-magnetic="1" data-film-cta2="1">{{ t.filmCta2 }}</a>
       </div>
+      <p class="hero-proof" data-reveal="1" data-delay="200">{{ t.heroProof }}</p>
       <div class="hero-scrollcue"><span>{{ t.scroll }}</span><span class="bar"></span></div>
     </div>
     <div data-film-caps="1" aria-hidden="true" style="position:absolute;left:0;right:0;top:0;bottom:0;z-index:3;pointer-events:none">
@@ -544,7 +551,7 @@
         <h2 class="ds-h">{{ t.capH2 }}</h2>
         <div class="ds-rows">
           <sc-for list="{{ capabilities }}" as="cap" hint-placeholder-count="5">
-            <a href="#brief" class="ds-row"><span class="n">{{ cap.n }}</span><span class="t">{{ cap.title }}<small>{{ cap.desc }}</small></span><span class="pr">{{ cap.price }}</span></a>
+            <a href="#brief" class="ds-row"><span class="n">{{ cap.n }}</span><span class="t">{{ cap.title }}<small><sc-for list="{{ cap.specs }}" as="spec" hint-placeholder-count="4"><span>{{ spec }}</span></sc-for></small></span><span class="pr">{{ cap.price }}</span></a>
           </sc-for>
         </div>
         <p class="ds-foot">{{ t.procH2 }}</p>
@@ -1985,7 +1992,7 @@ class Component extends DCLogic {
       '  float v=clamp(f*1.1+u_heat*0.22,0.0,1.0);',
       '  vec3 col=mix(cDark,cBase,smoothstep(0.2,0.75,v)); col=mix(col,cHot,smoothstep(0.72,1.0,v)*(0.35+u_heat*0.65));',
       '  float g=0.0; for(int i=0;i<'+N+';i++){ vec3 d=u_trail[i]; if(d.z<0.0) continue; float dist=distance(vec2(uv.x*ar,uv.y), vec2(d.x*ar,d.y)); g+=exp(-dist*6.5)*exp(-d.z*1.3); }',
-      '  col+=vec3(1.0,0.84,0.68)*min(1.2,g);',
+      '  col+=vec3(1.0,0.84,0.68)*min(0.55,g);',
       '  gl_FragColor=vec4(col,1.0);',
       '}'
     ].join('\n');
@@ -2028,15 +2035,16 @@ class Component extends DCLogic {
     const base = coarse ? './film/descent/mobile/' : './film/descent/';
     const film=new VFilm({ base, manifestUrl:base+'film.json', proxyBase:base+'proxy/', canvas, wrap:sec, sticky, pxPerFrame: coarse?4:6, overlapVh:0, leadVh:0, noGlobalVar:true, lerp:this._lenis?1:0.12,
       windowAhead: coarse?16:20, windowBehind:8, keepBehind: coarse?10:12, pwin: coarse?40:48,
-      zonesFrac: nodes.map(n=>[n.a+0.05, n.b-0.05, 3]),                       // пока узел на экране — фильм идёт втрое медленнее, но не стоит
+      zonesFrac: nodes.map(n=>[n.a+0.02, n.b-0.02, 3]),                       // пока узел на экране — фильм идёт втрое медленнее, но не стоит
       onFrame:(p,f)=>{
         if(canvas.style.opacity!=='1' && f>=0 && (film.bmp.has(f)||film.pbmp.has(f))) canvas.style.opacity='1';
         const hs=this._film&&this._film.sticky; if(hs){ const hide=p>0.002&&canvas.style.opacity==='1'; if(hs.style.visibility!==(hide?'hidden':'')) hs.style.visibility=hide?'hidden':''; }   // передача: hero гаснет, под ним уже тот же кадр спуска
+        const q=film.frames?f/(film.frames-1):p;                                 // ось кадров: узлы и медленные зоны совпадают кадр в кадр
         let vl=0, vr=0;
-        nodes.forEach(n=>{ const v=sm(n.a,n.a+0.05,p)*(1-sm(n.b-0.05,n.b,p)); n.el.style.opacity=v.toFixed(3); n.el.style.transform='translateY('+((1-v)*16).toFixed(1)+'px)'; n.el.classList.toggle('on',v>0.5); if(n.side==='l') vl=Math.max(vl,v); else vr=Math.max(vr,v); });
+        nodes.forEach(n=>{ const v=sm(n.a,n.a+0.02,q)*(1-sm(n.b-0.02,n.b,q)); n.el.style.opacity=v.toFixed(3); n.el.style.transform='translateY('+((1-v)*16).toFixed(1)+'px)'; n.el.classList.toggle('on',v>0.5); n.el.toggleAttribute('inert', v<0.5); if(n.side==='l') vl=Math.max(vl,v); else vr=Math.max(vr,v); });
         if(scrimL) scrimL.style.opacity=vl.toFixed(3); if(scrimR) scrimR.style.opacity=vr.toFixed(3);
         const on=Math.max(vl,vr)>0.5; if(on!==this._dsOn){ this._dsOn=on; document.documentElement.classList.toggle('ds-on',on); }
-        if(depthEl){ const clips=(film.m&&film.m.clips)||2; const d=p*6.0*clips/5; depthEl.textContent='−'+d.toFixed(1).replace('.',',')+' м'; }
+        if(depthEl){ const clips=(film.m&&film.m.clips)||2; const d=q*6.0*clips/5; const en=document.documentElement.lang==='en'; depthEl.textContent='−'+(en?d.toFixed(1):d.toFixed(1).replace('.',','))+(en?' m':' м'); }
       } });
     let loading=false; const load=()=>{ if(loading) return; loading=true; film.load().catch(()=>{ sec.classList.add('ds-static'); }); };
     const near=new IntersectionObserver((es)=>{ if(es.some(e=>e.isIntersecting)){ load(); near.disconnect(); } },{rootMargin:'100% 0px'}); near.observe(sec);
@@ -2297,16 +2305,16 @@ class Component extends DCLogic {
       },
       cases:{
         ru:[
-          {i:0, n:'кейс 01', slot:'case-1', kind:'bridge',  title:'ВМЕСТО', client:'мобильное приложение · события и нетворкинг', url:'https://t.me/vvid', linkLabel:'в разработке · спросить в telegram', status:'in dev', live:'0', metrics:[{v:'iOS',l:'нативное'},{v:'события',l:'+ нетворкинг'},{v:'Минск',l:'2026'}]},
-          {i:1, n:'кейс 02', slot:'case-2', kind:'converge', title:'Центр мебели и света', live:'1', client:'интернет-магазин · мебель и освещение', url:'https://mebel-novomih.ru', linkLabel:'mebel-novomih.ru', status:'in prod', metrics:[{v:'каталог',l:'+ корзина'},{v:'доставка',l:'+ замер'},{v:'2003',l:'на рынке'}]},
-          {i:2, n:'кейс 03', slot:'case-3', kind:'scanner',  title:'Vitrina', live:'1', client:'веб-приложение · карточки для маркетплейсов', url:'https://vitrinacard.com', linkLabel:'vitrinacard.com', status:'in prod', metrics:[{v:'web app',l:'saas'},{v:'фото →',l:'карточка'},{v:'wb · ozon',l:'выгрузка'}]},
-          {i:3, n:'кейс 04', slot:'case-4', kind:'bridge',   title:'1kik · Компьютеры и кофе', live:'1', client:'интернет-магазин · компьютеры', url:'https://1kik.by', linkLabel:'1kik.by', status:'in prod', metrics:[{v:'каталог',l:'+ корзина'},{v:'0%',l:'рассрочка'},{v:'2020',l:'Гомель'}]}
+          {i:0, n:'01', slot:'case-1', kind:'bridge',  title:'ВМЕСТО', client:'мобильное приложение · события и нетворкинг', url:'https://t.me/vvid', linkLabel:'в разработке · спросить в telegram', status:'in dev', live:'0', metrics:[{v:'iOS',l:'нативное'},{v:'события',l:'+ нетворкинг'},{v:'Минск',l:'2026'}]},
+          {i:1, n:'02', slot:'case-2', kind:'converge', title:'Центр мебели и света', live:'1', client:'интернет-магазин · мебель и освещение', url:'https://mebel-novomih.ru', linkLabel:'mebel-novomih.ru', status:'in prod', metrics:[{v:'каталог',l:'+ корзина'},{v:'доставка',l:'+ замер'},{v:'2003',l:'на рынке'}]},
+          {i:2, n:'03', slot:'case-3', kind:'scanner',  title:'Vitrina', live:'1', client:'веб-приложение · карточки для маркетплейсов', url:'https://vitrinacard.com', linkLabel:'vitrinacard.com', status:'in prod', metrics:[{v:'web app',l:'saas'},{v:'фото →',l:'карточка'},{v:'wb · ozon',l:'выгрузка'}]},
+          {i:3, n:'04', slot:'case-4', kind:'bridge',   title:'1kik · Компьютеры и кофе', live:'1', client:'интернет-магазин · компьютеры', url:'https://1kik.by', linkLabel:'1kik.by', status:'in prod', metrics:[{v:'каталог',l:'+ корзина'},{v:'0%',l:'рассрочка'},{v:'2020',l:'Гомель'}]}
         ],
         en:[
-          {i:0, n:'case 01', slot:'case-1', kind:'bridge',  title:'VMESTO', client:'mobile app · events & networking', url:'https://t.me/vvid', linkLabel:'in development · ask on telegram', status:'in dev', live:'0', metrics:[{v:'iOS',l:'native'},{v:'events',l:'+ networking'},{v:'Minsk',l:'2026'}]},
-          {i:1, n:'case 02', slot:'case-2', kind:'converge', title:'Furniture & Light Center', live:'1', client:'online store · furniture & lighting', url:'https://mebel-novomih.ru', linkLabel:'mebel-novomih.ru', status:'in prod', metrics:[{v:'catalog',l:'+ cart'},{v:'delivery',l:'+ measure'},{v:'2003',l:'since'}]},
-          {i:2, n:'case 03', slot:'case-3', kind:'scanner',  title:'Vitrina', live:'1', client:'web app · marketplace product cards', url:'https://vitrinacard.com', linkLabel:'vitrinacard.com', status:'in prod', metrics:[{v:'web app',l:'saas'},{v:'photo →',l:'card'},{v:'wb · ozon',l:'export'}]},
-          {i:3, n:'case 04', slot:'case-4', kind:'bridge',   title:'1kik — PCs & Coffee', live:'1', client:'online store · computers', url:'https://1kik.by', linkLabel:'1kik.by', status:'in prod', metrics:[{v:'catalog',l:'+ cart'},{v:'0%',l:'installment'},{v:'2020',l:'Gomel'}]}
+          {i:0, n:'01', slot:'case-1', kind:'bridge',  title:'VMESTO', client:'mobile app · events & networking', url:'https://t.me/vvid', linkLabel:'in development · ask on telegram', status:'in dev', live:'0', metrics:[{v:'iOS',l:'native'},{v:'events',l:'+ networking'},{v:'Minsk',l:'2026'}]},
+          {i:1, n:'02', slot:'case-2', kind:'converge', title:'Furniture & Light Center', live:'1', client:'online store · furniture & lighting', url:'https://mebel-novomih.ru', linkLabel:'mebel-novomih.ru', status:'in prod', metrics:[{v:'catalog',l:'+ cart'},{v:'delivery',l:'+ measure'},{v:'2003',l:'since'}]},
+          {i:2, n:'03', slot:'case-3', kind:'scanner',  title:'Vitrina', live:'1', client:'web app · marketplace product cards', url:'https://vitrinacard.com', linkLabel:'vitrinacard.com', status:'in prod', metrics:[{v:'web app',l:'saas'},{v:'photo →',l:'card'},{v:'wb · ozon',l:'export'}]},
+          {i:3, n:'04', slot:'case-4', kind:'bridge',   title:'1kik — PCs & Coffee', live:'1', client:'online store · computers', url:'https://1kik.by', linkLabel:'1kik.by', status:'in prod', metrics:[{v:'catalog',l:'+ cart'},{v:'0%',l:'installment'},{v:'2020',l:'Gomel'}]}
         ]
       },
       process:{
