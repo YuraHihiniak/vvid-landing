@@ -229,7 +229,7 @@
   html.film-run .hero-scrollcue{opacity:0}
   .hero-cta-row{transition:opacity .55s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
   html.film-run .hero-cta-row{opacity:0 !important;transform:translateY(-18px) !important;pointer-events:none}
-  html.film-end .hero-cta-row{opacity:1 !important;transform:none !important;pointer-events:auto}
+  html.film-end .hero-cta-row{opacity:calc(1 - var(--film-tail,0)*1.8) !important;transform:none !important;pointer-events:auto;transition:opacity .25s linear,transform .9s cubic-bezier(.16,1,.3,1) !important}   /* быстрый отклик на скролл-затухание под занавесом */
   /* мобильный подзаголовок: чем занимается студия (десктопу это говорит фильм) */
   .hero-sub{display:none;margin:14px 0 0;max-width:26ch;font-size:15px;line-height:1.45;color:rgba(255,255,255,.9);transition:opacity .5s}
   @media (pointer:coarse){ .hero-sub{display:block} html.film-run .hero-sub{opacity:0} }
@@ -243,6 +243,7 @@
   [data-speed]{will-change:transform;contain:paint}
   /* scene-wipe: следующая секция наезжает на приколоченный пэйофф фильма (высота обёртки уже включает этот хвост) */
   #top + section{margin-top:calc(-1 * var(--film-overlap, 0px))}
+  [data-film-caps]{opacity:calc(1 - var(--film-tail,0)*1.8)}                       /* подписи фильма гаснут под занавесом */
   [data-film-canvas]{transform-origin:50% 50%;will-change:transform,opacity}
   .film-skip{background:none;border:1px solid rgba(255,255,255,.35);color:rgba(255,255,255,.85);font:500 10px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.2em;text-transform:uppercase;padding:10px 14px;cursor:pointer;border-radius:50px;transition:opacity .4s,background .35s,color .35s}
   .film-skip:hover{background:rgba(255,255,255,.12);color:#fff}
@@ -402,7 +403,7 @@
   <!-- TRUST MARQUEE -->
   <!-- 01.a PROOF STRIP — факты сразу после фильма, каждый пункт — ссылка на доказательство -->
   <!-- 02 WHO WE ARE — манифест + факты + три ремесла + принципы (впитал proof-полосу, бегущую строку и командную часть 07) -->
-  <section id="about" data-screen-label="02 Who we are" style="position:relative;z-index:10;background:rgba(228,222,210,.93);color:#1b1812;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
+  <section id="about" data-screen-label="02 Who we are" style="position:relative;z-index:10;background:#e4ded2;color:#1b1812;box-shadow:0 -34px 70px -24px rgba(19,17,12,.45);padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
     <div data-speed="6" data-pmax="150" style="position:absolute;top:0;right:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(27,24,18,.045);pointer-events:none;user-select:none">02</div>
     <div data-depth="1" style="max-width:1320px;margin:0 auto;position:relative;z-index:1">
       <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#6f6659;margin-bottom:clamp(40px,6vw,80px)">{{ t.fig02 }}</div>
@@ -1983,7 +1984,8 @@ class Component extends DCLogic {
       onProgress:(f)=>{ this._filmBytes=f; },
       onFrame:(p,f,tail)=>{
         canvas.style.opacity=String(smooth(0.04,0.12,p));                 // кроссфейд fluid → фильм
-        if(dim){ dim.style.opacity=(tail*0.5).toFixed(3); }               // страница наезжает — фильм гаснет и отходит вглубь
+        if(dim){ dim.style.opacity=(tail*0.5).toFixed(3); }
+        if(tail!==this._filmTailPrev){ this._filmTailPrev=tail; html.style.setProperty('--film-tail', tail.toFixed(3)); }               // страница наезжает — фильм гаснет и отходит вглубь
         canvas.style.transform = tail>0 ? 'scale('+(1-tail*0.035).toFixed(4)+')' : '';
         html.classList.toggle('film-run', p>0.06);
         setCh(p>=0.86?'film-end': p>=0.68?'film-c3': p>=0.40?'film-c2': p>=0.12?'film-c1':'');
