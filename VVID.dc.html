@@ -191,7 +191,7 @@
   #top + .ds-wrap.ds-static{margin-top:0}                                          /* стик спуска уже под hero: последний кадр hero = первый кадр спуска */
   .ds-sticky{position:sticky;top:0;height:100vh;height:100svh;overflow:clip;background:#100d0a}
   .ds-still{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;display:block}
-  .ds-scrim{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity .7s ease}
+  .ds-scrim{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity 1.2s ease}
   .ds-scrim-l{background:linear-gradient(90deg,rgba(16,13,10,.92) 0%,rgba(16,13,10,.72) 32%,rgba(16,13,10,0) 58%)}
   .ds-scrim-r{background:linear-gradient(270deg,rgba(16,13,10,.92) 0%,rgba(16,13,10,.72) 32%,rgba(16,13,10,0) 58%)}
   .ds-depth{position:absolute;right:26px;bottom:26px;z-index:3;text-align:right;font:500 11px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.18em;text-transform:uppercase;color:rgba(239,233,223,.72)}
@@ -230,6 +230,28 @@
   .ds-case:hover .pr{color:#fff}
   .ds-foot{margin:16px 0 0;font:400 13px/1.5 'Wix Madefor Text','Wix Madefor Display',sans-serif;letter-spacing:0;text-transform:none;color:rgba(239,233,223,.78);max-width:100%}
   @media (max-width:900px){ .ds-node{width:auto;left:20px;right:20px} .ds-left{bottom:clamp(56px,9vh,100px)} .ds-right{top:auto;bottom:clamp(56px,9vh,100px)} .ds-h{font-size:clamp(22px,5.6vw,30px)} .ds-facts{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px} .ds-row .t small{display:none} .ds-depth{right:16px;bottom:auto;top:74px;font-size:9.5px} .ds-depth b{font-size:20px;margin-top:4px} .ds-case{grid-template-columns:auto minmax(0,1fr)} .ds-case .pr{grid-column:2;white-space:normal;justify-self:start;margin-top:-2px} .ds-scrim-l,.ds-scrim-r{background:linear-gradient(0deg,rgba(16,13,10,.92) 0%,rgba(16,13,10,.62) 42%,rgba(16,13,10,0) 72%)} }
+  /* узел 05 — бриф на дне: форма в кадре, фонарь рыбы «подсвечивает» заголовок */
+  .ds-brief{top:clamp(96px,11vh,124px)}
+  .ds-h-big{font-size:clamp(34px,4.3vw,64px);margin-bottom:12px}
+  .ds-brief .ds-p{margin-bottom:12px}
+  .ds-brief[data-brief],.ds-brief [data-brief]{--vf-bd:rgba(239,233,223,.26)}
+  .ds-form{display:flex;flex-direction:column;margin-top:2px}
+  .ds-form .vf{padding:12px 0 10px}
+  .ds-form .vf-lab{color:rgba(239,233,223,.72)}
+  .ds-form .vf-in{color:#efe9df;font-size:clamp(15px,1.25vw,17px)}
+  .ds-form .vf-in::placeholder{color:rgba(239,233,223,.42)}
+  .ds-form textarea.vf-in{min-height:40px}
+  .ds-form .vf-submit{background:#efe9df;color:#100d0a;padding:15px 26px;font-size:12px}
+  .ds-form .vf-submit:hover{background:var(--acc,#b9543f);color:#fff}
+  .ds-form-row{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin-top:20px}
+  .ds-form-alt{font:500 11px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:rgba(239,233,223,.72);text-decoration:none;transition:color .3s}
+  .ds-form-alt:hover{color:#fff}
+  .ds-form-badges{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px;font:500 10.5px/1.4 'PT Mono',ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;color:rgba(239,233,223,.55)}
+  .ds-node .ds-h,.ds-node .ds-eyebrow{transition:color 1.2s ease,text-shadow 1.2s ease}
+  .ds-node.is-lit .ds-h{color:#fff;text-shadow:0 0 36px rgba(255,190,110,.34)}
+  .ds-node.is-lit .ds-eyebrow{color:rgba(255,222,184,.92)}
+  @media (max-height:820px){ .ds-brief{top:64px} .ds-h-big{font-size:clamp(28px,3.4vw,44px)} .ds-form .vf{padding:9px 0 8px} .ds-form-badges{display:none} }
+  @media (max-width:900px){ .ds-brief{top:auto} .ds-h-big{font-size:clamp(30px,8vw,40px)} .ds-form-badges{display:none} }
   html.ds-on .rail,html.ds-on [data-float-cta]{opacity:0 !important;pointer-events:none !important;transition:opacity .3s}
   @media (max-height:820px){ .ds-h{font-size:clamp(22px,2.2vw,32px)} .ds-eyebrow{margin-bottom:12px} .ds-row{padding:9px 0} .ds-row .t small{font-size:12.5px} .ds-p{margin-bottom:16px} }
   .ds-static .ds-sticky{position:relative;height:auto;display:grid}
@@ -540,7 +562,7 @@
       <div data-ds-scrim="r" class="ds-scrim ds-scrim-r" aria-hidden="true"></div>
       <div class="ds-depth"><span>{{ t.dsDepth }}</span><b data-ds-depth="1">−0,0 м</b></div>
 
-      <div data-node="01" data-range="0.020,0.134" id="about" class="ds-node ds-left">
+      <div data-node="01" data-range="0.0149,0.1011" id="about" class="ds-node ds-left">
         <span class="ds-eyebrow">{{ t.dsK1 }}</span>
         <h2 class="ds-h">{{ t.manifH2 }}</h2>
         <p class="ds-p">{{ t.manifPa }}<b>{{ t.manifPb }}</b>.</p>
@@ -552,7 +574,7 @@
         </div>
       </div>
 
-      <div data-node="02" data-range="0.181,0.322" id="capabilities" class="ds-node ds-right">
+      <div data-node="02" data-range="0.1362,0.2426" id="capabilities" class="ds-node ds-right">
         <span class="ds-eyebrow">{{ t.dsK2 }}</span>
         <h2 class="ds-h">{{ t.capH2 }}</h2>
         <div class="ds-rows">
@@ -563,7 +585,7 @@
         <p class="ds-foot">{{ t.procH2 }}</p>
       </div>
 
-      <div data-node="03" data-range="0.375,0.644" id="work" class="ds-node ds-left">
+      <div data-node="03" data-range="0.2819,0.4840" id="work" class="ds-node ds-left">
         <span class="ds-eyebrow">{{ t.dsK3 }}</span>
         <h2 class="ds-h">{{ t.casesH2a }} {{ t.casesH2b }}</h2>
         <div class="ds-rows">
@@ -573,7 +595,7 @@
         </div>
       </div>
 
-      <div data-node="04" data-range="0.880,0.984" id="pricing" class="ds-node ds-right">
+      <div data-node="04" data-range="0.6617,0.7404" id="pricing" class="ds-node ds-right">
         <span class="ds-eyebrow">{{ t.dsK4 }}</span>
         <h2 class="ds-h">{{ t.pricingH2 }}</h2>
         <div class="ds-rows">
@@ -582,6 +604,21 @@
           </sc-for>
         </div>
         <p class="ds-foot" data-at="0.42">{{ t.pricingFootnote }}</p>
+      </div>
+
+      <div data-node="05" data-range="0.8585,0.9904" data-lit="0.72" data-scrim="none" id="brief" class="ds-node ds-right ds-brief">
+        <span class="ds-eyebrow">{{ t.dsK5 }}</span>
+        <h2 class="ds-h ds-h-big">{{ t.dsBriefH2 }}</h2>
+        <p class="ds-p" data-at="0.3">{{ t.dsBriefP }}</p>
+        <form onSubmit="{{ onSubmit }}" data-brief="1" class="ds-form" data-at="0.3">
+          <label class="vf"><span class="vf-lab">{{ t.formL3 }}</span><textarea class="vf-in" name="task" rows="2" placeholder="{{ t.formPh3 }}"></textarea></label>
+          <label class="vf"><span class="vf-lab">{{ t.formL4 }}</span><input class="vf-in" name="contact" type="text" required placeholder="{{ t.formPh4 }}"></label>
+          <div class="ds-form-row">
+            <button type="submit" data-submit-btn="1" class="vf-submit">{{ t.formSubmit }} <span class="vf-arr">→</span></button>
+            <a href="https://t.me/vvid" target="_blank" rel="noopener noreferrer" class="ds-form-alt">{{ t.dsBriefAlt }}</a>
+          </div>
+          <div class="ds-form-badges"><span>{{ t.briefBadge1 }}</span><span>{{ t.briefBadge2 }}</span><span>{{ t.briefBadge3 }}</span></div>
+        </form>
       </div>
     </div>
   </section>
@@ -610,51 +647,8 @@
     </div>
   </section>
 
-  <!-- 08 CLOSER -->
+  <!-- 08 CLOSER → узел 05 внутри спуска -->
 
-  <section id="brief" data-screen-label="08 Closer" style="position:relative;z-index:10;background:rgba(228,222,210,.93);color:#1b1812;padding:clamp(90px,13vw,180px) 26px">
-    <div style="max-width:1320px;margin:0 auto">
-      <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#6f6659;margin-bottom:26px">{{ t.fig08 }}</div>
-      <h2 data-rot-head="1" style="font-size:clamp(36px,7vw,104px);line-height:.94;letter-spacing:-.045em;font-weight:600;margin:0 0 20px;max-width:15ch">{{ t.briefH2a }}<span data-rot2="1" ref="{{ setRot2 }}" style="font-weight:700;color:var(--acc,#b9543f)">{{ t.briefRot }}</span></h2>
-      <p data-reveal="1" style="margin:0 0 clamp(40px,6vw,64px);max-width:52ch;font-size:clamp(16px,1.8vw,20px);line-height:1.5;color:#5a5346;text-wrap:pretty">{{ t.briefP }}</p>
-
-      <div data-reveal="1" data-delay="80" style="position:relative;background:#ece7db;border:1px solid rgba(27,24,18,.12);box-shadow:0 44px 90px -54px rgba(27,24,18,.6);padding:clamp(24px,4vw,52px)">
-        <span aria-hidden="true" style="position:absolute;top:0;left:0;width:18px;height:18px;border-top:2px solid var(--acc,#b9543f);border-left:2px solid var(--acc,#b9543f)"></span>
-        <span aria-hidden="true" style="position:absolute;bottom:0;right:0;width:18px;height:18px;border-bottom:2px solid var(--acc,#b9543f);border-right:2px solid var(--acc,#b9543f)"></span>
-        <form onSubmit="{{ onSubmit }}" data-brief="1" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,2.6vw,34px) clamp(28px,4vw,56px)">
-          <label class="vf" style="grid-column:1 / -1">
-            <span class="vf-lab">{{ t.formL3 }}</span>
-            <textarea class="vf-in" name="task" rows="2" placeholder="{{ t.formPh3 }}"></textarea>
-          </label>
-          <label class="vf">
-            <span class="vf-lab">{{ t.formL4 }}</span>
-            <input class="vf-in" name="business" type="text" placeholder="{{ t.formPh4 }}">
-          </label>
-          <label class="vf">
-            <span class="vf-lab">{{ t.formL2 }}</span>
-            <select class="vf-in" name="budget">
-              <option>{{ t.formOpt1 }}</option>
-              <option>{{ t.formOpt2 }}</option>
-              <option>{{ t.formOpt3 }}</option>
-              <option>{{ t.formOpt4 }}</option>
-              <option>{{ t.formOpt5 }}</option>
-            </select>
-          </label>
-          <label class="vf" style="grid-column:1 / -1">
-            <span class="vf-lab">{{ t.formL1 }}</span>
-            <input class="vf-in" name="contact" type="text" required placeholder="{{ t.formPh1 }}">
-          </label>
-          <div style="grid-column:1 / -1;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-top:clamp(10px,1.6vw,18px)">
-            <button type="submit" data-submit-btn="1" class="vf-submit" data-magnetic="1">{{ t.formSubmit }} <span class="vf-arr">→</span></button>
-            <a href="https://t.me/vvid" target="_blank" rel="noopener noreferrer" data-brief-alt="1" style="display:inline-block;margin:14px 0 0 2px;font:500 11px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:#6f6659;transition:color .3s" style-hover="color:var(--acc,#b9543f)">{{ t.briefAlt }}</a>
-            <div style="display:flex;gap:22px;flex-wrap:wrap;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#6f6659">
-              <span>{{ t.briefBadge1 }}</span><span>{{ t.briefBadge2 }}</span><span>{{ t.briefBadge3 }}</span>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </section>
 
   <!-- FOOTER -->
   <footer style="position:relative;z-index:10;background:#13110c;color:#e4ded2;padding:clamp(70px,9vw,120px) 26px 40px;overflow:hidden">
@@ -2007,7 +2001,7 @@ class Component extends DCLogic {
     const sec=this.root.querySelector('[data-descent]'); if(!sec||this._descent) return;
     const sticky=sec.querySelector('[data-ds-sticky]'), canvas=sec.querySelector('[data-ds-canvas]'), depthEl=sec.querySelector('[data-ds-depth]'), scrimL=sec.querySelector('[data-ds-scrim="l"]'), scrimR=sec.querySelector('[data-ds-scrim="r"]');
     if(!sticky||!canvas) return;
-    const nodes=Array.from(sec.querySelectorAll('[data-node]')).map(el=>{ const r=(el.getAttribute('data-range')||'0,1').split(',').map(Number); const keyed=Array.from(el.querySelectorAll('[data-at]')).map(k=>({ el:k, at:parseFloat(k.getAttribute('data-at'))||0, on:false })); return { el, a:r[0], b:r[1], side:el.classList.contains('ds-right')?'r':'l', keyed }; });
+    const nodes=Array.from(sec.querySelectorAll('[data-node]')).map(el=>{ const r=(el.getAttribute('data-range')||'0,1').split(',').map(Number); const keyed=Array.from(el.querySelectorAll('[data-at]')).map(k=>({ el:k, at:parseFloat(k.getAttribute('data-at'))||0, on:false })); const lit=el.hasAttribute('data-lit')?parseFloat(el.getAttribute('data-lit')):null; const scrim=el.getAttribute('data-scrim')||(el.classList.contains('ds-right')?'r':'l'); return { el, a:r[0], b:r[1], side:el.classList.contains('ds-right')?'r':'l', keyed, lit, scrim }; });
     const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const coarse=!!(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches);
     const nav=navigator, weak=(nav.connection&&(nav.connection.saveData||/2g/.test(nav.connection.effectiveType||'')))||(nav.deviceMemory&&nav.deviceMemory<4);
@@ -2020,11 +2014,12 @@ class Component extends DCLogic {
       zonesFrac: nodes.map(n=>[n.a+0.02, n.b-0.02, 4]),                       // в главе фильм идёт вчетверо медленнее — есть время читать, камера не стоит                       // пока узел на экране — фильм идёт втрое медленнее, но не стоит
       onFrame:(p,f)=>{
         if(canvas.style.opacity!=='1' && f>=0 && (film.bmp.has(f)||film.pbmp.has(f))) canvas.style.opacity='1';
-        const hs=this._film&&this._film.sticky; if(hs){ const hide=p>0.002&&canvas.style.opacity==='1'; if(hs.style.visibility!==(hide?'hidden':'')) hs.style.visibility=hide?'hidden':''; }   // передача: hero гаснет, под ним уже тот же кадр спуска
+        const hs=this._film&&this._film.sticky; if(hs){ const hide=canvas.style.opacity==='1'&&sec.getBoundingClientRect().top<=0; if(hs.style.visibility!==(hide?'hidden':'')) hs.style.visibility=hide?'hidden':''; }   // передача в пиксель: стик спуска встал (top<=0) и кадр нарисован → hero гаснет сразу, без 29 px «съезда» hero-кадра поверх такого же
         const q=film.frames?f/(film.frames-1):p;                                 // ось кадров: узлы и медленные зоны совпадают кадр в кадр
         let anyL=false, anyR=false, changed=false;
-        nodes.forEach(n=>{ const inR=q>=n.a&&q<=n.b; if(inR!==n.active){ n.active=inR; changed=true; n.el.classList.toggle('is-in',inR); n.el.classList.toggle('on',inR); n.el.toggleAttribute('inert',!inR); if(!inR) n.snapped=false; } if(n.active||inR!==n.active||n.keyed.length){ const span=n.b-n.a||1; n.keyed.forEach(k=>{ const on=q>=n.a+k.at*span; if(on!==k.on){ k.on=on; k.el.classList.toggle('is-at',on); } }); } if(n.active){ if(n.side==='l') anyL=true; else anyR=true; } });
-        if(changed){ if(scrimL) scrimL.style.opacity=anyL?'1':'0'; if(scrimR) scrimR.style.opacity=anyR?'1':'0'; const on=anyL||anyR; if(on!==this._dsOn){ this._dsOn=on; document.documentElement.classList.toggle('ds-on',on); } }
+        nodes.forEach(n=>{ const inR=(q>=n.a&&q<=n.b)||(coarse&&n.active&&n.el.contains(document.activeElement));   /* на тач-устройстве клавиатура меняет высоту экрана — пока поле в фокусе, узел не отпускаем */
+        if(inR!==n.active){ n.active=inR; changed=true; n.el.classList.toggle('is-in',inR); n.el.classList.toggle('on',inR); n.el.toggleAttribute('inert',!inR); if(!inR) n.snapped=false; } if(n.active||inR!==n.active||n.keyed.length){ const span=n.b-n.a||1; n.keyed.forEach(k=>{ const on=q>=n.a+k.at*span; if(on!==k.on){ k.on=on; k.el.classList.toggle('is-at',on); } }); } if(n.lit!=null){ const on=n.active&&q>=n.a+n.lit*(n.b-n.a); if(on!==n.litOn){ n.litOn=on; n.el.classList.toggle('is-lit',on); } } if(n.active){ if(n.scrim==='l') anyL=true; else if(n.scrim==='r') anyR=true; } });
+        if(changed){ if(scrimL) scrimL.style.opacity=anyL?'1':'0'; if(scrimR) scrimR.style.opacity=anyR?'1':'0'; const on=nodes.some(n=>n.active); if(on!==this._dsOn){ this._dsOn=on; document.documentElement.classList.toggle('ds-on',on); } }
         if(depthEl){ const clips=(film.m&&film.m.clips)||2; const d=q*6.0*clips/5; const en=document.documentElement.lang==='en'; depthEl.textContent='−'+(en?d.toFixed(1):d.toFixed(1).replace('.',','))+(en?' m':' м'); }
       } });
     nodes.forEach(n=>{ let i=0; Array.from(n.el.children).forEach(ch=>{ if(ch.classList.contains('ds-rows')||ch.classList.contains('ds-facts')){ Array.from(ch.children).forEach(r=>{ r.style.setProperty('--i', i++); }); } else ch.style.setProperty('--i', i++); }); });
@@ -2219,7 +2214,7 @@ class Component extends DCLogic {
         heroBig1:'мы VVID', heroBig2:'мы делаем', heroBig3:'большие', heroBig4:'вещи', heroBigAria:'мы VVID, мы делаем большие вещи',
         heroLead2:'внедряем в уже работающий бизнес — автоматизируем процессы и усиливаем то, что приносит деньги.',
         heroSub:'веб- и мобильные приложения, сайты и интернет-магазины, телеграм-боты, дизайн — внедряем в готовый бизнес.',
-        heroCta1:'смотреть кейсы →', heroCtaPrimary:'написать в telegram ↗', heroProof:'договор + юрлицо · ответ в telegram < 2 часов · показываем вживую', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'разработка · автоматизация', dsK1:'01 — кто мы · Минск', dsCrafts:'разработка · автоматизация · дизайн — те же люди на созвоне и в коде', dsK3:'03 — кейсы · четыре проекта · три в проде', dsK4:'04 — прайс · у корней · цифра до старта', dsK2:'02 — что делаем · пять услуг · цены открыты', dsT1:'узел 01 — кто мы', dsT2:'узел 02 — что делаем', dsDepth:'глубина', sc1K:'глава 01 — кто мы', sc1T:'смотрим внутрь — до самого ядра', filmK1:'01 — замысел', filmT1:'всё начинается с одной точки', filmK2:'02 — раскрытие', filmT2:'деталь за деталью — до готовой формы', filmK3:'03 — результат', filmT3:'4 проекта в проде · гарантия 50 дней', filmKEnd:'04 · vvid — студия разработки и автоматизации', filmTEnd:'следующий проект — ваш', filmSkip:'пропустить ↓', filmCta2:'оставить бриф ↓', teamLead:'три ремесла — одна команда. те же люди на созвоне и в коде.', briefAlt:'быстрее — в telegram @vvid ↗', footTag:'из хаоса — система', pricingCta:'оценить мою задачу →', formSent:'письмо с брифом открыто ✓',
+        heroCta1:'смотреть кейсы →', heroCtaPrimary:'написать в telegram ↗', heroProof:'договор + юрлицо · ответ в telegram < 2 часов · показываем вживую', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'разработка · автоматизация', dsK1:'01 — кто мы · Минск', dsCrafts:'разработка · автоматизация · дизайн — те же люди на созвоне и в коде', dsK3:'03 — кейсы · четыре проекта · три в проде', dsK4:'04 — прайс · у корней · цифра до старта', dsK5:'05 — бриф · на дне · давай работать', dsBriefH2:'давай работать.', dsBriefP:'опишите задачу парой строк — в рабочее время ответим меньше чем за 2 часа. цифру назовём, когда поймём процесс.', dsBriefAlt:'или сразу в telegram ↗', dsK2:'02 — что делаем · пять услуг · цены открыты', dsT1:'узел 01 — кто мы', dsT2:'узел 02 — что делаем', dsDepth:'глубина', sc1K:'глава 01 — кто мы', sc1T:'смотрим внутрь — до самого ядра', filmK1:'01 — замысел', filmT1:'всё начинается с одной точки', filmK2:'02 — раскрытие', filmT2:'деталь за деталью — до готовой формы', filmK3:'03 — результат', filmT3:'4 проекта в проде · гарантия 50 дней', filmKEnd:'04 · vvid — студия разработки и автоматизации', filmTEnd:'следующий проект — ваш', filmSkip:'пропустить ↓', filmCta2:'оставить бриф ↓', teamLead:'три ремесла — одна команда. те же люди на созвоне и в коде.', briefAlt:'быстрее — в telegram @vvid ↗', footTag:'из хаоса — система', pricingCta:'оценить мою задачу →', formSent:'письмо с брифом открыто ✓',
         fig02:'fig.02 — кто мы',
         manifH2:'ваш бизнес уже работает. мы снимаем его с ручного привода.',
         manifPa:'разбираем процесс на детали и собираем систему, которая держит нагрузку — ', manifPb:'приложение, сайт, бот или интеграция',
@@ -2247,7 +2242,7 @@ class Component extends DCLogic {
         heroBig1:'we are VVID', heroBig2:'we do', heroBig3:'big', heroBig4:'things', heroBigAria:'we are VVID, we do big things',
         heroLead2:'built into your running business — we automate processes and amplify what already makes money.',
         heroSub:'web & mobile apps, websites and online stores, telegram bots, design — built into your existing business.',
-        heroCta1:'see our work →', heroCtaPrimary:'message us on telegram ↗', heroProof:'contract + legal entity · telegram reply < 2 hours · we show, live', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'development · automation', dsK1:'01 — who we are · Minsk', dsCrafts:'development · automation · design — the same people on the call and in the code', dsK3:'03 — work · four projects · three live', dsK4:'04 — pricing · at the roots · a number before we start', dsK2:'02 — what we do · five services · prices are open', dsT1:'node 01 — who we are', dsT2:'node 02 — what we do', dsDepth:'depth', sc1K:'chapter 01 — who we are', sc1T:'we look inside — down to the core', filmK1:'01 — intent', filmT1:'it all starts from a single point', filmK2:'02 — unfolding', filmT2:'detail by detail — to the finished form', filmK3:'03 — result', filmT3:'4 projects live · 50-day guarantee', filmKEnd:'04 · vvid — development & automation studio', filmTEnd:'the next project is yours', filmSkip:'skip ↓', filmCta2:'leave a brief ↓', teamLead:'three crafts — one team. the same people on the call and in the code.', briefAlt:'faster on telegram @vvid ↗', footTag:'from chaos — a system', pricingCta:'estimate my task →', formSent:'brief email opened ✓',
+        heroCta1:'see our work →', heroCtaPrimary:'message us on telegram ↗', heroProof:'contract + legal entity · telegram reply < 2 hours · we show, live', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'development · automation', dsK1:'01 — who we are · Minsk', dsCrafts:'development · automation · design — the same people on the call and in the code', dsK3:'03 — work · four projects · three live', dsK4:'04 — pricing · at the roots · a number before we start', dsK5:'05 — brief · at the bottom · let’s work', dsBriefH2:'let’s work.', dsBriefP:'describe the task in a couple of lines — we reply within 2 hours in work hours. we name a number once we understand the process.', dsBriefAlt:'or straight to telegram ↗', dsK2:'02 — what we do · five services · prices are open', dsT1:'node 01 — who we are', dsT2:'node 02 — what we do', dsDepth:'depth', sc1K:'chapter 01 — who we are', sc1T:'we look inside — down to the core', filmK1:'01 — intent', filmT1:'it all starts from a single point', filmK2:'02 — unfolding', filmT2:'detail by detail — to the finished form', filmK3:'03 — result', filmT3:'4 projects live · 50-day guarantee', filmKEnd:'04 · vvid — development & automation studio', filmTEnd:'the next project is yours', filmSkip:'skip ↓', filmCta2:'leave a brief ↓', teamLead:'three crafts — one team. the same people on the call and in the code.', briefAlt:'faster on telegram @vvid ↗', footTag:'from chaos — a system', pricingCta:'estimate my task →', formSent:'brief email opened ✓',
         fig02:'fig.02 — who we are',
         manifH2:'your business already runs. we take it off manual.',
         manifPa:'we take the process apart and rebuild it as a system that holds the load — ', manifPb:'an app, a site, a bot or an integration',
