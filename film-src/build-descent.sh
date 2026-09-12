@@ -23,7 +23,7 @@ echo "→ склейка: $(ffprobe -v error -select_streams v:0 -show_entries s
 "$HERE/video2film.sh" "$TMP/descent.mp4" "$OUT/mobile" 24 540x960 66
 ffmpeg -v error -y -i "$TMP/descent.mp4" -frames:v 1 -vf "scale=1440:810:flags=lanczos" -q:v 4 "$OUT/still.jpg"
 ffmpeg -v error -y -i "$TMP/descent.mp4" -frames:v 1 -vf "scale=540:960:force_original_aspect_ratio=increase,crop=540:960" -q:v 5 "$OUT/mobile/still.jpg"
-cp "$TMP/descent.mp4" "$OUT/../descent-src.mp4" 2>/dev/null || true
+cp "$TMP/descent.mp4" "${DESCENT_SRC_COPY:-/private/tmp/claude-501/-Users-roy/174dced4-c26b-436a-96c4-d43b9c875482/scratchpad/descent-src.mp4}" 2>/dev/null || true
 python3 - "$OUT" "$N" <<'PY'
 import json,sys,os
 out,n=sys.argv[1],int(sys.argv[2])
