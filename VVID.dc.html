@@ -177,9 +177,26 @@
   .sc-still{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;display:block}
   .sc-cap{transition:none}
   .sc-wrap + section{margin-top:calc(-1 * var(--film-overlap,0px));box-shadow:0 -34px 70px -24px rgba(19,17,12,.55)}
-  .sc-static .sc-sticky{position:relative;height:72vh;min-height:420px}
+  .sc-static .sc-sticky{position:relative}
   .sc-static{min-height:0}
-  .sc-static .sc-cap{opacity:1 !important;transform:none !important}
+  /* информация внутри кадра: скрим слева, текст и факты появляются на удержании кадра */
+  .sc-scrim{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;background:linear-gradient(90deg,rgba(19,17,12,.86) 0%,rgba(19,17,12,.6) 36%,rgba(19,17,12,0) 64%)}
+  .sc-info{position:absolute;left:26px;right:26px;top:50%;transform:translateY(-50%);z-index:3;max-width:min(46vw,580px);color:#efe9df;opacity:0;pointer-events:none;will-change:opacity,transform}
+  .sc-info.on{pointer-events:auto}
+  .sc-eyebrow{display:block;font:500 11px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.22em;text-transform:uppercase;color:rgba(239,233,223,.6);margin-bottom:22px}
+  .sc-h2{font-family:var(--font-display);font-weight:600;font-size:clamp(28px,3.6vw,54px);line-height:1.02;letter-spacing:-.035em;margin:0 0 18px;text-wrap:balance;color:#efe9df}
+  .sc-p{margin:0 0 26px;font-size:clamp(15px,1.25vw,18px);line-height:1.5;color:rgba(239,233,223,.78);max-width:40ch;text-wrap:pretty}
+  .sc-p b{color:#efe9df;font-weight:600}
+  .sc-facts{display:grid;grid-template-columns:repeat(3,auto);gap:16px 30px;justify-content:start;border-top:1px solid rgba(239,233,223,.22);padding-top:18px}
+  .sc-fact{display:flex;flex-direction:column;gap:6px;color:inherit;text-decoration:none}
+  .sc-fact .v{font-family:var(--font-accent);font-style:italic;font-size:clamp(20px,2vw,30px);line-height:1;white-space:nowrap;transition:color .3s}
+  .sc-fact:hover .v{color:var(--acc,#b9543f)}
+  .sc-fact .l{font:500 10px/1.4 'PT Mono',ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;color:rgba(239,233,223,.55)}
+  .sc-static .sc-sticky{height:auto;min-height:0;display:block}
+  .sc-static .sc-still{position:relative;inset:auto;height:auto;aspect-ratio:16/9}
+  .sc-static .sc-scrim{display:none}
+  .sc-static .sc-info{position:relative;left:auto;right:auto;top:auto;transform:none !important;max-width:none;opacity:1 !important;padding:26px 26px 40px;pointer-events:auto}
+  .sc-static .sc-facts{grid-template-columns:repeat(2,auto);gap:14px 26px}
   .sc-static + section{margin-top:0 !important}
   /* «кейсы» — список «теги • имя» по Lusion: гигантское имя, метрики как теги, справа дескриптор и статус, ASCII-панель остаётся превью */
   .cs-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(24px,5vw,72px);align-items:center}
@@ -439,7 +456,7 @@
   <!-- TRUST MARQUEE -->
   <!-- 01.a PROOF STRIP — факты сразу после фильма, каждый пункт — ссылка на доказательство -->
   <!-- 02 WHO WE ARE — манифест + факты + три ремесла + принципы (впитал proof-полосу, бегущую строку и командную часть 07) -->
-  <section id="about" data-screen-label="02 Who we are" style="position:relative;z-index:10;background:#e4ded2;color:#1b1812;box-shadow:0 -34px 70px -24px rgba(19,17,12,.45);padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
+  <section id="about" data-screen-label="02 Who we are" style="display:none;position:relative;z-index:10;background:#e4ded2;color:#1b1812;box-shadow:0 -34px 70px -24px rgba(19,17,12,.45);padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
     <div data-speed="6" data-pmax="150" style="position:absolute;top:0;right:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(27,24,18,.045);pointer-events:none;user-select:none">02</div>
     <div data-depth="1" style="max-width:1320px;margin:0 auto;position:relative;z-index:1">
       <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#6f6659;margin-bottom:clamp(40px,6vw,80px)">{{ t.fig02 }}</div>
@@ -477,7 +494,17 @@
       <div class="hero-flood-grain" aria-hidden="true" style="z-index:2"></div>
       <div class="hero-vig" aria-hidden="true" style="z-index:2"></div>
       <div data-scene-dim="1" aria-hidden="true" style="position:absolute;inset:0;z-index:2;background:#13110c;opacity:0;pointer-events:none"></div>
-      <div data-scene-cap="1" class="film-cap sc-cap" style="z-index:3"><span class="fc-k">{{ t.sc1K }}</span><span class="fc-t">{{ t.sc1T }}</span></div>
+      <div data-scene-scrim="1" class="sc-scrim" aria-hidden="true"></div>
+      <div data-scene-info="1" class="sc-info">
+        <span class="sc-eyebrow">{{ t.sc1K }}</span>
+        <h2 class="sc-h2">{{ t.manifH2 }}</h2>
+        <p class="sc-p">{{ t.manifPa }}<b>{{ t.manifPb }}</b>.</p>
+        <div class="sc-facts">
+          <sc-for list="{{ proof }}" as="pf" hint-placeholder-count="5">
+            <a href="{{ pf.href }}" class="sc-fact"><span class="v">{{ pf.v }}</span><span class="l">{{ pf.l }}</span></a>
+          </sc-for>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -2006,19 +2033,21 @@ class Component extends DCLogic {
     const nav=navigator, weak=(nav.connection&&(nav.connection.saveData||/2g/.test(nav.connection.effectiveType||'')))||(nav.deviceMemory&&nav.deviceMemory<4);
     const force=/[?&]film=force\b/.test(location.search);
     secs.forEach(sec=>{
-      const key=sec.getAttribute('data-scene'); const sticky=sec.querySelector('[data-scene-sticky]'), canvas=sec.querySelector('[data-scene-canvas]'), dim=sec.querySelector('[data-scene-dim]'), cap=sec.querySelector('[data-scene-cap]'), still=sec.querySelector('[data-scene-still]');
+      const key=sec.getAttribute('data-scene'); const sticky=sec.querySelector('[data-scene-sticky]'), canvas=sec.querySelector('[data-scene-canvas]'), dim=sec.querySelector('[data-scene-dim]'), cap=sec.querySelector('[data-scene-cap]'), still=sec.querySelector('[data-scene-still]'), info=sec.querySelector('[data-scene-info]'), scrim=sec.querySelector('[data-scene-scrim]');
+      const H0=0.50, H1=0.86; const sm=(a,b,x)=>{ const t=Math.min(1,Math.max(0,(x-a)/(b-a))); return t*t*(3-2*t); };
       if(!sticky||!canvas) return;
       const base='./film/scene-'+key+'/';
       if(still) still.addEventListener('error',()=>{ sec.style.display='none'; },{once:true});          // нет стилла → нет сцены
       if(coarse||reduce||(weak&&!force)){ sec.classList.add('sc-static'); return; }                       // телефон / слабая сеть: стилл + подпись
-      const film=new VFilm({ base, manifestUrl:base+'film.json', proxyBase:base+'proxy/', canvas, wrap:sec, sticky, pxPerFrame:6, overlapVh:0.38, lerp:this._lenis?1:0.12,
+      const film=new VFilm({ base, manifestUrl:base+'film.json', proxyBase:base+'proxy/', canvas, wrap:sec, sticky, pxPerFrame:9, overlapVh:0.38, lerp:this._lenis?1:0.12,
         windowAhead:20, windowBehind:8, keepBehind:12, pwin:48,
-        holds:[[0,0.06,0],[0.94,1,1]],                                       // удержание первого и последнего кадра
+        holds:[[0,0.06,0],[0.50,0.86,0.62],[0.96,1,1]],                        // старт · удержание кадра под текст (p .50–.86 → кадр ~149) · финал
         onFrame:(p,f,tail)=>{
           if(canvas.style.opacity!=='1' && f>=0 && (film.bmp.has(f)||film.pbmp.has(f))) canvas.style.opacity='1';   // кадр поверх стилла, как только он нарисован
           if(dim) dim.style.opacity=(tail*0.5).toFixed(3);
           canvas.style.transform = tail>0 ? 'scale('+(1-tail*0.035).toFixed(4)+')' : '';
           if(cap){ const r=Math.min(1,Math.max(0,(p-0.10)/0.22)); const o=r*(1-Math.min(1,tail*1.8)); cap.style.opacity=o.toFixed(3); cap.style.transform='translateY('+((1-r)*22).toFixed(1)+'px)'; }
+          if(info){ const v=sm(H0,H0+0.07,p)*(1-sm(H1-0.07,H1,p)); info.style.opacity=v.toFixed(3); info.style.transform='translateY(calc(-50% + '+((1-v)*18).toFixed(1)+'px))'; info.classList.toggle('on', v>0.5); if(scrim) scrim.style.opacity=v.toFixed(3); }
         } });
       let loading=false; const load=()=>{ if(loading) return; loading=true; film.load().catch(()=>{ sec.style.display='none'; }); };
       const near=new IntersectionObserver((es)=>{ if(es.some(e=>e.isIntersecting)){ load(); near.disconnect(); } },{rootMargin:'120% 0px'});   // грузим заранее, за экран до сцены
@@ -2161,7 +2190,7 @@ class Component extends DCLogic {
         heroBig1:'мы VVID', heroBig2:'мы делаем', heroBig3:'большие', heroBig4:'вещи', heroBigAria:'мы VVID, мы делаем большие вещи',
         heroLead2:'внедряем в уже работающий бизнес — автоматизируем процессы и усиливаем то, что приносит деньги.',
         heroSub:'веб- и мобильные приложения, сайты и интернет-магазины, телеграм-боты, дизайн — внедряем в готовый бизнес.',
-        heroCta1:'смотреть кейсы →', heroCtaPrimary:'написать в telegram ↗', heroProof:'договор + юрлицо · ответ в telegram < 2 часов · показываем вживую', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'разработка · автоматизация', sc1K:'01 — разбор', sc1T:'смотрим внутрь — до самого ядра: из чего это сделано', filmK1:'01 — замысел', filmT1:'всё начинается с одной точки', filmK2:'02 — раскрытие', filmT2:'деталь за деталью — до готовой формы', filmK3:'03 — результат', filmT3:'4 проекта в проде · гарантия 50 дней', filmKEnd:'04 · vvid — студия разработки и автоматизации', filmTEnd:'следующий проект — ваш', filmSkip:'пропустить ↓', filmCta2:'оставить бриф ↓', teamLead:'три ремесла — одна команда. те же люди на созвоне и в коде.', briefAlt:'быстрее — в telegram @vvid ↗', footTag:'из хаоса — система', pricingCta:'оценить мою задачу →', formSent:'письмо с брифом открыто ✓',
+        heroCta1:'смотреть кейсы →', heroCtaPrimary:'написать в telegram ↗', heroProof:'договор + юрлицо · ответ в telegram < 2 часов · показываем вживую', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'разработка · автоматизация', sc1K:'глава 01 — кто мы', sc1T:'смотрим внутрь — до самого ядра', filmK1:'01 — замысел', filmT1:'всё начинается с одной точки', filmK2:'02 — раскрытие', filmT2:'деталь за деталью — до готовой формы', filmK3:'03 — результат', filmT3:'4 проекта в проде · гарантия 50 дней', filmKEnd:'04 · vvid — студия разработки и автоматизации', filmTEnd:'следующий проект — ваш', filmSkip:'пропустить ↓', filmCta2:'оставить бриф ↓', teamLead:'три ремесла — одна команда. те же люди на созвоне и в коде.', briefAlt:'быстрее — в telegram @vvid ↗', footTag:'из хаоса — система', pricingCta:'оценить мою задачу →', formSent:'письмо с брифом открыто ✓',
         fig02:'fig.02 — кто мы',
         manifH2:'ваш бизнес уже работает. мы снимаем его с ручного привода.',
         manifPa:'разбираем процесс на детали и собираем систему, которая держит нагрузку — ', manifPb:'приложение, сайт, бот или интеграция',
@@ -2189,7 +2218,7 @@ class Component extends DCLogic {
         heroBig1:'we are VVID', heroBig2:'we do', heroBig3:'big', heroBig4:'things', heroBigAria:'we are VVID, we do big things',
         heroLead2:'built into your running business — we automate processes and amplify what already makes money.',
         heroSub:'web & mobile apps, websites and online stores, telegram bots, design — built into your existing business.',
-        heroCta1:'see our work →', heroCtaPrimary:'message us on telegram ↗', heroProof:'contract + legal entity · telegram reply < 2 hours · we show, live', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'development · automation', sc1K:'01 — teardown', sc1T:'we look inside — down to the core: what it is made of', filmK1:'01 — intent', filmT1:'it all starts from a single point', filmK2:'02 — unfolding', filmT2:'detail by detail — to the finished form', filmK3:'03 — result', filmT3:'4 projects live · 50-day guarantee', filmKEnd:'04 · vvid — development & automation studio', filmTEnd:'the next project is yours', filmSkip:'skip ↓', filmCta2:'leave a brief ↓', teamLead:'three crafts — one team. the same people on the call and in the code.', briefAlt:'faster on telegram @vvid ↗', footTag:'from chaos — a system', pricingCta:'estimate my task →', formSent:'brief email opened ✓',
+        heroCta1:'see our work →', heroCtaPrimary:'message us on telegram ↗', heroProof:'contract + legal entity · telegram reply < 2 hours · we show, live', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'development · automation', sc1K:'chapter 01 — who we are', sc1T:'we look inside — down to the core', filmK1:'01 — intent', filmT1:'it all starts from a single point', filmK2:'02 — unfolding', filmT2:'detail by detail — to the finished form', filmK3:'03 — result', filmT3:'4 projects live · 50-day guarantee', filmKEnd:'04 · vvid — development & automation studio', filmTEnd:'the next project is yours', filmSkip:'skip ↓', filmCta2:'leave a brief ↓', teamLead:'three crafts — one team. the same people on the call and in the code.', briefAlt:'faster on telegram @vvid ↗', footTag:'from chaos — a system', pricingCta:'estimate my task →', formSent:'brief email opened ✓',
         fig02:'fig.02 — who we are',
         manifH2:'your business already runs. we take it off manual.',
         manifPa:'we take the process apart and rebuild it as a system that holds the load — ', manifPb:'an app, a site, a bot or an integration',
