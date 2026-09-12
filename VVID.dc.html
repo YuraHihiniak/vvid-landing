@@ -171,6 +171,27 @@
   /* ===== scroll-film (desktop): sticky hero, fluid = состояние покоя, главы поверх кадров ===== */
   html:not(.pre-done){overflow:hidden}
   .film-cap{position:absolute;left:26px;right:26px;bottom:clamp(96px,16vh,170px);max-width:min(46vw,40ch);color:#fff;opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);pointer-events:none}
+  /* «кейсы» — список «теги • имя» по Lusion: гигантское имя, метрики как теги, справа дескриптор и статус, ASCII-панель остаётся превью */
+  .cs-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(24px,5vw,72px);align-items:center}
+  .cs-list{display:flex;flex-direction:column}
+  .cs-item{border-top:1px solid rgba(27,24,18,.18)}
+  .cs-row{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:clamp(10px,1.4vw,22px);align-items:baseline;width:100%;text-align:left;background:none;border:none;color:inherit;cursor:pointer;padding:clamp(18px,2.2vw,28px) 0 clamp(10px,1.2vw,14px);transition:padding-left .5s cubic-bezier(.16,1,.3,1);outline:none}
+  .cs-row:focus-visible .cs-title{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:.12em}
+  .cs-n{font-family:'PT Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6f6659;white-space:nowrap}
+  .cs-main{display:block;min-width:0}
+  .cs-title{display:block;font-family:var(--font-display);font-weight:600;font-size:clamp(26px,3.5vw,48px);line-height:1.02;letter-spacing:-.035em;text-wrap:balance;transition:color .4s}
+  .cs-tags{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:12px;font-family:'PT Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6f6659}
+  .cs-tags i{font-style:normal;opacity:.65}
+  .cs-side{display:flex;flex-direction:column;align-items:flex-end;gap:8px;max-width:24ch;text-align:right}
+  .cs-client{font-size:14px;line-height:1.4;color:#5a5346;text-wrap:balance}
+  .cs-status{font-family:'PT Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#6f6659;display:inline-flex;align-items:center;gap:8px}
+  .cs-status::before{content:"";width:6px;height:6px;border-radius:50%;background:#a89d8c}
+  .cs-row[data-live="1"] .cs-status::before{background:var(--acc,#b9543f)}
+  .cs-link{display:inline-block;margin:0 0 20px calc(72px + clamp(10px,1.4vw,22px));font:500 11px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--acc,#b9543f);text-decoration:none;transition:color .3s,padding-left .5s cubic-bezier(.16,1,.3,1)}
+  .cs-link:hover,.cs-link:focus-visible{color:#1b1812}
+  .cs-panel{position:relative}
+  @media (max-width:980px){ .cs-grid{grid-template-columns:1fr} .cs-panel{order:-1} .cs-panel canvas{height:clamp(260px,52vw,420px) !important} }
+  @media (max-width:760px){ .cs-row{grid-template-columns:52px 1fr;gap:10px 12px} .cs-side{grid-column:2;align-items:flex-start;text-align:left;max-width:none} .cs-link{margin-left:calc(52px + 12px)} .cs-title{font-size:clamp(26px,7.6vw,34px)} }
   /* «кто мы» — манифест, факты, три ремесла, принципы: одна типографика, без карточек */
   .ab-head{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(24px,5vw,80px);align-items:end}
   .ab-h2{font-size:clamp(30px,5.6vw,84px);line-height:1.0;letter-spacing:-.04em;font-weight:600;margin:0;max-width:18ch}
@@ -474,57 +495,44 @@
 
   <!-- 04 CASES — lookbook (artefakt-style: case list + ASCII tech motifs, native scroll) -->
 
-  <section id="work" data-screen-label="04 Cases" style="position:relative;z-index:10;background:rgba(228,222,210,.93);color:#1b1812;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
+  <section id="work" data-screen-label="04 Cases" style="position:relative;z-index:10;background:#e4ded2;color:#1b1812;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
     <div data-speed="6" data-pmax="150" style="position:absolute;top:1vw;right:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(27,24,18,.035);pointer-events:none;user-select:none">04</div>
     <div data-depth="1" style="max-width:1320px;margin:0 auto;position:relative;z-index:1">
       <div data-reveal="1" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:clamp(48px,7vw,84px)">
         <div>
-          <div style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#6f6659;margin-bottom:18px">{{ t.fig04 }}</div>
-          <h2 style="font-size:clamp(26px,4.2vw,56px);line-height:1.0;letter-spacing:-.035em;font-weight:600;margin:0">{{ t.casesH2a }}<br><span style="font-weight:700;color:#5a5346">{{ t.casesH2b }}</span></h2>
+          <div style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#6f6659;margin-bottom:24px">{{ t.fig04 }}</div>
+          <h2 style="font-size:clamp(28px,4.6vw,64px);line-height:1.02;letter-spacing:-.035em;font-weight:600;margin:0;max-width:18ch">{{ t.casesH2a }}<br><span style="font-weight:600;color:#6f6659">{{ t.casesH2b }}</span></h2>
         </div>
         <span style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;border:1px solid rgba(27,24,18,.3);padding:7px 11px">{{ t.contractBadge }}</span>
       </div>
 
-      <div data-ascii-cases="1" style="display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(24px,5vw,72px);align-items:center;margin-bottom:clamp(48px,7vw,80px)">
-        <div data-case-names style="display:flex;flex-direction:column">
+      <div data-ascii-cases="1" class="cs-grid">
+        <div data-case-names class="cs-list">
           <sc-for list="{{ cases }}" as="cs" hint-placeholder-count="4">
-            <div style="border-top:1px solid rgba(27,24,18,.18)">
-              <button data-case-name="1" data-idx="{{ cs.i }}" onClick="{{ setCaseActive }}" onMouseEnter="{{ setCaseActive }}" style="display:grid;grid-template-columns:auto 1fr;gap:clamp(10px,1.4vw,22px);align-items:baseline;width:100%;text-align:left;background:none;border:none;color:inherit;cursor:pointer;padding:clamp(16px,2vw,26px) 0 clamp(20px,2.4vw,28px);transition:padding-left .5s cubic-bezier(.16,1,.3,1)">
-                <span style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#6f6659;white-space:nowrap">{{ cs.n }}</span>
-                <span style="display:block;min-width:0">
-                  <span data-case-word style="display:block;font-size:clamp(22px,3.2vw,40px);line-height:1.04;letter-spacing:-.03em;font-weight:600;transition:color .4s">{{ cs.title }}</span>
-                  <span style="display:block;margin-top:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6f6659">{{ cs.client }}</span>
-                  <span data-case-metrics style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.8vw,26px);margin-top:0;max-height:0;opacity:0;overflow:hidden;transition:max-height .55s cubic-bezier(.16,1,.3,1),opacity .4s,margin-top .4s">
-                    <sc-for list="{{ cs.metrics }}" as="mt" hint-placeholder-count="3">
-                      <span style="display:flex;flex-direction:column;justify-content:flex-end;padding-top:3px;border-top:1px solid rgba(27,24,18,.16)"><span style="font-weight:300;font-size:clamp(20px,4.4vw,28px);line-height:1.05;letter-spacing:-.02em;color:#1b1812">{{ mt.v }}</span><span style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#6f6659;margin-top:6px">{{ mt.l }}</span></span>
-                    </sc-for>
-                  </span>
+            <div class="cs-item">
+              <button data-case-name="1" data-idx="{{ cs.i }}" data-live="{{ cs.live }}" onClick="{{ setCaseActive }}" onMouseEnter="{{ setCaseActive }}" class="cs-row">
+                <span class="cs-n">{{ cs.n }}</span>
+                <span class="cs-main">
+                  <span data-case-word class="cs-title">{{ cs.title }}</span>
+                  <span class="cs-tags"><sc-for list="{{ cs.metrics }}" as="mt" hint-placeholder-count="3"><span>{{ mt.v }} <i>{{ mt.l }}</i></span></sc-for></span>
                 </span>
+                <span class="cs-side"><span class="cs-client">{{ cs.client }}</span><span class="cs-status">{{ cs.status }}</span></span>
               </button>
-              <a href="{{ cs.url }}" target="_blank" rel="noopener noreferrer" data-case-link="1" data-live="{{ cs.live }}" style="display:inline-block;margin:-8px 0 18px 0;font:500 11px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--acc,#b9543f);padding-left:calc(clamp(10px,1.4vw,22px) + 5.4em);transition:color .3s" style-hover="color:#1b1812">{{ cs.linkLabel }} ↗</a>
+              <a href="{{ cs.url }}" target="_blank" rel="noopener noreferrer" data-case-link="1" data-live="{{ cs.live }}" class="cs-link">{{ cs.linkLabel }} ↗</a>
             </div>
           </sc-for>
           <div style="border-top:1px solid rgba(27,24,18,.18)"></div>
         </div>
 
-        <div style="position:relative">
+        <div class="cs-panel">
           <canvas data-ascii-canvas="1" style="width:100%;height:clamp(340px,44vw,540px);display:block"></canvas>
           <div style="position:absolute;top:14px;left:14px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#8f877a">{{ t.fig04a }}</div>
           <div data-case-hint style="position:absolute;bottom:14px;left:14px;right:14px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#8f877a"></div>
         </div>
       </div>
-
-      <div data-reveal="1" style="display:flex;align-items:center;gap:clamp(18px,3vw,40px);flex-wrap:wrap;justify-content:space-between;border-top:1px solid rgba(27,24,18,.18);padding-top:clamp(28px,4vw,44px)">
-        <div style="display:flex;flex-direction:column;gap:10px">
-          <span style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#6f6659">{{ t.caseCloserEyebrow }}</span>
-          <h3 style="font-size:clamp(22px,3vw,40px);line-height:1.05;letter-spacing:-.035em;font-weight:600;margin:0">{{ t.caseCloserA }}<span style="font-weight:700;color:var(--acc,#b9543f)">{{ t.caseCloserB }}</span>.</h3>
-        </div>
-        <a href="#brief" data-magnetic="1" style="display:inline-flex;align-items:center;gap:10px;background:#13110c;color:#e4ded2;padding:14px 24px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600" style-hover="background:var(--acc,#b9543f);color:#fff">{{ t.caseCloserCta }}</a>
-      </div>
     </div>
   </section>
 
-  <!-- 05 PROCESS -->
   <!-- 06 PRICING -->
   <section id="pricing" data-screen-label="06 Pricing" style="position:relative;z-index:10;background:rgba(228,222,210,.93);color:#1b1812;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
     <div data-speed="6" data-pmax="150" style="position:absolute;top:1vw;left:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(27,24,18,.04);pointer-events:none;user-select:none">06</div>
@@ -2103,8 +2111,7 @@ class Component extends DCLogic {
         fig03:'fig.03 — что делаем', capH2:'строим то, что не умеют готовые решения.',
         capSide1:'5 услуг', capSide2:'приложения · сайты · дизайн · боты · интеграции',
         fig04:'fig.04 — кейсы', casesH2a:'что уже собрано.', casesH2b:'три проекта в проде — открывайте.',
-        contractBadge:'4 проекта · 3 в проде · 1 в разработке', fig04a:'fig.04.a — ascii / пайплайн',
-        caseCloserEyebrow:'кейс 05 — свободен', caseCloserA:'здесь будет ', caseCloserB:'ваш кейс', caseCloserCta:'оставить бриф →', procH2:'разбор → чертёж → сборка → запуск. 5 шагов, от 5 недель до прода.',
+        contractBadge:'4 проекта · 3 в проде · 1 в разработке', fig04a:'fig.04.a — ascii / пайплайн', procH2:'разбор → чертёж → сборка → запуск. 5 шагов, от 5 недель до прода.',
         wdProcLabel:'как работаем', procRetLabel:'кто на связи', procRetText:'между вами и кодом — ноль менеджеров. пишете инженеру в telegram @vvid, в рабочее время отвечаем меньше чем за 2 часа.',
         fig06:'fig.06 — прайс', pricingH2:'прозрачный прайс. без «по запросу», где можно назвать цифру.',
         pricingFootnote:'гарантия 50 дней: после запуска поддержка бесплатно. дальше — по договорённости.', faqLabel:'faq — что спрашивают до старта',
@@ -2132,8 +2139,7 @@ class Component extends DCLogic {
         fig03:'fig.03 — what we do', capH2:'we build what off-the-shelf tools can’t.',
         capSide1:'5 services', capSide2:'apps · sites · design · bots · integrations',
         fig04:'fig.04 — work', casesH2a:'what’s already built.', casesH2b:'three live — open them.',
-        contractBadge:'4 projects · 3 live · 1 in development', fig04a:'fig.04.a — ascii / pipeline',
-        caseCloserEyebrow:'case 05 — open', caseCloserA:'this could be ', caseCloserB:'your case', caseCloserCta:'leave a brief →', procH2:'teardown → blueprint → assembly → launch. 5 steps, 5+ weeks to production.',
+        contractBadge:'4 projects · 3 live · 1 in development', fig04a:'fig.04.a — ascii / pipeline', procH2:'teardown → blueprint → assembly → launch. 5 steps, 5+ weeks to production.',
         wdProcLabel:'how we work', procRetLabel:'who you talk to', procRetText:'zero managers between you and the code. you message the engineer on telegram @vvid; we reply within 2 hours in work hours.',
         fig06:'fig.06 — pricing', pricingH2:'transparent pricing. no “on request” where we can name a number.',
         pricingFootnote:'50-day guarantee: free support after launch. beyond that — by agreement.', faqLabel:'faq — what people ask before starting',
