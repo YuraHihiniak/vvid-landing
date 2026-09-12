@@ -191,12 +191,15 @@
   #top + .ds-wrap.ds-static{margin-top:0}                                          /* стик спуска уже под hero: последний кадр hero = первый кадр спуска */
   .ds-sticky{position:sticky;top:0;height:100vh;height:100svh;overflow:clip;background:#100d0a}
   .ds-still{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;display:block}
-  .ds-scrim{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0}
+  .ds-scrim{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity .7s ease}
   .ds-scrim-l{background:linear-gradient(90deg,rgba(16,13,10,.92) 0%,rgba(16,13,10,.72) 32%,rgba(16,13,10,0) 58%)}
   .ds-scrim-r{background:linear-gradient(270deg,rgba(16,13,10,.92) 0%,rgba(16,13,10,.72) 32%,rgba(16,13,10,0) 58%)}
   .ds-depth{position:absolute;right:26px;bottom:26px;z-index:3;text-align:right;font:500 11px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.18em;text-transform:uppercase;color:rgba(239,233,223,.72)}
   .ds-depth b{display:block;font-family:var(--font-accent);font-style:italic;font-weight:300;font-size:clamp(22px,2.4vw,34px);letter-spacing:-.01em;color:#efe9df;text-transform:none;line-height:1;margin-top:8px;font-variant-numeric:tabular-nums}
-  .ds-node{position:absolute;z-index:4;width:min(42vw,600px);opacity:0;pointer-events:none;color:#efe9df;will-change:opacity,transform}
+  .ds-node{position:absolute;z-index:4;width:min(42vw,600px);opacity:0;pointer-events:none;color:#efe9df;transition:opacity .35s ease}
+  .ds-node.is-in{opacity:1;transition:opacity .5s ease}
+  .ds-node > :not(.ds-rows):not(.ds-facts),.ds-node .ds-row,.ds-node .ds-fact{opacity:0;transform:translateY(14px);transition:opacity .22s ease,transform .22s ease}
+  .ds-node.is-in > :not(.ds-rows):not(.ds-facts),.ds-node.is-in .ds-row,.ds-node.is-in .ds-fact{opacity:1;transform:none;transition:opacity .75s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);transition-delay:calc(var(--i,0)*70ms)}
   .ds-node.on{pointer-events:auto}
   .ds-node :focus-visible{outline:2px solid #efe9df;outline-offset:2px}
   .ds-left{left:clamp(26px,4vw,64px);bottom:clamp(64px,11vh,130px)}
@@ -230,6 +233,7 @@
   .ds-static .ds-sticky{position:relative;height:auto;display:grid}
   .ds-static .ds-still{position:relative;inset:auto;height:auto;aspect-ratio:16/9}
   .ds-static .ds-node{position:relative;left:auto;right:auto;top:auto;bottom:auto;width:auto;opacity:1 !important;transform:none !important;pointer-events:auto;padding:28px 26px}
+  .ds-static .ds-node > *,.ds-static .ds-node .ds-row,.ds-static .ds-node .ds-fact{opacity:1 !important;transform:none !important}
   .ds-static .ds-scrim,.ds-static .ds-depth,.ds-static canvas{display:none}
   /* сцены фильма между блоками: прилипающий экран, стилл под кадрами, подпись от прогресса, занавес следующего блока */
   .sc-wrap{position:relative;z-index:9;overflow:clip;background:#13110c;color:#e4ded2;min-height:100vh}
@@ -1044,7 +1048,7 @@ class Component extends DCLogic {
     const L = window.Lenis;
     if(!L){ this._lenisTries=(this._lenisTries||0)+1; if(this._lenisTries<150) setTimeout(()=>this.initSmoothScroll(),100); return; }
     let lenis;
-    try{ lenis = new L({ lerp:0.085, wheelMultiplier:1, smoothWheel:true, syncTouch:false }); }catch(e){ return; }
+    try{ lenis = new L({ lerp:0.075, wheelMultiplier:0.9, smoothWheel:true, syncTouch:false }); }catch(e){ return; }
     this._lenis = lenis;
     if(this._film) this._film.lerp = 1; (this._scenes||[]).forEach(x=>x.film.lerp=1); if(this._descent) this._descent.film.lerp=1;                                    // Lenis появился позже initFilm → снять второй демпфер
     if(!this._preDone){ try{ lenis.stop(); }catch(e){} }   // под прелоадером скролл заморожен; finish() → start()
@@ -2033,26 +2037,38 @@ class Component extends DCLogic {
     const sm=(a,b,x)=>{ const t=Math.min(1,Math.max(0,(x-a)/(b-a))); return t*t*(3-2*t); };
     if(reduce||(weak&&!force)){ sec.classList.add('ds-static'); return; }                          // статичная версия: стилл + узлы столбиком
     const base = coarse ? './film/descent/mobile/' : './film/descent/';
-    const film=new VFilm({ base, manifestUrl:base+'film.json', proxyBase:base+'proxy/', canvas, wrap:sec, sticky, pxPerFrame: coarse?4:6, overlapVh:0, leadVh:0, noGlobalVar:true, lerp:this._lenis?1:0.12,
+    const film=new VFilm({ base, manifestUrl:base+'film.json', proxyBase:base+'proxy/', canvas, wrap:sec, sticky, pxPerFrame: coarse?5:8, overlapVh:0, leadVh:0, noGlobalVar:true, lerp:this._lenis?1:0.12,
       windowAhead: coarse?16:20, windowBehind:8, keepBehind: coarse?10:12, pwin: coarse?40:48,
-      zonesFrac: nodes.map(n=>[n.a+0.02, n.b-0.02, 3]),                       // пока узел на экране — фильм идёт втрое медленнее, но не стоит
+      zonesFrac: nodes.map(n=>[n.a+0.02, n.b-0.02, 4]),                       // в главе фильм идёт вчетверо медленнее — есть время читать, камера не стоит                       // пока узел на экране — фильм идёт втрое медленнее, но не стоит
       onFrame:(p,f)=>{
         if(canvas.style.opacity!=='1' && f>=0 && (film.bmp.has(f)||film.pbmp.has(f))) canvas.style.opacity='1';
         const hs=this._film&&this._film.sticky; if(hs){ const hide=p>0.002&&canvas.style.opacity==='1'; if(hs.style.visibility!==(hide?'hidden':'')) hs.style.visibility=hide?'hidden':''; }   // передача: hero гаснет, под ним уже тот же кадр спуска
         const q=film.frames?f/(film.frames-1):p;                                 // ось кадров: узлы и медленные зоны совпадают кадр в кадр
-        let vl=0, vr=0;
-        nodes.forEach(n=>{ const v=sm(n.a,n.a+0.02,q)*(1-sm(n.b-0.02,n.b,q)); n.el.style.opacity=v.toFixed(3); n.el.style.transform='translateY('+((1-v)*16).toFixed(1)+'px)'; n.el.classList.toggle('on',v>0.5); n.el.toggleAttribute('inert', v<0.5); if(n.side==='l') vl=Math.max(vl,v); else vr=Math.max(vr,v); });
-        if(scrimL) scrimL.style.opacity=vl.toFixed(3); if(scrimR) scrimR.style.opacity=vr.toFixed(3);
-        const on=Math.max(vl,vr)>0.5; if(on!==this._dsOn){ this._dsOn=on; document.documentElement.classList.toggle('ds-on',on); }
+        let anyL=false, anyR=false, changed=false;
+        nodes.forEach(n=>{ const inR=q>=n.a&&q<=n.b; if(inR!==n.active){ n.active=inR; changed=true; n.el.classList.toggle('is-in',inR); n.el.classList.toggle('on',inR); n.el.toggleAttribute('inert',!inR); if(!inR) n.snapped=false; } if(n.active){ if(n.side==='l') anyL=true; else anyR=true; } });
+        if(changed){ if(scrimL) scrimL.style.opacity=anyL?'1':'0'; if(scrimR) scrimR.style.opacity=anyR?'1':'0'; const on=anyL||anyR; if(on!==this._dsOn){ this._dsOn=on; document.documentElement.classList.toggle('ds-on',on); } }
         if(depthEl){ const clips=(film.m&&film.m.clips)||2; const d=q*6.0*clips/5; const en=document.documentElement.lang==='en'; depthEl.textContent='−'+(en?d.toFixed(1):d.toFixed(1).replace('.',','))+(en?' m':' м'); }
       } });
+    nodes.forEach(n=>{ let i=0; Array.from(n.el.children).forEach(ch=>{ if(ch.classList.contains('ds-rows')||ch.classList.contains('ds-facts')){ Array.from(ch.children).forEach(r=>{ r.style.setProperty('--i', i++); }); } else ch.style.setProperty('--i', i++); }); });
+    const keyFrame=(n)=>{ const N=(film.frames||1)-1, fa=Math.round(n.a*N), fb=Math.round(n.b*N); return fa+Math.min(Math.round((fb-fa)*0.3),28); };   // ключевой кадр главы: чуть глубже входа, не дальше ~экрана скролла
+    const keyY=(n)=>sec.getBoundingClientRect().top+scrollY+(film.lead||0)+film.scrollAt(keyFrame(n));
+    if(!coarse){                                                                  // снап: колесо остановилось в начале главы → мягко дотягиваем к её ключевому кадру, дальше — свободно
+      let lastWheel=0, timer=0; const ease=(t)=>1-Math.pow(1-t,3);
+      window.addEventListener('wheel',()=>{ lastWheel=performance.now(); this._dsSnapping=false; },{passive:true});      // колесо во время снапа: Lenis отдаёт скролл руке, снап забыт
+      const settle=()=>{ if(this._dsSnapping||performance.now()-lastWheel<260) return; const act=nodes.find(n=>n.active); if(!act||act.snapped||!film.frames) return;
+        act.snapped=true; if(film.cur>=keyFrame(act)) return;                     // остановился уже глубже ключевого кадра — читает, не трогаем
+        const y=keyY(act); if(Math.abs(scrollY-y)<28) return; this._dsSnapping=true; const done=()=>{ setTimeout(()=>{ this._dsSnapping=false; },120); };
+        if(this._lenis&&this._lenis.scrollTo) this._lenis.scrollTo(y,{duration:1.0,easing:ease,onComplete:done}); else { window.scrollTo({top:y,behavior:'smooth'}); setTimeout(done,900); } };
+      window.addEventListener('scroll',()=>{ clearTimeout(timer); timer=setTimeout(settle,300); },{passive:true});
+    }
     let loading=false; const load=()=>{ if(loading) return; loading=true; film.load().catch(()=>{ sec.classList.add('ds-static'); }); };
     const near=new IntersectionObserver((es)=>{ if(es.some(e=>e.isIntersecting)){ load(); near.disconnect(); } },{rootMargin:'100% 0px'}); near.observe(sec);
+    const nearScroll=()=>{ if(loading){ window.removeEventListener('scroll',nearScroll); return; } if(sec.getBoundingClientRect().top<innerHeight*2){ load(); window.removeEventListener('scroll',nearScroll); } }; window.addEventListener('scroll',nearScroll,{passive:true});   // страховка IO: грузим за два экрана до спуска
     const io=new IntersectionObserver((es)=>{ film.visible=es[0].isIntersecting; if(film.visible) film.start(); else film.stop(); },{threshold:0}); io.observe(sticky);
-    const gotoNode=(id)=>{ const n=nodes.find(x=>x.el.id===id); if(!n||!film.frames) return false; const sh=sticky.clientHeight||innerHeight; const lead=film.lead||0; const fr=sec.offsetHeight-sh-lead; const y=sec.getBoundingClientRect().top+scrollY+lead+(n.a+0.09)*fr; if(this._lenis) this._lenis.scrollTo(y,{duration:1.2}); else window.scrollTo({top:y,behavior:'smooth'}); return true; };
+    const gotoNode=(id)=>{ const n=nodes.find(x=>x.el.id===id); if(!n||!film.frames) return false; const y=keyY(n); n.snapped=true; if(this._lenis) this._lenis.scrollTo(y,{duration:1.2}); else window.scrollTo({top:y,behavior:'smooth'}); return true; };   // меню → ключевой кадр главы (ось кадров, с учётом медленных зон)
     this._dsClick=(e)=>{ const a=e.target&&e.target.closest&&e.target.closest('a[href^="#"]'); if(!a) return; const id=a.getAttribute('href').slice(1); if(nodes.some(n=>n.el.id===id)){ if(gotoNode(id)) e.preventDefault(); } };
     document.addEventListener('click', this._dsClick);
-    this._descent={ film, nodes, io, near, sec, gotoNode };
+    this._descent={ film, nodes, io, near, sec, gotoNode, load };
     try{ window.__dbg=this; }catch(e){}                                        // отладочный доступ (раньше ставился в initAsciiCases)
     this._dsResize=()=>film.layout(); window.addEventListener('resize', this._dsResize);
   }
@@ -2124,7 +2140,7 @@ class Component extends DCLogic {
       }
     });
     try{ window.__vfilm=film; }catch(e){}
-    film.load().then(()=>{ html.classList.add('film-on'); }).catch(()=>{ this._filmMode='static'; try{ wrap.style.height=''; canvas.style.display='none'; html.classList.remove('film-run'); setCh(''); }catch(e){} });
+    film.load().then(()=>{ html.classList.add('film-on'); if(this._descent&&this._descent.load) this._descent.load(); }).catch(()=>{ this._filmMode='static'; try{ wrap.style.height=''; canvas.style.display='none'; html.classList.remove('film-run'); setCh(''); }catch(e){} });
     film.lerp = this._lenis ? 1 : 0.12;                                   // одно сглаживание: Lenis, иначе свой lerp
     const io=new IntersectionObserver((es)=>{ film.visible=es[0].isIntersecting; if(film.visible) film.start(); else film.stop(); },{threshold:0});
     io.observe(sticky); this._filmIO=io;
