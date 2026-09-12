@@ -202,6 +202,10 @@
   .ds-row:hover .t{color:#fff}
   .ds-row .t small{display:block;font-family:'Wix Madefor Text','Wix Madefor Display',sans-serif;font-weight:400;font-size:13.5px;color:rgba(239,233,223,.62);margin-top:4px;letter-spacing:0;line-height:1.35}
   .ds-row .pr{font-family:var(--font-accent);font-style:italic;font-size:clamp(15px,1.3vw,19px);white-space:nowrap;color:#e6b79c}
+  .ds-case{grid-template-columns:auto minmax(0,1fr) auto}
+  .ds-case .n{letter-spacing:.12em;text-transform:uppercase}
+  .ds-case .pr{font-family:'PT Mono',ui-monospace,monospace;font-style:normal;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#e6b79c;transition:color .3s}
+  .ds-case:hover .pr{color:#fff}
   .ds-foot{margin:16px 0 0;font:500 10px/1.6 'PT Mono',ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;color:rgba(239,233,223,.5);max-width:60ch}
   @media (max-width:900px){ .ds-node{width:auto;left:20px;right:20px} .ds-left{bottom:clamp(56px,9vh,100px)} .ds-right{top:auto;bottom:clamp(56px,9vh,100px)} .ds-h{font-size:clamp(22px,5.6vw,30px)} .ds-facts{gap:12px 24px} .ds-row .t small{display:none} .ds-depth{display:none} .ds-scrim-l,.ds-scrim-r{background:linear-gradient(0deg,rgba(16,13,10,.92) 0%,rgba(16,13,10,.62) 42%,rgba(16,13,10,0) 72%)} }
   .ds-static .ds-sticky{position:relative;height:auto;display:grid}
@@ -507,7 +511,7 @@
       <div data-ds-scrim="r" class="ds-scrim ds-scrim-r" aria-hidden="true"></div>
       <div class="ds-depth"><span>{{ t.dsDepth }}</span><b data-ds-depth="1">−0,0 м</b></div>
 
-      <div data-node="01" data-range="0.03,0.36" id="about" class="ds-node ds-left">
+      <div data-node="01" data-range="0.03,0.20" id="about" class="ds-node ds-left">
         <span class="ds-eyebrow">{{ t.dsK1 }}</span>
         <h2 class="ds-h">{{ t.manifH2 }}</h2>
         <p class="ds-p">{{ t.manifPa }}<b>{{ t.manifPb }}</b>. {{ t.teamLead }}</p>
@@ -518,7 +522,7 @@
         </div>
       </div>
 
-      <div data-node="02" data-range="0.54,0.97" id="capabilities" class="ds-node ds-right">
+      <div data-node="02" data-range="0.27,0.48" id="capabilities" class="ds-node ds-right">
         <span class="ds-eyebrow">{{ t.dsK2 }}</span>
         <h2 class="ds-h">{{ t.capH2 }}</h2>
         <div class="ds-rows">
@@ -528,42 +532,14 @@
         </div>
         <p class="ds-foot">{{ t.procH2 }}</p>
       </div>
-    </div>
-  </section>
 
-  <section id="work" data-screen-label="04 Cases" style="position:relative;z-index:10;background:#e4ded2;box-shadow:0 -34px 70px -24px rgba(19,17,12,.5);color:#1b1812;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
-    <div data-speed="6" data-pmax="150" style="position:absolute;top:1vw;right:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(27,24,18,.035);pointer-events:none;user-select:none">04</div>
-    <div data-depth="1" style="max-width:1320px;margin:0 auto;position:relative;z-index:1">
-      <div data-reveal="1" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:clamp(48px,7vw,84px)">
-        <div>
-          <div style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#6f6659;margin-bottom:24px">{{ t.fig04 }}</div>
-          <h2 style="font-size:clamp(28px,4.6vw,64px);line-height:1.02;letter-spacing:-.035em;font-weight:600;margin:0;max-width:18ch">{{ t.casesH2a }}<br><span style="font-weight:600;color:#6f6659">{{ t.casesH2b }}</span></h2>
-        </div>
-        <span style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;border:1px solid rgba(27,24,18,.3);padding:7px 11px">{{ t.contractBadge }}</span>
-      </div>
-
-      <div data-ascii-cases="1" class="cs-grid">
-        <div data-case-names class="cs-list">
+      <div data-node="03" data-range="0.56,0.96" id="work" class="ds-node ds-left">
+        <span class="ds-eyebrow">{{ t.dsK3 }}</span>
+        <h2 class="ds-h">{{ t.casesH2a }} {{ t.casesH2b }}</h2>
+        <div class="ds-rows">
           <sc-for list="{{ cases }}" as="cs" hint-placeholder-count="4">
-            <div class="cs-item">
-              <button data-case-name="1" data-idx="{{ cs.i }}" data-live="{{ cs.live }}" onClick="{{ setCaseActive }}" onMouseEnter="{{ setCaseActive }}" class="cs-row">
-                <span class="cs-n">{{ cs.n }}</span>
-                <span class="cs-main">
-                  <span data-case-word class="cs-title">{{ cs.title }}</span>
-                  <span class="cs-tags"><sc-for list="{{ cs.metrics }}" as="mt" hint-placeholder-count="3"><span>{{ mt.v }} <i>{{ mt.l }}</i></span></sc-for></span>
-                </span>
-                <span class="cs-side"><span class="cs-client">{{ cs.client }}</span><span class="cs-status">{{ cs.status }}</span></span>
-              </button>
-              <a href="{{ cs.url }}" target="_blank" rel="noopener noreferrer" data-case-link="1" data-live="{{ cs.live }}" class="cs-link">{{ cs.linkLabel }} ↗</a>
-            </div>
+            <a href="{{ cs.url }}" target="_blank" rel="noopener noreferrer" data-case-link="1" data-live="{{ cs.live }}" class="ds-row ds-case"><span class="n">{{ cs.n }}</span><span class="t">{{ cs.title }}<small>{{ cs.client }}</small></span><span class="pr">{{ cs.linkLabel }} ↗</span></a>
           </sc-for>
-          <div style="border-top:1px solid rgba(27,24,18,.18)"></div>
-        </div>
-
-        <div class="cs-panel">
-          <canvas data-ascii-canvas="1" style="width:100%;height:clamp(340px,44vw,540px);display:block"></canvas>
-          <div style="position:absolute;top:14px;left:14px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#8f877a">{{ t.fig04a }}</div>
-          <div data-case-hint style="position:absolute;bottom:14px;left:14px;right:14px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#8f877a"></div>
         </div>
       </div>
     </div>
@@ -2051,6 +2027,7 @@ class Component extends DCLogic {
     this._dsClick=(e)=>{ const a=e.target&&e.target.closest&&e.target.closest('a[href^="#"]'); if(!a) return; const id=a.getAttribute('href').slice(1); if(nodes.some(n=>n.el.id===id)){ if(gotoNode(id)) e.preventDefault(); } };
     document.addEventListener('click', this._dsClick);
     this._descent={ film, nodes, io, near, sec, gotoNode };
+    try{ window.__dbg=this; }catch(e){}                                        // отладочный доступ (раньше ставился в initAsciiCases)
     this._dsResize=()=>film.layout(); window.addEventListener('resize', this._dsResize);
   }
 
@@ -2222,7 +2199,7 @@ class Component extends DCLogic {
         heroBig1:'мы VVID', heroBig2:'мы делаем', heroBig3:'большие', heroBig4:'вещи', heroBigAria:'мы VVID, мы делаем большие вещи',
         heroLead2:'внедряем в уже работающий бизнес — автоматизируем процессы и усиливаем то, что приносит деньги.',
         heroSub:'веб- и мобильные приложения, сайты и интернет-магазины, телеграм-боты, дизайн — внедряем в готовый бизнес.',
-        heroCta1:'смотреть кейсы →', heroCtaPrimary:'написать в telegram ↗', heroProof:'договор + юрлицо · ответ в telegram < 2 часов · показываем вживую', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'разработка · автоматизация', dsK1:'01 — кто мы · Минск', dsK2:'02 — что делаем · пять услуг · цены открыты', dsT1:'узел 01 — кто мы', dsT2:'узел 02 — что делаем', dsDepth:'глубина', sc1K:'глава 01 — кто мы', sc1T:'смотрим внутрь — до самого ядра', filmK1:'01 — замысел', filmT1:'всё начинается с одной точки', filmK2:'02 — раскрытие', filmT2:'деталь за деталью — до готовой формы', filmK3:'03 — результат', filmT3:'4 проекта в проде · гарантия 50 дней', filmKEnd:'04 · vvid — студия разработки и автоматизации', filmTEnd:'следующий проект — ваш', filmSkip:'пропустить ↓', filmCta2:'оставить бриф ↓', teamLead:'три ремесла — одна команда. те же люди на созвоне и в коде.', briefAlt:'быстрее — в telegram @vvid ↗', footTag:'из хаоса — система', pricingCta:'оценить мою задачу →', formSent:'письмо с брифом открыто ✓',
+        heroCta1:'смотреть кейсы →', heroCtaPrimary:'написать в telegram ↗', heroProof:'договор + юрлицо · ответ в telegram < 2 часов · показываем вживую', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'разработка · автоматизация', dsK1:'01 — кто мы · Минск', dsK3:'03 — кейсы · четыре проекта · три в проде', dsK2:'02 — что делаем · пять услуг · цены открыты', dsT1:'узел 01 — кто мы', dsT2:'узел 02 — что делаем', dsDepth:'глубина', sc1K:'глава 01 — кто мы', sc1T:'смотрим внутрь — до самого ядра', filmK1:'01 — замысел', filmT1:'всё начинается с одной точки', filmK2:'02 — раскрытие', filmT2:'деталь за деталью — до готовой формы', filmK3:'03 — результат', filmT3:'4 проекта в проде · гарантия 50 дней', filmKEnd:'04 · vvid — студия разработки и автоматизации', filmTEnd:'следующий проект — ваш', filmSkip:'пропустить ↓', filmCta2:'оставить бриф ↓', teamLead:'три ремесла — одна команда. те же люди на созвоне и в коде.', briefAlt:'быстрее — в telegram @vvid ↗', footTag:'из хаоса — система', pricingCta:'оценить мою задачу →', formSent:'письмо с брифом открыто ✓',
         fig02:'fig.02 — кто мы',
         manifH2:'ваш бизнес уже работает. мы снимаем его с ручного привода.',
         manifPa:'разбираем процесс на детали и собираем систему, которая держит нагрузку — ', manifPb:'приложение, сайт, бот или интеграция',
@@ -2250,7 +2227,7 @@ class Component extends DCLogic {
         heroBig1:'we are VVID', heroBig2:'we do', heroBig3:'big', heroBig4:'things', heroBigAria:'we are VVID, we do big things',
         heroLead2:'built into your running business — we automate processes and amplify what already makes money.',
         heroSub:'web & mobile apps, websites and online stores, telegram bots, design — built into your existing business.',
-        heroCta1:'see our work →', heroCtaPrimary:'message us on telegram ↗', heroProof:'contract + legal entity · telegram reply < 2 hours · we show, live', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'development · automation', dsK1:'01 — who we are · Minsk', dsK2:'02 — what we do · five services · prices are open', dsT1:'node 01 — who we are', dsT2:'node 02 — what we do', dsDepth:'depth', sc1K:'chapter 01 — who we are', sc1T:'we look inside — down to the core', filmK1:'01 — intent', filmT1:'it all starts from a single point', filmK2:'02 — unfolding', filmT2:'detail by detail — to the finished form', filmK3:'03 — result', filmT3:'4 projects live · 50-day guarantee', filmKEnd:'04 · vvid — development & automation studio', filmTEnd:'the next project is yours', filmSkip:'skip ↓', filmCta2:'leave a brief ↓', teamLead:'three crafts — one team. the same people on the call and in the code.', briefAlt:'faster on telegram @vvid ↗', footTag:'from chaos — a system', pricingCta:'estimate my task →', formSent:'brief email opened ✓',
+        heroCta1:'see our work →', heroCtaPrimary:'message us on telegram ↗', heroProof:'contract + legal entity · telegram reply < 2 hours · we show, live', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'development · automation', dsK1:'01 — who we are · Minsk', dsK3:'03 — work · four projects · three live', dsK2:'02 — what we do · five services · prices are open', dsT1:'node 01 — who we are', dsT2:'node 02 — what we do', dsDepth:'depth', sc1K:'chapter 01 — who we are', sc1T:'we look inside — down to the core', filmK1:'01 — intent', filmT1:'it all starts from a single point', filmK2:'02 — unfolding', filmT2:'detail by detail — to the finished form', filmK3:'03 — result', filmT3:'4 projects live · 50-day guarantee', filmKEnd:'04 · vvid — development & automation studio', filmTEnd:'the next project is yours', filmSkip:'skip ↓', filmCta2:'leave a brief ↓', teamLead:'three crafts — one team. the same people on the call and in the code.', briefAlt:'faster on telegram @vvid ↗', footTag:'from chaos — a system', pricingCta:'estimate my task →', formSent:'brief email opened ✓',
         fig02:'fig.02 — who we are',
         manifH2:'your business already runs. we take it off manual.',
         manifPa:'we take the process apart and rebuild it as a system that holds the load — ', manifPb:'an app, a site, a bot or an integration',
