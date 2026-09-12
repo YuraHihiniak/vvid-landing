@@ -110,11 +110,6 @@
     [data-cursor] .cr-dot{width:5px;height:5px;margin:-2.5px 0 0 -2.5px;background:#fff}
     html.cur-hover [data-cursor] .cr-ring{width:64px;height:64px;margin:-32px 0 0 -32px}
     html.cur-down [data-cursor] .cr-ring{width:26px;height:26px;margin:-13px 0 0 -13px}
-    [data-cursor] .cr-label{position:absolute;left:0;top:0;transform:translate(-50%,-50%);white-space:nowrap;font:600 10px/1 'IBM Plex Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:#fff;opacity:0;transition:opacity .2s}
-    html.cur-label:not(.vcalm) [data-cursor]{mix-blend-mode:normal}
-    html.cur-label [data-cursor] .cr-ring{width:80px;height:80px;margin:-40px 0 0 -40px;background:#b9543f;border-color:transparent}
-    html.cur-label [data-cursor] .cr-dot{opacity:0}
-    html.cur-label [data-cursor] .cr-label{opacity:1}
   }
 
   /* brief form — refined fields */
@@ -698,7 +693,7 @@
 
   <a href="https://t.me/vvid" target="_blank" rel="noopener noreferrer" data-float-cta="1" data-magnetic="1" class="float-tg" style="position:fixed;bottom:24px;right:24px;z-index:8500;display:inline-flex;align-items:center;gap:10px;background:#13110c;color:#e4ded2;padding:13px 22px 13px 17px;border-radius:50px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;box-shadow:0 16px 40px -12px rgba(19,17,12,.5)"><svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true" style="flex:none;color:#c66048"><path fill="currentColor" d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg><span>{{ t.ctaTelegram }}</span></a>
 
-  <div data-cursor="1" aria-hidden="true"><i class="cr-ring"></i><i class="cr-dot"></i><span class="cr-label"></span></div>
+  <div data-cursor="1" aria-hidden="true"><i class="cr-ring"></i><i class="cr-dot"></i></div>
 
 </div>
 
@@ -1836,15 +1831,13 @@ class Component extends DCLogic {
     const docEl = document.documentElement; docEl.classList.add('has-cursor');
     let mx=window.innerWidth/2, my=window.innerHeight/2, cx=mx, cy=my, shown=false;
     const hov='a,button,[data-magnetic],[data-case-name],[data-team-name],[data-acc-head],[data-lang-sw],input,textarea,select,label';
-    const lblSel='a[target="_blank"]';
-    const lblEl=cur.querySelector('.cr-label');
     const loop=()=>{ cx+=(mx-cx)*0.2; cy+=(my-cy)*0.2; cur.style.transform='translate3d('+cx.toFixed(2)+'px,'+cy.toFixed(2)+'px,0)'; this._curRaf=requestAnimationFrame(loop); };
     this._curMove=(e)=>{ mx=e.clientX; my=e.clientY; if(!shown){ shown=true; cur.style.opacity='1'; } };
     this._curDown=()=>docEl.classList.add('cur-down');
     this._curUp=()=>docEl.classList.remove('cur-down');
     this._curLeave=()=>{ cur.style.opacity='0'; };
-    this._curOver=(e)=>{ const t=e.target; if(!t||!t.closest) return; if(t.closest(hov)) docEl.classList.add('cur-hover'); if(t.closest(lblSel)){ if(lblEl) lblEl.textContent=(document.documentElement.lang==='en')?'open':'открыть'; docEl.classList.add('cur-label'); } };
-    this._curOut=(e)=>{ const t=e.target; if(!t||!t.closest) return; if(t.closest(hov)) docEl.classList.remove('cur-hover'); if(t.closest(lblSel)) docEl.classList.remove('cur-label'); };
+    this._curOver=(e)=>{ const t=e.target; if(!t||!t.closest) return; if(t.closest(hov)) docEl.classList.add('cur-hover'); };
+    this._curOut=(e)=>{ const t=e.target; if(!t||!t.closest) return; if(t.closest(hov)) docEl.classList.remove('cur-hover'); };
     window.addEventListener('mousemove', this._curMove, {passive:true});
     window.addEventListener('mousedown', this._curDown, {passive:true});
     window.addEventListener('mouseup', this._curUp, {passive:true});
