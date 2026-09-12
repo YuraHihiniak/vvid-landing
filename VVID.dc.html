@@ -43,15 +43,15 @@
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Unbounded:wght@600;700;800&display=swap&subset=cyrillic,latin" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400..800&family=Wix+Madefor+Text:wght@400..700&family=Literata:ital,opsz,wght@0,7..72,300..600;1,7..72,300..500&family=PT+Mono&display=swap" rel="stylesheet">
 <style>
   *{box-sizing:border-box}
   html{scroll-behavior:smooth;scroll-padding-top:78px}
-  body{margin:0;background:#e4ded2;color:#1b1812;font-family:'Golos Text','Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip}
+  body{margin:0;background:#e4ded2;color:#1b1812;font-family:'Wix Madefor Text','Wix Madefor Display','Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip}
   ::selection{background:#1b1812;color:#e4ded2}
   a{color:inherit;text-decoration:none}
   button{font-family:inherit}
-  :root{--font-display:'Unbounded','Golos Text','Helvetica Neue',sans-serif}
+  :root{--font-display:'Wix Madefor Display','Wix Madefor Text','Helvetica Neue',sans-serif;--font-accent:'Literata',Georgia,'Times New Roman',serif}
   /* premium hero backdrop (CSS-only → runs on desktop AND mobile) */
   .hero-mesh,.hero-grid,.hero-grain{position:absolute;inset:0;pointer-events:none}
   .hero-mesh{inset:-25%;background:radial-gradient(38% 48% at 76% 32%,rgba(185,84,63,.55),transparent 60%),radial-gradient(44% 52% at 90% 70%,rgba(185,84,63,.26),transparent 62%),radial-gradient(58% 66% at 56% 54%,rgba(120,52,38,.34),transparent 70%),radial-gradient(70% 80% at 28% 28%,rgba(36,28,21,.55),transparent 75%),#13110c;filter:blur(22px);animation:heroMesh 24s ease-in-out infinite alternate;will-change:transform}
@@ -135,7 +135,7 @@
   .hero-flood-grain{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.13;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
   .hero-vig{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(150% 92% at 50% 110%,rgba(86,28,16,.55),transparent 55%)}
   .hero-top{display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.72)}
-  .hero-kin{font-family:var(--font-display);font-weight:800;text-transform:uppercase;line-height:.9;letter-spacing:-.035em;font-size:clamp(33px,8.2vw,140px);margin:0;color:#fff}
+  .hero-kin{font-family:var(--font-display);font-weight:800;text-transform:none;line-height:.92;letter-spacing:-.04em;font-size:clamp(38px,9.4vw,156px);margin:0;color:#fff}
   .hero-kin .kl{display:block;overflow:hidden;padding-bottom:.045em}
   .hero-kin .kl > span{display:inline-block;white-space:nowrap}
   .hl-ch{display:inline-block;will-change:transform}
@@ -166,9 +166,8 @@
   /* ===== scroll-film (desktop): sticky hero, fluid = состояние покоя, главы поверх кадров ===== */
   html:not(.pre-done){overflow:hidden}
   .film-cap{position:absolute;left:26px;right:26px;bottom:clamp(96px,16vh,170px);max-width:min(46vw,40ch);color:#fff;opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);pointer-events:none}
-  .mini-cap{max-width:min(46vw,40ch);color:#fff;opacity:0;transform:translateY(22px);will-change:opacity,transform}
-  .film-cap .fc-k,.mini-cap .fc-k{display:block;font:500 11px/1 'IBM Plex Mono',ui-monospace,monospace;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:16px}
-  .film-cap .fc-t,.mini-cap .fc-t{display:block;font-family:var(--font-display);font-weight:700;text-transform:uppercase;font-size:clamp(24px,3.4vw,54px);line-height:.98;letter-spacing:-.03em;text-wrap:balance}
+  .film-cap .fc-k{display:block;font:500 11px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:16px}
+  .film-cap .fc-t{display:block;font-family:var(--font-display);font-weight:600;text-transform:none;font-size:clamp(26px,3.8vw,60px);line-height:.98;letter-spacing:-.035em;text-wrap:balance}
   html.film-c1 .film-cap[data-cap="1"],html.film-c2 .film-cap[data-cap="2"],html.film-c3 .film-cap[data-cap="3"],html.film-end .film-cap[data-cap="end"]{opacity:1;transform:none}
   html.film-end .film-cap[data-cap="end"] .fc-t{font-size:clamp(30px,5.2vw,86px)}
   .hero-kin,.hero-scrollcue{transition:opacity .55s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
@@ -191,7 +190,7 @@
   /* scene-wipe: следующая секция наезжает на приколоченный пэйофф фильма (высота обёртки уже включает этот хвост) */
   #top + section{margin-top:calc(-1 * var(--film-overlap, 0px))}
   [data-film-canvas]{transform-origin:50% 50%;will-change:transform,opacity}
-  .film-skip{background:none;border:1px solid rgba(255,255,255,.35);color:rgba(255,255,255,.85);font:500 10px/1 'IBM Plex Mono',ui-monospace,monospace;letter-spacing:.2em;text-transform:uppercase;padding:10px 14px;cursor:pointer;border-radius:50px;transition:opacity .4s,background .35s,color .35s}
+  .film-skip{background:none;border:1px solid rgba(255,255,255,.35);color:rgba(255,255,255,.85);font:500 10px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.2em;text-transform:uppercase;padding:10px 14px;cursor:pointer;border-radius:50px;transition:opacity .4s,background .35s,color .35s}
   .film-skip:hover{background:rgba(255,255,255,.12);color:#fff}
   @media (pointer:coarse){ .film-cap{top:clamp(96px,17vh,150px);bottom:auto;max-width:min(88vw,22ch)} .film-cap .fc-t{font-size:clamp(26px,7.4vw,44px)} html.film-end .film-cap[data-cap="end"] .fc-t{font-size:clamp(30px,9vw,56px)} .film-skip{top:74px;right:16px} }
   @media (prefers-reduced-motion:reduce){ .film-cap,.hero-kin,.hero-scrollcue{transition:none} }
@@ -204,7 +203,7 @@
   @media (max-width:880px){ .proof-grid{grid-template-columns:repeat(2,1fr)} .proof-grid a:last-child{grid-column:1 / -1} .proof-grid a{min-height:88px;padding:16px 18px} }
   /* ===== immersion layer: зерно на всю страницу, шов-таймкод, плашки ===== */
   .page-grain{position:fixed;inset:0;z-index:7990;pointer-events:none;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-  .rail{position:fixed;right:26px;top:50%;transform:translateY(-50%);z-index:7995;display:flex;flex-direction:column;gap:8px;padding-left:16px;font:500 10px/1 'IBM Plex Mono',ui-monospace,monospace;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55);mix-blend-mode:difference;opacity:0;transition:opacity .8s;pointer-events:none}
+  .rail{position:fixed;right:26px;top:50%;transform:translateY(-50%);z-index:7995;display:flex;flex-direction:column;gap:8px;padding-left:16px;font:500 10px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55);mix-blend-mode:difference;opacity:0;transition:opacity .8s;pointer-events:none}
   html.pre-done .rail{opacity:1;pointer-events:auto}
   html.film-run:not(.film-end) .rail{opacity:.35}
   .rail-item{display:flex;align-items:center;gap:10px;color:inherit;padding:4px 0;transition:color .35s}
@@ -358,8 +357,8 @@
       <div class="proof-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:rgba(228,222,210,.18)">
         <sc-for list="{{ proof }}" as="pf" hint-placeholder-count="5">
           <a href="{{ pf.href }}" data-reveal="1" data-delay="{{ pf.d }}" data-proof-item="1" style="display:flex;flex-direction:column;justify-content:flex-end;gap:8px;min-height:104px;padding:20px 22px 22px;background:#13110c;color:inherit;transition:background .5s,padding-left .5s cubic-bezier(.16,1,.3,1)" style-hover="background:rgba(228,222,210,.04);padding-left:28px">
-            <span style="font-weight:300;font-size:clamp(24px,2.4vw,34px);line-height:1.05;letter-spacing:-.02em;color:#e4ded2">{{ pf.v }}</span>
-            <span style="font:500 10px/1.5 'IBM Plex Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:#8f877a">{{ pf.l }}</span>
+            <span style="font-family:var(--font-accent);font-style:italic;font-weight:400;font-size:clamp(24px,2.4vw,34px);line-height:1.05;letter-spacing:-.01em;color:#e4ded2;font-variant-numeric:tabular-nums">{{ pf.v }}</span>
+            <span style="font:500 10px/1.5 'PT Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:#8f877a">{{ pf.l }}</span>
           </a>
         </sc-for>
       </div>
@@ -433,15 +432,6 @@
 
   <!-- 04 CASES — lookbook (artefakt-style: case list + ASCII tech motifs, native scroll) -->
   <!-- MINI-FILM A — материя между главами -->
-  <section data-mini-film="a" data-screen-label="04a Inside" style="position:relative;z-index:10;min-height:0;overflow:clip;background:rgba(19,17,12,.9);color:#e4ded2">
-    <div data-mini-sticky="1" style="position:sticky;top:0;height:100vh;height:100svh;overflow:clip;display:flex;align-items:flex-end">
-      <canvas data-mini-canvas="1" aria-hidden="true" style="position:absolute;inset:0;z-index:0;display:block;width:100%;height:100%;pointer-events:none;opacity:0"></canvas>
-      <div class="hero-vig" aria-hidden="true" style="z-index:1"></div>
-      <div style="position:relative;z-index:2;width:100%;max-width:1320px;margin:0 auto;padding:0 26px clamp(60px,10vh,110px)">
-        <div class="mini-cap"><span class="fc-k">{{ t.miniK1 }}</span><span class="fc-t">{{ t.miniT1 }}</span></div>
-      </div>
-    </div>
-  </section>
 
   <section id="work" data-screen-label="04 Cases" style="position:relative;z-index:10;background:rgba(228,222,210,.93);color:#1b1812;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
     <div data-speed="6" data-pmax="150" style="position:absolute;top:1vw;right:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(27,24,18,.035);pointer-events:none;user-select:none">04</div>
@@ -470,7 +460,7 @@
                   </span>
                 </span>
               </button>
-              <a href="{{ cs.url }}" target="_blank" rel="noopener noreferrer" data-case-link="1" data-live="{{ cs.live }}" style="display:inline-block;margin:-8px 0 18px 0;font:500 11px/1 'IBM Plex Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--acc,#b9543f);padding-left:calc(clamp(10px,1.4vw,22px) + 5.4em);transition:color .3s" style-hover="color:#1b1812">{{ cs.linkLabel }} ↗</a>
+              <a href="{{ cs.url }}" target="_blank" rel="noopener noreferrer" data-case-link="1" data-live="{{ cs.live }}" style="display:inline-block;margin:-8px 0 18px 0;font:500 11px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--acc,#b9543f);padding-left:calc(clamp(10px,1.4vw,22px) + 5.4em);transition:color .3s" style-hover="color:#1b1812">{{ cs.linkLabel }} ↗</a>
             </div>
           </sc-for>
           <div style="border-top:1px solid rgba(27,24,18,.18)"></div>
@@ -511,7 +501,7 @@
       <div style="border-top:1px solid rgba(228,222,210,.18)">
         <sc-for list="{{ process }}" as="st" hint-placeholder-count="5">
           <div class="proc-row" data-reveal="1" data-delay="{{ st.delay }}" style="display:grid;grid-template-columns:60px 1fr auto;gap:clamp(20px,4vw,60px);align-items:baseline;padding:clamp(24px,3.4vw,40px) 0;border-bottom:1px solid rgba(228,222,210,.18)">
-            <div class="proc-num" style="font-family:'IBM Plex Mono',monospace;font-size:14px;letter-spacing:.05em;color:var(--acc,#b9543f)">{{ st.n }}</div>
+            <div class="proc-num" style="font-family:'PT Mono',monospace;font-size:14px;letter-spacing:.05em;color:var(--acc,#b9543f)">{{ st.n }}</div>
             <div>
               <h3 class="proc-title" style="font-size:clamp(20px,2.4vw,30px);line-height:1.05;letter-spacing:-.03em;font-weight:600;margin:0 0 10px">{{ st.title }}</h3>
               <p style="margin:0;font-size:15px;line-height:1.5;color:#b6ad9e;max-width:60ch;text-wrap:pretty">{{ st.desc }}</p>
@@ -536,7 +526,7 @@
               <span style="font-size:12px;letter-spacing:.1em;color:var(--acc,#b9543f);flex:none;width:34px">{{ pr.n }}</span>
               <span style="flex:1;display:flex;flex-direction:column;gap:7px">
                 <span style="font-size:clamp(20px,2.8vw,34px);line-height:1.05;letter-spacing:-.03em;font-weight:600">{{ pr.title }}</span>
-                <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.03em;color:#6f6659;text-transform:lowercase">{{ pr.range }}</span>
+                <span style="font-family:var(--font-accent);font-style:italic;font-size:clamp(16px,1.5vw,20px);letter-spacing:0;color:#6f6659;text-transform:lowercase;font-variant-numeric:tabular-nums">{{ pr.range }}</span>
               </span>
               <span data-chev style="flex:none;width:16px;height:16px;position:relative;transition:transform .5s cubic-bezier(.16,1,.3,1)"><span style="position:absolute;top:7px;left:0;width:16px;height:1px;background:#1b1812"></span><span style="position:absolute;top:0;left:7px;width:1px;height:16px;background:#1b1812"></span></span>
             </button>
@@ -556,7 +546,7 @@
         </sc-for>
       </div>
       <div data-reveal="1" style="margin-top:30px;font-size:12px;letter-spacing:.06em;color:#6f6659;display:flex;align-items:center;gap:10px"><span style="color:var(--acc,#b9543f)">—</span>{{ t.pricingFootnote }}</div>
-      <a href="#brief" data-reveal="1" data-delay="60" data-magnetic="1" style="display:inline-block;margin-top:20px;font:500 11px/1 'IBM Plex Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--acc,#b9543f);transition:color .3s" style-hover="color:#1b1812">{{ t.pricingCta }}</a>
+      <a href="#brief" data-reveal="1" data-delay="60" data-magnetic="1" style="display:inline-block;margin-top:20px;font:500 11px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--acc,#b9543f);transition:color .3s" style-hover="color:#1b1812">{{ t.pricingCta }}</a>
     </div>
   </section>
 
@@ -594,7 +584,7 @@
         <sc-for list="{{ faq }}" as="fq" hint-placeholder-count="5">
           <div data-faq-item="1" style="border-bottom:1px solid rgba(228,222,210,.14)">
             <button data-acc-head="1" onClick="{{ toggleAcc }}" aria-expanded="false" style="width:100%;display:flex;align-items:center;gap:clamp(14px,2vw,26px);background:none;border:none;color:#e4ded2;text-align:left;padding:clamp(22px,2.6vw,30px) 2px;cursor:pointer;transition:padding-left .4s cubic-bezier(.16,1,.3,1)">
-              <span data-faq-n style="flex:none;min-width:22px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;transition:color .4s"></span>
+              <span data-faq-n style="flex:none;min-width:22px;font-family:'PT Mono',monospace;font-size:12px;letter-spacing:.06em;transition:color .4s"></span>
               <span data-faq-q style="flex:1;font-size:clamp(16px,2vw,22px);line-height:1.25;letter-spacing:-.02em;font-weight:500;transition:color .4s">{{ fq.q }}</span>
               <span data-chev style="flex:none;width:15px;height:15px;position:relative;transition:transform .5s cubic-bezier(.16,1,.3,1)"><span style="position:absolute;top:7px;left:0;width:15px;height:1px;background:currentColor"></span><span style="position:absolute;top:0;left:7px;width:1px;height:15px;background:currentColor"></span></span>
             </button>
@@ -609,15 +599,6 @@
 
   <!-- 08 CLOSER -->
   <!-- MINI-FILM B — материя между главами -->
-  <section data-mini-film="b" data-screen-label="07a Launch" style="position:relative;z-index:10;min-height:0;overflow:clip;background:rgba(19,17,12,.9);color:#e4ded2">
-    <div data-mini-sticky="1" style="position:sticky;top:0;height:100vh;height:100svh;overflow:clip;display:flex;align-items:flex-end">
-      <canvas data-mini-canvas="1" aria-hidden="true" style="position:absolute;inset:0;z-index:0;display:block;width:100%;height:100%;pointer-events:none;opacity:0"></canvas>
-      <div class="hero-vig" aria-hidden="true" style="z-index:1"></div>
-      <div style="position:relative;z-index:2;width:100%;max-width:1320px;margin:0 auto;padding:0 26px clamp(60px,10vh,110px)">
-        <div class="mini-cap"><span class="fc-k">{{ t.miniK2 }}</span><span class="fc-t">{{ t.miniT2 }}</span></div>
-      </div>
-    </div>
-  </section>
 
   <section id="brief" data-screen-label="08 Closer" style="position:relative;z-index:10;background:rgba(228,222,210,.93);color:#1b1812;padding:clamp(90px,13vw,180px) 26px">
     <div style="max-width:1320px;margin:0 auto">
@@ -653,7 +634,7 @@
           </label>
           <div style="grid-column:1 / -1;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-top:clamp(10px,1.6vw,18px)">
             <button type="submit" data-submit-btn="1" class="vf-submit" data-magnetic="1">{{ t.formSubmit }} <span class="vf-arr">→</span></button>
-            <a href="https://t.me/vvid" target="_blank" rel="noopener noreferrer" data-brief-alt="1" style="display:inline-block;margin:14px 0 0 2px;font:500 11px/1 'IBM Plex Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:#6f6659;transition:color .3s" style-hover="color:var(--acc,#b9543f)">{{ t.briefAlt }}</a>
+            <a href="https://t.me/vvid" target="_blank" rel="noopener noreferrer" data-brief-alt="1" style="display:inline-block;margin:14px 0 0 2px;font:500 11px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:#6f6659;transition:color .3s" style-hover="color:var(--acc,#b9543f)">{{ t.briefAlt }}</a>
             <div style="display:flex;gap:22px;flex-wrap:wrap;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#6f6659">
               <span>{{ t.briefBadge1 }}</span><span>{{ t.briefBadge2 }}</span><span>{{ t.briefBadge3 }}</span>
             </div>
@@ -810,7 +791,7 @@ class Component extends DCLogic {
     try{ localStorage.setItem('vvid-lang', lng); }catch(e){}
     try{ document.documentElement.lang = lng; }catch(e){}
     this.forceUpdate();
-    setTimeout(()=>{ this.refreshKinetic(); this.initWordSwap(); this.typografNbsp(); try{ this._film && this._film.rebind(this.root); }catch(e){} try{ this.rebindMinis(); }catch(e){} try{ (this._asciiPanels||[]).forEach(p=>p.switchTo&&p.switchTo(0)); }catch(e){} try{ if(this.switchTeam) this.switchTeam(this._teamActive||0,false); }catch(e){} try{ if(this._floatIO){ this._floatIO.disconnect(); this.initFloatCTA(); } }catch(e){} try{ this.openFirstAcc(); }catch(e){}
+    setTimeout(()=>{ this.refreshKinetic(); this.initWordSwap(); this.typografNbsp(); try{ this._film && this._film.rebind(this.root); }catch(e){} try{ (this._asciiPanels||[]).forEach(p=>p.switchTo&&p.switchTo(0)); }catch(e){} try{ if(this.switchTeam) this.switchTeam(this._teamActive||0,false); }catch(e){} try{ if(this._floatIO){ this._floatIO.disconnect(); this.initFloatCTA(); } }catch(e){} try{ this.openFirstAcc(); }catch(e){}
       try{ const hb=[this._t&&this._t.heroBig1,this._t&&this._t.heroBig2,this._t&&this._t.heroBig3,this._t&&this._t.heroBig4]; this.root.querySelectorAll('.hero-kin .kl > span').forEach((s,i)=>{ s._lsplit=false; if(hb[i]!=null) s.textContent=hb[i]; }); this.initHeroLetters(); }catch(e){}
     }, 40);
   }
@@ -858,7 +839,6 @@ class Component extends DCLogic {
   componentWillUnmount(){
     cancelAnimationFrame(this._sraf);
     try{ if(this._ambient) this._ambient.destroy(); }catch(e){}
-    try{ (this._minis||[]).forEach(m=>{ m.io.disconnect(); m.film.destroy(); }); }catch(e){}
     try{ if(this._film) this._film.destroy(); if(this._filmIO) this._filmIO.disconnect(); if(this._filmResize) window.removeEventListener('resize', this._filmResize); }catch(e){}
     if(this._three){ cancelAnimationFrame(this._three.raf); if(this._three.io) this._three.io.disconnect(); window.removeEventListener('resize', this._threeResize); try{ this._three.renderer.dispose(); }catch(e){} }
     clearInterval(this._wi); clearInterval(this._wi2);
@@ -901,7 +881,6 @@ class Component extends DCLogic {
     this.initAscii3D();
     this.initHeroFluid();
     this.initFilm();
-    this.initMiniFilms();
     this.initAmbient();
     this.initMagnetic();
     this.initCursor();
@@ -1026,7 +1005,7 @@ class Component extends DCLogic {
     let lenis;
     try{ lenis = new L({ lerp:0.085, wheelMultiplier:1, smoothWheel:true, syncTouch:false }); }catch(e){ return; }
     this._lenis = lenis;
-    if(this._film) this._film.lerp = 1; (this._minis||[]).forEach(m=>m.film.lerp=1);                                    // Lenis появился позже initFilm → снять второй демпфер
+    if(this._film) this._film.lerp = 1;                                    // Lenis появился позже initFilm → снять второй демпфер
     if(!this._preDone){ try{ lenis.stop(); }catch(e){} }   // под прелоадером скролл заморожен; finish() → start()
     const raf=(t)=>{ if(!this._lenis){ this._lenisRaf=null; return; } lenis.raf(t); this._lenisRaf=requestAnimationFrame(raf); };
     this._lenisRaf=requestAnimationFrame(raf);
@@ -1216,7 +1195,7 @@ class Component extends DCLogic {
       const NR = RAMP.length;
       ctx.clearRect(0,0,W,H);
       ctx.textBaseline='top';
-      const baseFont = (cell+1)+'px "IBM Plex Mono", monospace';
+      const baseFont = (cell+1)+'px "PT Mono", monospace';
       ctx.font = baseFont; let curFont = baseFont;
       const m = this._teamMouse;
       const R = cell*8, R2 = R*R;          // hover-lens radius
@@ -1249,7 +1228,7 @@ class Component extends DCLogic {
         // proximity expands the glyph
         if(prox>0.02){
           const sz = Math.round((cell+1)*(1+prox*1.15));
-          const f = sz+'px "IBM Plex Mono", monospace';
+          const f = sz+'px "PT Mono", monospace';
           if(curFont!==f){ ctx.font=f; curFont=f; }
         } else if(curFont!==baseFont){ ctx.font=baseFont; curFont=baseFont; }
         const spark = Math.sin(t*0.006 + x*0.5 - y*0.3 + ph*2.3);
@@ -1486,7 +1465,7 @@ class Component extends DCLogic {
       const NR = RAMP.length;
       ctx.clearRect(0,0,W,H);
       ctx.textBaseline='top';
-      const baseFont = (cell+1)+'px "IBM Plex Mono", monospace';
+      const baseFont = (cell+1)+'px "PT Mono", monospace';
       ctx.font = baseFont; let curFont = baseFont;
       const m = mouse;
       const Rr = cell*8, R2 = Rr*Rr;
@@ -1514,7 +1493,7 @@ class Component extends DCLogic {
         const ch=RAMP[gi]; if(ch===' ') continue;
         if(prox>0.02){
           const sz = Math.round((cell+1)*(1+prox*1.15));
-          const f = sz+'px "IBM Plex Mono", monospace';
+          const f = sz+'px "PT Mono", monospace';
           if(curFont!==f){ ctx.font=f; curFont=f; }
         } else if(curFont!==baseFont){ ctx.font=baseFont; curFont=baseFont; }
         const spark = Math.sin(t*0.006 + x*0.5 - y*0.3 + ph*2.3);
@@ -1764,7 +1743,7 @@ class Component extends DCLogic {
     const effect = new AsciiEffect(renderer, CHARS, {invert:true, resolution: role==='team' ? 0.24 : 0.19});
     effect.setSize(W,H);
     const dom = effect.domElement; dom.setAttribute('aria-hidden','true');
-    dom.style.cssText = 'position:absolute;inset:0;z-index:1;display:flex;align-items:center;color:'+(isBust?'#d87a60':'#a8462f')+';font-family:"IBM Plex Mono",ui-monospace,monospace;font-weight:600;line-height:0.84;letter-spacing:0;text-align:left;pointer-events:none;overflow:hidden';
+    dom.style.cssText = 'position:absolute;inset:0;z-index:1;display:flex;align-items:center;color:'+(isBust?'#d87a60':'#a8462f')+';font-family:"PT Mono",ui-monospace,monospace;font-weight:600;line-height:0.84;letter-spacing:0;text-align:left;pointer-events:none;overflow:hidden';
     if(getComputedStyle(host).position === 'static') host.style.position = 'relative';
     host.appendChild(dom); canvas.style.visibility = 'hidden';
     const mouse = {x:0, y:0, tx:0, ty:0}; let raf=0, running=false, visible=false, t=0;
@@ -1959,24 +1938,6 @@ class Component extends DCLogic {
     start();
   }
 
-  /* ---------- MINI-FILMS — короткие sticky-биты между главами (тот же VFilm, свои бандлы) ---------- */
-  initMiniFilms(){
-    if(this._minis) return; this._minis=[];
-    const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const secs=Array.from(this.root.querySelectorAll('[data-mini-film]'));
-    if(this._coarse||reduce){ secs.forEach(s=>{ s.style.display='none'; }); return; }
-    secs.forEach(sec=>{
-      const key=sec.getAttribute('data-mini-film'); const sticky=sec.querySelector('[data-mini-sticky]'), canvas=sec.querySelector('[data-mini-canvas]');
-      if(!sticky||!canvas) return;
-      const film=new VFilm({ base:'./film/mini-'+key+'/', manifestUrl:'./film/mini-'+key+'/film.json', canvas, wrap:sec, sticky, pxPerFrame:10, lerp:this._lenis?1:0.12, holds:[[0,0.05,0],[0.92,1,1]],
-        onFrame:(p)=>{ canvas.style.opacity=String(Math.min(1,p*6)); const cap=sec.querySelector('.mini-cap'); if(cap){ const o=Math.min(1,Math.max(0,(p-0.12)/0.25)); cap.style.opacity=o.toFixed(3); cap.style.transform='translateY('+((1-o)*22).toFixed(1)+'px)'; } } });
-      film.load().catch(()=>{ sec.style.display='none'; });
-      const io=new IntersectionObserver((es)=>{ film.visible=es[0].isIntersecting; if(film.visible) film.start(); else film.stop(); },{threshold:0}); io.observe(sticky);
-      this._minis.push({ key, film, io });
-    });
-  }
-  rebindMinis(){ (this._minis||[]).forEach(m=>{ const sec=this.root.querySelector('[data-mini-film="'+m.key+'"]'); if(!sec) return; const c=sec.querySelector('[data-mini-canvas]'); m.film.wrap=sec; m.film.sticky=sec.querySelector('[data-mini-sticky]')||m.film.sticky; if(c&&c!==m.film.canvas){ m.film.canvas=c; m.film.ctx=null; m.film.dirty=true; } m.film.layout(); if(m.film.dirty) m.film.draw(); }); }
-
   /* ---------- SCROLL FILM (desktop · sticky hero · живой fluid = состояние покоя · главы поверх) ---------- */
   initFilm(){
     if(this._film) return;
@@ -2070,7 +2031,6 @@ class Component extends DCLogic {
     try{ if(this._heroFluid) on ? this._heroFluid.pause() : this._heroFluid.resume(); }catch(e){}
     if(on){
       if(this._ambient) this._ambient.pause();
-      (this._minis||[]).forEach(m=>{ try{ m.film.stop(); m.film.canvas.style.opacity='0'; }catch(e){} });
       if(this._film){ try{ this._film.stop(); this._film.canvas.style.opacity='0'; this._film.canvas.style.transform=''; ['film-run','film-c1','film-c2','film-c3','film-end'].forEach(k=>document.documentElement.classList.remove(k)); this._film.wrap.style.height=''; document.documentElement.style.setProperty('--film-overlap','0px'); const dm=this.root.querySelector('[data-film-dim]'); if(dm) dm.style.opacity='0'; }catch(e){} }
       if(this._three){ cancelAnimationFrame(this._three.raf); this._three.raf=null; }
       cancelAnimationFrame(this._teamRaf); this._teamRunning=false;
@@ -2086,7 +2046,6 @@ class Component extends DCLogic {
       this.initSmoothScroll();
       if(this._film){ try{ this._film.layout(); this._film.visible=true; this._film.start(); }catch(e){} }
       if(this._ambient) this._ambient.resume();
-      (this._minis||[]).forEach(m=>{ try{ m.film.visible=true; m.film.start(); }catch(e){} });
       if(this._three && this._three.start) this._three.start();
       if(this._teamAnim && this._teamVisible && !this._teamRunning){ this._teamRunning=true; this._lastTeam=0; this._teamRaf=requestAnimationFrame(this._teamAnim); }
       (this._asciiPanels||[]).forEach(p=>p.kick());
@@ -2108,7 +2067,7 @@ class Component extends DCLogic {
         heroBig1:'мы VVID', heroBig2:'мы делаем', heroBig3:'большие', heroBig4:'вещи', heroBigAria:'мы VVID, мы делаем большие вещи',
         heroLead2:'внедряем в уже работающий бизнес — автоматизируем процессы и усиливаем то, что приносит деньги.',
         heroSub:'веб- и мобильные приложения, сайты и интернет-магазины, телеграм-боты, дизайн — внедряем в готовый бизнес.',
-        heroCta1:'смотреть кейсы →', heroCtaPrimary:'написать в telegram ↗', heroProof:'договор + юрлицо · ответ в telegram < 2 часов · показываем вживую', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'разработка · автоматизация', filmK1:'01 — замысел', filmT1:'всё начинается с одной точки', filmK2:'02 — раскрытие', filmT2:'деталь за деталью — до готовой формы', filmK3:'03 — результат', filmT3:'4 проекта в проде · гарантия 50 дней', filmKEnd:'04 · vvid — студия разработки и автоматизации', filmTEnd:'следующий проект — ваш', filmSkip:'пропустить ↓', proofLabel:'fig.01.a — факты', proofNote:'каждый пункт — ссылка, проверьте', filmCta2:'оставить бриф ↓', teamLead:'три ремесла — одна команда. те же люди на созвоне и в коде.', briefAlt:'быстрее — в telegram @vvid ↗', footTag:'из хаоса — система', pricingCta:'оценить мою задачу →', formSent:'письмо с брифом открыто ✓', miniK1:'внутри системы', miniT1:'данные · интеграции · автоматизация — то, что вы не видите, но что делает работу', miniK2:'запуск', miniT2:'шов загорается — система в проде. следующая — ваша.',
+        heroCta1:'смотреть кейсы →', heroCtaPrimary:'написать в telegram ↗', heroProof:'договор + юрлицо · ответ в telegram < 2 часов · показываем вживую', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'разработка · автоматизация', filmK1:'01 — замысел', filmT1:'всё начинается с одной точки', filmK2:'02 — раскрытие', filmT2:'деталь за деталью — до готовой формы', filmK3:'03 — результат', filmT3:'4 проекта в проде · гарантия 50 дней', filmKEnd:'04 · vvid — студия разработки и автоматизации', filmTEnd:'следующий проект — ваш', filmSkip:'пропустить ↓', proofLabel:'fig.01.a — факты', proofNote:'каждый пункт — ссылка, проверьте', filmCta2:'оставить бриф ↓', teamLead:'три ремесла — одна команда. те же люди на созвоне и в коде.', briefAlt:'быстрее — в telegram @vvid ↗', footTag:'из хаоса — система', pricingCta:'оценить мою задачу →', formSent:'письмо с брифом открыто ✓', 
         marquee:'веб- и мобильные приложения · интернет-магазины и сайты · лендинги · телеграм-боты · автоматизация бизнеса · ui/ux дизайн · дизайн-системы · frontend и backend · cms · интеграции · ',
         fig02:'fig.02 — манифест',
         manifH2:'ваш бизнес уже работает. мы снимаем его с ручного привода.',
@@ -2140,7 +2099,7 @@ class Component extends DCLogic {
         heroBig1:'we are VVID', heroBig2:'we do', heroBig3:'big', heroBig4:'things', heroBigAria:'we are VVID, we do big things',
         heroLead2:'built into your running business — we automate processes and amplify what already makes money.',
         heroSub:'web & mobile apps, websites and online stores, telegram bots, design — built into your existing business.',
-        heroCta1:'see our work →', heroCtaPrimary:'message us on telegram ↗', heroProof:'contract + legal entity · telegram reply < 2 hours · we show, live', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'development · automation', filmK1:'01 — intent', filmT1:'it all starts from a single point', filmK2:'02 — unfolding', filmT2:'detail by detail — to the finished form', filmK3:'03 — result', filmT3:'4 projects live · 50-day guarantee', filmKEnd:'04 · vvid — development & automation studio', filmTEnd:'the next project is yours', filmSkip:'skip ↓', proofLabel:'fig.01.a — facts', proofNote:'every item is a link — check it', filmCta2:'leave a brief ↓', teamLead:'three crafts — one team. the same people on the call and in the code.', briefAlt:'faster on telegram @vvid ↗', footTag:'from chaos — a system', pricingCta:'estimate my task →', formSent:'brief email opened ✓', miniK1:'inside the system', miniT1:'data · integrations · automation — what you never see, and what does the work', miniK2:'launch', miniT2:'the seam lights up — the system is live. the next one is yours.',
+        heroCta1:'see our work →', heroCtaPrimary:'message us on telegram ↗', heroProof:'contract + legal entity · telegram reply < 2 hours · we show, live', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'development · automation', filmK1:'01 — intent', filmT1:'it all starts from a single point', filmK2:'02 — unfolding', filmT2:'detail by detail — to the finished form', filmK3:'03 — result', filmT3:'4 projects live · 50-day guarantee', filmKEnd:'04 · vvid — development & automation studio', filmTEnd:'the next project is yours', filmSkip:'skip ↓', proofLabel:'fig.01.a — facts', proofNote:'every item is a link — check it', filmCta2:'leave a brief ↓', teamLead:'three crafts — one team. the same people on the call and in the code.', briefAlt:'faster on telegram @vvid ↗', footTag:'from chaos — a system', pricingCta:'estimate my task →', formSent:'brief email opened ✓', 
         marquee:'web & mobile apps · online stores & websites · landing pages · telegram bots · business automation · ui/ux design · design systems · frontend & backend · cms · integrations · ',
         fig02:'fig.02 — manifesto',
         manifH2:'your business already runs. we take it off manual.',
