@@ -172,13 +172,13 @@
   html:not(.pre-done){overflow:hidden}
   .film-cap{position:absolute;left:26px;right:26px;bottom:clamp(96px,16vh,170px);max-width:min(52vw,640px);color:#fff;opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);pointer-events:none}
   /* временная тёмная кожа хвостовых секций (прайс, вопросы, бриф): один мир с фильмом, пока они не стали узлами 04–05 */
-  #pricing,#team,#brief{background:#100d0a !important;color:#efe9df !important;box-shadow:0 -34px 70px -24px rgba(0,0,0,.6)}
-  #pricing [style*="color:#1b1812"],#brief [style*="color:#1b1812"],#pricing [style*="color:#3a352c"],#brief [style*="color:#3a352c"]{color:#efe9df !important}
-  #pricing [style*="color:#6f6659"],#brief [style*="color:#6f6659"],#pricing [style*="color:#5a5346"],#brief [style*="color:#5a5346"]{color:rgba(239,233,223,.62) !important}
-  #pricing [style*="rgba(27,24,18,.22)"],#brief [style*="rgba(27,24,18,.22)"],#pricing [style*="rgba(27,24,18,.12)"],#brief [style*="rgba(27,24,18,.12)"],#pricing [style*="rgba(27,24,18,.1)"],#brief [style*="rgba(27,24,18,.1)"]{border-color:rgba(239,233,223,.2) !important}
-  #pricing [style*="background:#1b1812"],#brief [style*="background:#1b1812"]{background:#efe9df !important}
+  #team,#brief{background:#100d0a !important;color:#efe9df !important;box-shadow:0 -34px 70px -24px rgba(0,0,0,.6)}
+  #brief [style*="color:#1b1812"],#brief [style*="color:#3a352c"]{color:#efe9df !important}
+  #brief [style*="color:#6f6659"],#brief [style*="color:#5a5346"]{color:rgba(239,233,223,.62) !important}
+  #brief [style*="rgba(27,24,18,.22)"],#brief [style*="rgba(27,24,18,.12)"],#brief [style*="rgba(27,24,18,.1)"]{border-color:rgba(239,233,223,.2) !important}
+  #brief [style*="background:#1b1812"]{background:#efe9df !important}
   #brief [style*="background:#ece7db"]{background:rgba(239,233,223,.06) !important}
-  #pricing [style*="rgba(27,24,18,.04)"],#brief [style*="rgba(27,24,18,.04)"]{color:rgba(239,233,223,.04) !important}
+  #brief [style*="rgba(27,24,18,.04)"]{color:rgba(239,233,223,.04) !important}
   #brief .vf-in{background:rgba(239,233,223,.06) !important;color:#efe9df !important;border-color:rgba(239,233,223,.25) !important}
   #brief .vf-in::placeholder{color:rgba(239,233,223,.45) !important}
   #brief .vf-in:focus{border-color:rgba(239,233,223,.6) !important;background:rgba(239,233,223,.09) !important}
@@ -200,6 +200,8 @@
   .ds-node.is-in{opacity:1;transition:opacity .5s ease}
   .ds-node > :not(.ds-rows):not(.ds-facts),.ds-node .ds-row,.ds-node .ds-fact{opacity:0;transform:translateY(14px);transition:opacity .22s ease,transform .22s ease}
   .ds-node.is-in > :not(.ds-rows):not(.ds-facts),.ds-node.is-in .ds-row,.ds-node.is-in .ds-fact{opacity:1;transform:none;transition:opacity .75s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);transition-delay:calc(var(--i,0)*70ms)}
+  .ds-node.is-in [data-at]:not(.is-at){opacity:0;transform:translateY(14px);transition:opacity .22s ease,transform .22s ease}   /* элемент с ключом ждёт свой кадр фильма */
+  .ds-node.is-in [data-at].is-at{transition-delay:0ms}
   .ds-node.on{pointer-events:auto}
   .ds-node :focus-visible{outline:2px solid #efe9df;outline-offset:2px}
   .ds-left{left:clamp(26px,4vw,64px);bottom:clamp(64px,11vh,130px)}
@@ -538,7 +540,7 @@
       <div data-ds-scrim="r" class="ds-scrim ds-scrim-r" aria-hidden="true"></div>
       <div class="ds-depth"><span>{{ t.dsDepth }}</span><b data-ds-depth="1">−0,0 м</b></div>
 
-      <div data-node="01" data-range="0.03,0.20" id="about" class="ds-node ds-left">
+      <div data-node="01" data-range="0.020,0.134" id="about" class="ds-node ds-left">
         <span class="ds-eyebrow">{{ t.dsK1 }}</span>
         <h2 class="ds-h">{{ t.manifH2 }}</h2>
         <p class="ds-p">{{ t.manifPa }}<b>{{ t.manifPb }}</b>.</p>
@@ -550,7 +552,7 @@
         </div>
       </div>
 
-      <div data-node="02" data-range="0.27,0.48" id="capabilities" class="ds-node ds-right">
+      <div data-node="02" data-range="0.181,0.322" id="capabilities" class="ds-node ds-right">
         <span class="ds-eyebrow">{{ t.dsK2 }}</span>
         <h2 class="ds-h">{{ t.capH2 }}</h2>
         <div class="ds-rows">
@@ -561,7 +563,7 @@
         <p class="ds-foot">{{ t.procH2 }}</p>
       </div>
 
-      <div data-node="03" data-range="0.56,0.96" id="work" class="ds-node ds-left">
+      <div data-node="03" data-range="0.375,0.644" id="work" class="ds-node ds-left">
         <span class="ds-eyebrow">{{ t.dsK3 }}</span>
         <h2 class="ds-h">{{ t.casesH2a }} {{ t.casesH2b }}</h2>
         <div class="ds-rows">
@@ -570,45 +572,21 @@
           </sc-for>
         </div>
       </div>
+
+      <div data-node="04" data-range="0.880,0.984" id="pricing" class="ds-node ds-right">
+        <span class="ds-eyebrow">{{ t.dsK4 }}</span>
+        <h2 class="ds-h">{{ t.pricingH2 }}</h2>
+        <div class="ds-rows">
+          <sc-for list="{{ pricing }}" as="pr" hint-placeholder-count="3">
+            <a href="#brief" class="ds-row" data-at="{{ pr.at }}"><span class="n">{{ pr.k }}</span><span class="t">{{ pr.title }}<small><sc-for list="{{ pr.points }}" as="pt" hint-placeholder-count="3"><span>{{ pt }}</span></sc-for></small></span><span class="pr">{{ pr.range }}</span></a>
+          </sc-for>
+        </div>
+        <p class="ds-foot" data-at="0.42">{{ t.pricingFootnote }}</p>
+      </div>
     </div>
   </section>
 
-  <!-- 06 PRICING -->
-  <section id="pricing" data-screen-label="06 Pricing" style="position:relative;z-index:10;background:rgba(228,222,210,.93);color:#1b1812;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
-    <div data-speed="6" data-pmax="150" style="position:absolute;top:1vw;left:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(27,24,18,.04);pointer-events:none;user-select:none">06</div>
-    <div data-depth="1" style="max-width:1320px;margin:0 auto;position:relative;z-index:1">
-      <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#6f6659;margin-bottom:24px">{{ t.fig06 }}</div>
-      <h2 data-kinetic="1" data-i18n="pricingH2" style="font-size:clamp(28px,4.6vw,64px);line-height:1.02;letter-spacing:-.035em;font-weight:600;margin:0 0 clamp(50px,7vw,80px);max-width:18ch">{{ t.pricingH2 }}</h2>
-      <div data-reveal="1" style="border-top:1px solid rgba(27,24,18,.22)">
-        <sc-for list="{{ pricing }}" as="pr" hint-placeholder-count="3">
-          <div style="border-bottom:1px solid rgba(27,24,18,.22)">
-            <button data-acc-head="1" onClick="{{ toggleAcc }}" aria-expanded="false" style="width:100%;display:flex;align-items:center;gap:20px;background:none;border:none;color:#1b1812;text-align:left;padding:clamp(24px,3vw,34px) 2px;cursor:pointer">
-              <span style="font-size:12px;letter-spacing:.1em;color:var(--acc,#b9543f);flex:none;width:34px">{{ pr.n }}</span>
-              <span style="flex:1;display:flex;flex-direction:column;gap:7px">
-                <span style="font-size:clamp(20px,2.8vw,34px);line-height:1.05;letter-spacing:-.03em;font-weight:600">{{ pr.title }}</span>
-                <span style="font-family:var(--font-accent);font-style:italic;font-size:clamp(16px,1.5vw,20px);letter-spacing:0;color:#6f6659;text-transform:lowercase;font-variant-numeric:tabular-nums">{{ pr.range }}</span>
-              </span>
-              <span data-chev style="flex:none;width:16px;height:16px;position:relative;transition:transform .5s cubic-bezier(.16,1,.3,1)"><span style="position:absolute;top:7px;left:0;width:16px;height:1px;background:#1b1812"></span><span style="position:absolute;top:0;left:7px;width:1px;height:16px;background:#1b1812"></span></span>
-            </button>
-            <div data-acc-panel style="max-height:0;overflow:hidden;opacity:0;transition:max-height .6s cubic-bezier(.16,1,.3,1),opacity .4s">
-              <div style="display:flex;flex-wrap:wrap;gap:48px;padding:0 2px 36px 56px">
-                <div style="flex:1;min-width:240px">
-                  <p style="margin:0;font-size:16px;line-height:1.55;color:#5a5346;max-width:44ch;text-wrap:pretty">{{ pr.desc }}</p>
-                </div>
-                <div style="flex:1;min-width:240px;display:flex;flex-direction:column;gap:11px">
-                  <sc-for list="{{ pr.points }}" as="pt" hint-placeholder-count="4">
-                    <div style="display:flex;align-items:flex-start;gap:11px;font-size:14px;color:#3a352c;border-bottom:1px solid rgba(27,24,18,.1);padding-bottom:11px"><span style="color:var(--acc,#b9543f);flex:none">—</span>{{ pt }}</div>
-                  </sc-for>
-                </div>
-              </div>
-            </div>
-          </div>
-        </sc-for>
-      </div>
-      <div data-reveal="1" style="margin-top:30px;font-size:12px;letter-spacing:.06em;color:#6f6659;display:flex;align-items:center;gap:10px"><span style="color:var(--acc,#b9543f)">—</span>{{ t.pricingFootnote }}</div>
-      <a href="#brief" data-reveal="1" data-delay="60" data-magnetic="1" style="display:inline-block;margin-top:20px;font:500 11px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--acc,#b9543f);transition:color .3s" style-hover="color:#1b1812">{{ t.pricingCta }}</a>
-    </div>
-  </section>
+  <!-- 06 PRICING → узел 04 внутри спуска -->
 
   <!-- 07 TEAM + FAQ -->
   <section id="team" data-screen-label="07 FAQ" style="position:relative;z-index:10;background:rgba(19,17,12,.9);color:#e4ded2;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
@@ -2029,7 +2007,7 @@ class Component extends DCLogic {
     const sec=this.root.querySelector('[data-descent]'); if(!sec||this._descent) return;
     const sticky=sec.querySelector('[data-ds-sticky]'), canvas=sec.querySelector('[data-ds-canvas]'), depthEl=sec.querySelector('[data-ds-depth]'), scrimL=sec.querySelector('[data-ds-scrim="l"]'), scrimR=sec.querySelector('[data-ds-scrim="r"]');
     if(!sticky||!canvas) return;
-    const nodes=Array.from(sec.querySelectorAll('[data-node]')).map(el=>{ const r=(el.getAttribute('data-range')||'0,1').split(',').map(Number); return { el, a:r[0], b:r[1], side:el.classList.contains('ds-right')?'r':'l' }; });
+    const nodes=Array.from(sec.querySelectorAll('[data-node]')).map(el=>{ const r=(el.getAttribute('data-range')||'0,1').split(',').map(Number); const keyed=Array.from(el.querySelectorAll('[data-at]')).map(k=>({ el:k, at:parseFloat(k.getAttribute('data-at'))||0, on:false })); return { el, a:r[0], b:r[1], side:el.classList.contains('ds-right')?'r':'l', keyed }; });
     const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const coarse=!!(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches);
     const nav=navigator, weak=(nav.connection&&(nav.connection.saveData||/2g/.test(nav.connection.effectiveType||'')))||(nav.deviceMemory&&nav.deviceMemory<4);
@@ -2045,12 +2023,12 @@ class Component extends DCLogic {
         const hs=this._film&&this._film.sticky; if(hs){ const hide=p>0.002&&canvas.style.opacity==='1'; if(hs.style.visibility!==(hide?'hidden':'')) hs.style.visibility=hide?'hidden':''; }   // передача: hero гаснет, под ним уже тот же кадр спуска
         const q=film.frames?f/(film.frames-1):p;                                 // ось кадров: узлы и медленные зоны совпадают кадр в кадр
         let anyL=false, anyR=false, changed=false;
-        nodes.forEach(n=>{ const inR=q>=n.a&&q<=n.b; if(inR!==n.active){ n.active=inR; changed=true; n.el.classList.toggle('is-in',inR); n.el.classList.toggle('on',inR); n.el.toggleAttribute('inert',!inR); if(!inR) n.snapped=false; } if(n.active){ if(n.side==='l') anyL=true; else anyR=true; } });
+        nodes.forEach(n=>{ const inR=q>=n.a&&q<=n.b; if(inR!==n.active){ n.active=inR; changed=true; n.el.classList.toggle('is-in',inR); n.el.classList.toggle('on',inR); n.el.toggleAttribute('inert',!inR); if(!inR) n.snapped=false; } if(n.active||inR!==n.active||n.keyed.length){ const span=n.b-n.a||1; n.keyed.forEach(k=>{ const on=q>=n.a+k.at*span; if(on!==k.on){ k.on=on; k.el.classList.toggle('is-at',on); } }); } if(n.active){ if(n.side==='l') anyL=true; else anyR=true; } });
         if(changed){ if(scrimL) scrimL.style.opacity=anyL?'1':'0'; if(scrimR) scrimR.style.opacity=anyR?'1':'0'; const on=anyL||anyR; if(on!==this._dsOn){ this._dsOn=on; document.documentElement.classList.toggle('ds-on',on); } }
         if(depthEl){ const clips=(film.m&&film.m.clips)||2; const d=q*6.0*clips/5; const en=document.documentElement.lang==='en'; depthEl.textContent='−'+(en?d.toFixed(1):d.toFixed(1).replace('.',','))+(en?' m':' м'); }
       } });
     nodes.forEach(n=>{ let i=0; Array.from(n.el.children).forEach(ch=>{ if(ch.classList.contains('ds-rows')||ch.classList.contains('ds-facts')){ Array.from(ch.children).forEach(r=>{ r.style.setProperty('--i', i++); }); } else ch.style.setProperty('--i', i++); }); });
-    const keyFrame=(n)=>{ const N=(film.frames||1)-1, fa=Math.round(n.a*N), fb=Math.round(n.b*N); return fa+Math.min(Math.round((fb-fa)*0.3),28); };   // ключевой кадр главы: чуть глубже входа, не дальше ~экрана скролла
+    const keyFrame=(n)=>{ const N=(film.frames||1)-1, fa=Math.round(n.a*N), fb=Math.round(n.b*N); if(n.keyed.length){ const last=Math.max(...n.keyed.map(k=>k.at)); return fa+Math.min(Math.round((fb-fa)*last)+2,40); } return fa+Math.min(Math.round((fb-fa)*0.3),28); };   // ключевой кадр главы: чуть глубже входа, не дальше ~экрана скролла
     const keyY=(n)=>sec.getBoundingClientRect().top+scrollY+(film.lead||0)+film.scrollAt(keyFrame(n));
     if(!coarse){                                                                  // снап: колесо остановилось в начале главы → мягко дотягиваем к её ключевому кадру, дальше — свободно
       let lastWheel=0, timer=0; const ease=(t)=>1-Math.pow(1-t,3);
@@ -2058,7 +2036,7 @@ class Component extends DCLogic {
       const settle=()=>{ if(this._dsSnapping||performance.now()-lastWheel<260) return; const act=nodes.find(n=>n.active); if(!act||act.snapped||!film.frames) return;
         act.snapped=true; if(film.cur>=keyFrame(act)) return;                     // остановился уже глубже ключевого кадра — читает, не трогаем
         const y=keyY(act); if(Math.abs(scrollY-y)<28) return; this._dsSnapping=true; const done=()=>{ setTimeout(()=>{ this._dsSnapping=false; },120); };
-        if(this._lenis&&this._lenis.scrollTo) this._lenis.scrollTo(y,{duration:1.0,easing:ease,onComplete:done}); else { window.scrollTo({top:y,behavior:'smooth'}); setTimeout(done,900); } };
+        const dur=Math.min(1.6,Math.max(0.8,Math.abs(scrollY-y)/1100)); if(this._lenis&&this._lenis.scrollTo) this._lenis.scrollTo(y,{duration:dur,easing:ease,onComplete:done}); else { window.scrollTo({top:y,behavior:'smooth'}); setTimeout(done,900); } };
       window.addEventListener('scroll',()=>{ clearTimeout(timer); timer=setTimeout(settle,300); },{passive:true});
     }
     let loading=false; const load=()=>{ if(loading) return; loading=true; film.load().catch(()=>{ sec.classList.add('ds-static'); }); };
@@ -2241,7 +2219,7 @@ class Component extends DCLogic {
         heroBig1:'мы VVID', heroBig2:'мы делаем', heroBig3:'большие', heroBig4:'вещи', heroBigAria:'мы VVID, мы делаем большие вещи',
         heroLead2:'внедряем в уже работающий бизнес — автоматизируем процессы и усиливаем то, что приносит деньги.',
         heroSub:'веб- и мобильные приложения, сайты и интернет-магазины, телеграм-боты, дизайн — внедряем в готовый бизнес.',
-        heroCta1:'смотреть кейсы →', heroCtaPrimary:'написать в telegram ↗', heroProof:'договор + юрлицо · ответ в telegram < 2 часов · показываем вживую', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'разработка · автоматизация', dsK1:'01 — кто мы · Минск', dsCrafts:'разработка · автоматизация · дизайн — те же люди на созвоне и в коде', dsK3:'03 — кейсы · четыре проекта · три в проде', dsK2:'02 — что делаем · пять услуг · цены открыты', dsT1:'узел 01 — кто мы', dsT2:'узел 02 — что делаем', dsDepth:'глубина', sc1K:'глава 01 — кто мы', sc1T:'смотрим внутрь — до самого ядра', filmK1:'01 — замысел', filmT1:'всё начинается с одной точки', filmK2:'02 — раскрытие', filmT2:'деталь за деталью — до готовой формы', filmK3:'03 — результат', filmT3:'4 проекта в проде · гарантия 50 дней', filmKEnd:'04 · vvid — студия разработки и автоматизации', filmTEnd:'следующий проект — ваш', filmSkip:'пропустить ↓', filmCta2:'оставить бриф ↓', teamLead:'три ремесла — одна команда. те же люди на созвоне и в коде.', briefAlt:'быстрее — в telegram @vvid ↗', footTag:'из хаоса — система', pricingCta:'оценить мою задачу →', formSent:'письмо с брифом открыто ✓',
+        heroCta1:'смотреть кейсы →', heroCtaPrimary:'написать в telegram ↗', heroProof:'договор + юрлицо · ответ в telegram < 2 часов · показываем вживую', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'разработка · автоматизация', dsK1:'01 — кто мы · Минск', dsCrafts:'разработка · автоматизация · дизайн — те же люди на созвоне и в коде', dsK3:'03 — кейсы · четыре проекта · три в проде', dsK4:'04 — прайс · у корней · цифра до старта', dsK2:'02 — что делаем · пять услуг · цены открыты', dsT1:'узел 01 — кто мы', dsT2:'узел 02 — что делаем', dsDepth:'глубина', sc1K:'глава 01 — кто мы', sc1T:'смотрим внутрь — до самого ядра', filmK1:'01 — замысел', filmT1:'всё начинается с одной точки', filmK2:'02 — раскрытие', filmT2:'деталь за деталью — до готовой формы', filmK3:'03 — результат', filmT3:'4 проекта в проде · гарантия 50 дней', filmKEnd:'04 · vvid — студия разработки и автоматизации', filmTEnd:'следующий проект — ваш', filmSkip:'пропустить ↓', filmCta2:'оставить бриф ↓', teamLead:'три ремесла — одна команда. те же люди на созвоне и в коде.', briefAlt:'быстрее — в telegram @vvid ↗', footTag:'из хаоса — система', pricingCta:'оценить мою задачу →', formSent:'письмо с брифом открыто ✓',
         fig02:'fig.02 — кто мы',
         manifH2:'ваш бизнес уже работает. мы снимаем его с ручного привода.',
         manifPa:'разбираем процесс на детали и собираем систему, которая держит нагрузку — ', manifPb:'приложение, сайт, бот или интеграция',
@@ -2269,7 +2247,7 @@ class Component extends DCLogic {
         heroBig1:'we are VVID', heroBig2:'we do', heroBig3:'big', heroBig4:'things', heroBigAria:'we are VVID, we do big things',
         heroLead2:'built into your running business — we automate processes and amplify what already makes money.',
         heroSub:'web & mobile apps, websites and online stores, telegram bots, design — built into your existing business.',
-        heroCta1:'see our work →', heroCtaPrimary:'message us on telegram ↗', heroProof:'contract + legal entity · telegram reply < 2 hours · we show, live', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'development · automation', dsK1:'01 — who we are · Minsk', dsCrafts:'development · automation · design — the same people on the call and in the code', dsK3:'03 — work · four projects · three live', dsK2:'02 — what we do · five services · prices are open', dsT1:'node 01 — who we are', dsT2:'node 02 — what we do', dsDepth:'depth', sc1K:'chapter 01 — who we are', sc1T:'we look inside — down to the core', filmK1:'01 — intent', filmT1:'it all starts from a single point', filmK2:'02 — unfolding', filmT2:'detail by detail — to the finished form', filmK3:'03 — result', filmT3:'4 projects live · 50-day guarantee', filmKEnd:'04 · vvid — development & automation studio', filmTEnd:'the next project is yours', filmSkip:'skip ↓', filmCta2:'leave a brief ↓', teamLead:'three crafts — one team. the same people on the call and in the code.', briefAlt:'faster on telegram @vvid ↗', footTag:'from chaos — a system', pricingCta:'estimate my task →', formSent:'brief email opened ✓',
+        heroCta1:'see our work →', heroCtaPrimary:'message us on telegram ↗', heroProof:'contract + legal entity · telegram reply < 2 hours · we show, live', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'development · automation', dsK1:'01 — who we are · Minsk', dsCrafts:'development · automation · design — the same people on the call and in the code', dsK3:'03 — work · four projects · three live', dsK4:'04 — pricing · at the roots · a number before we start', dsK2:'02 — what we do · five services · prices are open', dsT1:'node 01 — who we are', dsT2:'node 02 — what we do', dsDepth:'depth', sc1K:'chapter 01 — who we are', sc1T:'we look inside — down to the core', filmK1:'01 — intent', filmT1:'it all starts from a single point', filmK2:'02 — unfolding', filmT2:'detail by detail — to the finished form', filmK3:'03 — result', filmT3:'4 projects live · 50-day guarantee', filmKEnd:'04 · vvid — development & automation studio', filmTEnd:'the next project is yours', filmSkip:'skip ↓', filmCta2:'leave a brief ↓', teamLead:'three crafts — one team. the same people on the call and in the code.', briefAlt:'faster on telegram @vvid ↗', footTag:'from chaos — a system', pricingCta:'estimate my task →', formSent:'brief email opened ✓',
         fig02:'fig.02 — who we are',
         manifH2:'your business already runs. we take it off manual.',
         manifPa:'we take the process apart and rebuild it as a system that holds the load — ', manifPb:'an app, a site, a bot or an integration',
@@ -2351,14 +2329,14 @@ class Component extends DCLogic {
       },
       pricing:{
         ru:[
-          {n:'p0', title:'лендинг / телеграм-бот', range:'от 20 000 ₽ · фикс', desc:'точка входа: бот или лендинг под одну задачу. цена фиксируется до старта.', points:['телеграм-бот — от 20 000 ₽','лендинг — от 30 000 ₽','цена фиксируется до старта']},
-          {n:'p1', title:'сайт / интернет-магазин', range:'от 140 000 ₽ · под ключ', desc:'магазин или многостраничный сайт под ключ: дизайн, разработка, оплаты и crm, запуск. как mebel-novomih.ru и 1kik.by в кейсах.', points:['интернет-магазин — от 140 000 ₽','сайт под ключ: дизайн + разработка','интеграции: оплаты · crm · 1с']},
-          {n:'p2', title:'приложение / автоматизация', range:'от 700 000 ₽', desc:'веб- или мобильное приложение, внутренняя система, автоматизация процесса. начинаем с mvp — рабочего ядра, которое уже снимает рутину, — и растим спринтами.', points:['mvp приложения — от 700 000 ₽','внутренние системы и автоматизация','договор и юрлицо · nda по запросу']}
+          {n:'p0', k:'01', at:0.15, title:'лендинг / телеграм-бот', range:'от 20 000 ₽ · фикс', desc:'точка входа: бот или лендинг под одну задачу. цена фиксируется до старта.', points:['телеграм-бот — от 20 000 ₽','лендинг — от 30 000 ₽','цена фиксируется до старта']},
+          {n:'p1', k:'02', at:0.28, title:'сайт / интернет-магазин', range:'от 140 000 ₽ · под ключ', desc:'магазин или многостраничный сайт под ключ: дизайн, разработка, оплаты и crm, запуск. как mebel-novomih.ru и 1kik.by в кейсах.', points:['интернет-магазин — от 140 000 ₽','сайт под ключ: дизайн + разработка','интеграции: оплаты · crm · 1с']},
+          {n:'p2', k:'03', at:0.42, title:'приложение / автоматизация', range:'от 700 000 ₽', desc:'веб- или мобильное приложение, внутренняя система, автоматизация процесса. начинаем с mvp — рабочего ядра, которое уже снимает рутину, — и растим спринтами.', points:['mvp приложения — от 700 000 ₽','внутренние системы и автоматизация','договор и юрлицо · nda по запросу']}
         ],
         en:[
-          {n:'p0', title:'landing / telegram bot', range:'from $250 · fixed', desc:'the entry point: a bot or a landing page for one task. the price is fixed before we start.', points:['telegram bot — from $250','landing — from $350','price fixed before we start']},
-          {n:'p1', title:'website / online store', range:'from $1,500 · turnkey', desc:'a store or a multi-page site, turnkey: design, development, payments and crm, launch. like mebel-novomih.ru and 1kik.by in the cases.', points:['online store — from $1,500','turnkey site: design + dev','integrations: payments · crm']},
-          {n:'p2', title:'app / automation', range:'from $8k', desc:'a web or mobile app, an internal system, process automation. we start with an mvp — a working core that already removes the routine — and grow it in sprints.', points:['app mvp — from $8k','internal systems & automation','contract and legal entity · nda on request']}
+          {n:'p0', k:'01', at:0.15, title:'landing / telegram bot', range:'from $250 · fixed', desc:'the entry point: a bot or a landing page for one task. the price is fixed before we start.', points:['telegram bot — from $250','landing — from $350','price fixed before we start']},
+          {n:'p1', k:'02', at:0.28, title:'website / online store', range:'from $1,500 · turnkey', desc:'a store or a multi-page site, turnkey: design, development, payments and crm, launch. like mebel-novomih.ru and 1kik.by in the cases.', points:['online store — from $1,500','turnkey site: design + dev','integrations: payments · crm']},
+          {n:'p2', k:'03', at:0.42, title:'app / automation', range:'from $8k', desc:'a web or mobile app, an internal system, process automation. we start with an mvp — a working core that already removes the routine — and grow it in sprints.', points:['app mvp — from $8k','internal systems & automation','contract and legal entity · nda on request']}
         ]
       },
       faq:{
