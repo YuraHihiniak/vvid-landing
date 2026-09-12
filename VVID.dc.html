@@ -166,6 +166,37 @@
   /* ===== scroll-film (desktop): sticky hero, fluid = состояние покоя, главы поверх кадров ===== */
   html:not(.pre-done){overflow:hidden}
   .film-cap{position:absolute;left:26px;right:26px;bottom:clamp(96px,16vh,170px);max-width:min(46vw,40ch);color:#fff;opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);pointer-events:none}
+  /* «что делаем» — строки по Hobro: скользящая терракотовая плашка во всю ширину, слова и описание на ховере, превью-скан за курсором */
+  .wd-plate{position:absolute;left:0;right:0;top:0;height:0;background:var(--acc,#b9543f);opacity:0;transition:opacity .3s;will-change:transform,height;z-index:0;pointer-events:none}
+  .wd-rows{border-top:1px solid rgba(228,222,210,.18)}
+  .wd-row{display:grid;grid-template-columns:64px 1fr auto;gap:clamp(16px,3vw,48px);align-items:baseline;padding:clamp(22px,3vw,40px) 0;border-bottom:1px solid rgba(228,222,210,.18);color:inherit;text-decoration:none;position:relative;transition:padding-left .55s cubic-bezier(.16,1,.3,1),border-color .4s;outline:none}
+  .wd-row.on{border-bottom-color:transparent}
+  .wd-row:focus-visible .wd-title{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:.12em}
+  .wd-n{font-family:'PT Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.08em;color:#8f877a;transition:color .4s}
+  .wd-main{min-width:0}
+  .wd-title{display:block;font-family:var(--font-display);font-weight:600;font-size:clamp(30px,5vw,80px);line-height:1;letter-spacing:-.04em;text-wrap:balance;transition:color .4s}
+  .wd-words{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:'PT Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#8f877a;max-height:0;opacity:0;overflow:hidden;margin-top:0;transition:max-height .5s cubic-bezier(.16,1,.3,1),opacity .4s,margin .5s cubic-bezier(.16,1,.3,1),color .4s}
+  .wd-desc{display:block;font-size:15px;line-height:1.5;color:#cfc7b9;max-width:56ch;text-wrap:pretty;max-height:0;opacity:0;overflow:hidden;margin-top:0;transition:max-height .55s cubic-bezier(.16,1,.3,1),opacity .4s,margin .5s cubic-bezier(.16,1,.3,1),color .4s}
+  .wd-row.on .wd-words{max-height:64px;opacity:1;margin-top:14px}
+  .wd-row.on .wd-desc{max-height:140px;opacity:1;margin-top:12px}
+  .wd-price{font-family:var(--font-accent);font-style:italic;font-size:clamp(18px,2vw,28px);white-space:nowrap;color:#e4ded2;font-variant-numeric:tabular-nums;transition:color .4s}
+  .wd-price.soft{color:#8f877a;font-size:clamp(15px,1.4vw,19px)}
+  .wd-row.on .wd-n,.wd-row.on .wd-words{color:rgba(255,255,255,.74)}
+  .wd-row.on .wd-title,.wd-row.on .wd-price{color:#fff}
+  .wd-row.on .wd-price.soft{color:rgba(255,255,255,.8)}
+  .wd-row.on .wd-desc{color:rgba(255,255,255,.88)}
+  .wd-foot{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,60px);margin-top:clamp(40px,5vw,64px)}
+  .wd-foot-l{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--acc,#b9543f);margin-bottom:12px}
+  .wd-foot-t{font-size:15px;line-height:1.5;color:#b6ad9e;max-width:52ch}
+  .wd-preview{position:absolute;left:0;top:0;width:clamp(220px,24vw,360px);height:clamp(170px,17.5vw,260px);z-index:3;pointer-events:none;opacity:0;transition:opacity .35s;background:rgba(19,17,12,.84);border:1px solid rgba(228,222,210,.16);will-change:transform;overflow:hidden}
+  @media (min-width:1100px){ .wd-row{padding-right:56px} }   /* цена не заезжает под правую рельсу навигации */
+  @media (pointer:coarse),(max-width:760px){
+    .wd-row{grid-template-columns:40px 1fr;gap:12px 14px;align-items:start}
+    .wd-price{grid-column:2;justify-self:start;font-size:17px}
+    .wd-plate,.wd-preview,.wd-words,.wd-desc{display:none}
+    .wd-foot{grid-template-columns:1fr}
+  }
+  @media (prefers-reduced-motion:reduce){ .wd-plate,.wd-preview{display:none} }
   .film-cap .fc-k{display:block;font:500 11px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:16px}
   .film-cap .fc-t{display:block;font-family:var(--font-display);font-weight:600;text-transform:none;font-size:clamp(26px,3.8vw,60px);line-height:.98;letter-spacing:-.035em;text-wrap:balance}
   html.film-c1 .film-cap[data-cap="1"],html.film-c2 .film-cap[data-cap="2"],html.film-c3 .film-cap[data-cap="3"],html.film-end .film-cap[data-cap="end"]{opacity:1;transform:none}
@@ -295,7 +326,6 @@
       <span data-navgroup="1" style="display:flex;align-items:center;gap:30px">
         <a href="#capabilities" style="opacity:.7" style-hover="opacity:1">{{ t.navServices }}</a>
         <a href="#work" style="opacity:.7" style-hover="opacity:1">{{ t.navCases }}</a>
-        <a href="#process" style="opacity:.7" style-hover="opacity:1">{{ t.navProcess }}</a>
         <a href="#pricing" style="opacity:.7" style-hover="opacity:1">{{ t.navPricing }}</a>
       </span>
       <button data-calm-btn="1" ref="{{ setCalmBtn }}" onClick="{{ toggleCalm }}" aria-pressed="false" style="display:flex;align-items:center;gap:7px;background:none;border:none;color:inherit;font-family:inherit;font-size:11px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;opacity:.7" style-hover="opacity:1"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;display:inline-block"></span>motion <span data-calm-label="1" ref="{{ setCalmLabel }}">on</span></button>
@@ -305,7 +335,6 @@
       <div class="m-panel">
         <a href="#capabilities" onClick="{{ closeMenu }}">{{ t.navServices }}</a>
         <a href="#work" onClick="{{ closeMenu }}">{{ t.navCases }}</a>
-        <a href="#process" onClick="{{ closeMenu }}">{{ t.navProcess }}</a>
         <a href="#pricing" onClick="{{ closeMenu }}">{{ t.navPricing }}</a>
       </div>
     </nav>
@@ -396,9 +425,10 @@
   </section>
 
   <!-- 03 CAPABILITIES -->
-  <section id="capabilities" data-screen-label="03 Capabilities" style="position:relative;z-index:10;background:rgba(19,17,12,.9);color:#e4ded2;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
+  <section id="capabilities" data-screen-label="03 What we do" data-ascii-wd="1" style="position:relative;z-index:10;background:rgba(19,17,12,.9);color:#e4ded2;padding:clamp(90px,13vw,180px) 0;overflow:hidden">
     <div data-speed="6" data-pmax="150" style="position:absolute;top:2vw;left:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(228,222,210,.04);pointer-events:none;user-select:none">03</div>
-    <div data-depth="1" style="max-width:1320px;margin:0 auto;position:relative;z-index:1">
+    <div data-wd-plate="1" class="wd-plate" aria-hidden="true"></div>
+    <div data-depth="1" style="max-width:1372px;margin:0 auto;position:relative;z-index:1;padding:0 26px">
       <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:clamp(50px,7vw,90px)">
         <div>
           <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8f877a;margin-bottom:24px">{{ t.fig03 }}</div>
@@ -406,32 +436,30 @@
         </div>
         <div data-reveal="1" style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#8f877a">{{ t.capSide1 }}<br>{{ t.capSide2 }}</div>
       </div>
-      <div style="border-top:1px solid rgba(228,222,210,.18)">
-        <sc-for list="{{ capabilities }}" as="cap" hint-placeholder-count="4">
-          <a href="#brief" data-cap-row="1" data-reveal="1" style="display:grid;grid-template-columns:60px 1fr;gap:clamp(20px,5vw,80px);align-items:start;padding:clamp(28px,4vw,48px) 0;border-bottom:1px solid rgba(228,222,210,.18);color:inherit;transition:padding-left .5s cubic-bezier(.16,1,.3,1),background .5s" style-hover="padding-left:18px;background:rgba(228,222,210,.03)">
-            <div style="font-size:13px;letter-spacing:.1em;color:#8f877a;padding-top:8px">{{ cap.n }}</div>
-            <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,60px)" data-cap-inner>
-              <div>
-                <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--acc,#b9543f);margin-bottom:14px">{{ cap.tag }}</div>
-                <h3 style="font-size:clamp(22px,2.8vw,38px);line-height:1.05;letter-spacing:-.03em;font-weight:600;margin:0">{{ cap.title }}</h3>
-              </div>
-              <div>
-                <p style="margin:0 0 20px;font-size:15px;line-height:1.55;color:#b6ad9e;text-wrap:pretty">{{ cap.desc }}</p>
-                <div style="display:flex;flex-wrap:wrap;gap:8px">
-                  <sc-for list="{{ cap.specs }}" as="spec" hint-placeholder-count="4">
-                    <span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8f877a;border:1px solid rgba(228,222,210,.22);padding:5px 9px">{{ spec }}</span>
-                  </sc-for>
-                </div>
-              </div>
-            </div>
+      <div data-wd-rows="1" class="wd-rows">
+        <sc-for list="{{ capabilities }}" as="cap" hint-placeholder-count="5">
+          <a href="#brief" class="wd-row" data-wd-row="1" data-reveal="1">
+            <span class="wd-n">({{ cap.n }})</span>
+            <span class="wd-main">
+              <span class="wd-title">{{ cap.title }}</span>
+              <span class="wd-words"><sc-for list="{{ cap.specs }}" as="spec" hint-placeholder-count="4"><span>{{ spec }}</span></sc-for></span>
+              <span class="wd-desc">{{ cap.desc }}</span>
+            </span>
+            <span class="wd-price {{ cap.soft }}">{{ cap.price }}</span>
           </a>
         </sc-for>
       </div>
+      <div class="wd-foot">
+        <div data-reveal="1"><div class="wd-foot-l">{{ t.wdProcLabel }}</div><div class="wd-foot-t">{{ t.procH2 }}</div></div>
+        <div data-reveal="1" data-delay="80"><div class="wd-foot-l">{{ t.procRetLabel }}</div><div class="wd-foot-t">{{ t.procRetText }}</div></div>
+      </div>
+    </div>
+    <div class="wd-preview" aria-hidden="true">
+      <canvas data-ascii-canvas="1" style="width:100%;height:100%;display:block"></canvas>
     </div>
   </section>
 
   <!-- 04 CASES — lookbook (artefakt-style: case list + ASCII tech motifs, native scroll) -->
-  <!-- MINI-FILM A — материя между главами -->
 
   <section id="work" data-screen-label="04 Cases" style="position:relative;z-index:10;background:rgba(228,222,210,.93);color:#1b1812;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
     <div data-speed="6" data-pmax="150" style="position:absolute;top:1vw;right:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(27,24,18,.035);pointer-events:none;user-select:none">04</div>
@@ -484,35 +512,6 @@
   </section>
 
   <!-- 05 PROCESS -->
-  <section id="process" data-screen-label="05 Process" style="position:relative;z-index:10;background:rgba(19,17,12,.9);color:#e4ded2;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
-    <div data-speed="6" data-pmax="150" style="position:absolute;bottom:-4vw;right:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(228,222,210,.04);pointer-events:none;user-select:none">05</div>
-    <figure data-plate="1" data-reveal="1" data-delay="220" data-speed="-2" data-pmax="70" style="position:absolute;left:1vw;top:6vw;z-index:0;width:clamp(140px,18vw,280px);aspect-ratio:1;margin:0;overflow:hidden;pointer-events:none;opacity:.55"><img src="./img/plate-crack.webp" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></figure>
-    <div data-depth="1" style="max-width:1320px;margin:0 auto;position:relative;z-index:1">
-      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:clamp(50px,7vw,90px)">
-        <div>
-          <div data-reveal="1" style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8f877a;margin-bottom:24px">{{ t.fig05 }}</div>
-          <h2 data-kinetic="1" data-i18n="procH2" style="font-size:clamp(28px,4.6vw,64px);line-height:1.02;letter-spacing:-.035em;font-weight:600;margin:0;max-width:18ch">{{ t.procH2 }}</h2>
-        </div>
-        <div data-reveal="1" style="max-width:280px">
-          <div style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--acc,#b9543f);margin-bottom:12px">{{ t.procRetLabel }}</div>
-          <div style="font-size:15px;line-height:1.5;color:#b6ad9e">{{ t.procRetText }}</div>
-        </div>
-      </div>
-      <div style="border-top:1px solid rgba(228,222,210,.18)">
-        <sc-for list="{{ process }}" as="st" hint-placeholder-count="5">
-          <div class="proc-row" data-reveal="1" data-delay="{{ st.delay }}" style="display:grid;grid-template-columns:60px 1fr auto;gap:clamp(20px,4vw,60px);align-items:baseline;padding:clamp(24px,3.4vw,40px) 0;border-bottom:1px solid rgba(228,222,210,.18)">
-            <div class="proc-num" style="font-family:'PT Mono',monospace;font-size:14px;letter-spacing:.05em;color:var(--acc,#b9543f)">{{ st.n }}</div>
-            <div>
-              <h3 class="proc-title" style="font-size:clamp(20px,2.4vw,30px);line-height:1.05;letter-spacing:-.03em;font-weight:600;margin:0 0 10px">{{ st.title }}</h3>
-              <p style="margin:0;font-size:15px;line-height:1.5;color:#b6ad9e;max-width:60ch;text-wrap:pretty">{{ st.desc }}</p>
-            </div>
-            <div class="proc-meta" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#8f877a;white-space:nowrap">{{ st.meta }}</div>
-          </div>
-        </sc-for>
-      </div>
-    </div>
-  </section>
-
   <!-- 06 PRICING -->
   <section id="pricing" data-screen-label="06 Pricing" style="position:relative;z-index:10;background:rgba(228,222,210,.93);color:#1b1812;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
     <div data-speed="6" data-pmax="150" style="position:absolute;top:1vw;left:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(27,24,18,.04);pointer-events:none;user-select:none">06</div>
@@ -598,7 +597,6 @@
   </section>
 
   <!-- 08 CLOSER -->
-  <!-- MINI-FILM B — материя между главами -->
 
   <section id="brief" data-screen-label="08 Closer" style="position:relative;z-index:10;background:rgba(228,222,210,.93);color:#1b1812;padding:clamp(90px,13vw,180px) 26px">
     <div style="max-width:1320px;margin:0 auto">
@@ -877,6 +875,7 @@ class Component extends DCLogic {
     this.initKinetic();
     this.initHeroLetters();
     this.initAsciiTeam();
+    this.initWhatWeDo();
     this.initAsciiCases();
     this.initAscii3D();
     this.initHeroFluid();
@@ -1675,6 +1674,14 @@ class Component extends DCLogic {
         const dot = new THREE.Mesh(new THREE.SphereGeometry(0.06,12,12), matGlow); dot.position.set(-0.72,-0.85,0.05); g.add(dot);
         return { group:g, tick(t){ const w=Math.sin(t*1.6)*0.06; pen.position.set(w*0.6,w*0.3,0); tip.position.set(-0.62+w*0.6,-0.72+w*0.3,0); } };
       },
+      register(){ // Магазины и сайты — кассовый аппарат (CC0 Poly Haven): торговля, оплаты, витрина
+        const g = loadScan('./models/cash_register/CashRegister_01_1k.gltf', { size: 2.6 });
+        return { group:g, ma:0.5, mb:0.3, tick(t){ g.rotation.y += Math.sin(t*0.26)*0.22; g.rotation.x += Math.sin(t*0.5)*0.03; } };
+      },
+      megaphone(){ // Телеграм-боты — мегафон (CC0 Poly Haven): сообщения, рассылки, диалог
+        const g = loadScan('./models/megaphone/Megaphone_01_1k.gltf', { size: 2.0 });
+        return { group:g, ma:0.55, mb:0.3, tick(t){ g.rotation.y += Math.sin(t*0.3)*0.24; g.rotation.z += Math.sin(t*0.7)*0.04; } };
+      },
       bust(){ // Дизайн — мраморный бюст (CC0 Poly Haven): скульптура = форма/искусство
         const g = loadScan('./models/marble_bust/marble_bust_01_1k.gltf', { size: 2.05 }); // native-ориентация = лицом (PI разворачивал спиной)
         // ограниченное покачивание вокруг лицевого ракурса — модель всегда смотрит на зрителя
@@ -1721,7 +1728,7 @@ class Component extends DCLogic {
     let renderer;
     try{ renderer = new THREE.WebGLRenderer({antialias:true, alpha:false, powerPreference:'low-power'}); }catch(e){ return null; }
     renderer.setSize(W,H); renderer.setClearColor(0x000000,1); // чисто чёрный фон → пустые клетки = пробел, без точечной сетки
-    const isBust = role==='team';
+    const isBust = role==='team' || role==='wd';                       // сканы: PBR-свет и выше разрешение
     scene.add(new THREE.AmbientLight(0x403428, isBust?0.3:0.28));
     const key = new THREE.DirectionalLight(0xfff2e0, isBust?5.6:3.2); key.position.set(3,4,5); scene.add(key);
     const rim = new THREE.DirectionalLight(0xc66048, isBust?2.2:2.4); rim.position.set(-4,1.5,-3); scene.add(rim);
@@ -1733,17 +1740,17 @@ class Component extends DCLogic {
     const matDark  = new THREE.MeshToonMaterial({ color:0x1c1712, gradientMap:ramp });
     const matTerra = new THREE.MeshToonMaterial({ color:0xc0563f, gradientMap:ramp });
     const matGlow  = new THREE.MeshBasicMaterial({ color:0xffcaa6 });
-    const KIND_SETS = { cases:['ping','lamp','card','monitor'], team:['circuit','watch','bust'] };
+    const KIND_SETS = { cases:['ping','lamp','card','monitor'], team:['circuit','watch','bust'], wd:['circuit','register','bust','megaphone','watch'] };
     const kinds = KIND_SETS[role] || ['ping'];
     const build = this.buildAscii3DIcons(THREE, matCream, matDark, matTerra, matGlow);
     const icons = kinds.map(k=> build[k] ? build[k]() : build.ping());
     icons.forEach((ic,i)=>{ ic.group.visible=(i===0); scene.add(ic.group); });
     let activeIdx = 0, pendingIdx = -1, morphT = -1;
     const CHARS = ' .·:-=+*oxaев#%@';
-    const effect = new AsciiEffect(renderer, CHARS, {invert:true, resolution: role==='team' ? 0.24 : 0.19});
+    const effect = new AsciiEffect(renderer, CHARS, {invert:true, resolution: role==='team' ? 0.24 : role==='wd' ? 0.22 : 0.19});
     effect.setSize(W,H);
     const dom = effect.domElement; dom.setAttribute('aria-hidden','true');
-    dom.style.cssText = 'position:absolute;inset:0;z-index:1;display:flex;align-items:center;color:'+(isBust?'#d87a60':'#a8462f')+';font-family:"PT Mono",ui-monospace,monospace;font-weight:600;line-height:0.84;letter-spacing:0;text-align:left;pointer-events:none;overflow:hidden';
+    dom.style.cssText = 'position:absolute;inset:0;z-index:1;display:flex;align-items:center;color:'+(role==='wd'?'#e4ded2':isBust?'#d87a60':'#a8462f')+';font-family:"PT Mono",ui-monospace,monospace;font-weight:600;line-height:0.84;letter-spacing:0;text-align:left;pointer-events:none;overflow:hidden';
     if(getComputedStyle(host).position === 'static') host.style.position = 'relative';
     host.appendChild(dom); canvas.style.visibility = 'hidden';
     const mouse = {x:0, y:0, tx:0, ty:0}; let raf=0, running=false, visible=false, t=0;
@@ -1791,11 +1798,11 @@ class Component extends DCLogic {
     if(!window.THREE || !window.AsciiEffect){ this._a3dTries=(this._a3dTries||0)+1; if(this._a3dTries<160) setTimeout(()=>this.initAscii3D(),120); return; }
     this._a3dDone = true; this._a3d = [];
     Array.from(this.root.querySelectorAll('[data-ascii-canvas]')).forEach(cv=>{
-      const wrap = cv.closest('[data-ascii-cases],[data-ascii-team]');
-      const role = wrap ? (wrap.hasAttribute('data-ascii-cases') ? 'cases' : 'team') : null;
+      const wrap = cv.closest('[data-ascii-cases],[data-ascii-team],[data-ascii-wd]');
+      const role = wrap ? (wrap.hasAttribute('data-ascii-cases') ? 'cases' : wrap.hasAttribute('data-ascii-wd') ? 'wd' : 'team') : null;
       const three = this.makeAscii3D(cv, role); if(!three) return; this._a3d.push(three);
       if(wrap){ let last=-1;
-        const check=()=>{ const btns=wrap.querySelectorAll('[data-case-name],[data-team-name]'); let act=-1; btns.forEach((b,i)=>{ if((parseFloat(b.style.paddingLeft)||0)>2) act=i; }); if(act>=0 && act!==last){ last=act; three.morph(act); } };
+        const check=()=>{ const btns=wrap.querySelectorAll('[data-case-name],[data-team-name],[data-wd-row]'); let act=-1; btns.forEach((b,i)=>{ if((parseFloat(b.style.paddingLeft)||0)>2) act=i; }); if(act>=0 && act!==last){ last=act; three.morph(act); } };
         const mo=new MutationObserver(()=>check()); mo.observe(wrap,{attributes:true,subtree:true,attributeFilter:['style']}); three._mo=mo; check();
       }
     });
@@ -1821,6 +1828,38 @@ class Component extends DCLogic {
     if(!ctl) return;
     this._asciiCases = ctl; try{window.__dbg=this;}catch(e){}
     (this._asciiPanels = this._asciiPanels || []).push(ctl);
+  }
+
+  /* ---------- «ЧТО ДЕЛАЕМ» — строки по Hobro: скользящая плашка на всю ширину · слова/описание на ховере · превью-скан за курсором ---------- */
+  initWhatWeDo(){
+    const sec=this.root.querySelector('[data-ascii-wd]'); if(!sec||sec._wdBound) return; sec._wdBound=true;
+    const plate=sec.querySelector('[data-wd-plate]'), prev=sec.querySelector('.wd-preview'), rowsEl=sec.querySelector('[data-wd-rows]'); if(!plate||!rowsEl) return;
+    const fine=!!(window.matchMedia&&window.matchMedia('(hover:hover) and (pointer:fine)').matches);
+    const rows=()=>Array.from(sec.querySelectorAll('[data-wd-row]'));
+    let act=-1, py=0, ph=0, ty=0, th=0, raf=0, mx=0, my=0, px=0, pyv=0, hot=false;
+    const target=()=>{ const r=act>=0?rows()[act]:null; if(!r) return; const rr=r.getBoundingClientRect(), sr=sec.getBoundingClientRect(); ty=rr.top-sr.top; th=rr.height; };
+    const loop=()=>{ raf=0; target();
+      py+=(ty-py)*0.18; ph+=(th-ph)*0.18; plate.style.transform='translateY('+py.toFixed(1)+'px)'; plate.style.height=ph.toFixed(1)+'px';
+      if(fine&&prev&&hot){ px+=(mx-px)*0.14; pyv+=(my-pyv)*0.14; prev.style.transform='translate3d('+px.toFixed(1)+'px,'+pyv.toFixed(1)+'px,0)'; }
+      if(act>=0||Math.abs(ty-py)>0.4||Math.abs(th-ph)>0.4||(hot&&(Math.abs(mx-px)>0.4||Math.abs(my-pyv)>0.4))) raf=requestAnimationFrame(loop); };
+    const kick=()=>{ if(!raf) raf=requestAnimationFrame(loop); };
+    const setAct=(i)=>{ if(i===act) return; const was=act; act=i;
+      rows().forEach((r,k)=>{ const on=k===i; r.classList.toggle('on',on); r.style.paddingLeft=on?'18px':'0'; });   // paddingLeft читает наблюдатель 3D-панели → morph
+      if(i<0){ plate.style.opacity='0'; } else { if(was<0){ target(); py=ty; ph=th; } plate.style.opacity='1'; }
+      kick(); };
+    sec.addEventListener('mouseover',(e)=>{ const r=e.target&&e.target.closest&&e.target.closest('[data-wd-row]'); if(r) setAct(rows().indexOf(r)); });
+    rowsEl.addEventListener('mouseleave',()=>setAct(-1));
+    sec.addEventListener('focusin',(e)=>{ const r=e.target&&e.target.closest&&e.target.closest('[data-wd-row]'); if(r) setAct(rows().indexOf(r)); });
+    sec.addEventListener('focusout',(e)=>{ const t=e.relatedTarget; if(!t||!t.closest||!t.closest('[data-wd-row]')) setAct(-1); });
+    if(fine&&prev){
+      rowsEl.addEventListener('mousemove',(e)=>{ const sr=sec.getBoundingClientRect(); const W=prev.offsetWidth||400, H=prev.offsetHeight||300;
+        const row=e.target&&e.target.closest&&e.target.closest('[data-wd-row]'); const tb=row?row.querySelector('.wd-title'):null; const tBot=tb?tb.getBoundingClientRect().bottom-sr.top:0;
+        let x=e.clientX-sr.left+28, y=Math.max(e.clientY-sr.top+28, tBot+6);   // карточка ниже заголовка строки — сам заголовок не перекрывает
+        if(x+W>sr.width-16) x=e.clientX-sr.left-W-28; if(x<8) x=8; if(y+H>sr.height-8) y=sr.height-H-8;
+        mx=x; my=y; if(!hot){ hot=true; px=x; pyv=y; prev.style.transform='translate3d('+x+'px,'+y+'px,0)'; prev.style.opacity='1'; } kick(); },{passive:true});
+      rowsEl.addEventListener('mouseleave',()=>{ hot=false; prev.style.opacity='0'; });
+    }
+    this._wd={ setAct, rows };
   }
 
   /* ---------- MAGNETIC ---------- */
@@ -2061,7 +2100,7 @@ class Component extends DCLogic {
     const T = {
       ru:{
         hdrTag:'студия разработки и автоматизации',
-        navServices:'услуги', navCases:'кейсы', navProcess:'процесс', navPricing:'прайс', navBrief:'бриф',
+        navServices:'услуги', navCases:'кейсы', navPricing:'прайс', navBrief:'бриф',
         heroEyebrow:'разработка и автоматизация для бизнеса',
         heroH1a:'автоматизируем то, что ', heroH1b:'съедает вашу прибыль',
         heroBig1:'мы VVID', heroBig2:'мы делаем', heroBig3:'большие', heroBig4:'вещи', heroBigAria:'мы VVID, мы делаем большие вещи',
@@ -2072,13 +2111,12 @@ class Component extends DCLogic {
         fig02:'fig.02 — манифест',
         manifH2:'ваш бизнес уже работает. мы снимаем его с ручного привода.',
         manifPa:'разбираем процесс на детали и собираем систему, которая держит нагрузку — ', manifPb:'приложение, сайт, бот или интеграция',
-        fig03:'fig.03 — услуги', capH2:'строим то, что не умеют готовые решения.',
+        fig03:'fig.03 — что делаем', capH2:'строим то, что не умеют готовые решения.',
         capSide1:'5 услуг', capSide2:'приложения · сайты · дизайн · боты · интеграции',
         fig04:'fig.04 — кейсы', casesH2a:'что уже собрано.', casesH2b:'три проекта в проде — открывайте.',
         contractBadge:'4 проекта · 3 в проде · 1 в разработке', fig04a:'fig.04.a — ascii / пайплайн',
-        caseCloserEyebrow:'кейс 05 — свободен', caseCloserA:'здесь будет ', caseCloserB:'ваш кейс', caseCloserCta:'оставить бриф →',
-        fig05:'fig.05 — процесс', procH2:'разбор → чертёж → сборка → запуск. 5 шагов, от 5 недель до прода.',
-        procRetLabel:'кто на связи', procRetText:'между вами и кодом — ноль менеджеров. пишете инженеру в telegram @vvid, в рабочее время отвечаем меньше чем за 2 часа.',
+        caseCloserEyebrow:'кейс 05 — свободен', caseCloserA:'здесь будет ', caseCloserB:'ваш кейс', caseCloserCta:'оставить бриф →', procH2:'разбор → чертёж → сборка → запуск. 5 шагов, от 5 недель до прода.',
+        wdProcLabel:'как работаем', procRetLabel:'кто на связи', procRetText:'между вами и кодом — ноль менеджеров. пишете инженеру в telegram @vvid, в рабочее время отвечаем меньше чем за 2 часа.',
         fig06:'fig.06 — прайс', pricingH2:'прозрачный прайс. без «по запросу», где можно назвать цифру.',
         pricingFootnote:'гарантия 50 дней: после запуска поддержка бесплатно. дальше — по договорённости.',
         fig07:'fig.07 — команда · три ремесла', fig07a:'fig.07.a — ascii / системы', faqLabel:'faq — что спрашивают до старта',
@@ -2093,7 +2131,7 @@ class Component extends DCLogic {
       },
       en:{
         hdrTag:'development & automation studio',
-        navServices:'services', navCases:'work', navProcess:'process', navPricing:'pricing', navBrief:'brief',
+        navServices:'services', navCases:'work', navPricing:'pricing', navBrief:'brief',
         heroEyebrow:'development & automation for business',
         heroH1a:'we automate what ', heroH1b:'eats your profit',
         heroBig1:'we are VVID', heroBig2:'we do', heroBig3:'big', heroBig4:'things', heroBigAria:'we are VVID, we do big things',
@@ -2104,13 +2142,12 @@ class Component extends DCLogic {
         fig02:'fig.02 — manifesto',
         manifH2:'your business already runs. we take it off manual.',
         manifPa:'we take the process apart and rebuild it as a system that holds the load — ', manifPb:'an app, a site, a bot or an integration',
-        fig03:'fig.03 — services', capH2:'we build what off-the-shelf tools can’t.',
+        fig03:'fig.03 — what we do', capH2:'we build what off-the-shelf tools can’t.',
         capSide1:'5 services', capSide2:'apps · sites · design · bots · integrations',
         fig04:'fig.04 — work', casesH2a:'what’s already built.', casesH2b:'three live — open them.',
         contractBadge:'4 projects · 3 live · 1 in development', fig04a:'fig.04.a — ascii / pipeline',
-        caseCloserEyebrow:'case 05 — open', caseCloserA:'this could be ', caseCloserB:'your case', caseCloserCta:'leave a brief →',
-        fig05:'fig.05 — process', procH2:'teardown → blueprint → assembly → launch. 5 steps, 5+ weeks to production.',
-        procRetLabel:'who you talk to', procRetText:'zero managers between you and the code. you message the engineer on telegram @vvid; we reply within 2 hours in work hours.',
+        caseCloserEyebrow:'case 05 — open', caseCloserA:'this could be ', caseCloserB:'your case', caseCloserCta:'leave a brief →', procH2:'teardown → blueprint → assembly → launch. 5 steps, 5+ weeks to production.',
+        wdProcLabel:'how we work', procRetLabel:'who you talk to', procRetText:'zero managers between you and the code. you message the engineer on telegram @vvid; we reply within 2 hours in work hours.',
         fig06:'fig.06 — pricing', pricingH2:'transparent pricing. no “on request” where we can name a number.',
         pricingFootnote:'50-day guarantee: free support after launch. beyond that — by agreement.',
         fig07:'fig.07 — team · three crafts', fig07a:'fig.07.a — ascii / systems', faqLabel:'faq — what people ask before starting',
@@ -2139,18 +2176,18 @@ class Component extends DCLogic {
       },
       capabilities:{
         ru:[
-          {n:'01', tag:'приложения', title:'веб- и мобильные приложения', desc:'внутренние системы, crm, кабинеты, дашборды. встраиваем в бизнес, который уже работает, — не останавливая его.', specs:['web · mobile','crm · кабинеты','дашборды','интеграции']},
-          {n:'02', tag:'сайты', title:'сайты и интернет-магазины', desc:'интернет-магазины, лендинги, корпоративные сайты — с админкой, аналитикой и оплатами. два магазина из кейсов ниже открываются.', specs:['интернет-магазины','лендинги','корп. сайты','админка']},
-          {n:'03', tag:'дизайн', title:'дизайн-макеты · ui/ux', desc:'макеты сайтов, приложений и ботов в figma: от прототипа до файла, который можно отдать в разработку — нам или кому угодно.', specs:['ui/ux','прототипы','figma','дизайн-система']},
-          {n:'04', tag:'боты', title:'телеграм-боты и mini apps', desc:'заявки, продажи, поддержка, оплаты, связка с crm — в telegram, где ваш клиент уже сидит. от 20 000 ₽.', specs:['bot api','mini apps','оплаты','crm-связки']},
-          {n:'05', tag:'интеграции', title:'интеграции и доработка', desc:'когда переделывать всё не нужно: связываем 1с, crm, оплаты и таблицы через api и дорабатываем то, что есть.', specs:['api · интеграции','автоматизация','доработка','миграции']}
+          {n:'01', price:'от 700 000 ₽', soft:'', tag:'приложения', title:'веб- и мобильные приложения', desc:'внутренние системы, crm, кабинеты, дашборды. встраиваем в бизнес, который уже работает, — не останавливая его.', specs:['web · mobile','crm · кабинеты','дашборды','интеграции']},
+          {n:'02', price:'от 140 000 ₽', soft:'', tag:'сайты', title:'сайты и интернет-магазины', desc:'интернет-магазины, лендинги, корпоративные сайты — с админкой, аналитикой и оплатами. два магазина из кейсов ниже открываются. лендинг — от 30 000 ₽.', specs:['интернет-магазины','лендинги','корп. сайты','админка']},
+          {n:'03', price:'по задаче', soft:'soft', tag:'дизайн', title:'дизайн-макеты · ui/ux', desc:'макеты сайтов, приложений и ботов в figma: от прототипа до файла, который можно отдать в разработку — нам или кому угодно.', specs:['ui/ux','прототипы','figma','дизайн-система']},
+          {n:'04', price:'от 20 000 ₽', soft:'', tag:'боты', title:'телеграм-боты и mini apps', desc:'заявки, продажи, поддержка, оплаты, связка с crm — в telegram, где ваш клиент уже сидит. от 20 000 ₽.', specs:['bot api','mini apps','оплаты','crm-связки']},
+          {n:'05', price:'по задаче', soft:'soft', tag:'интеграции', title:'интеграции и доработка', desc:'когда переделывать всё не нужно: связываем 1с, crm, оплаты и таблицы через api и дорабатываем то, что есть.', specs:['api · интеграции','автоматизация','доработка','миграции']}
         ],
         en:[
-          {n:'01', tag:'apps', title:'web & mobile apps', desc:'internal systems, crm, portals, dashboards. built into a business that already runs — without stopping it.', specs:['web · mobile','crm · portals','dashboards','integrations']},
-          {n:'02', tag:'websites', title:'websites & online stores', desc:'online stores, landing pages, corporate sites — with an admin panel, analytics and payments. two of the stores are in the cases below — open them.', specs:['online stores','landing pages','corporate sites','admin panel']},
-          {n:'03', tag:'design', title:'design · ui/ux', desc:'site, app and bot mockups in figma: from prototype to a file you can hand to any developer — us or anyone else.', specs:['ui/ux','prototypes','figma','design system']},
-          {n:'04', tag:'bots', title:'telegram bots & mini apps', desc:'leads, sales, support, payments, crm sync — inside telegram, where your customer already is. from $250.', specs:['bot api','mini apps','payments','crm sync']},
-          {n:'05', tag:'integrations', title:'integrations & improvements', desc:'when a rebuild isn’t needed: we connect 1c, crm, payments and spreadsheets via api and refine what you have.', specs:['api · integrations','automation','refinement','migrations']}
+          {n:'01', price:'from $8k', soft:'', tag:'apps', title:'web & mobile apps', desc:'internal systems, crm, portals, dashboards. built into a business that already runs — without stopping it.', specs:['web · mobile','crm · portals','dashboards','integrations']},
+          {n:'02', price:'from $1,500', soft:'', tag:'websites', title:'websites & online stores', desc:'online stores, landing pages, corporate sites — with an admin panel, analytics and payments. two of the stores are in the cases below — open them. landing page — from $375.', specs:['online stores','landing pages','corporate sites','admin panel']},
+          {n:'03', price:'per project', soft:'soft', tag:'design', title:'design · ui/ux', desc:'site, app and bot mockups in figma: from prototype to a file you can hand to any developer — us or anyone else.', specs:['ui/ux','prototypes','figma','design system']},
+          {n:'04', price:'from $250', soft:'', tag:'bots', title:'telegram bots & mini apps', desc:'leads, sales, support, payments, crm sync — inside telegram, where your customer already is. from $250.', specs:['bot api','mini apps','payments','crm sync']},
+          {n:'05', price:'per project', soft:'soft', tag:'integrations', title:'integrations & improvements', desc:'when a rebuild isn’t needed: we connect 1c, crm, payments and spreadsheets via api and refine what you have.', specs:['api · integrations','automation','refinement','migrations']}
         ]
       },
       cases:{
@@ -2236,8 +2273,8 @@ class Component extends DCLogic {
         ]
       },
       rail:{
-        ru:[{n:'01',id:'top',href:'#top',l:'старт'},{n:'02',id:'manifesto',href:'#manifesto',l:'манифест'},{n:'03',id:'capabilities',href:'#capabilities',l:'услуги'},{n:'04',id:'work',href:'#work',l:'кейсы'},{n:'05',id:'process',href:'#process',l:'процесс'},{n:'06',id:'pricing',href:'#pricing',l:'прайс'},{n:'07',id:'team',href:'#team',l:'команда'},{n:'08',id:'brief',href:'#brief',l:'бриф'}],
-        en:[{n:'01',id:'top',href:'#top',l:'start'},{n:'02',id:'manifesto',href:'#manifesto',l:'manifesto'},{n:'03',id:'capabilities',href:'#capabilities',l:'services'},{n:'04',id:'work',href:'#work',l:'cases'},{n:'05',id:'process',href:'#process',l:'process'},{n:'06',id:'pricing',href:'#pricing',l:'pricing'},{n:'07',id:'team',href:'#team',l:'team'},{n:'08',id:'brief',href:'#brief',l:'brief'}]
+        ru:[{n:'01',id:'top',href:'#top',l:'старт'},{n:'02',id:'manifesto',href:'#manifesto',l:'манифест'},{n:'03',id:'capabilities',href:'#capabilities',l:'что делаем'},{n:'04',id:'work',href:'#work',l:'кейсы'},{n:'05',id:'pricing',href:'#pricing',l:'прайс'},{n:'06',id:'team',href:'#team',l:'команда'},{n:'07',id:'brief',href:'#brief',l:'бриф'}],
+        en:[{n:'01',id:'top',href:'#top',l:'start'},{n:'02',id:'manifesto',href:'#manifesto',l:'manifesto'},{n:'03',id:'capabilities',href:'#capabilities',l:'what we do'},{n:'04',id:'work',href:'#work',l:'cases'},{n:'05',id:'pricing',href:'#pricing',l:'pricing'},{n:'06',id:'team',href:'#team',l:'team'},{n:'07',id:'brief',href:'#brief',l:'brief'}]
       },
       directions:{
         ru:[
