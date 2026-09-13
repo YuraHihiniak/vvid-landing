@@ -140,7 +140,7 @@
   .hero-flood-grain{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.13;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
   .hero-vig{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(150% 92% at 50% 110%,rgba(86,28,16,.55),transparent 55%)}
   .hero-top{display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.72)}
-  .hero-kin{font-family:var(--font-display);font-weight:800;text-transform:none;line-height:.92;letter-spacing:-.04em;font-size:clamp(33px,min(9.4vw,12vh),156px);margin:0;color:#fff;min-height:0}
+  .hero-kin{font-family:var(--font-display);font-weight:800;text-transform:uppercase;line-height:.9;letter-spacing:-.03em;font-size:clamp(33px,min(9.4vw,12vh),156px);margin:0;color:#fff;min-height:0}
   .hero-kin .kl{display:block;overflow:hidden;padding-bottom:.045em}
   .hero-kin .kl > span{display:inline-block;white-space:nowrap}
   .hl-ch{display:inline-block;will-change:transform}
@@ -172,18 +172,7 @@
   html:not(.pre-done){overflow:hidden}
   .film-cap{position:absolute;left:26px;right:26px;bottom:clamp(96px,16vh,170px);max-width:min(52vw,640px);color:#fff;opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);pointer-events:none}
   /* временная тёмная кожа хвостовых секций (прайс, вопросы, бриф): один мир с фильмом, пока они не стали узлами 04–05 */
-  #team,#brief{background:#100d0a !important;color:#efe9df !important;box-shadow:0 -34px 70px -24px rgba(0,0,0,.6)}
-  #brief [style*="color:#1b1812"],#brief [style*="color:#3a352c"]{color:#efe9df !important}
-  #brief [style*="color:#6f6659"],#brief [style*="color:#5a5346"]{color:rgba(239,233,223,.62) !important}
-  #brief [style*="rgba(27,24,18,.22)"],#brief [style*="rgba(27,24,18,.12)"],#brief [style*="rgba(27,24,18,.1)"]{border-color:rgba(239,233,223,.2) !important}
-  #brief [style*="background:#1b1812"]{background:#efe9df !important}
-  #brief [style*="background:#ece7db"]{background:rgba(239,233,223,.06) !important}
-  #brief [style*="rgba(27,24,18,.04)"]{color:rgba(239,233,223,.04) !important}
-  #brief .vf-in{background:rgba(239,233,223,.06) !important;color:#efe9df !important;border-color:rgba(239,233,223,.25) !important}
-  #brief .vf-in::placeholder{color:rgba(239,233,223,.45) !important}
-  #brief .vf-in:focus{border-color:rgba(239,233,223,.6) !important;background:rgba(239,233,223,.09) !important}
-  #brief .vf-submit{background:#efe9df !important;color:#100d0a !important;border-color:#efe9df !important}
-  #brief .vf-submit:hover{background:var(--acc,#b9543f) !important;color:#fff !important;border-color:var(--acc,#b9543f) !important}
+  #team{background:#100d0a !important;color:#efe9df !important;box-shadow:0 -34px 70px -24px rgba(0,0,0,.6)}
   /* спуск: один фильм, узлы с информацией внутри кадра, линия стебля, глубина */
   #top.hero-bbdo{background:transparent}                                     /* фон обёртки hero не должен закрывать спуск в момент передачи (стик уже скрыт) */
   .ds-wrap{position:relative;z-index:0;overflow:clip;background:#100d0a;color:#efe9df}
@@ -208,7 +197,7 @@
   .ds-right{right:clamp(26px,4vw,64px);top:clamp(138px,16vh,172px)}
   .ds-eyebrow{display:block;font:500 11px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.18em;text-transform:uppercase;color:rgba(239,233,223,.72);margin-bottom:18px}
   .ds-h{font-family:var(--font-display);font-weight:600;font-size:clamp(26px,2.9vw,44px);line-height:1.02;letter-spacing:-.035em;margin:0 0 14px;text-wrap:balance;color:#efe9df}
-  .ds-p{margin:0 0 22px;font-size:clamp(15px,1.15vw,17px);line-height:1.5;color:rgba(239,233,223,.8);max-width:100%;text-wrap:pretty}
+  .ds-p{margin:0 0 22px;font-family:'Wix Madefor Text','Wix Madefor Display',sans-serif;font-size:clamp(16px,1.25vw,19px);line-height:1.55;color:rgba(239,233,223,.88);max-width:100%;text-wrap:pretty}
   .ds-p b{color:#efe9df;font-weight:600}
   .ds-crafts{margin:-8px 0 20px;font:500 11px/1.6 'PT Mono',ui-monospace,monospace;letter-spacing:.18em;text-transform:uppercase;color:rgba(239,233,223,.72)}
   .ds-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 20px}
@@ -221,14 +210,14 @@
   .ds-row .n{font:500 10.5px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.14em;color:rgba(239,233,223,.72)}
   .ds-row .t{font-family:var(--font-display);font-weight:500;font-size:clamp(17px,1.5vw,22px);letter-spacing:-.02em;line-height:1.08;transition:color .3s}
   .ds-row:hover .t{color:#fff}
-  .ds-row .t small{display:block;font-family:'Wix Madefor Text','Wix Madefor Display',sans-serif;font-weight:400;font-size:13.5px;color:rgba(239,233,223,.72);margin-top:4px;letter-spacing:0;line-height:1.35}
+  .ds-row .t small{display:block;font-family:'Wix Madefor Text','Wix Madefor Display',sans-serif;font-weight:400;font-size:14.5px;color:rgba(239,233,223,.8);margin-top:4px;letter-spacing:0;line-height:1.4}
   .ds-row .t small span+span::before{content:" · "}
   .ds-row .pr{font-family:var(--font-accent);font-style:italic;font-size:clamp(15px,1.3vw,19px);white-space:nowrap;color:#efe9df}
   .ds-case{grid-template-columns:28px minmax(0,1fr) auto;min-height:44px;align-content:center}
   .ds-case .n{letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
   .ds-case .pr{font-family:'PT Mono',ui-monospace,monospace;font-style:normal;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(239,233,223,.85);transition:color .3s}
   .ds-case:hover .pr{color:#fff}
-  .ds-foot{margin:16px 0 0;font:400 13px/1.5 'Wix Madefor Text','Wix Madefor Display',sans-serif;letter-spacing:0;text-transform:none;color:rgba(239,233,223,.78);max-width:100%}
+  .ds-foot{margin:16px 0 0;font:400 14.5px/1.55 'Wix Madefor Text','Wix Madefor Display',sans-serif;letter-spacing:0;text-transform:none;color:rgba(239,233,223,.84);max-width:100%}
   @media (max-width:900px){ .ds-node{width:auto;left:20px;right:20px} .ds-left{bottom:clamp(56px,9vh,100px)} .ds-right{top:auto;bottom:clamp(56px,9vh,100px)} .ds-h{font-size:clamp(22px,5.6vw,30px)} .ds-facts{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px} .ds-row .t small{display:none} .ds-depth{right:16px;bottom:auto;top:74px;font-size:9.5px} .ds-depth b{font-size:20px;margin-top:4px} .ds-case{grid-template-columns:auto minmax(0,1fr)} .ds-case .pr{grid-column:2;white-space:normal;justify-self:start;margin-top:-2px} .ds-scrim-l,.ds-scrim-r{background:linear-gradient(0deg,rgba(16,13,10,.92) 0%,rgba(16,13,10,.62) 42%,rgba(16,13,10,0) 72%)} }
   /* узел 05 — бриф на дне: форма в кадре, фонарь рыбы «подсвечивает» заголовок */
   .ds-brief{top:clamp(96px,11vh,124px)}
@@ -238,7 +227,7 @@
   .ds-form{display:flex;flex-direction:column;margin-top:2px}
   .ds-form .vf{padding:12px 0 10px}
   .ds-form .vf-lab{color:rgba(239,233,223,.72)}
-  .ds-form .vf-in{color:#efe9df;font-size:clamp(15px,1.25vw,17px)}
+  .ds-form .vf-in{color:#efe9df;font-size:clamp(16px,1.3vw,18px)}
   .ds-form .vf-in::placeholder{color:rgba(239,233,223,.42)}
   .ds-form textarea.vf-in{min-height:40px}
   .ds-form .vf-submit{background:#efe9df;color:#100d0a;padding:15px 26px;font-size:12px}
@@ -253,7 +242,7 @@
   @media (max-height:820px){ .ds-brief{top:64px} .ds-h-big{font-size:clamp(28px,3.4vw,44px)} .ds-form .vf{padding:9px 0 8px} .ds-form-badges{display:none} }
   @media (max-width:900px){ .ds-brief{top:auto} .ds-h-big{font-size:clamp(30px,8vw,40px)} .ds-form-badges{display:none} }
   html.ds-on .rail,html.ds-on [data-float-cta]{opacity:0 !important;pointer-events:none !important;transition:opacity .3s}
-  @media (max-height:820px){ .ds-h{font-size:clamp(22px,2.2vw,32px)} .ds-eyebrow{margin-bottom:12px} .ds-row{padding:9px 0} .ds-row .t small{font-size:12.5px} .ds-p{margin-bottom:16px} }
+  @media (max-height:820px){ .ds-h{font-size:clamp(22px,2.2vw,32px)} .ds-eyebrow{margin-bottom:12px} .ds-row{padding:9px 0} .ds-row .t small{font-size:13.5px} .ds-p{margin-bottom:16px} }
   .ds-static .ds-sticky{position:relative;height:auto;display:grid}
   .ds-static .ds-still{position:relative;inset:auto;height:auto;aspect-ratio:16/9}
   .ds-static .ds-node{position:relative;left:auto;right:auto;top:auto;bottom:auto;width:auto;opacity:1 !important;transform:none !important;pointer-events:auto;padding:28px 26px}
@@ -362,9 +351,9 @@
   }
   @media (prefers-reduced-motion:reduce){ .wd-plate,.wd-preview{display:none} }
   .film-cap .fc-k{display:block;font:500 11px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:16px}
-  .film-cap .fc-t{display:block;font-family:var(--font-display);font-weight:600;text-transform:none;font-size:clamp(26px,3.8vw,60px);line-height:.98;letter-spacing:-.035em;text-wrap:balance}
+  .film-cap .fc-t{display:block;font-family:var(--font-display);font-weight:800;text-transform:uppercase;font-size:clamp(22px,3.2vw,52px);line-height:.95;letter-spacing:-.03em;text-wrap:balance}
   html.film-c1 .film-cap[data-cap="1"],html.film-c2 .film-cap[data-cap="2"],html.film-c3 .film-cap[data-cap="3"],html.film-end .film-cap[data-cap="end"]{opacity:1;transform:none}
-  html.film-end .film-cap[data-cap="end"] .fc-t{font-size:clamp(30px,5.2vw,86px)}
+  html.film-end .film-cap[data-cap="end"] .fc-t{font-size:clamp(26px,4.4vw,72px)}
   .hero-kin,.hero-scrollcue{transition:opacity .55s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
   html.film-run .hero-kin{opacity:0;transform:translateY(-28px);pointer-events:none}
   html.film-run .hero-scrollcue{opacity:0}
@@ -372,9 +361,9 @@
   html.film-run .hero-cta-row{opacity:0 !important;transform:translateY(-18px) !important;pointer-events:none}
   html.film-end .hero-cta-row{opacity:calc(1 - var(--film-tail,0)*1.8) !important;transform:none !important;pointer-events:auto;transition:opacity .25s linear,transform .9s cubic-bezier(.16,1,.3,1) !important}   /* быстрый отклик на скролл-затухание под занавесом */
   /* мобильный подзаголовок: чем занимается студия (десктопу это говорит фильм) */
-  .hero-sub{display:block;margin:18px 0 0;max-width:38ch;font-size:clamp(17px,1.5vw,22px);line-height:1.4;color:#fff;transition:opacity .5s;text-wrap:pretty}
+  .hero-sub{display:block;margin:18px 0 0;max-width:40ch;font-family:'Wix Madefor Text','Wix Madefor Display',sans-serif;font-size:clamp(18px,1.45vw,23px);line-height:1.5;color:#fff;transition:opacity .5s;text-wrap:pretty}
   html.film-run .hero-sub,html.film-run .hero-proof,html.film-run .hero-scrim{opacity:0}
-  @media (pointer:coarse){ .hero-sub{max-width:26ch;font-size:15px} }
+  @media (pointer:coarse){ .hero-sub{max-width:28ch;font-size:16px;line-height:1.5} }
   /* тач-таргеты mono-ссылок и фокус */
   [data-case-link]:not(.ds-row),[data-brief-alt]{display:inline-flex !important;align-items:center;min-height:32px}
   :focus-visible{outline:2px solid var(--acc,#b9543f);outline-offset:3px;border-radius:2px}
@@ -389,7 +378,7 @@
   [data-film-canvas]{transform-origin:50% 50%;will-change:transform,opacity}
   .film-skip{background:none;border:1px solid rgba(255,255,255,.35);color:rgba(255,255,255,.85);font:500 10px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.2em;text-transform:uppercase;padding:10px 14px;cursor:pointer;border-radius:50px;transition:opacity .4s,background .35s,color .35s}
   .film-skip:hover{background:rgba(255,255,255,.12);color:#fff}
-  @media (pointer:coarse){ .film-cap{top:clamp(96px,17vh,150px);bottom:auto;max-width:min(88vw,420px)} .film-cap .fc-t{font-size:clamp(26px,7.4vw,44px)} html.film-end .film-cap[data-cap="end"] .fc-t{font-size:clamp(30px,9vw,56px)} .film-skip{top:74px;right:16px} }
+  @media (pointer:coarse){ .film-cap{top:clamp(96px,17vh,150px);bottom:auto;max-width:min(88vw,420px)} .film-cap .fc-t{font-size:clamp(22px,6.4vw,38px)} html.film-end .film-cap[data-cap="end"] .fc-t{font-size:clamp(30px,9vw,56px)} .film-skip{top:74px;right:16px} }
   @media (prefers-reduced-motion:reduce){ .film-cap,.hero-kin,.hero-scrollcue{transition:none} }
   @media (max-width:820px){ .hero-foot{flex-direction:column;align-items:flex-start;gap:26px} .hero-lead p{max-width:54ch} }
 
