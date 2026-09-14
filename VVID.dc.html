@@ -151,7 +151,7 @@
   .hero-pill:hover::before{transform:scaleX(1)}
   .hero-pill .hp-arr{display:inline-flex;color:#c66048;transition:transform .45s cubic-bezier(.16,1,.3,1)}
   .hero-pill:hover .hp-arr{transform:translateX(6px)}
-  .hero-textlink{display:inline-flex;align-items:center;gap:9px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:#fff;padding-bottom:6px;border-bottom:1.5px solid rgba(255,255,255,.3);background-image:linear-gradient(#fff,#fff);background-repeat:no-repeat;background-position:left 100%;background-size:0 1.5px;transition:background-size .55s cubic-bezier(.16,1,.3,1),opacity .3s}
+  .hero-textlink{display:inline-flex;align-items:center;gap:9px;min-height:44px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:#fff;padding-bottom:6px;border-bottom:1.5px solid rgba(255,255,255,.3);background-image:linear-gradient(#fff,#fff);background-repeat:no-repeat;background-position:left 100%;background-size:0 1.5px;transition:background-size .55s cubic-bezier(.16,1,.3,1),opacity .3s}
   .hero-textlink:hover{background-size:100% 1.5px}
   .hero-proof{margin:0 0 clamp(34px,6vh,60px);font:500 11px/1.6 'PT Mono',ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85);max-width:60ch;transition:opacity .5s}
   .hero-cta-row{margin-top:0}
@@ -161,7 +161,7 @@
   html:not(.pre-done){overflow:hidden}
   .film-cap{position:absolute;left:26px;right:26px;bottom:clamp(96px,16vh,170px);max-width:min(52vw,640px);color:#fff;opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);pointer-events:none}
   /* временная тёмная кожа хвостовых секций (прайс, вопросы, бриф): один мир с фильмом, пока они не стали узлами 04–05 */
-  #team{background:#100d0a !important;color:#efe9df !important;box-shadow:0 -34px 70px -24px rgba(0,0,0,.6)}
+  #faq{background:#100d0a !important;color:#efe9df !important;box-shadow:0 -34px 70px -24px rgba(0,0,0,.6)}
   /* спуск: один фильм, узлы с информацией внутри кадра, линия стебля, глубина */
   #top.hero-bbdo{background:transparent}                                     /* фон обёртки hero не должен закрывать спуск в момент передачи (стик уже скрыт) */
   .ds-wrap{position:relative;z-index:0;overflow:clip;background:#100d0a;color:#efe9df}
@@ -209,7 +209,7 @@
   .ds-case small .m::before{content:" · "}
   .ds-case .pr{white-space:normal;text-align:right;justify-self:end;line-height:1.5;overflow-wrap:normal}
   .ds-foot{margin:16px 0 0;font:400 14.5px/1.55 'Wix Madefor Text','Wix Madefor Display',sans-serif;letter-spacing:0;text-transform:none;color:rgba(239,233,223,.84);max-width:100%}
-  @media (max-width:900px){ .ds-node{width:auto;left:20px;right:20px} .ds-left{bottom:clamp(56px,9vh,100px)} .ds-right{top:auto;bottom:clamp(56px,9vh,100px)} .ds-h{font-size:clamp(22px,5.6vw,30px)} .ds-facts{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px} .ds-row .t small{font-size:12.5px;line-height:1.35;opacity:.88} .ds-depth{right:16px;bottom:auto;top:96px;font-size:11px} .ds-depth b{font-size:20px;margin-top:4px} .ds-case{grid-template-columns:auto minmax(0,1fr)} .ds-case .pr{grid-column:2;white-space:normal;justify-self:start;margin-top:-2px} .ds-scrim-l,.ds-scrim-r{background:linear-gradient(0deg,rgba(16,13,10,.95) 0%,rgba(16,13,10,.88) 55%,rgba(16,13,10,.4) 82%,rgba(16,13,10,0) 100%)} }
+  @media (max-width:900px){ .ds-node{width:auto;left:20px;right:20px} .ds-left{bottom:clamp(56px,9vh,100px)} .ds-right{top:auto;bottom:clamp(56px,9vh,100px)} .ds-h{font-size:clamp(22px,5.6vw,30px)} .ds-facts{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px} .ds-row{grid-template-columns:28px minmax(0,1fr)} .ds-row .pr{grid-column:2;justify-self:start;margin-top:2px;white-space:normal} .ds-row .t small{font-size:12.5px;line-height:1.35;opacity:.88} .ds-depth{right:16px;bottom:auto;top:96px;font-size:11px} .ds-depth b{font-size:20px;margin-top:4px} .ds-case{grid-template-columns:auto minmax(0,1fr)} .ds-case .pr{grid-column:2;white-space:normal;justify-self:start;margin-top:-2px} .ds-scrim-l,.ds-scrim-r{background:linear-gradient(0deg,rgba(16,13,10,.95) 0%,rgba(16,13,10,.88) 55%,rgba(16,13,10,.4) 82%,rgba(16,13,10,0) 100%)} }
   /* узел 05 — бриф на дне: форма в кадре, фонарь рыбы «подсвечивает» заголовок */
   .ds-brief{top:clamp(112px,13vh,140px)}
   .ds-bridge{width:auto;bottom:clamp(64px,11vh,130px)} .ds-bridge .ds-eyebrow{margin:0;color:rgba(239,233,223,.86)}
@@ -235,8 +235,13 @@
   .ds-node.is-lit .ds-eyebrow{color:rgba(255,222,184,.92)}
   @media (max-height:820px){ .ds-brief{top:96px} .ds-h-big{font-size:clamp(28px,3.4vw,44px)} .ds-form .vf{padding:9px 0 8px} .ds-form-badges{gap:12px;margin-top:10px;font-size:11px} .ds-form-consent{margin-top:10px} }
   @media (max-width:900px){ .ds-brief{top:auto} .ds-h-big{font-size:clamp(30px,8vw,40px)} .ds-form-badges{gap:10px 14px;font-size:11px} .ds-brief::before{content:"";position:absolute;left:-20px;right:-20px;top:-40px;bottom:-30px;z-index:-1;background:linear-gradient(180deg,rgba(16,13,10,0),rgba(16,13,10,.86) 22%,rgba(16,13,10,.94))} }
-  html.ds-on .rail{opacity:.6}
-  html.ds-on.ds-right-on .rail,html.ds-on [data-float-cta]{opacity:0 !important;visibility:hidden;pointer-events:none !important;transition:opacity .3s,visibility 0s .3s}
+  html.ds-on .rail{opacity:.7}
+  html.ds-on.ds-right-on .rail{right:8px;padding-left:12px;background:rgba(16,13,10,.55);border-radius:3px;padding-right:6px;mix-blend-mode:normal;color:rgba(239,233,223,.72)}   /* под правым узлом: только номера, к краю, чтобы не лечь на текст */
+  html.ds-on.ds-right-on .rail .rail-l{display:none}
+  html.ds-on.ds-right-on .rail-item.is-active{color:#fff}
+  html.ds-on [data-float-cta]{opacity:0 !important;visibility:hidden;pointer-events:none !important;transition:opacity .3s,visibility 0s .3s}
+  .ds-cta{display:none}
+  @media (max-width:900px){ html.ds-active:not(.ds-brief-on) .ds-cta{display:inline-flex;position:fixed;left:20px;bottom:14px;z-index:7996;align-items:center;gap:8px;min-height:40px;padding:0 16px;border:1px solid rgba(239,233,223,.55);border-radius:50px;background:rgba(16,13,10,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#efe9df;font:600 11.5px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;text-decoration:none} }
   html.ds-static-on .rail{display:none}
   @media (max-height:820px){ .ds-h{font-size:clamp(22px,2.2vw,32px)} .ds-eyebrow{margin-bottom:12px} .ds-row{padding:9px 0} .ds-row .t small{font-size:13.5px} .ds-p{margin-bottom:16px} }
   .ds-static .ds-sticky{position:relative;height:auto;display:grid}
@@ -446,6 +451,7 @@
       <div data-ds-scrim="l" class="ds-scrim ds-scrim-l" aria-hidden="true"></div>
       <div data-ds-scrim="r" class="ds-scrim ds-scrim-r" aria-hidden="true"></div>
       <div class="ds-depth"><span>{{ t.dsDepth }}</span><b data-ds-depth="1">−0,0 м</b></div>
+      <a href="#brief" class="ds-cta">{{ t.navBrief }} ↓</a>
 
       <div data-node="01" data-range="0.0149,0.1011" id="about" inert="inert" class="ds-node ds-left">
         <span class="ds-eyebrow">{{ t.dsK1 }}</span>
@@ -475,12 +481,12 @@
         <h2 class="ds-h">{{ t.casesH2a }} {{ t.casesH2b }}</h2>
         <div class="ds-rows">
           <sc-for list="{{ cases }}" as="cs" hint-placeholder-count="4">
-            <a href="{{ cs.url }}" target="{{ cs.target }}" rel="noopener noreferrer" data-case-link="1" data-live="{{ cs.live }}" class="ds-row ds-case"><span class="n">{{ cs.n }}</span><span class="t">{{ cs.title }}<small>{{ cs.client }}<sc-for list="{{ cs.metrics }}" as="m" hint-placeholder-count="3"><span class="m">{{ m.v }} {{ m.l }}</span></sc-for></small></span><span class="pr">{{ cs.linkLabel }} ↗</span></a>
+            <a href="{{ cs.url }}" target="{{ cs.target }}" rel="noopener noreferrer" data-case-link="1" data-live="{{ cs.live }}" class="ds-row ds-case"><span class="n">{{ cs.n }}</span><span class="t">{{ cs.title }}<small>{{ cs.client }}<sc-for list="{{ cs.metrics }}" as="m" hint-placeholder-count="3"><span class="m">{{ m.v }} {{ m.l }}</span></sc-for></small></span><span class="pr">{{ cs.linkLabel }}</span></a>
           </sc-for>
         </div>
       </div>
 
-      <div data-node="04" data-range="0.6617,0.7404" id="pricing" inert="inert" class="ds-node ds-right">
+      <div data-node="04" data-range="0.6383,0.7404" id="pricing" inert="inert" class="ds-node ds-right">
         <span class="ds-eyebrow">{{ t.dsK4 }}</span>
         <h2 class="ds-h">{{ t.pricingH2 }}</h2>
         <div class="ds-rows">
@@ -508,18 +514,18 @@
         </form>
       </div>
 
-      <div data-node="b1" data-range="0.50,0.645" data-bridge="1" data-scrim="none" inert="inert" class="ds-node ds-left ds-bridge"><span class="ds-eyebrow">{{ t.dsBridge1 }}</span></div>
-      <div data-node="b2" data-range="0.748,0.85" data-bridge="1" data-scrim="none" inert="inert" class="ds-node ds-left ds-bridge"><span class="ds-eyebrow">{{ t.dsBridge2 }}</span></div>
+      <div data-node="b1" data-range="0.52,0.615" data-bridge="1" data-scrim="none" inert="inert" class="ds-node ds-left ds-bridge"><span class="ds-eyebrow">{{ t.dsBridge1 }}</span></div>
+      <div data-node="b2" data-range="0.76,0.84" data-bridge="1" data-scrim="none" inert="inert" class="ds-node ds-left ds-bridge"><span class="ds-eyebrow">{{ t.dsBridge2 }}</span></div>
     </div>
   </section>
 
   <!-- 06 PRICING → узел 04 внутри спуска -->
 
   <!-- 07 TEAM + FAQ -->
-  <section id="team" data-screen-label="07 FAQ" style="position:relative;z-index:10;background:rgba(19,17,12,.9);color:#e4ded2;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
+  <section id="faq" data-screen-label="06 FAQ" style="position:relative;z-index:10;background:rgba(19,17,12,.9);color:#e4ded2;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
     <div data-speed="6" data-pmax="150" style="position:absolute;top:1vw;right:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(228,222,210,.035);pointer-events:none;user-select:none">faq</div>
     <div data-depth="1" style="max-width:1320px;margin:0 auto;position:relative;z-index:1">
-      <h2 id="faq" data-reveal="1" style="margin:0 0 28px;font:500 11.5px/1.5 'PT Mono',ui-monospace,monospace;letter-spacing:.2em;text-transform:uppercase;color:#a79e8f">{{ t.faqLabel }}</h2>
+      <h2 id="faq-title" data-reveal="1" style="margin:0 0 28px;font:500 11.5px/1.5 'PT Mono',ui-monospace,monospace;letter-spacing:.2em;text-transform:uppercase;color:#a79e8f">{{ t.faqLabel }}</h2>
       <div data-reveal="1" data-faq-list="1" style="border-top:1px solid rgba(228,222,210,.14)">
         <sc-for list="{{ faq }}" as="fq" hint-placeholder-count="5">
           <div data-faq-item="1" id="{{ fq.id }}" style="border-bottom:1px solid rgba(228,222,210,.14)">
@@ -1082,7 +1088,7 @@ class Component extends DCLogic {
         let anyL=false, anyR=false, changed=false;
         nodes.forEach(n=>{ const inR=(q>=n.a&&q<=n.b)||(n.active&&n.el.contains(document.activeElement)&&document.activeElement!==document.body);   /* на тач-устройстве клавиатура меняет высоту экрана — пока поле в фокусе, узел не отпускаем */
         if(inR!==n.active){ n.active=inR; changed=true; n.el.classList.toggle('is-in',inR); n.el.classList.toggle('on',inR); n.el.toggleAttribute('inert',!inR); if(!inR) n.snapped=false; } if(n.active||inR!==n.active||n.keyed.length){ const span=n.b-n.a||1; n.keyed.forEach(k=>{ const on=q>=n.a+k.at*span; if(on!==k.on){ k.on=on; k.el.classList.toggle('is-at',on); } }); } if(n.lit!=null){ const on=n.active&&q>=n.a+n.lit*(n.b-n.a); if(on!==n.litOn){ n.litOn=on; n.el.classList.toggle('is-lit',on); } } if(n.active&&!n.bridge){ if(n.scrim==='l') anyL=true; else if(n.scrim==='r') anyR=true; } });
-        if(changed){ if(scrimL) scrimL.style.opacity=anyL?'1':'0'; if(scrimR) scrimR.style.opacity=anyR?'1':'0'; const on=nodes.some(n=>n.active&&!n.bridge); if(on!==this._dsOn){ this._dsOn=on; document.documentElement.classList.toggle('ds-on',on); } document.documentElement.classList.toggle('ds-right-on', nodes.some(n=>n.active&&!n.bridge&&n.side==='r')); const act=nodes.find(n=>n.active&&!n.bridge); if(act) this._dsActiveId=act.el.id; try{ this.applyRail(window.innerHeight); }catch(e){} }
+        if(changed){ if(scrimL) scrimL.style.opacity=anyL?'1':'0'; if(scrimR) scrimR.style.opacity=anyR?'1':'0'; const on=nodes.some(n=>n.active&&!n.bridge); if(on!==this._dsOn){ this._dsOn=on; document.documentElement.classList.toggle('ds-on',on); } document.documentElement.classList.toggle('ds-right-on', nodes.some(n=>n.active&&!n.bridge&&n.side==='r')); document.documentElement.classList.toggle('ds-brief-on', nodes.some(n=>n.active&&n.el.id==='brief')); const act=nodes.find(n=>n.active&&!n.bridge); if(act) this._dsActiveId=act.el.id; try{ this.applyRail(window.innerHeight); }catch(e){} }
         if(depthEl){ const clips=(film.m&&film.m.clips)||2; const d=q*6.0*clips/5; const en=document.documentElement.lang==='en'; depthEl.textContent='−'+(en?d.toFixed(1):d.toFixed(1).replace('.',','))+(en?' m':' м'); }
       } });
     nodes.forEach(n=>{ let i=0; Array.from(n.el.children).forEach(ch=>{ if(ch.classList.contains('ds-rows')||ch.classList.contains('ds-facts')){ Array.from(ch.children).forEach(r=>{ r.style.setProperty('--i', i++); }); } else ch.style.setProperty('--i', i++); }); });
@@ -1100,7 +1106,7 @@ class Component extends DCLogic {
     let loading=false; const load=()=>{ if(loading) return; loading=true; film.load().catch((err)=>{ try{ console.warn('[descent] film unavailable → static', err&&err.message); }catch(e){} sec.classList.add('ds-static'); sec.style.height=''; document.documentElement.classList.add('ds-static-on'); }); };
     const near=new IntersectionObserver((es)=>{ if(es.some(e=>e.isIntersecting)){ load(); near.disconnect(); } },{rootMargin:'100% 0px'}); near.observe(sec);
     const nearScroll=()=>{ if(loading){ window.removeEventListener('scroll',nearScroll); return; } if(sec.getBoundingClientRect().top<innerHeight*2){ load(); window.removeEventListener('scroll',nearScroll); } }; window.addEventListener('scroll',nearScroll,{passive:true});   // страховка IO: грузим за два экрана до спуска
-    const io=new IntersectionObserver((es)=>{ film.visible=es[0].isIntersecting; if(film.visible){ film.start(); film.fill(); } else { film.stop(); film.release(); const hs=this._film&&this._film.sticky; if(hs&&sec.getBoundingClientRect().top>0) hs.style.visibility=''; } },{threshold:0}); io.observe(sticky);   // ушли из спуска: битмапы отпускаем, hero возвращаем (мгновенный прыжок наверх без кадров)
+    const io=new IntersectionObserver((es)=>{ film.visible=es[0].isIntersecting; document.documentElement.classList.toggle('ds-active', film.visible); if(film.visible){ film.start(); film.fill(); } else { film.stop(); film.release(); const hs=this._film&&this._film.sticky; if(hs&&sec.getBoundingClientRect().top>0) hs.style.visibility=''; } },{threshold:0}); io.observe(sticky);   // ушли из спуска: битмапы отпускаем, hero возвращаем (мгновенный прыжок наверх без кадров)
     const gotoNode=(id)=>{ const n=nodes.find(x=>x.el.id===id); if(!n||!film.frames) return false; const y=keyY(n); n.snapped=true; if(this._lenis) this._lenis.scrollTo(y,{duration:1.2}); else window.scrollTo({top:y,behavior:'smooth'}); const h=n.el.querySelector('h2'); if(h){ h.setAttribute('tabindex','-1'); setTimeout(()=>{ try{ h.focus({preventScroll:true}); }catch(e){} },1300); } return true; };   // меню → ключевой кадр главы (ось кадров, с учётом медленных зон)
     this._dsClick=(e)=>{ const a=e.target&&e.target.closest&&e.target.closest('a[href^="#"]'); if(!a) return; const id=a.getAttribute('href').slice(1); if(nodes.some(n=>n.el.id===id)){ if(gotoNode(id)) e.preventDefault(); } };
     document.addEventListener('click', this._dsClick);
@@ -1191,16 +1197,17 @@ class Component extends DCLogic {
     let fd; try{ fd=new FormData(f); }catch(_){ fd=null; }
     const get=(k)=>fd?String(fd.get(k)||'').trim():'';
     const task=get('task'), contact=get('contact'); const c=f.querySelector('[name="contact"]');
-    if(!contact){ if(c){ try{ c.setCustomValidity(en?'leave a telegram, phone or email':'оставьте telegram, телефон или почту'); c.reportValidity(); c.setCustomValidity(''); }catch(_){} c.focus(); } return; }
+    const okContact=contact&&(contact.includes('@')||(contact.replace(/\D/g,'').length>=7));
+    if(!okContact){ if(c){ try{ c.setCustomValidity(en?'leave a telegram @username, phone or email':'укажите telegram @ник, телефон или почту'); c.reportValidity(); setTimeout(()=>{ try{ c.setCustomValidity(''); }catch(_){} },2500); }catch(_){} c.focus(); } return; }
     const text=[(t.formL3||'задача')+': '+(task||'—'), (t.formL4||'контакт')+': '+contact, '', location.origin+location.pathname].join('\n');
     const tg='https://t.me/vvid?text='+encodeURIComponent(text);
     const mail='mailto:info@vvid.dev?subject='+encodeURIComponent(en?'brief from vvid.solutions':'бриф с vvid.solutions')+'&body='+encodeURIComponent(text);
     try{ if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(text).catch(()=>{}); }catch(_){}
     const st=f.querySelector('[data-form-state]');
     if(st){ st.textContent=''; const a=document.createElement('span'); a.textContent=(t.formSentHint||'')+' '; const l1=document.createElement('a'); l1.href=tg; l1.target='_blank'; l1.rel='noopener noreferrer'; l1.textContent=t.formSentTg||'@vvid ↗'; const sep=document.createTextNode(' · '); const l2=document.createElement('a'); l2.href=mail; l2.textContent=t.formSentMail||'email'; st.append(a,l1,sep,l2); st.hidden=false; }
-    if(b){ b.textContent=t.formSent||'готово ✓'; b.setAttribute('aria-live','polite'); }
+    if(b){ if(!b.getAttribute('data-orig')) b.setAttribute('data-orig', b.textContent); b.textContent=t.formSent||'готово ✓'; b.setAttribute('aria-live','polite'); }
     let opened=false; try{ const w=window.open(tg,'_blank','noopener'); opened=!!w; }catch(_){ opened=false; }
-    if(!opened){ try{ location.href=tg; }catch(_){} }
+    setTimeout(()=>{ if(b&&b.getAttribute('data-orig')) b.textContent=b.getAttribute('data-orig'); }, 6000);
   }
 
 
@@ -1275,16 +1282,16 @@ class Component extends DCLogic {
       },
       cases:{
         ru:[
-          {i:0, n:'01', slot:'case-1', kind:'bridge',  title:'ВМЕСТО', client:'мобильное приложение · события и нетворкинг', url:'https://t.me/vvid', target:'_blank', linkLabel:'в разработке · спросить в telegram', status:'in dev', live:'0', metrics:[{v:'iOS',l:'нативное'},{v:'события',l:'+ нетворкинг'},{v:'Минск',l:'2026'}]},
-          {i:1, n:'02', slot:'case-2', kind:'converge', title:'Центр мебели и света', live:'1', client:'интернет-магазин · мебель и освещение', url:'https://mebel-novomih.ru', target:'_blank', linkLabel:'mebel-novomih.ru', status:'in prod', metrics:[{v:'каталог',l:'+ корзина'},{v:'доставка',l:'+ замер'},{v:'2003',l:'на рынке'}]},
-          {i:2, n:'03', slot:'case-3', kind:'scanner',  title:'Vitrina', live:'1', client:'веб-приложение · карточки для маркетплейсов', url:'#brief', target:'', linkLabel:'закрытый доступ · демо по запросу', status:'in prod', metrics:[{v:'web app',l:'saas'},{v:'фото →',l:'карточка'},{v:'wb · ozon',l:'выгрузка'}]},
-          {i:3, n:'04', slot:'case-4', kind:'bridge',   title:'1kik · Компьютеры и кофе', live:'1', client:'интернет-магазин · компьютеры', url:'https://1kik.by', target:'_blank', linkLabel:'1kik.by', status:'in prod', metrics:[{v:'каталог',l:'+ корзина'},{v:'0%',l:'рассрочка'},{v:'2020',l:'Гомель'}]}
+          {i:0, n:'01', slot:'case-1', kind:'bridge',  title:'ВМЕСТО', client:'мобильное приложение · события и нетворкинг', url:'https://t.me/vvid', target:'_blank', linkLabel:'в разработке · спросить в telegram ↗', status:'in dev', live:'0', metrics:[{v:'iOS',l:'нативное'},{v:'события',l:'+ нетворкинг'},{v:'Минск',l:'2026'}]},
+          {i:1, n:'02', slot:'case-2', kind:'converge', title:'Центр мебели и света', live:'1', client:'интернет-магазин · мебель и освещение', url:'https://mebel-novomih.ru', target:'_blank', linkLabel:'mebel-novomih.ru ↗', status:'in prod', metrics:[{v:'каталог',l:'+ корзина'},{v:'доставка',l:'+ замер'},{v:'2003',l:'на рынке'}]},
+          {i:2, n:'03', slot:'case-3', kind:'scanner',  title:'Vitrina', live:'1', client:'веб-приложение · карточки для маркетплейсов', url:'#brief', target:'', linkLabel:'закрытый доступ · демо по запросу →', status:'in prod', metrics:[{v:'web app',l:'saas'},{v:'фото →',l:'карточка'},{v:'wb · ozon',l:'выгрузка'}]},
+          {i:3, n:'04', slot:'case-4', kind:'bridge',   title:'1kik · Компьютеры и кофе', live:'1', client:'интернет-магазин · компьютеры', url:'https://1kik.by', target:'_blank', linkLabel:'1kik.by ↗', status:'in prod', metrics:[{v:'каталог',l:'+ корзина'},{v:'0%',l:'рассрочка'},{v:'2020',l:'Гомель'}]}
         ],
         en:[
-          {i:0, n:'01', slot:'case-1', kind:'bridge',  title:'VMESTO', client:'mobile app · events & networking', url:'https://t.me/vvid', target:'_blank', linkLabel:'in development · ask on telegram', status:'in dev', live:'0', metrics:[{v:'iOS',l:'native'},{v:'events',l:'+ networking'},{v:'Minsk',l:'2026'}]},
-          {i:1, n:'02', slot:'case-2', kind:'converge', title:'Furniture & Light Center', live:'1', client:'online store · furniture & lighting', url:'https://mebel-novomih.ru', target:'_blank', linkLabel:'mebel-novomih.ru', status:'in prod', metrics:[{v:'catalog',l:'+ cart'},{v:'delivery',l:'+ measure'},{v:'2003',l:'since'}]},
-          {i:2, n:'03', slot:'case-3', kind:'scanner',  title:'Vitrina', live:'1', client:'web app · marketplace product cards', url:'#brief', target:'', linkLabel:'private access · demo on request', status:'in prod', metrics:[{v:'web app',l:'saas'},{v:'photo →',l:'card'},{v:'wb · ozon',l:'export'}]},
-          {i:3, n:'04', slot:'case-4', kind:'bridge',   title:'1kik — PCs & Coffee', live:'1', client:'online store · computers', url:'https://1kik.by', target:'_blank', linkLabel:'1kik.by', status:'in prod', metrics:[{v:'catalog',l:'+ cart'},{v:'0%',l:'installment'},{v:'2020',l:'Gomel'}]}
+          {i:0, n:'01', slot:'case-1', kind:'bridge',  title:'VMESTO', client:'mobile app · events & networking', url:'https://t.me/vvid', target:'_blank', linkLabel:'in development · ask on telegram ↗', status:'in dev', live:'0', metrics:[{v:'iOS',l:'native'},{v:'events',l:'+ networking'},{v:'Minsk',l:'2026'}]},
+          {i:1, n:'02', slot:'case-2', kind:'converge', title:'Furniture & Light Center', live:'1', client:'online store · furniture & lighting', url:'https://mebel-novomih.ru', target:'_blank', linkLabel:'mebel-novomih.ru ↗', status:'in prod', metrics:[{v:'catalog',l:'+ cart'},{v:'delivery',l:'+ measure'},{v:'2003',l:'since'}]},
+          {i:2, n:'03', slot:'case-3', kind:'scanner',  title:'Vitrina', live:'1', client:'web app · marketplace product cards', url:'#brief', target:'', linkLabel:'private access · demo on request →', status:'in prod', metrics:[{v:'web app',l:'saas'},{v:'photo →',l:'card'},{v:'wb · ozon',l:'export'}]},
+          {i:3, n:'04', slot:'case-4', kind:'bridge',   title:'1kik — PCs & Coffee', live:'1', client:'online store · computers', url:'https://1kik.by', target:'_blank', linkLabel:'1kik.by ↗', status:'in prod', metrics:[{v:'catalog',l:'+ cart'},{v:'0%',l:'installment'},{v:'2020',l:'Gomel'}]}
         ]
       },
       pricing:{
@@ -1346,8 +1353,8 @@ class Component extends DCLogic {
         ]
       },
       rail:{
-        ru:[{n:'·',id:'top',href:'#top',l:'старт'},{n:'01',id:'about',href:'#about',l:'кто мы'},{n:'02',id:'capabilities',href:'#capabilities',l:'что делаем'},{n:'03',id:'work',href:'#work',l:'кейсы'},{n:'04',id:'pricing',href:'#pricing',l:'прайс'},{n:'05',id:'brief',href:'#brief',l:'бриф'},{n:'·',id:'team',href:'#team',l:'вопросы'}],
-        en:[{n:'·',id:'top',href:'#top',l:'start'},{n:'01',id:'about',href:'#about',l:'who we are'},{n:'02',id:'capabilities',href:'#capabilities',l:'what we do'},{n:'03',id:'work',href:'#work',l:'cases'},{n:'04',id:'pricing',href:'#pricing',l:'pricing'},{n:'05',id:'brief',href:'#brief',l:'brief'},{n:'·',id:'team',href:'#team',l:'faq'}]
+        ru:[{n:'·',id:'top',href:'#top',l:'старт'},{n:'01',id:'about',href:'#about',l:'кто мы'},{n:'02',id:'capabilities',href:'#capabilities',l:'что делаем'},{n:'03',id:'work',href:'#work',l:'кейсы'},{n:'04',id:'pricing',href:'#pricing',l:'прайс'},{n:'05',id:'brief',href:'#brief',l:'бриф'},{n:'·',id:'faq',href:'#faq',l:'вопросы'}],
+        en:[{n:'·',id:'top',href:'#top',l:'start'},{n:'01',id:'about',href:'#about',l:'who we are'},{n:'02',id:'capabilities',href:'#capabilities',l:'what we do'},{n:'03',id:'work',href:'#work',l:'cases'},{n:'04',id:'pricing',href:'#pricing',l:'pricing'},{n:'05',id:'brief',href:'#brief',l:'brief'},{n:'·',id:'faq',href:'#faq',l:'faq'}]
       },
     };
     this._t = T[L];
