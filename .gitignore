@@ -20,4 +20,8 @@ node_modules/
 dist/
 .cache/
 film-src/originals/
-.impeccable/
+.impeccable/*
+!.impeccable/design.json
+!.impeccable/critique/
+.impeccable/critique/*
+!.impeccable/critique/ignore.md

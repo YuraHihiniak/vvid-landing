@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-14T00:00:00Z",
+  "title": "Design System: VVID",
+  "extensions": {
+    "colorMeta": {
+      "terracotta": { "role": "primary", "displayName": "Терракота", "canonical": "#b9543f", "tonalRamp": ["#2a110b", "#4a1c12", "#6b2a1a", "#8c3a27", "#b9543f", "#cf7a67", "#e3a89b", "#f4ddd6"] },
+      "terracotta-deep": { "role": "primary", "displayName": "Глубокая терракота", "canonical": "#a4442d", "tonalRamp": ["#240e08", "#421a10", "#62271a", "#833524", "#a4442d", "#bf6c58", "#d99c8e", "#f0d7cf"] },
+      "cream-text": { "role": "neutral", "displayName": "Лён", "canonical": "#efe9df", "tonalRamp": ["#2a2620", "#4b453b", "#6c6557", "#8f877a", "#b0a999", "#cfc7b9", "#e4ded2", "#efe9df"] },
+      "cream-page": { "role": "neutral", "displayName": "Крем страницы", "canonical": "#e4ded2", "tonalRamp": ["#26231e", "#45403a", "#655e55", "#877f74", "#a79e8f", "#c5bdb0", "#e4ded2", "#f4f0e9"] },
+      "ink-deep": { "role": "neutral", "displayName": "Глубокий чёрный", "canonical": "#100d0a", "tonalRamp": ["#100d0a", "#1b1812", "#2c271f", "#403a30", "#5a5346", "#7a7262", "#a79e8f", "#cfc7b9"] },
+      "ink-surface": { "role": "neutral", "displayName": "Тёплая сажа", "canonical": "#13110c", "tonalRamp": ["#13110c", "#1f1b15", "#2f2a21", "#443d31", "#5e5546", "#7d7362", "#a79e8f", "#cfc7b9"] },
+      "lantern-glow": { "role": "tertiary", "displayName": "Свет фонаря", "canonical": "#ffbe6e", "tonalRamp": ["#3d2708", "#66420f", "#8f5d17", "#b87a24", "#e09a3e", "#ffbe6e", "#ffd6a2", "#ffedd6"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Только H1 главного экрана, капс, буквы поднимаются по одной." },
+      "headline": { "displayName": "Headline", "purpose": "Заголовки глав спуска, строчные." },
+      "title": { "displayName": "Title", "purpose": "Названия услуг, пакетов и кейсов в строках-хайрлайнах." },
+      "body": { "displayName": "Body", "purpose": "Абзацы глав, подзаголовок hero, состав пакетов, сноски." },
+      "numeral": { "displayName": "Numeral", "purpose": "Курсивные цифры: факты, цены, показатель глубины." },
+      "label": { "displayName": "Label", "purpose": "Моно-подписи в разрядку: eyebrow, подписи полей, рейл, бейджи." }
+    },
+    "shadows": [
+      { "name": "focus-ring-dark", "value": "0 0 0 5px rgba(19,17,12,.55)", "purpose": "Ореол фокус-кольца на терракотовом hero и в шапке." },
+      { "name": "lantern-text-glow", "value": "0 0 36px rgba(255,190,110,.34)", "purpose": "Единственное свечение: заголовок брифа, когда рыба зажигает фонарь." }
+    ],
+    "motion": [
+      { "name": "ease-out-expo", "value": "cubic-bezier(.16,1,.3,1)", "purpose": "Все появления и ховеры: экспоненциальное затухание." },
+      { "name": "node-reveal", "value": "opacity .75s / transform 1s, каскад --i × 70ms", "purpose": "Появление детей узла главы после входа в главу." },
+      { "name": "node-hide", "value": "opacity .35s ease", "purpose": "Уход узла при выходе из главы." },
+      { "name": "scrim", "value": "opacity 1.2s ease", "purpose": "Скрим под текстом включается и гаснет мягко." },
+      { "name": "snap", "value": "lenis.scrollTo 0.8–1.6s, ease-out cubic", "purpose": "Дотягивание к ключевому кадру главы после остановки колеса." }
+    ],
+    "breakpoints": [
+      { "name": "mobile-nav", "value": "880px" },
+      { "name": "node-stack", "value": "900px" },
+      { "name": "short-viewport", "value": "820px (height)" },
+      { "name": "container", "value": "1320px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Пилюля hero",
+      "kind": "button",
+      "refersTo": "button-pill",
+      "description": "Главный CTA первого экрана: прозрачная пилюля, крем заливает её слева на ховере.",
+      "html": "<a class=\"ds-pill\" href=\"#\">написать в telegram <span class=\"ds-pill-arr\">↗</span></a>",
+      "css": ".ds-pill{position:relative;z-index:0;overflow:hidden;display:inline-flex;align-items:center;gap:13px;border:1.5px solid rgba(255,255,255,.6);color:#fff;border-radius:50px;padding:17px 32px;font:600 13px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;background:#b9543f;transition:color .45s cubic-bezier(.16,1,.3,1),border-color .45s}.ds-pill::before{content:'';position:absolute;inset:0;z-index:-1;background:#f4ede1;border-radius:50px;transform:scaleX(0);transform-origin:left;transition:transform .55s cubic-bezier(.16,1,.3,1)}.ds-pill:hover{color:#a4442d;border-color:#f4ede1}.ds-pill:hover::before{transform:scaleX(1)}.ds-pill-arr{display:inline-flex;transition:transform .45s cubic-bezier(.16,1,.3,1)}.ds-pill:hover .ds-pill-arr{transform:translateX(6px)}.ds-pill:focus-visible{outline:2px solid #fff;outline-offset:3px;box-shadow:0 0 0 5px rgba(19,17,12,.55)}"
+    },
+    {
+      "name": "Текстовая ссылка hero",
+      "kind": "button",
+      "refersTo": "link-underline",
+      "description": "Второй CTA: капс-моно с подчёркиванием, которое растёт на ховере.",
+      "html": "<a class=\"ds-textlink\" href=\"#\">оставить бриф ↓</a>",
+      "css": ".ds-textlink{display:inline-flex;align-items:center;gap:9px;font:600 12px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase;color:#fff;padding-bottom:6px;text-decoration:none;border-bottom:1.5px solid rgba(255,255,255,.35);background:linear-gradient(#fff,#fff) no-repeat left bottom/0 1.5px;transition:background-size .5s cubic-bezier(.16,1,.3,1)}.ds-textlink:hover{background-size:100% 1.5px}.ds-textlink:focus-visible{outline:2px solid #fff;outline-offset:3px}"
+    },
+    {
+      "name": "Отправить бриф",
+      "kind": "button",
+      "refersTo": "button-submit",
+      "description": "Кнопка формы в кадре: лён на тёмном, терракота на ховере.",
+      "html": "<button class=\"ds-submit\" type=\"button\">отправить бриф <span class=\"ds-submit-arr\">→</span></button>",
+      "css": ".ds-submit{display:inline-flex;align-items:center;gap:14px;background:#efe9df;color:#100d0a;border:none;font:600 12px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;padding:15px 26px;transition:background .35s,color .35s,gap .35s}.ds-submit:hover{background:#b9543f;color:#fff;gap:20px}.ds-submit-arr{transition:transform .4s cubic-bezier(.16,1,.3,1)}.ds-submit:hover .ds-submit-arr{transform:translateX(4px)}.ds-submit:focus-visible{outline:2px solid #b9543f;outline-offset:3px}"
+    },
+    {
+      "name": "Строка-хайрлайн",
+      "kind": "card",
+      "refersTo": "row-hairline",
+      "description": "Строка услуги/пакета: номер, название с составом, цена курсивом; разделены хайрлайнами.",
+      "html": "<a class=\"ds-row\" href=\"#\"><span class=\"ds-row-n\">02</span><span class=\"ds-row-t\">сайты и интернет-магазины<small><span>лендинги — от 30 000 ₽</span><span>интернет-магазины — от 140 000 ₽</span><span>админка</span></small></span><span class=\"ds-row-pr\">от 30 000 ₽</span></a>",
+      "css": ".ds-row{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:14px;align-items:baseline;padding:11px 0;border-top:1px solid rgba(239,233,223,.24);border-bottom:1px solid rgba(239,233,223,.16);color:#efe9df;text-decoration:none;background:#100d0a}.ds-row-n{font:500 11.5px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.12em;color:rgba(239,233,223,.78)}.ds-row-t{font-family:'Wix Madefor Display','Helvetica Neue',sans-serif;font-weight:500;font-size:20px;letter-spacing:-.02em;line-height:1.08;transition:color .3s}.ds-row:hover .ds-row-t{color:#fff}.ds-row-t small{display:block;font-family:'Wix Madefor Text',sans-serif;font-weight:400;font-size:14.5px;color:rgba(239,233,223,.8);margin-top:4px;letter-spacing:0;line-height:1.4}.ds-row-t small span+span::before{content:' · '}.ds-row-pr{font-family:'Literata',Georgia,serif;font-style:italic;font-size:18px;white-space:nowrap;color:#efe9df}"
+    },
+    {
+      "name": "Факт",
+      "kind": "chip",
+      "refersTo": "row-hairline",
+      "description": "Ячейка сетки фактов: курсивная цифра и моно-подпись под хайрлайном; вся ячейка — ссылка на доказательство.",
+      "html": "<a class=\"ds-fact\" href=\"#\"><span class=\"ds-fact-v\">50 дней</span><span class=\"ds-fact-l\">гарантия после запуска</span></a>",
+      "css": ".ds-fact{display:inline-flex;flex-direction:column;gap:6px;min-width:180px;color:#efe9df;text-decoration:none;border-top:1px solid rgba(239,233,223,.18);padding-top:10px;background:#100d0a}.ds-fact-v{font-family:'Literata',Georgia,serif;font-style:italic;font-weight:300;font-size:24px;line-height:1;white-space:nowrap;transition:color .3s}.ds-fact:hover .ds-fact-v{color:#b9543f}.ds-fact-l{font:500 11.5px/1.4 'PT Mono',ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;color:rgba(239,233,223,.78)}"
+    },
+    {
+      "name": "Поле формы",
+      "kind": "input",
+      "refersTo": "input-line",
+      "description": "Поле брифа: только нижний хайрлайн, подпись сверху, терракотовая линия растёт на фокусе.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field-lab\">02 / контакт</span><input class=\"ds-field-in\" type=\"text\" placeholder=\"telegram @ или email\"></label>",
+      "css": ".ds-field{--bd:rgba(239,233,223,.26);position:relative;display:flex;flex-direction:column;padding:12px 0 10px;border-bottom:1px solid var(--bd);min-width:320px;background:#100d0a;transition:border-color .4s}.ds-field::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:2px;background:#b9543f;transform:scaleX(0);transform-origin:left;transition:transform .55s cubic-bezier(.16,1,.3,1)}.ds-field:focus-within{border-color:transparent}.ds-field:focus-within::after{transform:scaleX(1)}.ds-field-lab{font:500 11.5px/1.5 'PT Mono',ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;color:rgba(239,233,223,.72);margin-bottom:9px;transition:color .4s}.ds-field:focus-within .ds-field-lab{color:#b9543f}.ds-field-in{border:none;background:none;padding:2px 0;font:400 17px/1.4 'Wix Madefor Text',sans-serif;color:#efe9df;outline:none;width:100%}.ds-field-in::placeholder{color:rgba(239,233,223,.62)}"
+    },
+    {
+      "name": "Eyebrow главы",
+      "kind": "chip",
+      "refersTo": "row-hairline",
+      "description": "Моно-подпись над заголовком главы: номер, место, состояние.",
+      "html": "<span class=\"ds-eyebrow\">04 — прайс · у корней · цифра до старта</span>",
+      "css": ".ds-eyebrow{display:inline-block;font:500 11.5px/1.5 'PT Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:rgba(239,233,223,.78);background:#100d0a;padding:4px 0}"
+    },
+    {
+      "name": "Рейл глав",
+      "kind": "nav",
+      "refersTo": "nav-brief",
+      "description": "Вертикальная навигация по главам: точка или номер, подпись по ховеру, линия прогресса.",
+      "html": "<nav class=\"ds-rail\"><span class=\"ds-rail-line\"><i style=\"transform:scaleY(.42)\"></i></span><a class=\"ds-rail-item\" href=\"#\"><span class=\"ds-rail-n\">·</span><span class=\"ds-rail-l\">старт</span></a><a class=\"ds-rail-item is-active\" href=\"#\"><span class=\"ds-rail-n\">01</span><span class=\"ds-rail-l\">кто мы</span></a><a class=\"ds-rail-item\" href=\"#\"><span class=\"ds-rail-n\">02</span><span class=\"ds-rail-l\">что делаем</span></a></nav>",
+      "css": ".ds-rail{position:relative;display:inline-flex;flex-direction:column;gap:8px;padding:8px 8px 8px 16px;font:500 11.5px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.62);background:#100d0a}.ds-rail-line{position:absolute;left:0;top:4px;bottom:4px;width:1px;background:rgba(255,255,255,.22)}.ds-rail-line i{position:absolute;left:0;top:0;width:100%;height:100%;background:#fff;transform-origin:top;transition:transform .25s linear}.ds-rail-item{display:flex;align-items:center;gap:10px;color:inherit;padding:7px 0;text-decoration:none;transition:color .35s}.ds-rail-n{min-width:2ch}.ds-rail-l{opacity:0;transform:translateX(6px);transition:opacity .35s,transform .5s cubic-bezier(.16,1,.3,1)}.ds-rail:hover .ds-rail-l,.ds-rail-item.is-active .ds-rail-l{opacity:1;transform:none}.ds-rail-item.is-active{color:#fff}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Стеклянный стебель",
+    "overview": "Вся система — одна непрерывная вертикаль. Страница не набор секций, а спуск: от кувшинки на поверхности по стеклянному стеблю к корням и дну. Интерфейс не лежит поверх картинки, а живёт внутри кадра — заголовки, списки услуг, кейсы, прайс и форма занимают тёмную, специально оставленную пустой половину кадра, а фильм продолжает медленно течь под ними. Свет — единственный «декор»: золотые каналы внутри стекла, фонарь рыбы, подсвечивающий заголовок брифа. Никаких карточек, теней и рамок: структуру держат хайрлайны толщиной в один пиксель и воздух.\n\nХарактер — дорогая сдержанность. Терракота бренда живёт в первом экране (живой fluid-шейдер) и точечно в акцентах, всё остальное — глубокий тёплый чёрный и кремовый текст. Три голоса типографики не смешиваются: гротеск кричит только в заголовке hero и титрах фильма, текст читается кремовым Madefor Text, цифры поют курсивной Literata, метаданные шепчут моно-подписями в разрядку.",
+    "keyCharacteristics": [
+      "Один непрерывный фильм вместо секций; узлы информации привязаны к кадрам, а не к процентам скролла.",
+      "Тёмный фон и кремовый текст; терракота — редкий акцент и цвет первого экрана.",
+      "Хайрлайны вместо карточек, воздух вместо рамок, скримы вместо подложек.",
+      "Три шрифтовых голоса с жёсткими ролями: капс-гротеск / текст / курсивные цифры + моно-подписи.",
+      "Движение — экспоненциальное затухание (cubic-bezier(.16,1,.3,1)), одно авторское событие на экран."
+    ],
+    "rules": [
+      { "name": "The Rare Terracotta Rule", "body": "После первого экрана терракота появляется только как реакция: ховер, фокус, активное состояние. Фон спуска её не содержит.", "section": "colors" },
+      { "name": "The Scrim Not Box Rule", "body": "Читаемость текста над кадром обеспечивают градиентные скримы, а не тёмные прямоугольники под текстом. Исключение — мобильный бриф, где подложка-градиент растворяется в кадр.", "section": "colors" },
+      { "name": "The Three Voices Rule", "body": "Гротеск-капс — только hero и титры фильма; всё остальное строчными. Курсив Literata — только цифры и денежные значения. Моно — только метаданные, никогда абзацы.", "section": "typography" },
+      { "name": "The Lowercase Rule", "body": "Заголовки глав, кнопки-текст и весь копирайт — в нижнем регистре; капс достаётся только Display, титрам и моно-подписям в разрядку.", "section": "typography" },
+      { "name": "The Flat Glass Rule", "body": "Ни один элемент интерфейса не отбрасывает тень; объём принадлежит стеклу и свету в кадре. Если элементу нужно отделиться — хайрлайн или воздух.", "section": "elevation" },
+      { "name": "The One Light Rule", "body": "Свечение существует только как реакция на свет внутри фильма и появляется в одном месте страницы.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do оставлять половину кадра пустой под текст: субъект фильма слева, узел информации справа (или наоборот) — композиция задаётся ещё в промпте генерации клипа.",
+      "Do привязывать появление текста к событиям картинки (кадр, где выходит корень, разгорается фонарь), а не к процентам скролла.",
+      "Do держать моно-подписи не меньше 11.5px и разрядку 0.12–0.16em; тело — Madefor Text от 16px с интерлиньяжем 1.5–1.55.",
+      "Do проверять контраст на кадре с включённым скримом: лён на скриме ≥ 4.5:1, плейсхолдеры ≥ 4.5:1.",
+      "Do давать каждому тяжёлому эффекту честный фолбэк: статичный стилл + узлы столбиком, reduced-motion без анимаций."
+    ],
+    "donts": [
+      "Don't ставить тёмные прямоугольники-подложки под текст на десктопе и не рисовать карточки — только скримы, хайрлайны и воздух.",
+      "Don't добавлять тени, свечения и градиентный текст; единственное свечение принадлежит фонарю рыбы.",
+      "Don't использовать капс вне Display, титров фильма и моно-подписей; заголовки глав и копирайт — строчными.",
+      "Don't вводить новые цвета: акцент — только терракота #b9543f, текст — лён, фон — глубокий чёрный.",
+      "Don't показывать в узле больше одного смыслового блока (≤5 строк или ≤6 фактов) — одна глава = одна мысль."
+    ]
+  }
+}
