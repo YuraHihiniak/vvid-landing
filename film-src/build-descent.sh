@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # build-descent.sh <out-dir> <clip1.mp4> [clip2.mp4 ...]
-# Склеивает клипы спуска кроссфейдом (0.33 с) в один ряд кадров → десктоп 1440x810 24fps q70 + мобайл (центр-кроп 9:16) 540x960 q66 + still + прокси.
+# Склеивает клипы спуска кроссфейдом (0.33 с) в один ряд кадров → десктоп 1440x810 24fps q70 + мобайл (центр-кроп 9:16) 540x960 12fps q66 + still + прокси.
 set -euo pipefail
 OUT="$1"; shift
 HERE="$(cd "$(dirname "$0")" && pwd)"; TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
@@ -20,7 +20,7 @@ if [ "$N" -eq 1 ]; then cp "$1" "$TMP/descent.mp4"; else
 fi
 echo "→ склейка: $(ffprobe -v error -select_streams v:0 -show_entries stream=nb_frames,duration -of csv=p=0 "$TMP/descent.mp4")"
 "$HERE/video2film.sh" "$TMP/descent.mp4" "$OUT" 24 1440x810 70
-"$HERE/video2film.sh" "$TMP/descent.mp4" "$OUT/mobile" 24 540x960 66
+"$HERE/video2film.sh" "$TMP/descent.mp4" "$OUT/mobile" 12 540x960 66   # мобайл: 12 fps = каждый второй кадр (вдвое меньше байт)
 ffmpeg -v error -y -i "$TMP/descent.mp4" -frames:v 1 -vf "scale=1440:810:flags=lanczos" -q:v 4 "$OUT/still.jpg"
 ffmpeg -v error -y -i "$TMP/descent.mp4" -frames:v 1 -vf "scale=540:960:force_original_aspect_ratio=increase,crop=540:960" -q:v 5 "$OUT/mobile/still.jpg"
 cp "$TMP/descent.mp4" "${DESCENT_SRC_COPY:-/private/tmp/claude-501/-Users-roy/174dced4-c26b-436a-96c4-d43b9c875482/scratchpad/descent-src.mp4}" 2>/dev/null || true

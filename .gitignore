@@ -19,3 +19,5 @@ VVID.content copy.md
 node_modules/
 dist/
 .cache/
+film-src/originals/
+.impeccable/
