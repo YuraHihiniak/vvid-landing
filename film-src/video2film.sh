@@ -10,6 +10,7 @@ echo "→ кадры ${FPS}fps ${W}x${H} из $IN"
 # cover-кроп до нужного соотношения, lanczos, без интерполяции кадров
 ffmpeg -v error -i "$IN" -vf "fps=${FPS},scale=${W}:${H}:force_original_aspect_ratio=increase:flags=lanczos,crop=${W}:${H}" -start_number 0 "$TMP/f_%04d.png"
 N=$(ls "$TMP"/f_*.png | wc -l | tr -d ' '); echo "  кадров: $N"
+if [ -n "${FRAME_FILTER:-}" ]; then echo "→ фильтр кадров: $FRAME_FILTER"; python3 "$FRAME_FILTER" "$TMP"; fi   # опциональная обработка PNG до WebP (напр. hero-clarity.py)
 mkdir -p "$TMP/webp"
 for f in "$TMP"/f_*.png; do b=$(basename "${f%.png}"); cwebp -quiet -q "$Q" -m 6 -sharp_yuv -mt "$f" -o "$TMP/webp/$b.webp"; done
 mkdir -p "$OUT"; rm -f "$OUT"/film-*.bin "$OUT"/film.json

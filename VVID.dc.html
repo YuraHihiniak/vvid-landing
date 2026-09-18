@@ -1144,7 +1144,7 @@ class Component extends DCLogic {
     const film=this._film=new VFilm({
       base: lite?'./film/mobile/':'./film/desktop/', manifestUrl: lite?'./film/mobile/film.json':'./film/desktop/film.json', proxyBase: lite?'./film/mobile/proxy/':'./film/desktop/proxy/', canvas, wrap, sticky, pxPerFrame: lite?10:9, overlapVh: root.querySelector('[data-descent]') ? 0 : (lite?0.32:0.38),
       windowAhead: lite?18:(big?40:28), windowBehind:8, keepBehind: lite?12:(big?18:16), pwin: lite?48:64, blend:true, maxDpr: big?2:1.5,                                  // окно чётких кадров (память) · окно прокси   // desktop-фильм 48 fps → 7px/кадр   // хвост: страница наезжает на пэйофф
-      lerp:1, presetFrames: lite?241:480,                       // одно сглаживание — Lenis; без него см. ниже · кадров известно заранее → высота без сдвига макета
+      lerp:1, presetFrames: lite?240:480,                       // одно сглаживание — Lenis; без него см. ниже · кадров известно заранее → высота без сдвига макета
       holds:[[0,0.16,0],[0.43,0.47,0.40],[0.68,0.72,0.74],[0.88,1,1]],   // старт: первый кадр стоит 16 % скролла (≈690 px) — заголовок, подзаголовок и CTA читаются до движения; финал: последний кадр держится 12 % под титр «следующий проект — ваш»; дорожка 9 px/кадр, чтобы сегменты фильма шли с прежней скоростью    // плато: старт · бутон · раскрытие · цветок    // плато: старт · трещина (глава 01→02) · собранная кладка (03) · пэйофф
       onProgress:(f)=>{ this._filmBytes=f; },
       onFrame:(p,f,tail)=>{
