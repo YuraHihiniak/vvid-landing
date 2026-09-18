@@ -1141,20 +1141,20 @@ class Component extends DCLogic {
     let ch=''; const setCh=(c)=>{ if(c===ch) return; ['film-c1','film-c2','film-c3','film-end'].forEach(k=>html.classList.remove(k)); if(c) html.classList.add(c); ch=c; };
     const big=!lite && ((navigator.deviceMemory||8)>=8);
     const film=this._film=new VFilm({
-      base: lite?'./film/mobile/':'./film/desktop/', manifestUrl: lite?'./film/mobile/film.json':'./film/desktop/film.json', proxyBase: lite?'./film/mobile/proxy/':'./film/desktop/proxy/', canvas, wrap, sticky, pxPerFrame: lite?9:8, overlapVh: root.querySelector('[data-descent]') ? 0 : (lite?0.32:0.38),
+      base: lite?'./film/mobile/':'./film/desktop/', manifestUrl: lite?'./film/mobile/film.json':'./film/desktop/film.json', proxyBase: lite?'./film/mobile/proxy/':'./film/desktop/proxy/', canvas, wrap, sticky, pxPerFrame: lite?10:9, overlapVh: root.querySelector('[data-descent]') ? 0 : (lite?0.32:0.38),
       windowAhead: lite?18:(big?40:28), windowBehind:8, keepBehind: lite?12:(big?18:16), pwin: lite?48:64, blend:true, maxDpr: big?2:1.5,                                  // окно чётких кадров (память) · окно прокси   // desktop-фильм 48 fps → 7px/кадр   // хвост: страница наезжает на пэйофф
       lerp:1, presetFrames: lite?241:480,                       // одно сглаживание — Lenis; без него см. ниже · кадров известно заранее → высота без сдвига макета
-      holds:[[0,0.06,0],[0.36,0.40,0.40],[0.64,0.68,0.74],[0.86,1,1]],   // финал: последний кадр держится 14 % скролла под титр «следующий проект — ваш»    // плато: старт · бутон · раскрытие · цветок    // плато: старт · трещина (глава 01→02) · собранная кладка (03) · пэйофф
+      holds:[[0,0.16,0],[0.43,0.47,0.40],[0.68,0.72,0.74],[0.88,1,1]],   // старт: первый кадр стоит 16 % скролла (≈690 px) — заголовок, подзаголовок и CTA читаются до движения; финал: последний кадр держится 12 % под титр «следующий проект — ваш»; дорожка 9 px/кадр, чтобы сегменты фильма шли с прежней скоростью    // плато: старт · бутон · раскрытие · цветок    // плато: старт · трещина (глава 01→02) · собранная кладка (03) · пэйофф
       onProgress:(f)=>{ this._filmBytes=f; },
       onFrame:(p,f,tail)=>{
-        canvas.style.opacity=String(smooth(0.04,0.12,p));                 // кроссфейд fluid → фильм
+        canvas.style.opacity=String(smooth(0.14,0.22,p));                 // кроссфейд fluid → фильм
         if(dim){ dim.style.opacity=(tail*0.5).toFixed(3); }
         if(tail!==this._filmTailPrev){ this._filmTailPrev=tail; html.style.setProperty('--film-tail', tail.toFixed(3)); }               // страница наезжает — фильм гаснет и отходит вглубь
         canvas.style.transform = tail>0 ? 'scale('+(1-tail*0.035).toFixed(4)+')' : '';
-        html.classList.toggle('film-run', p>0.06);
-        setCh(p>=0.86?'film-end': p>=0.68?'film-c3': p>=0.40?'film-c2': p>=0.12?'film-c1':'');
-        if(this._heroFluid&&this._heroFluid.suspend) this._heroFluid.suspend(p>0.12);                 // фильм уже непрозрачен → fluid спит, GPU фильму
-        if(skip){ const on=(p>0.02&&p<0.84); skip.style.opacity=on?'1':'0'; skip.style.visibility=on?'':'hidden'; }
+        html.classList.toggle('film-run', p>0.16);
+        setCh(p>=0.88?'film-end': p>=0.72?'film-c3': p>=0.47?'film-c2': p>=0.22?'film-c1':'');
+        if(this._heroFluid&&this._heroFluid.suspend) this._heroFluid.suspend(p>0.22);                 // фильм уже непрозрачен → fluid спит, GPU фильму
+        if(skip){ const on=(p>0.02&&p<0.86); skip.style.opacity=on?'1':'0'; skip.style.visibility=on?'':'hidden'; }
       }
     });
     try{ window.__vfilm=film; }catch(e){}
