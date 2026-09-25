@@ -234,62 +234,13 @@
   .rail{transition:opacity .35s} html.rail-off .rail{opacity:0 !important;pointer-events:none !important}   /* важнее html.pre-done .rail{opacity:1} ниже */
   html.ds-on.ds-right-on .rail-item.is-active{color:#fff}
   html.ds-on [data-float-cta]{opacity:0 !important;visibility:hidden;pointer-events:none !important;transition:opacity .3s,visibility 0s .3s}
-  /* ── главы спуска как интертитры: фильм режется на карточку акта, зерно/виньетка/глубиномер/рельс живут поверх ── */
-  .ds-scrim{display:none !important}
-  html.ds-on [data-ds-canvas]{opacity:0 !important;transition:opacity .06s linear}
-  .ds-sticky > .hero-flood-grain,.ds-sticky > .hero-vig{z-index:9 !important}
-  .ds-depth{z-index:10}
-  .ds-flash{position:absolute;inset:0;z-index:5;pointer-events:none;background:#3a2414;opacity:0}
-  .ds-flash.on{animation:dsFlash .1s linear}
-  @keyframes dsFlash{0%{opacity:0}40%{opacity:.12}100%{opacity:0}}
-  .ds-node{inset:0;left:0;right:0;top:0;bottom:0;width:auto;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,14vh,150px) clamp(120px,12vw,200px) clamp(70px,10vh,110px) calc(clamp(48px,5vw,96px) + clamp(150px,21vw,300px));background:#0a0806;color:#efe9df;transition:opacity .07s linear .03s}
-  .ds-node.is-in{transition:opacity .07s linear .03s}
-  .ds-node::before{content:attr(data-node);position:absolute;left:clamp(48px,5vw,96px);top:clamp(116px,19.4vh,176px);font:800 clamp(64px,7vw,96px)/.8 var(--font-display);letter-spacing:-.03em;color:rgba(239,233,223,.13);pointer-events:none}
-  .ds-node::after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(70% 55% at var(--lx,50%) var(--ly,40%),rgba(255,190,110,var(--la,.13)),transparent 60%)}
-  .ds-node > *{position:relative;z-index:1}
-  .ds-node .ds-eyebrow{color:rgba(239,233,223,.78);margin-bottom:22px}
-  .ds-node .ds-h{font-weight:700;font-size:clamp(40px,4.2vw,62px);line-height:.98;letter-spacing:-.01em;text-transform:uppercase;max-width:22ch;margin:0 0 20px;color:#efe9df}
-  .ds-node[data-node="05"] .ds-h{text-shadow:0 0 36px rgba(255,190,110,.34)}
-  .ds-node .ds-p{font-size:clamp(17px,1.35vw,19px);line-height:1.55;color:rgba(239,233,223,.82);max-width:54ch;margin:0}
-  .ds-node .ds-facts{margin-top:44px;display:flex;gap:32px 44px;flex-wrap:wrap}
-  .ds-node .ds-fact{border-top:none;padding-top:0;gap:8px;min-width:0}
-  .ds-node .ds-fact .v{font-family:var(--font-display);font-style:normal;font-weight:600;font-size:clamp(24px,2.1vw,30px);letter-spacing:-.02em;line-height:1}
-  .ds-node .ds-fact .l{font-size:11px;color:rgba(239,233,223,.7)}
-  .ds-node .ds-fact:nth-child(n+5){display:none}   /* в титре четыре факта; «договор» звучит в hero и в секции брифа */
-  .ds-cta-row{display:flex;align-items:center;gap:30px;flex-wrap:wrap;margin-top:44px}
-  .ds-cta-row .hero-pill{border-color:rgba(239,233,223,.7)}
-  @media (max-width:900px){
-    .ds-node{padding:clamp(150px,21vh,190px) 20px 40px 20px;justify-content:flex-start}
-    .ds-node::before{left:20px;top:clamp(84px,12vh,110px);font-size:56px}
-    .ds-node .ds-h{font-size:clamp(30px,8.4vw,38px);max-width:none}
-    .ds-node .ds-p{font-size:16px}
-    .ds-node .ds-facts{gap:22px 28px;margin-top:32px}
-    .ds-cta-row{margin-top:30px;gap:16px 24px}
-  }
-  /* ── секции после фильма: та же палитра и моно-счёт, таблицы там, где их сканируют ── */
-  .sec{position:relative;z-index:10;background:rgba(19,17,12,.94);color:#e4ded2;padding:clamp(70px,9vw,120px) 26px;border-top:1px solid rgba(228,222,210,.10)}
-  .sec-in{max-width:1320px;margin:0 auto}
-  .sec-head{margin:0 0 clamp(28px,3.4vw,44px);max-width:60ch}
-  .sec-k{display:block;font:500 11.5px/1.5 'PT Mono',ui-monospace,monospace;letter-spacing:.2em;text-transform:uppercase;color:#a79e8f;margin-bottom:18px}
-  .sec-h{margin:0;font-family:var(--font-display);font-weight:600;font-size:clamp(28px,3.2vw,46px);line-height:1.04;letter-spacing:-.03em;color:#efe9df;text-wrap:balance}
-  .sec-p{margin:18px 0 0;font:400 clamp(16px,1.25vw,19px)/1.55 'Wix Madefor Text','Wix Madefor Display',sans-serif;color:rgba(239,233,223,.82);max-width:46ch}
-  .sec .ds-rows{border-top:1px solid rgba(239,233,223,.24);max-width:980px}
-  .sec .ds-row{padding:18px 0}
-  .sec .ds-row .t{font-size:clamp(19px,1.7vw,26px)}
-  .sec .ds-row .pr{font-size:clamp(17px,1.5vw,22px)}
-  .sec .ds-case .pr{font:500 12px/1.6 'PT Mono',ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;font-style:normal;max-width:36%;text-align:right;color:rgba(239,233,223,.85)}
-  .sec-foot{margin:26px 0 0;font:400 15px/1.5 'Wix Madefor Text','Wix Madefor Display',sans-serif;color:rgba(239,233,223,.7);max-width:70ch}
-  .sec-brief-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:48px 80px;align-items:start}
-  .sec-brief .ds-form{max-width:560px}
-  @media (max-width:900px){ .sec-brief-grid{grid-template-columns:1fr;gap:28px} .sec .ds-rows{max-width:none} }
   .ds-cta{display:none}
   @media (max-width:900px){ html.ds-active:not(.ds-brief-on) .ds-cta{display:inline-flex;position:fixed;left:20px;bottom:14px;z-index:7996;align-items:center;gap:8px;min-height:40px;padding:0 16px;border:1px solid rgba(239,233,223,.55);border-radius:50px;background:rgba(16,13,10,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#efe9df;font:600 11.5px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;text-decoration:none} }
   html.ds-static-on .rail{display:none}
   @media (max-height:820px){ .ds-h{font-size:clamp(22px,2.2vw,32px)} .ds-eyebrow{margin-bottom:12px} .ds-row{padding:9px 0} .ds-row .t small{font-size:13.5px} .ds-p{margin-bottom:16px} }
   .ds-static .ds-sticky{position:relative;height:auto;display:grid}
   .ds-static .ds-still{position:relative;inset:auto;height:auto;aspect-ratio:16/9}
-  .ds-static .ds-node{position:relative;inset:auto;left:auto;right:auto;top:auto;bottom:auto;width:auto;opacity:1 !important;transform:none !important;pointer-events:auto;padding:36px 26px 36px calc(26px + 90px);min-height:0}
-  .ds-static .ds-node::before{left:26px;top:36px;font-size:56px} .ds-static .ds-flash{display:none}
+  .ds-static .ds-node{position:relative;left:auto;right:auto;top:auto;bottom:auto;width:auto;opacity:1 !important;transform:none !important;pointer-events:auto;padding:28px 26px}
   .ds-static .ds-node > *,.ds-static .ds-node .ds-row,.ds-static .ds-node .ds-fact{opacity:1 !important;transform:none !important}
   .ds-static .ds-scrim,.ds-static .ds-depth,.ds-static canvas{display:none}
   /* сцены фильма между блоками: прилипающий экран, стилл под кадрами, подпись от прогресса, занавес следующего блока */
@@ -495,10 +446,11 @@
       <div class="ds-depth"><span>{{ t.dsDepth }}</span><b data-ds-depth="1">−0,0 м</b></div>
       <a href="#brief" class="ds-cta">{{ t.navBrief }} ↓</a>
 
-      <div data-node="01" data-range="0.043,0.080" id="ch01" inert="inert" class="ds-node" style="--lx:88%;--ly:18%">
+      <div data-node="01" data-range="0.0149,0.1011" id="about" inert="inert" class="ds-node ds-left">
         <span class="ds-eyebrow">{{ t.dsK1 }}</span>
         <h2 class="ds-h">{{ t.manifH2 }}</h2>
-        <p class="ds-p">{{ t.dsCrafts }}</p>
+        <p class="ds-p">{{ t.manifPa }}<b>{{ t.manifPb }}</b>.</p>
+        <p class="ds-crafts">{{ t.dsCrafts }}</p>
         <div class="ds-facts">
           <sc-for list="{{ proof }}" as="pf" hint-placeholder-count="5">
             <a href="{{ pf.href }}" class="ds-fact"><span class="v">{{ pf.v }}</span><span class="l">{{ pf.l }}</span></a>
@@ -506,88 +458,64 @@
         </div>
       </div>
 
-      <div data-node="02" data-range="0.340,0.377" id="ch02" inert="inert" class="ds-node" style="--lx:62%;--ly:30%">
+      <div data-node="02" data-range="0.1362,0.2426" id="capabilities" inert="inert" class="ds-node ds-right">
         <span class="ds-eyebrow">{{ t.dsK2 }}</span>
         <h2 class="ds-h">{{ t.capH2 }}</h2>
-        <p class="ds-p">{{ t.dsCard2P }}</p>
+        <div class="ds-rows">
+          <sc-for list="{{ capabilities }}" as="cap" hint-placeholder-count="5">
+            <a href="#brief" class="ds-row"><span class="n">{{ cap.n }}</span><span class="t">{{ cap.title }}<small><sc-for list="{{ cap.specs }}" as="spec" hint-placeholder-count="4"><span>{{ spec }}</span></sc-for></small></span><span class="pr">{{ cap.price }}</span></a>
+          </sc-for>
+        </div>
+        <p class="ds-foot">{{ t.procH2 }}</p>
       </div>
 
-      <div data-node="03" data-range="0.520,0.557" id="ch03" inert="inert" class="ds-node" style="--lx:50%;--ly:40%">
+      <div data-node="03" data-range="0.2819,0.4840" id="work" inert="inert" class="ds-node ds-left">
         <span class="ds-eyebrow">{{ t.dsK3 }}</span>
-        <h2 class="ds-h">{{ t.dsCard3H }}</h2>
-        <p class="ds-p">{{ t.dsCard3P }}</p>
+        <h2 class="ds-h">{{ t.casesH2a }} {{ t.casesH2b }}</h2>
+        <div class="ds-rows">
+          <sc-for list="{{ cases }}" as="cs" hint-placeholder-count="4">
+            <a href="{{ cs.url }}" target="{{ cs.target }}" rel="noopener noreferrer" data-case-link="1" data-live="{{ cs.live }}" class="ds-row ds-case"><span class="n">{{ cs.n }}</span><span class="t">{{ cs.title }}<small>{{ cs.client }}<sc-for list="{{ cs.metrics }}" as="m" hint-placeholder-count="3"><span class="m">{{ m.v }} {{ m.l }}</span></sc-for></small></span><span class="pr">{{ cs.linkLabel }}</span></a>
+          </sc-for>
+        </div>
       </div>
 
-      <div data-node="04" data-range="0.680,0.717" id="ch04" inert="inert" class="ds-node" style="--lx:30%;--ly:78%">
+      <div data-node="04" data-range="0.6383,0.7404" id="pricing" inert="inert" class="ds-node ds-right">
         <span class="ds-eyebrow">{{ t.dsK4 }}</span>
-        <h2 class="ds-h">{{ t.dsCard4H }}</h2>
-        <p class="ds-p">{{ t.dsCard4P }}</p>
+        <h2 class="ds-h">{{ t.pricingH2 }}</h2>
+        <div class="ds-rows">
+          <sc-for list="{{ pricing }}" as="pr" hint-placeholder-count="3">
+            <a href="#brief" class="ds-row" data-at="{{ pr.at }}"><span class="n">{{ pr.k }}</span><span class="t">{{ pr.title }}<small><sc-for list="{{ pr.points }}" as="pt" hint-placeholder-count="3"><span>{{ pt }}</span></sc-for></small></span><span class="pr">{{ pr.range }}</span></a>
+          </sc-for>
+        </div>
+        <p class="ds-foot" data-at="0.42">{{ t.pricingFootnote }}</p>
       </div>
 
-      <div data-node="05" data-range="0.905,0.942" id="ch05" inert="inert" class="ds-node" style="--lx:78%;--ly:42%;--la:.18">
+      <div data-node="05" data-range="0.8585,0.9904" data-lit="0.72" data-scrim="none" id="brief" class="ds-node ds-right ds-brief" inert="inert">
         <span class="ds-eyebrow">{{ t.dsK5 }}</span>
-        <h2 class="ds-h">{{ t.dsBriefH2 }}</h2>
-        <p class="ds-p">{{ t.dsBriefP }}</p>
-        <div class="ds-cta-row"><a class="hero-pill" href="https://t.me/vvid" target="_blank" rel="noopener noreferrer">{{ t.heroCtaPrimary }}</a><a class="hero-textlink" href="#brief">{{ t.filmCta2 }}</a></div>
+        <h2 class="ds-h ds-h-big">{{ t.dsBriefH2 }}</h2>
+        <p class="ds-p" data-at="0.3">{{ t.dsBriefP }}</p>
+        <form onSubmit="{{ onSubmit }}" data-brief="1" class="ds-form" data-at="0.3" novalidate="novalidate">
+          <label class="vf"><span class="vf-lab">{{ t.formL3 }}</span><textarea class="vf-in" name="task" rows="2" maxlength="1000" placeholder="{{ t.formPh3 }}"></textarea></label>
+          <label class="vf"><span class="vf-lab">{{ t.formL4 }}</span><input class="vf-in" name="contact" type="text" required="required" maxlength="120" autocomplete="on" enterkeyhint="send" placeholder="{{ t.formPh4 }}"></label>
+          <div class="ds-form-row">
+            <button type="submit" data-submit-btn="1" class="vf-submit">{{ t.formSubmit }} <span class="vf-arr">→</span></button>
+            <a href="https://t.me/vvid" target="_blank" rel="noopener noreferrer" class="ds-form-alt">{{ t.dsBriefAlt }}</a>
+          </div>
+          <p class="ds-form-state" data-form-state="1" role="status" aria-live="polite" hidden="hidden"></p>
+          <p class="ds-form-consent">{{ t.formConsent }} <a href="#faq-privacy">{{ t.formConsentLink }}</a></p>
+          <div class="ds-form-badges"><span>{{ t.briefBadge1 }}</span><span>{{ t.briefBadge2 }}</span><span>{{ t.briefBadge3 }}</span></div>
+        </form>
       </div>
-      <div class="ds-flash" data-ds-flash="1" aria-hidden="true"></div>
+
+      <div data-node="b1" data-range="0.52,0.615" data-bridge="1" data-scrim="none" inert="inert" class="ds-node ds-left ds-bridge"><span class="ds-eyebrow">{{ t.dsBridge1 }}</span></div>
+      <div data-node="b2" data-range="0.76,0.84" data-bridge="1" data-scrim="none" inert="inert" class="ds-node ds-left ds-bridge"><span class="ds-eyebrow">{{ t.dsBridge2 }}</span></div>
     </div>
   </section>
 
   <!-- 06 PRICING → узел 04 внутри спуска -->
 
   <!-- 07 TEAM + FAQ -->
-  <section id="capabilities" class="sec" data-screen-label="03 Services">
-    <div class="sec-in">
-      <div class="sec-head" data-reveal="1"><span class="sec-k">{{ t.secK2 }}</span><h2 class="sec-h">{{ t.secH2 }}</h2></div>
-      <div class="ds-rows">
-      <sc-for list="{{ capabilities }}" as="cap" hint-placeholder-count="5">
-      <a href="#brief" class="ds-row"><span class="n">{{ cap.n }}</span><span class="t">{{ cap.title }}<small><sc-for list="{{ cap.specs }}" as="spec" hint-placeholder-count="4"><span>{{ spec }}</span></sc-for></small></span><span class="pr">{{ cap.price }}</span></a>
-      </sc-for>
-      </div>
-      <p class="ds-foot sec-foot" data-reveal="1">{{ t.procH2 }}</p>
-    </div>
-  </section>
-  <section id="work" class="sec" data-screen-label="04 Cases">
-    <div class="sec-in">
-      <div class="sec-head" data-reveal="1"><span class="sec-k">{{ t.secK3 }}</span><h2 class="sec-h">{{ t.casesH2a }} {{ t.casesH2b }}</h2></div>
-      <div class="ds-rows">
-      <sc-for list="{{ cases }}" as="cs" hint-placeholder-count="4">
-      <a href="{{ cs.url }}" target="{{ cs.target }}" rel="noopener noreferrer" data-case-link="1" data-live="{{ cs.live }}" class="ds-row ds-case"><span class="n">{{ cs.n }}</span><span class="t">{{ cs.title }}<small>{{ cs.client }}<sc-for list="{{ cs.metrics }}" as="m" hint-placeholder-count="3"><span class="m">{{ m.v }} {{ m.l }}</span></sc-for></small></span><span class="pr">{{ cs.linkLabel }}</span></a>
-      </sc-for>
-      </div>
-    </div>
-  </section>
-  <section id="pricing" class="sec" data-screen-label="05 Pricing">
-    <div class="sec-in">
-      <div class="sec-head" data-reveal="1"><span class="sec-k">{{ t.secK4 }}</span><h2 class="sec-h">{{ t.pricingH2 }}</h2></div>
-      <div class="ds-rows">
-      <sc-for list="{{ pricing }}" as="pr" hint-placeholder-count="3">
-      <a href="#brief" class="ds-row"><span class="n">{{ pr.k }}</span><span class="t">{{ pr.title }}<small><sc-for list="{{ pr.points }}" as="pt" hint-placeholder-count="3"><span>{{ pt }}</span></sc-for></small></span><span class="pr">{{ pr.range }}</span></a>
-      </sc-for>
-      </div>
-      <p class="ds-foot sec-foot" data-reveal="1">{{ t.pricingFootnote }}</p>
-    </div>
-  </section>
-  <section id="brief" class="sec sec-brief" data-screen-label="06 Brief">
-    <div class="sec-in sec-brief-grid">
-      <div class="sec-head" data-reveal="1"><span class="sec-k">{{ t.secK5 }}</span><h2 class="sec-h">{{ t.secH5 }}</h2><p class="sec-p">{{ t.dsBriefP }}</p></div>
-      <div data-reveal="1">
-        <form onSubmit="{{ onSubmit }}" data-brief="1" class="ds-form" data-at="0.3" novalidate="novalidate">
-        <label class="vf"><span class="vf-lab">{{ t.formL3 }}</span><textarea class="vf-in" name="task" rows="2" maxlength="1000" placeholder="{{ t.formPh3 }}"></textarea></label>
-        <label class="vf"><span class="vf-lab">{{ t.formL4 }}</span><input class="vf-in" name="contact" type="text" required="required" maxlength="120" autocomplete="on" enterkeyhint="send" placeholder="{{ t.formPh4 }}"></label>
-        <div class="ds-form-row">
-        <button type="submit" data-submit-btn="1" class="vf-submit">{{ t.formSubmit }} <span class="vf-arr">→</span></button>
-        <a href="https://t.me/vvid" target="_blank" rel="noopener noreferrer" class="ds-form-alt">{{ t.dsBriefAlt }}</a>
-        </div>
-        <p class="ds-form-state" data-form-state="1" role="status" aria-live="polite" hidden="hidden"></p>
-        <p class="ds-form-consent">{{ t.formConsent }} <a href="#faq-privacy">{{ t.formConsentLink }}</a></p>
-        <div class="ds-form-badges"><span>{{ t.briefBadge1 }}</span><span>{{ t.briefBadge2 }}</span><span>{{ t.briefBadge3 }}</span></div>
-        </form>
-      </div>
-    </div>
-  </section>
-  <section id="faq" data-screen-label="07 FAQ" style="position:relative;z-index:10;background:rgba(19,17,12,.9);color:#e4ded2;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
+  <section id="faq" data-screen-label="06 FAQ" style="position:relative;z-index:10;background:rgba(19,17,12,.9);color:#e4ded2;padding:clamp(90px,13vw,180px) 26px;overflow:hidden">
     <div data-speed="6" data-pmax="150" style="position:absolute;top:1vw;right:-2vw;font-weight:800;font-size:46vw;line-height:.62;letter-spacing:-.06em;color:rgba(228,222,210,.035);pointer-events:none;user-select:none">faq</div>
     <div data-depth="1" style="max-width:1320px;margin:0 auto;position:relative;z-index:1">
       <h2 id="faq-title" data-reveal="1" style="margin:0 0 28px;font:500 11.5px/1.5 'PT Mono',ui-monospace,monospace;letter-spacing:.2em;text-transform:uppercase;color:#a79e8f">{{ t.faqLabel }}</h2>
@@ -1128,7 +1056,7 @@ class Component extends DCLogic {
     const big=!coarse && ((navigator.deviceMemory||8)>=8);
     const film=new VFilm({ base, manifestUrl:base+'film.json', proxyBase:base+'proxy/', canvas, wrap:sec, sticky, pxPerFrame: coarse?10:10, overlapVh:0, leadVh:0, noGlobalVar:true, lerp:this._lenis?1:0.12, presetFrames: coarse?471:941, lazy:true, lazyAhead:180,
       windowAhead: coarse?12:(big?30:22), windowBehind:6, keepBehind: coarse?6:(big?12:10), pwin: coarse?36:56, blend:true, maxDpr:1.5,
-      zonesFrac: nodes.filter(n=>!n.bridge).map(n=>[n.a, n.b, 4]),   // под карточкой-интертитром фильм идёт вчетверо медленнее и невидим: карточка ≈ 35 кадров × 10 px × 4 ≈ 1400 px скролла   // кейсы — глава длинная, ей хватит ×2                       // в главе фильм идёт вчетверо медленнее — есть время читать, камера не стоит                       // пока узел на экране — фильм идёт втрое медленнее, но не стоит
+      zonesFrac: nodes.filter(n=>!n.bridge).map(n=>[n.a+0.02, n.b-0.02, n.el.id==='work'?2:4]),   // кейсы — глава длинная, ей хватит ×2                       // в главе фильм идёт вчетверо медленнее — есть время читать, камера не стоит                       // пока узел на экране — фильм идёт втрое медленнее, но не стоит
       onFrame:(p,f)=>{
         if(canvas.style.opacity!=='1' && f>=0 && (film.bmp.has(f)||film.pbmp.has(f))) canvas.style.opacity='1';
         const hs=this._film&&this._film.sticky; if(hs){ const hide=canvas.style.opacity==='1'&&sec.getBoundingClientRect().top<=0; if(hs.style.visibility!==(hide?'hidden':'')) hs.style.visibility=hide?'hidden':''; }   // передача в пиксель: стик спуска встал (top<=0) и кадр нарисован → hero гаснет сразу, без 29 px «съезда» hero-кадра поверх такого же
@@ -1136,7 +1064,7 @@ class Component extends DCLogic {
         let anyL=false, anyR=false, changed=false;
         nodes.forEach(n=>{ const fe=document.activeElement; const inR=(q>=n.a&&q<=n.b)||(n.active&&coarse&&!!fe&&fe!==document.body&&n.el.contains(fe)&&/^(INPUT|TEXTAREA|SELECT)$/.test(fe.tagName));   /* держим узел только на тач-устройстве и только пока в его ПОЛЕ фокус (клавиатура меняет высоту экрана); фокус на заголовке после «оставить бриф» или на ссылке узел больше не приклеивает */   /* на тач-устройстве клавиатура меняет высоту экрана — пока поле в фокусе, узел не отпускаем */
         if(inR!==n.active){ n.active=inR; changed=true; n.el.classList.toggle('is-in',inR); n.el.classList.toggle('on',inR); n.el.toggleAttribute('inert',!inR); if(!inR) n.snapped=false; } if(n.active||inR!==n.active||n.keyed.length){ const span=n.b-n.a||1; n.keyed.forEach(k=>{ const on=inR&&(q>=n.a+k.at*span||k.on); if(on!==k.on){ k.on=on; k.el.classList.toggle('is-at',on); } }); } if(n.lit!=null){ const on=n.active&&q>=n.a+n.lit*(n.b-n.a); if(on!==n.litOn){ n.litOn=on; n.el.classList.toggle('is-lit',on); } } if(n.active&&!n.bridge){ if(n.scrim==='l') anyL=true; else if(n.scrim==='r') anyR=true; } });
-        if(changed){ if(scrimL) scrimL.style.opacity=anyL?'1':'0'; if(scrimR) scrimR.style.opacity=anyR?'1':'0'; const on=nodes.some(n=>n.active&&!n.bridge); if(on!==this._dsOn){ this._dsOn=on; document.documentElement.classList.toggle('ds-on',on); } document.documentElement.classList.toggle('ds-right-on', nodes.some(n=>n.active&&!n.bridge&&n.side==='r')); document.documentElement.classList.toggle('ds-brief-on', nodes.some(n=>n.active&&n.el.id==='ch05')); const fl=sec.querySelector('[data-ds-flash]'); if(fl){ fl.classList.remove('on'); void fl.offsetWidth; fl.classList.add('on'); }   /* рез: короткая вспышка цветом кадра при входе/выходе карточки */ const act=nodes.find(n=>n.active&&!n.bridge); if(act) this._dsActiveId=act.el.id; try{ this.applyRail(window.innerHeight); }catch(e){} }
+        if(changed){ if(scrimL) scrimL.style.opacity=anyL?'1':'0'; if(scrimR) scrimR.style.opacity=anyR?'1':'0'; const on=nodes.some(n=>n.active&&!n.bridge); if(on!==this._dsOn){ this._dsOn=on; document.documentElement.classList.toggle('ds-on',on); } document.documentElement.classList.toggle('ds-right-on', nodes.some(n=>n.active&&!n.bridge&&n.side==='r')); document.documentElement.classList.toggle('ds-brief-on', nodes.some(n=>n.active&&n.el.id==='brief')); const act=nodes.find(n=>n.active&&!n.bridge); if(act) this._dsActiveId=act.el.id; try{ this.applyRail(window.innerHeight); }catch(e){} }
         if(depthEl){ const clips=(film.m&&film.m.clips)||2; const d=q*6.0*clips/5; const en=document.documentElement.lang==='en'; const ds='−'+(en?d.toFixed(1):d.toFixed(1).replace('.',','))+(en?' m':' м'); if(depthEl.textContent!==ds) depthEl.textContent=ds; }
       } });
     nodes.forEach(n=>{ let i=0; Array.from(n.el.children).forEach(ch=>{ if(ch.classList.contains('ds-rows')||ch.classList.contains('ds-facts')){ Array.from(ch.children).forEach(r=>{ r.style.setProperty('--i', i++); }); } else ch.style.setProperty('--i', i++); }); });
@@ -1289,7 +1217,7 @@ class Component extends DCLogic {
         hdrTag:'студия разработки и автоматизации',
         navServices:'услуги', navCases:'кейсы', navPricing:'прайс', navBrief:'бриф',
         heroBig1:'мы VVID', heroBig2:'мы делаем', heroBig3:'большие', heroBig4:'вещи', heroBigAria:'мы VVID, мы делаем большие вещи',
-                heroSub:'приложения, сайты и телеграм-боты для бизнеса, который уже работает. цены открыты — от 20 000 ₽.', heroCtaPrimary:'написать в telegram ↗', heroProof:'договор + юрлицо · ответ в telegram < 2 часов · демо каждые 2 недели', heroProof1:'договор + юрлицо', heroProof2:'ответ в telegram < 2 часов', heroProof3:'демо каждые 2 недели', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'разработка · автоматизация', dsK1:'01 — кто мы · Минск', dsCrafts:'разработка · автоматизация · дизайн — те же люди на созвоне и в коде', dsK3:'03 — кейсы · четыре проекта · три в проде', dsK4:'04 — прайс · у корней · цифра до старта', dsK5:'05 — бриф · у основания · давайте работать', dsCard2P:'приложения, сайты, магазины, боты, интеграции — цены открыты, от\u00a020\u00a0000\u00a0₽.', dsCard3H:'четыре проекта. три уже в проде.', dsCard3P:'два магазина открываются по ссылке ниже, vitrina — на демо.', dsCard4H:'цифру называем до старта, а не после.', dsCard4P:'от\u00a020\u00a0000\u00a0₽ за бота до\u00a0700\u00a0000\u00a0₽ за приложение — таблица ниже.', secK2:'06 — услуги · цены открыты', secH2:'услуги и цены «от»', secH5:'оставить бриф', secK3:'07 — кейсы · четыре проекта', secK4:'08 — прайс · цифра до старта', secK5:'09 — бриф · давайте работать', dsBriefH2:'давайте работать.', dsBriefP:'опишите задачу парой строк — в рабочее время ответим меньше чем за 2 часа. цифру назовём, когда поймём процесс.', dsBriefAlt:'или сразу в telegram ↗', dsK2:'02 — что делаем · пять услуг · цены открыты', dsDepth:'глубина', filmK1:'разбор', filmT1:'начинаем с вашего процесса — не с шаблона', filmK2:'сборка', filmT2:'демо каждые 2 недели — видите систему, пока она собирается', filmK3:'результат', filmT3:'3 проекта в проде · гарантия 50 дней', filmKEnd:'vvid — студия разработки и автоматизации', filmTEnd:'следующий проект — ваш', filmSkip:'пропустить фильм ↓', filmCta2:'оставить бриф ↓', footTag:'из хаоса — система', formSent:'бриф готов → открываем telegram ↗', formSentHint:'если telegram не открылся — текст брифа уже скопирован, вставьте его в чат:', formSentTg:'открыть @vvid ↗', formSentMail:'или отправить письмом', formConsent:'нажимая «отправить», вы соглашаетесь на обработку контакта, чтобы мы могли ответить.', formConsentLink:'как храним данные', menuLabel:'меню', navFaq:'вопросы', motionLabel:'анимация', motionOn:'вкл', motionOff:'выкл', dsBridge1:'↓ дальше — прайс: три пакета, цифра до старта', dsBridge2:'↓ дальше — бриф: два поля, ответ за 2 часа',
+                heroSub:'приложения, сайты и телеграм-боты для бизнеса, который уже работает. цены открыты — от 20 000 ₽.', heroCtaPrimary:'написать в telegram ↗', heroProof:'договор + юрлицо · ответ в telegram < 2 часов · демо каждые 2 недели', heroProof1:'договор + юрлицо', heroProof2:'ответ в telegram < 2 часов', heroProof3:'демо каждые 2 недели', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'разработка · автоматизация', dsK1:'01 — кто мы · Минск', dsCrafts:'разработка · автоматизация · дизайн — те же люди на созвоне и в коде', dsK3:'03 — кейсы · четыре проекта · три в проде', dsK4:'04 — прайс · у корней · цифра до старта', dsK5:'05 — бриф · у основания · давайте работать', dsBriefH2:'давайте работать.', dsBriefP:'опишите задачу парой строк — в рабочее время ответим меньше чем за 2 часа. цифру назовём, когда поймём процесс.', dsBriefAlt:'или сразу в telegram ↗', dsK2:'02 — что делаем · пять услуг · цены открыты', dsDepth:'глубина', filmK1:'разбор', filmT1:'начинаем с вашего процесса — не с шаблона', filmK2:'сборка', filmT2:'демо каждые 2 недели — видите систему, пока она собирается', filmK3:'результат', filmT3:'3 проекта в проде · гарантия 50 дней', filmKEnd:'vvid — студия разработки и автоматизации', filmTEnd:'следующий проект — ваш', filmSkip:'пропустить фильм ↓', filmCta2:'оставить бриф ↓', footTag:'из хаоса — система', formSent:'бриф готов → открываем telegram ↗', formSentHint:'если telegram не открылся — текст брифа уже скопирован, вставьте его в чат:', formSentTg:'открыть @vvid ↗', formSentMail:'или отправить письмом', formConsent:'нажимая «отправить», вы соглашаетесь на обработку контакта, чтобы мы могли ответить.', formConsentLink:'как храним данные', menuLabel:'меню', navFaq:'вопросы', motionLabel:'анимация', motionOn:'вкл', motionOff:'выкл', dsBridge1:'↓ дальше — прайс: три пакета, цифра до старта', dsBridge2:'↓ дальше — бриф: два поля, ответ за 2 часа',
                 manifH2:'ваш бизнес уже работает. мы снимаем его с ручного привода.',
         manifPa:'разбираем процесс на детали и собираем систему, которая держит нагрузку — ', manifPb:'приложение, сайт, бот или интеграция', capH2:'строим то, что не умеют готовые решения.', casesH2a:'что уже собрано.', casesH2b:'три в проде: два открывайте, третий покажем на демо.', procH2:'разбор → чертёж → сборка → запуск. 5 шагов, от 5 недель до прода.', pricingH2:'прозрачный прайс. без «по запросу», где можно назвать цифру.',
         pricingFootnote:'гарантия 50 дней: после запуска поддержка бесплатно. дальше — по договорённости.', faqLabel:'faq — что спрашивают до старта',
@@ -1302,7 +1230,7 @@ class Component extends DCLogic {
         hdrTag:'development & automation studio',
         navServices:'services', navCases:'work', navPricing:'pricing', navBrief:'brief',
         heroBig1:'we are VVID', heroBig2:'we do', heroBig3:'big things', heroBig4:'', heroBigAria:'we are VVID, we do big things',
-                heroSub:'apps, websites and telegram bots for a business that already runs. prices are open — from $250.', heroCtaPrimary:'message us on telegram ↗', heroProof:'contract + legal entity · telegram reply < 2 hours · a demo every 2 weeks', heroProof1:'contract + legal entity', heroProof2:'telegram reply < 2 hours', heroProof3:'a demo every 2 weeks', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'development · automation', dsK1:'01 — who we are · Minsk', dsCrafts:'development · automation · design — the same people on the call and in the code', dsK3:'03 — work · four projects · three live', dsK4:'04 — pricing · at the roots · a number before we start', dsK5:'05 — brief · at the base · let’s work', dsCard2P:'apps, sites, stores, bots, integrations — prices are open, from $250.', dsCard3H:'four projects. three already live.', dsCard3P:'two stores open by the link below, vitrina — on a demo.', dsCard4H:'we name the number before we start.', dsCard4P:'from $250 for a bot to $8,000 for an app — table below.', secK2:'06 — services · prices are open', secH2:'services and starting prices', secH5:'leave a brief', secK3:'07 — cases · four projects', secK4:'08 — pricing · a number before the start', secK5:'09 — brief · let’s work', dsBriefH2:'let’s work.', dsBriefP:'describe the task in a couple of lines — we reply within 2 hours in work hours. we name a number once we understand the process.', dsBriefAlt:'or straight to telegram ↗', dsK2:'02 — what we do · five services · prices are open', dsDepth:'depth', filmK1:'discovery', filmT1:'we start from your process — not a template', filmK2:'build', filmT2:'a demo every 2 weeks — you watch it come together', filmK3:'result', filmT3:'3 projects live · 50-day guarantee', filmKEnd:'vvid — development & automation studio', filmTEnd:'the next project is yours', filmSkip:'skip the film ↓', filmCta2:'leave a brief ↓', footTag:'from chaos — a system', formSent:'brief ready → opening telegram ↗', formSentHint:'if telegram didn’t open — the brief is already copied, paste it into the chat:', formSentTg:'open @vvid ↗', formSentMail:'or send by email', formConsent:'by sending you agree that we process your contact so we can reply.', formConsentLink:'how we handle data', menuLabel:'menu', navFaq:'faq', motionLabel:'motion', motionOn:'on', motionOff:'off', dsBridge1:'↓ next — pricing: three packages, a number before we start', dsBridge2:'↓ next — the brief: two fields, a reply within 2 hours',
+                heroSub:'apps, websites and telegram bots for a business that already runs. prices are open — from $250.', heroCtaPrimary:'message us on telegram ↗', heroProof:'contract + legal entity · telegram reply < 2 hours · a demo every 2 weeks', heroProof1:'contract + legal entity', heroProof2:'telegram reply < 2 hours', heroProof3:'a demo every 2 weeks', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'development · automation', dsK1:'01 — who we are · Minsk', dsCrafts:'development · automation · design — the same people on the call and in the code', dsK3:'03 — work · four projects · three live', dsK4:'04 — pricing · at the roots · a number before we start', dsK5:'05 — brief · at the base · let’s work', dsBriefH2:'let’s work.', dsBriefP:'describe the task in a couple of lines — we reply within 2 hours in work hours. we name a number once we understand the process.', dsBriefAlt:'or straight to telegram ↗', dsK2:'02 — what we do · five services · prices are open', dsDepth:'depth', filmK1:'discovery', filmT1:'we start from your process — not a template', filmK2:'build', filmT2:'a demo every 2 weeks — you watch it come together', filmK3:'result', filmT3:'3 projects live · 50-day guarantee', filmKEnd:'vvid — development & automation studio', filmTEnd:'the next project is yours', filmSkip:'skip the film ↓', filmCta2:'leave a brief ↓', footTag:'from chaos — a system', formSent:'brief ready → opening telegram ↗', formSentHint:'if telegram didn’t open — the brief is already copied, paste it into the chat:', formSentTg:'open @vvid ↗', formSentMail:'or send by email', formConsent:'by sending you agree that we process your contact so we can reply.', formConsentLink:'how we handle data', menuLabel:'menu', navFaq:'faq', motionLabel:'motion', motionOn:'on', motionOff:'off', dsBridge1:'↓ next — pricing: three packages, a number before we start', dsBridge2:'↓ next — the brief: two fields, a reply within 2 hours',
                 manifH2:'your business already runs. we take it off manual.',
         manifPa:'we take the process apart and rebuild it as a system that holds the load — ', manifPb:'an app, a site, a bot or an integration', capH2:'we build what off-the-shelf tools can’t.', casesH2a:'what’s already built.', casesH2b:'three live: open two, we demo the third.', procH2:'teardown → blueprint → assembly → launch. 5 steps, 5+ weeks to production.', pricingH2:'transparent pricing. no “on request” where we can name a number.',
         pricingFootnote:'50-day guarantee: free support after launch. beyond that — by agreement.', faqLabel:'faq — what people ask before starting',
@@ -1402,8 +1330,8 @@ class Component extends DCLogic {
         ]
       },
       rail:{
-        ru:[{n:'·',id:'top',href:'#top',l:'старт'},{n:'01',id:'ch01',href:'#ch01',l:'кто мы'},{n:'02',id:'ch02',href:'#ch02',l:'что делаем'},{n:'03',id:'ch03',href:'#ch03',l:'кейсы'},{n:'04',id:'ch04',href:'#ch04',l:'прайс'},{n:'05',id:'ch05',href:'#ch05',l:'бриф'},{n:'·',id:'faq',href:'#faq',l:'вопросы'}],
-        en:[{n:'·',id:'top',href:'#top',l:'start'},{n:'01',id:'ch01',href:'#ch01',l:'who we are'},{n:'02',id:'ch02',href:'#ch02',l:'what we do'},{n:'03',id:'ch03',href:'#ch03',l:'cases'},{n:'04',id:'ch04',href:'#ch04',l:'pricing'},{n:'05',id:'ch05',href:'#ch05',l:'brief'},{n:'·',id:'faq',href:'#faq',l:'faq'}]
+        ru:[{n:'·',id:'top',href:'#top',l:'старт'},{n:'01',id:'about',href:'#about',l:'кто мы'},{n:'02',id:'capabilities',href:'#capabilities',l:'что делаем'},{n:'03',id:'work',href:'#work',l:'кейсы'},{n:'04',id:'pricing',href:'#pricing',l:'прайс'},{n:'05',id:'brief',href:'#brief',l:'бриф'},{n:'·',id:'faq',href:'#faq',l:'вопросы'}],
+        en:[{n:'·',id:'top',href:'#top',l:'start'},{n:'01',id:'about',href:'#about',l:'who we are'},{n:'02',id:'capabilities',href:'#capabilities',l:'what we do'},{n:'03',id:'work',href:'#work',l:'cases'},{n:'04',id:'pricing',href:'#pricing',l:'pricing'},{n:'05',id:'brief',href:'#brief',l:'brief'},{n:'·',id:'faq',href:'#faq',l:'faq'}]
       },
     };
     this._t = T[L];
