@@ -274,7 +274,6 @@
   [data-case-link]:not(.ds-row),[data-brief-alt],.ds-form-alt{display:inline-flex !important;align-items:center;min-height:32px}
   :focus-visible{outline:2px solid var(--acc,#b9543f);outline-offset:3px;border-radius:2px}
   #top :focus-visible,header :focus-visible{outline:2px solid #fff;outline-offset:3px;box-shadow:0 0 0 5px rgba(19,17,12,.55)}
-  .film-skip:focus-visible{opacity:1 !important;outline-color:#fff}
   @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} }
   [data-case-names]{transform-origin:right center;will-change:transform}
   [data-speed]{will-change:transform;contain:paint}
@@ -282,8 +281,6 @@
   #top + section{margin-top:calc(-1 * var(--film-overlap, 0px))}
   [data-film-caps]{opacity:calc(1 - var(--film-tail,0)*1.8)}                       /* подписи фильма гаснут под занавесом */
   [data-film-canvas]{transform-origin:50% 50%;will-change:transform,opacity}
-  .film-skip{background:rgba(19,17,12,.35);border:1px solid rgba(255,255,255,.6);color:#fff;font:500 11.5px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.2em;text-transform:uppercase;padding:10px 14px;cursor:pointer;border-radius:50px;transition:opacity .4s,background .35s,color .35s}
-  .film-skip:hover{background:rgba(255,255,255,.12);color:#fff}
   @media (pointer:coarse){ .film-cap{top:clamp(96px,17vh,150px);bottom:auto;max-width:min(88vw,420px)} .film-cap .fc-t{font-size:clamp(22px,6.4vw,38px)} html.film-end .film-cap[data-cap="end"] .fc-t{font-size:clamp(30px,9vw,56px)} .film-skip{top:96px;right:16px} }
   @media (prefers-reduced-motion:reduce){ .film-cap,.hero-kin,.hero-scrollcue{transition:none} }
 
@@ -423,7 +420,6 @@
         <div class="film-cap" data-cap="end"><span class="fc-k">{{ t.filmKEnd }}</span><span class="fc-t">{{ t.filmTEnd }}</span><span class="fc-cta"><a class="hero-pill" href="https://t.me/vvid" target="_blank" rel="noopener noreferrer" tabindex="-1">{{ t.heroCtaPrimary }}</a><a class="hero-textlink" href="#brief" tabindex="-1">{{ t.filmCta2 }}</a></span></div>
       </div>
     </div>
-    <button class="film-skip" data-film-skip="1" type="button" aria-label="{{ t.filmSkip }}" style="position:absolute;right:26px;top:100px;z-index:4;opacity:0;visibility:hidden;transition:opacity .4s">{{ t.filmSkip }}</button>
    </div>
   </section>
 
