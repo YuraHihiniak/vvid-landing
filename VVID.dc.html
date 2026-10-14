@@ -3,6 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=110339563', 'ym');
+
+    ym(110339563, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/110339563" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 <title>VVID — разработка приложений, сайтов и автоматизация бизнеса</title>
 <meta name="description" content="Студия разработки и автоматизации. Веб- и мобильные приложения для автоматизации бизнеса, интернет-магазины, сайты и лендинги, телеграм-боты и дизайн под ключ. Прямой контакт с инженерами, прозрачный прайс, договор и юрлицо. Работаем по России, Беларуси, Казахстану и всему СНГ.">
 <meta name="keywords" content="разработка сайтов, веб-разработка, разработка приложений, мобильные приложения, телеграм-боты, автоматизация бизнеса, интернет-магазин под ключ, лендинг, веб-студия, разработка под ключ, Россия, Беларусь, Казахстан, СНГ">
@@ -1199,6 +1212,7 @@ class Component extends DCLogic {
     const task=get('task'), contact=get('contact'); const c=f.querySelector('[name="contact"]');
     const okContact=contact&&(contact.includes('@')||(contact.replace(/\D/g,'').length>=7));
     if(!okContact){ if(c){ try{ c.setCustomValidity(en?'leave a telegram @username, phone or email':'укажите telegram @ник, телефон или почту'); c.reportValidity(); setTimeout(()=>{ try{ c.setCustomValidity(''); }catch(_){} },2500); }catch(_){} c.focus(); } return; }
+    try{ window.ym && window.ym(110339563,'reachGoal','brief_submit'); }catch(_){}
     const text=[(t.formL3||'задача')+': '+(task||'—'), (t.formL4||'контакт')+': '+contact, '', location.origin+location.pathname].join('\n');
     const tg='https://t.me/vvid?text='+encodeURIComponent(text);
     const mail='mailto:info@vvid.dev?subject='+encodeURIComponent(en?'brief from vvid.solutions':'бриф с vvid.solutions')+'&body='+encodeURIComponent(text);
@@ -1435,5 +1449,7 @@ class Component extends DCLogic {
   function f(x,name){ if(!x) return name+': —'; var m=x.m, lb=x.loadedBytes||0; return name+': frames '+(x.frames||'?')+' cur '+x.cur+' layer '+(x.kind||'-')+' decoded '+x.bmp.size+' proxy '+x.pbmp.size+' bad '+x.bad.size+' loaded '+(m?Math.round(100*lb/m.totalBytes):0)+'% rev '+(m&&m.rev||'-')+' 2K '+x.hiShown+'/'+x.hbmp.size+(x.err?' ERR '+x.err.join(','):'')+'\n   draws '+JSON.stringify(x.kinds||{}); }
   function tick(){ try{ var d=window.__dbg||{}; var h=d._film, s=d._descent&&d._descent.film; var c=h&&h.canvas; el.textContent=[ navigator.userAgent.replace(/^.*\) /,'').slice(0,70), 'dpr '+devicePixelRatio+' vp '+innerWidth+'x'+innerHeight+' canvas '+(c?c.width+'x'+c.height:'-')+' mode '+(d._filmMode||'-')+' cores '+navigator.hardwareConcurrency+' mem '+(navigator.deviceMemory||'?'), f(h,'hero'), f(s,'descent') ].join('\n'); }catch(e){ el.textContent='diag: '+e; } }
   document.body.appendChild(el); setInterval(tick,500); })();</script>
+<!-- Yandex.Metrika: telegram_click goal on any t.me CTA -->
+<script>document.addEventListener('click',function(e){try{var a=e.target&&e.target.closest&&e.target.closest('a[href*="t.me/"]');if(a){window.ym&&window.ym(110339563,'reachGoal','telegram_click');}}catch(_){}},true);</script>
 </body>
 </html>
