@@ -599,7 +599,7 @@
 /* ---------- SCROLL-FILM PLAYER: кадровые бандлы · декод в воркере · окно ± · холды в маппинге · sticky-пин ---------- */
 class VFilm {
   constructor(o){
-    Object.assign(this,{ lerp:1, pxPerFrame:14, windowAhead:24, windowBehind:8, keepBehind:16, pwin:64, workers:((navigator.hardwareConcurrency||4)>=8?3:2), perWorker:2, pInflight:6, near:2, holds:[], zones:null, hiBase:null, hiNear:120, hiFade:260 }, o);
+    Object.assign(this,{ lerp:1, maxVel:0, pxPerFrame:14, windowAhead:24, windowBehind:8, keepBehind:16, pwin:64, workers:((navigator.hardwareConcurrency||4)>=8?3:2), perWorker:2, pInflight:6, near:2, holds:[], zones:null, hiBase:null, hiNear:120, hiFade:260 }, o);
     this.buf=[]; this.bmp=new Map(); this.pending=new Set(); this.bad=new Set();
     this.pbuf=[]; this.pbmp=new Map(); this.ppending=new Set(); this.pbad=new Set(); this.pm=null;
     this.hi=null; this.hbuf=new Map(); this.hbmp=new Map(); this.hpending=new Set(); this.hbad=new Set(); this.hfetch=new Set(); this.hiShown=-1; this.hiT0=0;   // 2K ключевые кадры (hiBase/hi.json): байты, битмапы, очередь
@@ -690,7 +690,9 @@ class VFilm {
     const dt=this.prev?Math.min(50,Math.max(0,now-this.prev)):16.7; this.prev=now;
     const p=this.progress(); this.p=p; this.tTarget=this.mapTime(p);
     const k=this.lerp>=1?1:1-Math.pow(1-this.lerp,dt/16.667);
-    this.tSmooth+=(this.tTarget-this.tSmooth)*k;
+    const Nv=this.frames||240; let step=(this.tTarget-this.tSmooth)*k;
+    if(this.maxVel>0){ const cap=this.maxVel/(Nv-1)*(dt/16.667); if(step>cap) step=cap; else if(step<-cap) step=-cap; }   // потолок скорости фильма: обычный скролл (шаг < cap) идёт 1:1 и чётко, но резкий флик не телепортирует cur за окно декода — нет «фриза» на far-кадре, фильм плавно догоняет за кадр-другой
+    this.tSmooth+=step;
     if(!isFinite(this.tSmooth)) this.tSmooth=this.tTarget;                 // защита от битых таймстампов
     const N=this.frames||240; if(Math.abs(this.tTarget-this.tSmooth)<0.25/N) this.tSmooth=this.tTarget;
     const pos=this.tSmooth*(N-1); const f=Math.round(pos);
@@ -1091,8 +1093,8 @@ class Component extends DCLogic {
     const base = coarse ? './film/descent/mobile/' : './film/descent/';
     const big=!coarse && ((navigator.deviceMemory||8)>=8);
     const film=new VFilm({ base, manifestUrl:base+'film.json', proxyBase:base+'proxy/', hiBase: coarse?null:base+'hi/', canvas, wrap:sec, sticky, pxPerFrame: coarse?10:10, overlapVh:0, leadVh:0, noGlobalVar:true, lerp:this._lenis?1:0.12, presetFrames: coarse?471:941, lazy:true, lazyAhead:180,
-      windowAhead: coarse?12:(big?30:22), windowBehind:6, keepBehind: coarse?6:(big?12:10), pwin: coarse?36:56, blend:true, maxDpr:2,
-      zonesFrac: nodes.filter(n=>!n.bridge).map(n=>[n.a+0.02, n.b-0.02, n.el.id==='work'?2:4]),   // кейсы — глава длинная, ей хватит ×2                       // в главе фильм идёт вчетверо медленнее — есть время читать, камера не стоит                       // пока узел на экране — фильм идёт втрое медленнее, но не стоит
+      windowAhead: coarse?12:(big?30:22), windowBehind:6, keepBehind: coarse?6:(big?12:10), pwin: coarse?64:112, pInflight: coarse?12:16, maxVel: coarse?20:24, blend:true, maxDpr:2,
+      zonesFrac: nodes.filter(n=>!n.bridge).map(n=>[n.a+0.02, n.b-0.02, 2]),   // ×2 во всех главах: источник спуска снят в 24 fps, при ×4 (≈40 px/кадр) соседние кадры с большой разницей успевают «растворяться» на медленном скроле — видно смену кадров; ×2 (≈20 px/кадр) проходит переход вдвое быстрее и прячет ступеньку, читать всё ещё успеваешь
       onFrame:(p,f)=>{
         if(canvas.style.opacity!=='1' && f>=0 && (film.bmp.has(f)||film.pbmp.has(f))) canvas.style.opacity='1';
         const hs=this._film&&this._film.sticky; if(hs){ const hide=canvas.style.opacity==='1'&&sec.getBoundingClientRect().top<=0; if(hs.style.visibility!==(hide?'hidden':'')) hs.style.visibility=hide?'hidden':''; }   // передача в пиксель: стик спуска встал (top<=0) и кадр нарисован → hero гаснет сразу, без 29 px «съезда» hero-кадра поверх такого же
@@ -1148,18 +1150,18 @@ class Component extends DCLogic {
     const big=!lite && ((navigator.deviceMemory||8)>=8); const HN=(lite?240:480)-1;   // холды — на целых кадрах (192, 354): там лежат 2K-версии
     const film=this._film=new VFilm({
       base: lite?'./film/mobile/':'./film/desktop/', manifestUrl: lite?'./film/mobile/film.json':'./film/desktop/film.json', proxyBase: lite?'./film/mobile/proxy/':'./film/desktop/proxy/', hiBase: lite?null:'./film/desktop/hi/', canvas, wrap, sticky, pxPerFrame: lite?10:9, overlapVh: root.querySelector('[data-descent]') ? 0 : (lite?0.32:0.38),
-      windowAhead: lite?18:(big?30:24), windowBehind:8, keepBehind: lite?10:(big?12:10), pwin: lite?48:64, blend:true, maxDpr:2,   // 1080p-битмап = 8.3 МБ: окно 30+12 ≈ 350 МБ на фильм; канвас в dpr экрана (до 2): кап 1.5 заставлял браузер растягивать канвас второй раз — на retina терялось ~40 % резкости                                  // окно чётких кадров (память) · окно прокси   // desktop-фильм 48 fps → 7px/кадр   // хвост: страница наезжает на пэйофф
+      windowAhead: lite?18:(big?30:24), windowBehind:8, keepBehind: lite?10:(big?12:10), pwin: lite?72:128, pInflight: lite?12:16, maxVel: lite?14:18, blend:true, maxDpr:2,   // 1080p-битмап = 8.3 МБ: окно 30+12 ≈ 350 МБ на фильм; канвас в dpr экрана (до 2): кап 1.5 заставлял браузер растягивать канвас второй раз — на retina терялось ~40 % резкости                                  // окно чётких кадров (память) · прокси-окно широкое: старт движения после холда прыгает ~70 кадров разом, чёткие не успевают — ¼-прокси (≈0.5 МБ/кадр) гретый на холде перекрывает рывок и не даёт показать чужой кадр (far)   // desktop-фильм 48 fps → 7px/кадр   // хвост: страница наезжает на пэйофф
       lerp:1, presetFrames: lite?240:480,                       // одно сглаживание — Lenis; без него см. ниже · кадров известно заранее → высота без сдвига макета
-      holds:[[0,0.16,0],[0.43,0.47,Math.round(0.40*HN)/HN],[0.68,0.72,Math.round(0.74*HN)/HN],[0.88,1,1]],   // старт: первый кадр стоит 16 % скролла (≈690 px) — заголовок, подзаголовок и CTA читаются до движения; финал: последний кадр держится 12 % под титр «следующий проект — ваш»; дорожка 9 px/кадр, чтобы сегменты фильма шли с прежней скоростью    // плато: старт · бутон · раскрытие · цветок    // плато: старт · трещина (глава 01→02) · собранная кладка (03) · пэйофф
+      holds:[[0.47,0.47,Math.round(0.40*HN)/HN],[0.72,0.72,Math.round(0.74*HN)/HN],[1,1,1]],   // все плато схлопнуты в точки-якоря: фильм попадает на кадры 192/354/479 ровно к подписи (синк и 2K на паузе сохранены), но нигде не встаёт под скроллом — на смене текста (сборка/результат/следующий проект) скролл не «тормозит». Последний кадр достигается к p1; далее только overlap-хвост (затухание + наезд следующей секции) — это движение, а не статичный холд
       onProgress:(f)=>{ this._filmBytes=f; },
       onFrame:(p,f,tail)=>{
-        canvas.style.opacity=String(smooth(0.14,0.22,p));                 // кроссфейд fluid → фильм
+        canvas.style.opacity=String(smooth(0.01,0.1,p));                 // кроссфейд fluid → фильм: к самому старту — стартовый холд снят, поэтому фильм проявляется на ~0 кадре (совпадает с живым hero), а не на уже слепленном бутоне; к p0.1 он на ~кадре 40 — тот же диапазон стыка, что был у холда, только без паузы
         if(dim){ dim.style.opacity=(tail*0.5).toFixed(3); }
         if(tail!==this._filmTailPrev){ this._filmTailPrev=tail; html.style.setProperty('--film-tail', tail.toFixed(3)); }               // страница наезжает — фильм гаснет и отходит вглубь
         canvas.style.transform = tail>0 ? 'scale('+(1-tail*0.035).toFixed(4)+')' : '';
         html.classList.toggle('film-run', p>0.16);
         setCh(p>=0.88?'film-end': p>=0.72?'film-c3': p>=0.47?'film-c2': p>=0.22?'film-c1':'');
-        if(this._heroFluid&&this._heroFluid.suspend) this._heroFluid.suspend(p>0.22);                 // фильм уже непрозрачен → fluid спит, GPU фильму
+        if(this._heroFluid&&this._heroFluid.suspend) this._heroFluid.suspend(p>0.12);                 // фильм уже непрозрачен → fluid спит, GPU фильму (порог сдвинут вслед за кроссфейдом)
         if(skip){ const on=(p>0.02&&p<0.86); skip.style.opacity=on?'1':'0'; skip.style.visibility=on?'':'hidden'; }
       }
     });
