@@ -19,6 +19,7 @@ python3 - "$OUT" "$W" "$H" "$Q" "${SORTED[@]}" <<'PY'
 import json,os,sys
 out,w,h,q=sys.argv[1],int(sys.argv[2]),int(sys.argv[3]),sys.argv[4]; fr=[int(x) for x in sys.argv[5:]]
 frames=[{"i":i,"url":f"{i}.webp","bytes":os.path.getsize(f"{out}/{i}.webp")} for i in fr]
-json.dump({"type":"image/webp","w":w,"h":h,"frames":frames},open(f"{out}/hi.json","w"),separators=(',',':'))
+import hashlib; rev=hashlib.sha1(",".join(str(f["bytes"]) for f in frames).encode()).hexdigest()[:10]
+json.dump({"type":"image/webp","w":w,"h":h,"rev":rev,"frames":frames},open(f"{out}/hi.json","w"),separators=(',',':'))
 print(f"{out}: {len(frames)} кадров {w}x{h} q{q} {sum(f['bytes'] for f in frames)/2**20:.2f} MiB — " + ", ".join(f"{f['i']}:{f['bytes']//1024}K" for f in frames))
 PY

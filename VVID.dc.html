@@ -269,7 +269,7 @@
   .hero-cta-row{transition:opacity .55s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
   html.film-run .hero-cta-row{opacity:0 !important;transform:translateY(-18px) !important;pointer-events:none}
   /* мобильный подзаголовок: чем занимается студия (десктопу это говорит фильм) */
-  .hero-sub{display:block;margin:18px 0 clamp(22px,3vh,30px);max-width:42ch;font-family:'Wix Madefor Text','Wix Madefor Display',sans-serif;font-size:clamp(17px,1.32vw,21px);line-height:1.5;color:#fff;transition:opacity .5s;text-wrap:pretty}
+  .hero-sub{display:block;margin:18px 0 clamp(60px,9vh,88px);max-width:42ch;font-family:'Wix Madefor Text','Wix Madefor Display',sans-serif;font-size:clamp(17px,1.32vw,21px);line-height:1.5;color:#fff;transition:opacity .5s;text-wrap:pretty}
   html.film-run .hero-sub,html.film-run .hero-proof,html.film-run .hero-scrim{opacity:0 !important}
   @media (pointer:coarse){ .hero-sub{max-width:28ch;font-size:16px;line-height:1.5} }
   /* тач-таргеты mono-ссылок и фокус */
@@ -402,10 +402,6 @@
         <span class="kl"><span style="animation-delay:.28s">{{ t.heroBig4 }}</span></span>
       </h1>
       <p class="hero-sub">{{ t.heroSub }}</p>
-      <div class="hero-cta-row" data-reveal="1" data-delay="120" style="justify-content:flex-start;margin-bottom:clamp(10px,1.6vh,18px)">
-        <a class="hero-pill" href="https://t.me/vvid" target="_blank" rel="noopener noreferrer" data-magnetic="1">{{ t.heroCtaPrimary }} <svg class="hp-arr" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3.5 10.5 10.5 3.5M5 3.5h5.5V9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-      </div>
-      <p class="hero-proof" data-reveal="1" data-delay="200"><span>{{ t.heroProof1 }}</span><span>{{ t.heroProof2 }}</span><span>{{ t.heroProof3 }}</span></p>
       <div class="hero-scrollcue"><span>{{ t.scroll }}</span><span class="bar"></span></div>
     </div>
     <div data-film-caps="1" aria-hidden="true" style="position:absolute;left:0;right:0;top:0;bottom:0;z-index:3;pointer-events:none">
@@ -600,13 +596,14 @@ class VFilm {
   redraw(){ this.dirty=true; if(!this.raf) this.draw(); }
   release(){ for(const [,b] of this.bmp){ try{ b.close(); }catch(e){} } this.bmp.clear(); for(const [,b] of this.pbmp){ try{ b.close(); }catch(e){} } this.pbmp.clear(); this.pending.clear(); this.ppending.clear(); for(const [,b] of this.hbmp){ try{ b.close(); }catch(e){} } this.hbmp.clear(); this.hpending.clear(); this.hiShown=-1; }   // фильм ушёл с экрана: декодированные кадры отпускаем, сырые байты остаются
   async load(){
-    const mr=await fetch(this.manifestUrl); if(!mr.ok) throw new Error('manifest '+mr.status); const m=await mr.json();
-    this.m=m; this.frames=m.frames; if(this.zonesFrac&&this.frames){ const N=this.frames-1; this.zones=this.zonesFrac.map(z=>[Math.round(z[0]*N),Math.round(z[1]*N),z[2]]); } this.layout();
+    const mr=await fetch(this.manifestUrl,{cache:'no-cache'}); if(!mr.ok) throw new Error('manifest '+mr.status); const m=await mr.json();   // манифест всегда перепроверяется (304 — дёшево), бандлы — с версией сборки: после пересборки кэш не смешает старые .bin с новым манифестом
+    this.m=m; this.frames=m.frames; this.q=m.rev?('?v='+m.rev):''; if(this.zonesFrac&&this.frames){ const N=this.frames-1; this.zones=this.zonesFrac.map(z=>[Math.round(z[0]*N),Math.round(z[1]*N),z[2]]); } this.layout();
     if(this.proxyBase) this.loadProxy().catch(()=>{});                     // параллельно: ~2 МБ прокси приходят за секунду и страхуют любой скраб
     if(this.hiBase) this.loadHi().catch(()=>{});                            // 2K ключевые кадры: манифест маленький, сами кадры — по мере приближения (hpump)
     for(const b of m.bundles){ if(this.destroyed) return;
       if(this.lazy){ const ahead=this.lazyAhead||180; while(!this.destroyed && !this.visible && this.cur+ahead < b.first){ await new Promise(r=>setTimeout(r,300)); } if(this.destroyed) return; }   // пока фильм не на экране, впрок берём только ближайшие бандлы
-      const res=await fetch(this.base+b.url); if(!res.ok) throw new Error('bundle '+res.status+' '+b.url);
+      let res=null; for(let t=0;t<4&&!this.destroyed;t++){ try{ res=await fetch(this.base+b.url+this.q); if(res.ok) break; }catch(e){} res=null; await new Promise(r=>setTimeout(r,500*(t+1))); }   // сервер/сеть моргнули — повторяем, а не бросаем остаток фильма на прокси
+      if(!res){ (this.err=this.err||[]).push(b.url); continue; }
       if(!res.body){ this.slice(b, await res.arrayBuffer()); continue; }
       const reader=res.body.getReader(); const parts=[]; let got=0;
       for(;;){ const {done,value}=await reader.read(); if(done) break; parts.push(value); got+=value.length; this.loadedBytes+=value.length; this.onProgress&&this.onProgress(this.loadedBytes/m.totalBytes); }
@@ -616,16 +613,16 @@ class VFilm {
     this.loaded=true;
   }
   async loadProxy(){                                                        // ¼-кадры (~5 КБ, декод <1 мс): рисуются мгновенно, пока чёткий подъезжает
-    const pr=await fetch(this.proxyBase+'film.json'); if(!pr.ok) throw new Error('proxy manifest '+pr.status); const pm=await pr.json(); if(this.destroyed) return; this.pm=pm;
-    for(const b of pm.bundles){ if(this.destroyed) return; const rb=await fetch(this.proxyBase+b.url); if(!rb.ok) throw new Error('proxy bundle '+rb.status); const ab=await rb.arrayBuffer(); let off=0; b.sizes.forEach((sz,k)=>{ this.pbuf[b.first+k]=ab.slice(off,off+sz); off+=sz; }); this.ppump(); }
+    const pr=await fetch(this.proxyBase+'film.json',{cache:'no-cache'}); if(!pr.ok) throw new Error('proxy manifest '+pr.status); const pm=await pr.json(); if(this.destroyed) return; this.pm=pm; const pq=pm.rev?('?v='+pm.rev):'';
+    for(const b of pm.bundles){ if(this.destroyed) return; const rb=await fetch(this.proxyBase+b.url+pq); if(!rb.ok) throw new Error('proxy bundle '+rb.status); const ab=await rb.arrayBuffer(); let off=0; b.sizes.forEach((sz,k)=>{ this.pbuf[b.first+k]=ab.slice(off,off+sz); off+=sz; }); this.ppump(); }
   }
-  async loadHi(){ const r=await fetch(this.hiBase+'hi.json'); if(!r.ok) throw new Error('hi manifest '+r.status); const h=await r.json(); if(this.destroyed) return; this.hi=new Map(h.frames.map(f=>[f.i,f])); this.hiType=h.type||'image/webp'; this.hpump(); }
+  async loadHi(){ const r=await fetch(this.hiBase+'hi.json',{cache:'no-cache'}); if(!r.ok) throw new Error('hi manifest '+r.status); const h=await r.json(); if(this.destroyed) return; this.hi=new Map(h.frames.map(f=>[f.i,f])); this.hiType=h.type||'image/webp'; this.hq=h.rev?('?v='+h.rev):''; this.hpump(); }
   hpump(){ if(!this.hi||!this.hworker||this.cur<0||this.destroyed) return;   // 2K-кадры: байты (≈0.1–0.5 МБ) тянем в пределах hiNear кадров и держим, битмапы (14 МБ каждый) — только рядом, далёкие закрываем
     for(const [i,f] of this.hi){ const near=Math.abs(i-this.cur)<=this.hiNear;
       if(!near){ const b=this.hbmp.get(i); if(b){ b.close(); this.hbmp.delete(i); } continue; }
       if(this.hbad.has(i)) continue;
       if(!this.hbuf.has(i)){ if(this.hfetch.has(i)) continue; this.hfetch.add(i);
-        fetch(this.hiBase+f.url).then(r=>r.ok?r.arrayBuffer():Promise.reject(r.status)).then(ab=>{ this.hfetch.delete(i); if(this.destroyed) return; this.hbuf.set(i,ab); this.hpump(); }).catch(()=>{ this.hfetch.delete(i); this.hbad.add(i); }); continue; }
+        fetch(this.hiBase+f.url+(this.hq||'')).then(r=>r.ok?r.arrayBuffer():Promise.reject(r.status)).then(ab=>{ this.hfetch.delete(i); if(this.destroyed) return; this.hbuf.set(i,ab); this.hpump(); }).catch(()=>{ this.hfetch.delete(i); this.hbad.add(i); }); continue; }
       if(!this.hbmp.has(i)&&!this.hpending.has(i)){ this.hpending.add(i); this.hworker.postMessage({i,buf:this.hbuf.get(i),type:this.hiType}); } } }
   onHiRes({i,bitmap}){ this.hpending.delete(i); if(!bitmap){ this.hbad.add(i); return; } if(this.destroyed||Math.abs(i-this.cur)>this.hiNear){ bitmap.close(); return; } this.hbmp.set(i,bitmap); if(i===this.cur) this.redraw(); }
   slice(b,ab){ let off=0; b.sizes.forEach((sz,k)=>{ this.buf[b.first+k]=ab.slice(off,off+sz); off+=sz; }); if(this.cur<0) this.cur=0; this.fill(); }
@@ -675,10 +672,10 @@ class VFilm {
     if(this.dirty) this.draw();
   }
   pick(){                                                                   // чёткий кадр → чёткий сосед (≤near) → прокси этого кадра → ближайший чёткий → ближайший прокси
-    const c=this.cur; let b=this.bmp.get(c); if(b) return b;
-    for(let d=1; d<=this.near; d++){ b=this.bmp.get(c-d*this.dir)||this.bmp.get(c+d*this.dir); if(b) return b; }
-    b=this.pbmp.get(c); if(b) return b;
-    return this.nearest(this.bmp)||this.nearest(this.pbmp); }
+    const c=this.cur; let b=this.bmp.get(c); if(b){ this.kind='sharp'; return b; }
+    for(let d=1; d<=this.near; d++){ b=this.bmp.get(c-d*this.dir)||this.bmp.get(c+d*this.dir); if(b){ this.kind='near'; return b; } }
+    b=this.pbmp.get(c); if(b){ this.kind='proxy'; return b; }
+    this.kind='far'; return this.nearest(this.bmp)||this.nearest(this.pbmp); }
   draw(){ const b=this.pick(); const hp=this.pos!=null?this.pos:this.cur, hk=Math.round(hp); const hb=(this.hbmp.size&&Math.abs(hp-hk)<0.02)?this.hbmp.get(hk):null; if(!b&&!hb) return; this.dirty=false;
     const c=this.canvas; const ctx=this.ctx||(this.ctx=c.getContext('2d',{alpha:false,desynchronized:true}));
     const dpr=Math.min(window.devicePixelRatio||1,this.maxDpr||2); const W=c.clientWidth||innerWidth, H=c.clientHeight||innerHeight;
@@ -688,6 +685,7 @@ class VFilm {
     if(this.blend && this.pos!=null){ const f0=Math.floor(this.pos), fr=this.pos-f0; const a=this.bmp.get(f0), b2=this.bmp.get(f0+1);     // между двумя чёткими кадрами — кроссфейд по дробной позиции: движение не ступенчатое
       if(a && b2 && fr>0.02 && fr<0.98){ cover(a); ctx.globalAlpha=fr; cover(b2); ctx.globalAlpha=1; drawn=true; } }
     if(!drawn && b) cover(b);
+    if(b){ const k=drawn?'blend':this.kind; (this.kinds=this.kinds||{})[k]=(this.kinds[k]||0)+1; }   // статистика слоёв для ?diag=1
     // 2K ключевой кадр (film/*/hi): только на целой позиции — холд hero или ключевой кадр главы спуска, где скролл остановился; въезжает за hiFade мс, уходит сразу (начало движения маскирует)
     if(hb){ const now=performance.now(); if(this.hiShown!==hk){ this.hiShown=hk; this.hiT0=now; } const t=Math.min(1,(now-this.hiT0)/Math.max(1,this.hiFade)); const al=t*t*(3-2*t);
       ctx.globalAlpha=al; cover(hb); ctx.globalAlpha=1; if(t<1){ this.dirty=true; if(!this.raf) requestAnimationFrame(()=>{ if(!this.destroyed&&this.dirty) this.draw(); }); } }
@@ -1417,5 +1415,10 @@ class Component extends DCLogic {
   }
   requestAnimationFrame(tick);
 })();</script>
+<!-- ?diag=1 — что именно рисует плеер на этой машине: слой (sharp/near/proxy), декод, загрузка, ошибки бандлов, 2K -->
+<script>(function(){ if(!/[?&]diag=1\b/.test(location.search)) return; var el=document.createElement('pre'); el.style.cssText='position:fixed;left:8px;bottom:8px;z-index:99999;margin:0;padding:8px 10px;background:rgba(0,0,0,.8);color:#9f9;font:11px/1.45 ui-monospace,monospace;pointer-events:none;white-space:pre;border-radius:6px;max-width:92vw';
+  function f(x,name){ if(!x) return name+': —'; var m=x.m, lb=x.loadedBytes||0; return name+': frames '+(x.frames||'?')+' cur '+x.cur+' layer '+(x.kind||'-')+' decoded '+x.bmp.size+' proxy '+x.pbmp.size+' bad '+x.bad.size+' loaded '+(m?Math.round(100*lb/m.totalBytes):0)+'% rev '+(m&&m.rev||'-')+' 2K '+x.hiShown+'/'+x.hbmp.size+(x.err?' ERR '+x.err.join(','):'')+'\n   draws '+JSON.stringify(x.kinds||{}); }
+  function tick(){ try{ var d=window.__dbg||{}; var h=d._film, s=d._descent&&d._descent.film; var c=h&&h.canvas; el.textContent=[ navigator.userAgent.replace(/^.*\) /,'').slice(0,70), 'dpr '+devicePixelRatio+' vp '+innerWidth+'x'+innerHeight+' canvas '+(c?c.width+'x'+c.height:'-')+' mode '+(d._filmMode||'-')+' cores '+navigator.hardwareConcurrency+' mem '+(navigator.deviceMemory||'?'), f(h,'hero'), f(s,'descent') ].join('\n'); }catch(e){ el.textContent='diag: '+e; } }
+  document.body.appendChild(el); setInterval(tick,500); })();</script>
 </body>
 </html>

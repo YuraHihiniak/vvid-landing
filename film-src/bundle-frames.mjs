@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Склеивает кадры в бинарные бандлы + манифест с оффсетами (один fetch на бандл, байтовый прогресс).
 // node bundle-frames.mjs <src-dir(webp|jpg)> <out-dir> [perBundle=30]
-import fs from 'node:fs'; import path from 'node:path';
+import fs from 'node:fs'; import path from 'node:path'; import { createHash } from 'node:crypto';
 const [src, out, per = 30] = process.argv.slice(2);
 if (!src || !out) { console.error('usage: node bundle-frames.mjs <src> <out> [perBundle]'); process.exit(1); }
 fs.mkdirSync(out, { recursive: true });
@@ -19,5 +19,6 @@ for (let b = 0; b * perBundle < files.length; b++) {
   manifest.bundles.push({ url: name, first: b * perBundle, sizes, bytes: sizes.reduce((a, c) => a + c, 0) });
 }
 manifest.totalBytes = manifest.bundles.reduce((a, c) => a + c.bytes, 0);
+manifest.rev = createHash('sha1').update(manifest.bundles.flatMap(b => b.sizes).join(',')).digest('hex').slice(0, 10);   // версия сборки: плеер тянет бандлы как film-00.bin?v=<rev>, кэш не смешает сборки
 fs.writeFileSync(path.join(out, 'film.json'), JSON.stringify(manifest));
 console.log(`${files.length} кадров → ${manifest.bundles.length} бандлов, ${(manifest.totalBytes / 1048576).toFixed(2)} MiB → ${out}`);
