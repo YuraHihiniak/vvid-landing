@@ -129,10 +129,12 @@
   .hero-flood{position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(125% 120% at 80% 4%,#c9694e 0%,#b9543f 46%,#a4442d 100%)}
   .hero-flood-grain{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.13;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
   .hero-vig{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(150% 92% at 50% 110%,rgba(86,28,16,.55),transparent 55%)}
-  .hero-kin{font-family:var(--font-display);font-weight:800;text-transform:uppercase;line-height:.9;letter-spacing:-.03em;font-size:clamp(38px,min(11.5vw,12vh),156px);margin:0;color:#fff;min-height:0}
+  .hero-kin{font-family:var(--font-display);font-weight:800;text-transform:uppercase;line-height:.9;letter-spacing:-.03em;font-size:var(--kin);margin:0;color:#fff;min-height:0}
+  /* пропорция первого экрана: сверху полоса шапки (62px), снизу полоса подсказки scroll; свободное место делится 2:3 над/под текстом (оптический центр ≈48 % высоты); кегль из высоты окна так, что над заголовком ровно одна высота прописных */
+  [data-film-copy]{--kin:clamp(40px,min(15.9vh - 18px,11.5vw),168px)}
+  [data-film-copy]::before{content:"";flex:2 1 0} [data-film-copy]::after{content:"";flex:3 1 0}
   .hero-kin .kl:has(> span:empty){display:none}
-  @media (pointer:coarse){ .hero-kin{justify-content:flex-end !important} }
-  .hero-kin .kl{display:block;overflow:hidden;padding-bottom:.045em}
+  .hero-kin .kl{display:block;overflow:hidden;padding-bottom:.125em;margin-bottom:-.08em}   /* маска .195em под базовой линией: хвосты Д/Щ (.174em) не режутся, шаг строк прежний .945em */
   .hero-kin .kl > span{display:inline-block;white-space:nowrap}
   .hl-ch{display:inline-block;will-change:transform}
   @media (prefers-reduced-motion:no-preference){
@@ -149,7 +151,7 @@
   .hero-proof{display:flex;flex-wrap:wrap;align-items:center;gap:8px 0;margin:clamp(14px,2.2vh,22px) 0 clamp(34px,6vh,60px);font:500 13px/1.5 'Wix Madefor Text','Wix Madefor Display',sans-serif;letter-spacing:.005em;text-transform:none;color:rgba(255,255,255,.72);transition:opacity .5s}
   .hero-proof span{white-space:nowrap;display:inline-flex;align-items:center} .hero-proof span+span::before{content:'';display:inline-block;width:1px;height:12px;background:rgba(255,255,255,.32);margin:0 16px}
   @media (max-width:640px){ .hero-proof{flex-direction:column;align-items:flex-start;gap:7px} .hero-proof span+span::before{display:none} .hero-pill,.hero-textlink{padding:15px 22px;font-size:14px} }
-  .hero-scrollcue{position:absolute;left:0;right:0;bottom:clamp(14px,2.4vh,26px);z-index:2;display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:0;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.62)}
+  .hero-scrollcue{position:absolute;left:0;right:0;bottom:clamp(14px,2.4vh,26px);z-index:2;display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:0;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.86)}
   .hero-scrollcue .bar{width:1px;height:30px;background:linear-gradient(rgba(255,255,255,.6),transparent)}
   /* ===== scroll-film (desktop): sticky hero, fluid = состояние покоя, главы поверх кадров ===== */
   html:not(.pre-done){overflow:hidden}
@@ -269,9 +271,9 @@
   .hero-cta-row{transition:opacity .55s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
   html.film-run .hero-cta-row{opacity:0 !important;transform:translateY(-18px) !important;pointer-events:none}
   /* мобильный подзаголовок: чем занимается студия (десктопу это говорит фильм) */
-  .hero-sub{display:block;margin:18px 0 clamp(60px,9vh,88px);max-width:42ch;font-family:'Wix Madefor Text','Wix Madefor Display',sans-serif;font-size:clamp(17px,1.32vw,21px);line-height:1.5;color:#fff;transition:opacity .5s;text-wrap:pretty}
+  .hero-sub{display:block;margin:max(calc(var(--kin)*.3),1.25em) 0 0;max-width:42ch;font-family:'Wix Madefor Text','Wix Madefor Display',sans-serif;font-size:clamp(17px,calc(var(--kin)*.18),23px);line-height:1.5;color:#fff;transition:opacity .5s;text-wrap:pretty}
   html.film-run .hero-sub,html.film-run .hero-proof,html.film-run .hero-scrim{opacity:0 !important}
-  @media (pointer:coarse){ .hero-sub{max-width:28ch;font-size:16px;line-height:1.5} }
+  @media (max-width:760px){ [data-film-copy]{--kin:clamp(34px,min(15.9vh - 18px,12.5vw),168px)} .hero-sub{max-width:28ch} }   /* телефоны: та же пропорция, шире кегль по ширине; планшеты получают десктопное правило */
   /* тач-таргеты mono-ссылок и фокус */
   [data-case-link]:not(.ds-row),[data-brief-alt],.ds-form-alt{display:inline-flex !important;align-items:center;min-height:32px}
   :focus-visible{outline:2px solid var(--acc,#b9543f);outline-offset:3px;border-radius:2px}
@@ -393,9 +395,9 @@
     <div class="hero-flood-grain" aria-hidden="true" style="z-index:2"></div>
     <div class="hero-vig" aria-hidden="true" style="z-index:2"></div>
     <div data-film-dim="1" aria-hidden="true" style="position:absolute;inset:0;z-index:2;background:#13110c;opacity:0;pointer-events:none"></div>
-    <div class="hero-scrim" aria-hidden="true" style="position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(70% 62% at 30% 55%,rgba(74,22,12,.38),transparent 70%);transition:opacity .6s"></div>
-    <div data-film-copy="1" style="position:relative;z-index:3;flex:1;display:flex;flex-direction:column;width:100%;max-width:1320px;margin:0 auto;padding:clamp(86px,10vh,118px) 26px clamp(18px,3vh,30px)">
-      <h1 class="hero-kin" aria-label="{{ t.heroBigAria }}" style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;margin:0 0 clamp(18px,3vh,30px)">
+    <div class="hero-scrim" aria-hidden="true" style="position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(70% 62% at 30% 47%,rgba(74,22,12,.38),transparent 70%);transition:opacity .6s"></div>
+    <div data-film-copy="1" style="position:relative;z-index:3;flex:1;display:flex;flex-direction:column;width:100%;max-width:1320px;margin:0 auto;padding:62px 26px calc(clamp(14px,2.4vh,26px) + 50px)">
+      <h1 class="hero-kin" aria-label="{{ t.heroBigAria }}">
         <span class="kl"><span style="animation-delay:.04s">{{ t.heroBig1 }}</span></span>
         <span class="kl"><span style="animation-delay:.12s">{{ t.heroBig2 }}</span></span>
         <span class="kl"><span style="animation-delay:.20s">{{ t.heroBig3 }}</span></span>
