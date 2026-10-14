@@ -580,14 +580,16 @@
 /* ---------- SCROLL-FILM PLAYER: кадровые бандлы · декод в воркере · окно ± · холды в маппинге · sticky-пин ---------- */
 class VFilm {
   constructor(o){
-    Object.assign(this,{ lerp:1, pxPerFrame:14, windowAhead:24, windowBehind:8, keepBehind:16, pwin:64, workers:((navigator.hardwareConcurrency||4)>=8?3:2), perWorker:2, pInflight:6, near:2, holds:[], zones:null }, o);
+    Object.assign(this,{ lerp:1, pxPerFrame:14, windowAhead:24, windowBehind:8, keepBehind:16, pwin:64, workers:((navigator.hardwareConcurrency||4)>=8?3:2), perWorker:2, pInflight:6, near:2, holds:[], zones:null, hiBase:null, hiNear:120, hiFade:260 }, o);
     this.buf=[]; this.bmp=new Map(); this.pending=new Set(); this.bad=new Set();
     this.pbuf=[]; this.pbmp=new Map(); this.ppending=new Set(); this.pbad=new Set(); this.pm=null;
+    this.hi=null; this.hbuf=new Map(); this.hbmp=new Map(); this.hpending=new Set(); this.hbad=new Set(); this.hfetch=new Set(); this.hiShown=-1; this.hiT0=0;   // 2K ключевые кадры (hiBase/hi.json): байты, битмапы, очередь
     this.cur=-1; this.tSmooth=0; this.tTarget=0; this.dir=1; this.visible=false; this.raf=0; this.destroyed=false; this.loadedBytes=0; this.dirty=false; this.p=0; this.rr=0;
     this.pool=[]; for(let k=0;k<this.workers;k++){ const w=VFilm.worker(); w.onmessage=(e)=>this.onHi(e.data); this.pool.push(w); }           // чёткие кадры: пул → декод в 2 потока
     this.maxInflight=this.workers*this.perWorker;
     this.pworker=this.proxyBase?VFilm.worker():null;                                                                                          // прокси: свой воркер, не стоит в очереди за чёткими
     if(this.pworker) this.pworker.onmessage=(e)=>this.onPx(e.data);
+    this.hworker=this.hiBase?VFilm.worker():null; if(this.hworker) this.hworker.onmessage=(e)=>this.onHiRes(e.data);                                   // 2K-кадры: свой воркер (декод 2560×1440 ≈ 50 мс — не задерживает чёткие)
     if(this.presetFrames&&this.wrap){ this.frames=this.presetFrames; if(this.zonesFrac){ const N=this.frames-1; this.zones=this.zonesFrac.map(z=>[Math.round(z[0]*N),Math.round(z[1]*N),z[2]]); } try{ this.layout(); }catch(e){} }   // высота обёртки известна до манифеста — нет сдвига макета (CLS)
   }
   static worker(){
@@ -601,11 +603,12 @@ class VFilm {
     if(!bitmap){ this.pbad.add(i); } else if(Math.abs(i-this.cur)>this.pwin){ bitmap.close(); } else { this.pbmp.set(i,bitmap); if(i===this.cur&&!this.bmp.has(i)) this.redraw(); }
     this.ppump(); }
   redraw(){ this.dirty=true; if(!this.raf) this.draw(); }
-  release(){ for(const [,b] of this.bmp){ try{ b.close(); }catch(e){} } this.bmp.clear(); for(const [,b] of this.pbmp){ try{ b.close(); }catch(e){} } this.pbmp.clear(); this.pending.clear(); this.ppending.clear(); }   // фильм ушёл с экрана: декодированные кадры отпускаем, сырые байты остаются
+  release(){ for(const [,b] of this.bmp){ try{ b.close(); }catch(e){} } this.bmp.clear(); for(const [,b] of this.pbmp){ try{ b.close(); }catch(e){} } this.pbmp.clear(); this.pending.clear(); this.ppending.clear(); for(const [,b] of this.hbmp){ try{ b.close(); }catch(e){} } this.hbmp.clear(); this.hpending.clear(); this.hiShown=-1; }   // фильм ушёл с экрана: декодированные кадры отпускаем, сырые байты остаются
   async load(){
     const mr=await fetch(this.manifestUrl); if(!mr.ok) throw new Error('manifest '+mr.status); const m=await mr.json();
     this.m=m; this.frames=m.frames; if(this.zonesFrac&&this.frames){ const N=this.frames-1; this.zones=this.zonesFrac.map(z=>[Math.round(z[0]*N),Math.round(z[1]*N),z[2]]); } this.layout();
     if(this.proxyBase) this.loadProxy().catch(()=>{});                     // параллельно: ~2 МБ прокси приходят за секунду и страхуют любой скраб
+    if(this.hiBase) this.loadHi().catch(()=>{});                            // 2K ключевые кадры: манифест маленький, сами кадры — по мере приближения (hpump)
     for(const b of m.bundles){ if(this.destroyed) return;
       if(this.lazy){ const ahead=this.lazyAhead||180; while(!this.destroyed && !this.visible && this.cur+ahead < b.first){ await new Promise(r=>setTimeout(r,300)); } if(this.destroyed) return; }   // пока фильм не на экране, впрок берём только ближайшие бандлы
       const res=await fetch(this.base+b.url); if(!res.ok) throw new Error('bundle '+res.status+' '+b.url);
@@ -621,6 +624,15 @@ class VFilm {
     const pr=await fetch(this.proxyBase+'film.json'); if(!pr.ok) throw new Error('proxy manifest '+pr.status); const pm=await pr.json(); if(this.destroyed) return; this.pm=pm;
     for(const b of pm.bundles){ if(this.destroyed) return; const rb=await fetch(this.proxyBase+b.url); if(!rb.ok) throw new Error('proxy bundle '+rb.status); const ab=await rb.arrayBuffer(); let off=0; b.sizes.forEach((sz,k)=>{ this.pbuf[b.first+k]=ab.slice(off,off+sz); off+=sz; }); this.ppump(); }
   }
+  async loadHi(){ const r=await fetch(this.hiBase+'hi.json'); if(!r.ok) throw new Error('hi manifest '+r.status); const h=await r.json(); if(this.destroyed) return; this.hi=new Map(h.frames.map(f=>[f.i,f])); this.hiType=h.type||'image/webp'; this.hpump(); }
+  hpump(){ if(!this.hi||!this.hworker||this.cur<0||this.destroyed) return;   // 2K-кадры: байты (≈0.1–0.5 МБ) тянем в пределах hiNear кадров и держим, битмапы (14 МБ каждый) — только рядом, далёкие закрываем
+    for(const [i,f] of this.hi){ const near=Math.abs(i-this.cur)<=this.hiNear;
+      if(!near){ const b=this.hbmp.get(i); if(b){ b.close(); this.hbmp.delete(i); } continue; }
+      if(this.hbad.has(i)) continue;
+      if(!this.hbuf.has(i)){ if(this.hfetch.has(i)) continue; this.hfetch.add(i);
+        fetch(this.hiBase+f.url).then(r=>r.ok?r.arrayBuffer():Promise.reject(r.status)).then(ab=>{ this.hfetch.delete(i); if(this.destroyed) return; this.hbuf.set(i,ab); this.hpump(); }).catch(()=>{ this.hfetch.delete(i); this.hbad.add(i); }); continue; }
+      if(!this.hbmp.has(i)&&!this.hpending.has(i)){ this.hpending.add(i); this.hworker.postMessage({i,buf:this.hbuf.get(i),type:this.hiType}); } } }
+  onHiRes({i,bitmap}){ this.hpending.delete(i); if(!bitmap){ this.hbad.add(i); return; } if(this.destroyed||Math.abs(i-this.cur)>this.hiNear){ bitmap.close(); return; } this.hbmp.set(i,bitmap); if(i===this.cur) this.redraw(); }
   slice(b,ab){ let off=0; b.sizes.forEach((sz,k)=>{ this.buf[b.first+k]=ab.slice(off,off+sz); off+=sz; }); if(this.cur<0) this.cur=0; this.fill(); }
   extraPx(){ let e=0; if(this.zones) for(const z of this.zones) e+=Math.max(0,z[1]-z[0])*this.pxPerFrame*(Math.max(1,z[2])-1); return e; }
   layout(){ if(!this.frames||!this.wrap) return; const sh=this.sticky.clientHeight||innerHeight; this.overlap=Math.round(sh*(this.overlapVh||0)); this.lead=Math.round(sh*(this.leadVh||0)); this.wrap.style.height=Math.round(sh+this.lead+this.frames*this.pxPerFrame+this.extraPx()+this.overlap)+'px'; if(!this.noGlobalVar){ try{ document.documentElement.style.setProperty('--film-overlap', this.overlap+'px'); }catch(e){} } }
@@ -630,7 +642,7 @@ class VFilm {
   fill(){ if(this.cur<0||!this.m) return;
     for(const [i,b] of this.bmp){ if(!this.inKeep(i)){ b.close(); this.bmp.delete(i); } }
     if(this.pm){ for(const [i,b] of this.pbmp){ if(Math.abs(i-this.cur)>this.pwin){ b.close(); this.pbmp.delete(i); } } }
-    this.pump(); this.ppump(); }
+    this.pump(); this.ppump(); this.hpump(); }
   want(i){ return i>=0&&i<this.frames&&!!this.buf[i]&&!this.bmp.has(i)&&!this.pending.has(i)&&!this.bad.has(i); }
   next(){ for(let d=0; d<=this.windowAhead; d++){ const a=this.cur+d*this.dir; if(this.want(a)) return a; if(d>0&&d<=this.windowBehind){ const b=this.cur-d*this.dir; if(this.want(b)) return b; } } return -1; }
   pump(){ if(this.cur<0||!this.m||this.destroyed) return;                 // в очереди ≤ maxInflight кадров: после прыжка/разворота теряем 4 устаревших декода, а не всё окно
@@ -652,7 +664,7 @@ class VFilm {
   progress(){ const r=this.wrap.getBoundingClientRect(); const range=r.height-(this.sticky.clientHeight||innerHeight); const ov=this.overlap||0, lead=this.lead||0; const fr=Math.max(1,range-ov-lead);
     this.tail = ov>0 ? Math.min(1,Math.max(0,(-r.top-lead-fr)/ov)) : 0;            // 0..1 — насколько следующая секция наехала на фильм
     return Math.min(1,Math.max(0,(-r.top-lead)/fr)); }
-  start(){ if(this.raf||this.destroyed) return; const loop=(now)=>{ this.raf=requestAnimationFrame(loop); this.tick(now); }; this.raf=requestAnimationFrame(loop); }
+  start(){ if(this.raf||this.destroyed) return; this.hpump(); const loop=(now)=>{ this.raf=requestAnimationFrame(loop); this.tick(now); }; this.raf=requestAnimationFrame(loop); }
   stop(){ if(this.raf) cancelAnimationFrame(this.raf); this.raf=0; this.prev=0; }
   tick(now){
     const dt=this.prev?Math.min(50,Math.max(0,now-this.prev)):16.7; this.prev=now;
@@ -672,18 +684,23 @@ class VFilm {
     for(let d=1; d<=this.near; d++){ b=this.bmp.get(c-d*this.dir)||this.bmp.get(c+d*this.dir); if(b) return b; }
     b=this.pbmp.get(c); if(b) return b;
     return this.nearest(this.bmp)||this.nearest(this.pbmp); }
-  draw(){ const b=this.pick(); if(!b) return; this.dirty=false;
+  draw(){ const b=this.pick(); const hp=this.pos!=null?this.pos:this.cur, hk=Math.round(hp); const hb=(this.hbmp.size&&Math.abs(hp-hk)<0.02)?this.hbmp.get(hk):null; if(!b&&!hb) return; this.dirty=false;
     const c=this.canvas; const ctx=this.ctx||(this.ctx=c.getContext('2d',{alpha:false,desynchronized:true}));
     const dpr=Math.min(window.devicePixelRatio||1,this.maxDpr||2); const W=c.clientWidth||innerWidth, H=c.clientHeight||innerHeight;
     const cw=Math.round(W*dpr), ch=Math.round(H*dpr); if(c.width!==cw||c.height!==ch){ c.width=cw; c.height=ch; ctx.imageSmoothingQuality='high'; }
     const cover=(img)=>{ const s=Math.max(cw/img.width, ch/img.height); const dw=img.width*s, dh=img.height*s; ctx.drawImage(img,(cw-dw)/2,(ch-dh)/2,dw,dh); };
+    ctx.globalAlpha=1; let drawn=false;
     if(this.blend && this.pos!=null){ const f0=Math.floor(this.pos), fr=this.pos-f0; const a=this.bmp.get(f0), b2=this.bmp.get(f0+1);     // между двумя чёткими кадрами — кроссфейд по дробной позиции: движение не ступенчатое
-      if(a && b2 && fr>0.02 && fr<0.98){ ctx.globalAlpha=1; cover(a); ctx.globalAlpha=fr; cover(b2); ctx.globalAlpha=1; return; } }
-    ctx.globalAlpha=1; cover(b); }
+      if(a && b2 && fr>0.02 && fr<0.98){ cover(a); ctx.globalAlpha=fr; cover(b2); ctx.globalAlpha=1; drawn=true; } }
+    if(!drawn && b) cover(b);
+    // 2K ключевой кадр (film/*/hi): только на целой позиции — холд hero или ключевой кадр главы спуска, где скролл остановился; въезжает за hiFade мс, уходит сразу (начало движения маскирует)
+    if(hb){ const now=performance.now(); if(this.hiShown!==hk){ this.hiShown=hk; this.hiT0=now; } const t=Math.min(1,(now-this.hiT0)/Math.max(1,this.hiFade)); const al=t*t*(3-2*t);
+      ctx.globalAlpha=al; cover(hb); ctx.globalAlpha=1; if(t<1){ this.dirty=true; if(!this.raf) requestAnimationFrame(()=>{ if(!this.destroyed&&this.dirty) this.draw(); }); } }
+    else this.hiShown=-1; }
   nearest(map){ let best=null,bd=1e9; for(const [i,b] of map){ const d=Math.abs(i-this.cur); if(d<bd){ bd=d; best=b; } } return best; }
   rebind(root){ const c=root.querySelector('[data-film-canvas]'); if(c&&c!==this.canvas){ this.canvas=c; this.ctx=null; this.dirty=true; }
     this.wrap=root.querySelector('[data-film-wrap]')||this.wrap; this.sticky=root.querySelector('[data-film-sticky]')||this.sticky; this.layout(); if(this.dirty) this.draw(); }
-  destroy(){ this.destroyed=true; this.stop(); for(const b of this.bmp.values()) b.close(); this.bmp.clear(); for(const b of this.pbmp.values()) b.close(); this.pbmp.clear();
+  destroy(){ this.destroyed=true; this.stop(); for(const b of this.bmp.values()) b.close(); this.bmp.clear(); for(const b of this.pbmp.values()) b.close(); this.pbmp.clear(); for(const b of this.hbmp.values()) b.close(); this.hbmp.clear(); try{ if(this.hworker) this.hworker.terminate(); }catch(e){}
     this.pool.forEach(w=>{ try{ w.terminate(); }catch(e){} }); try{ if(this.pworker) this.pworker.terminate(); }catch(e){} this.buf=[]; this.pbuf=[]; }
 }
 
@@ -1052,7 +1069,7 @@ class Component extends DCLogic {
     if(reduce||(weak&&!force)){ sec.classList.add('ds-static'); document.documentElement.classList.add('ds-static-on'); nodes.forEach(n=>n.el.removeAttribute('inert')); return; }                          // статичная версия: стилл + узлы столбиком
     const base = coarse ? './film/descent/mobile/' : './film/descent/';
     const big=!coarse && ((navigator.deviceMemory||8)>=8);
-    const film=new VFilm({ base, manifestUrl:base+'film.json', proxyBase:base+'proxy/', canvas, wrap:sec, sticky, pxPerFrame: coarse?10:10, overlapVh:0, leadVh:0, noGlobalVar:true, lerp:this._lenis?1:0.12, presetFrames: coarse?471:941, lazy:true, lazyAhead:180,
+    const film=new VFilm({ base, manifestUrl:base+'film.json', proxyBase:base+'proxy/', hiBase: coarse?null:base+'hi/', canvas, wrap:sec, sticky, pxPerFrame: coarse?10:10, overlapVh:0, leadVh:0, noGlobalVar:true, lerp:this._lenis?1:0.12, presetFrames: coarse?471:941, lazy:true, lazyAhead:180,
       windowAhead: coarse?12:(big?30:22), windowBehind:6, keepBehind: coarse?6:(big?12:10), pwin: coarse?36:56, blend:true, maxDpr:2,
       zonesFrac: nodes.filter(n=>!n.bridge).map(n=>[n.a+0.02, n.b-0.02, n.el.id==='work'?2:4]),   // кейсы — глава длинная, ей хватит ×2                       // в главе фильм идёт вчетверо медленнее — есть время читать, камера не стоит                       // пока узел на экране — фильм идёт втрое медленнее, но не стоит
       onFrame:(p,f)=>{
@@ -1107,12 +1124,12 @@ class Component extends DCLogic {
     const html=document.documentElement;
     const smooth=(a,b,x)=>{ const t=Math.min(1,Math.max(0,(x-a)/(b-a))); return t*t*(3-2*t); };
     let ch=''; const setCh=(c)=>{ if(c===ch) return; ['film-c1','film-c2','film-c3','film-end'].forEach(k=>html.classList.remove(k)); if(c) html.classList.add(c); ch=c; };
-    const big=!lite && ((navigator.deviceMemory||8)>=8);
+    const big=!lite && ((navigator.deviceMemory||8)>=8); const HN=(lite?240:480)-1;   // холды — на целых кадрах (192, 354): там лежат 2K-версии
     const film=this._film=new VFilm({
-      base: lite?'./film/mobile/':'./film/desktop/', manifestUrl: lite?'./film/mobile/film.json':'./film/desktop/film.json', proxyBase: lite?'./film/mobile/proxy/':'./film/desktop/proxy/', canvas, wrap, sticky, pxPerFrame: lite?10:9, overlapVh: root.querySelector('[data-descent]') ? 0 : (lite?0.32:0.38),
+      base: lite?'./film/mobile/':'./film/desktop/', manifestUrl: lite?'./film/mobile/film.json':'./film/desktop/film.json', proxyBase: lite?'./film/mobile/proxy/':'./film/desktop/proxy/', hiBase: lite?null:'./film/desktop/hi/', canvas, wrap, sticky, pxPerFrame: lite?10:9, overlapVh: root.querySelector('[data-descent]') ? 0 : (lite?0.32:0.38),
       windowAhead: lite?18:(big?30:24), windowBehind:8, keepBehind: lite?10:(big?12:10), pwin: lite?48:64, blend:true, maxDpr:2,   // 1080p-битмап = 8.3 МБ: окно 30+12 ≈ 350 МБ на фильм; канвас в dpr экрана (до 2): кап 1.5 заставлял браузер растягивать канвас второй раз — на retina терялось ~40 % резкости                                  // окно чётких кадров (память) · окно прокси   // desktop-фильм 48 fps → 7px/кадр   // хвост: страница наезжает на пэйофф
       lerp:1, presetFrames: lite?240:480,                       // одно сглаживание — Lenis; без него см. ниже · кадров известно заранее → высота без сдвига макета
-      holds:[[0,0.16,0],[0.43,0.47,0.40],[0.68,0.72,0.74],[0.88,1,1]],   // старт: первый кадр стоит 16 % скролла (≈690 px) — заголовок, подзаголовок и CTA читаются до движения; финал: последний кадр держится 12 % под титр «следующий проект — ваш»; дорожка 9 px/кадр, чтобы сегменты фильма шли с прежней скоростью    // плато: старт · бутон · раскрытие · цветок    // плато: старт · трещина (глава 01→02) · собранная кладка (03) · пэйофф
+      holds:[[0,0.16,0],[0.43,0.47,Math.round(0.40*HN)/HN],[0.68,0.72,Math.round(0.74*HN)/HN],[0.88,1,1]],   // старт: первый кадр стоит 16 % скролла (≈690 px) — заголовок, подзаголовок и CTA читаются до движения; финал: последний кадр держится 12 % под титр «следующий проект — ваш»; дорожка 9 px/кадр, чтобы сегменты фильма шли с прежней скоростью    // плато: старт · бутон · раскрытие · цветок    // плато: старт · трещина (глава 01→02) · собранная кладка (03) · пэйофф
       onProgress:(f)=>{ this._filmBytes=f; },
       onFrame:(p,f,tail)=>{
         canvas.style.opacity=String(smooth(0.14,0.22,p));                 // кроссфейд fluid → фильм
