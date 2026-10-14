@@ -5,6 +5,7 @@ set -euo pipefail
 OUT="$1"; shift
 DESK_SIZE="${DESK_SIZE:-1920x1080}"; DESK_Q="${DESK_Q:-74}"   # десктопный ряд: размер и качество webp (переопределяются окружением)
 HERE="$(cd "$(dirname "$0")" && pwd)"; TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
+export FRAME_FILTER="${FRAME_FILTER:-$HERE/hero-clarity.py}"; export CLARITY_PROFILE="${CLARITY_PROFILE:-0:.35,480:.35}"   # тот же фильтр и профиль, что у hero (rebuild-hero.sh): иначе кадр стыка hero→спуск заметно отличается
 N=$#; FADE=0.33
 if [ "$N" -eq 1 ]; then cp "$1" "$TMP/descent.mp4"; else
   INPUTS=(); for f in "$@"; do INPUTS+=(-i "$f"); done

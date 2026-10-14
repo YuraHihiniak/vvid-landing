@@ -63,21 +63,27 @@
   @media (max-width:880px){ [data-navgroup]{display:none !important} }
   @media (max-width:760px){ form[data-brief]{grid-template-columns:1fr !important} [data-cap-inner]{grid-template-columns:1fr !important} [data-ascii-team]{grid-template-columns:1fr !important} [data-ascii-cases]{grid-template-columns:1fr !important} .proc-row{grid-template-columns:40px 1fr !important;gap:16px !important} .proc-meta{grid-column:2 !important;justify-self:start !important;margin-top:12px} [data-team-word]{-webkit-box-decoration-break:clone;box-decoration-break:clone} [data-acc-panel] p{padding-left:clamp(14px,4vw,34px) !important;padding-right:16px !important} }
   @media (prefers-reduced-motion:reduce){ [data-anim]{animation:none !important} .hero-kin .kl>span,.hl-ch{transform:none !important;animation:none !important} }
-  @media (max-width:600px){ header nav{gap:14px !important} }
-  [data-lang-sw]{padding:8px 4px;margin:-8px -4px}
-  .m-burger{display:none}
-  .m-panel{display:none}
-  @media (max-width:880px){
-    .m-burger{display:flex;flex-direction:column;justify-content:center;gap:5px;width:30px;height:30px;background:none;border:none;cursor:pointer;padding:0;color:inherit;position:relative;z-index:3}
-    .m-burger span{display:block;height:1.5px;width:20px;margin:0 auto;background:currentColor;transition:transform .35s cubic-bezier(.16,1,.3,1),opacity .25s}
-    [data-adaptive-hdr].m-open .m-burger span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
-    [data-adaptive-hdr].m-open .m-burger span:nth-child(2){opacity:0}
-    [data-adaptive-hdr].m-open .m-burger span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
-    .m-panel{display:flex;flex-direction:column;gap:2px;position:absolute;top:54px;right:0;min-width:190px;background:rgba(19,17,12,.95);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid rgba(228,222,210,.12);border-radius:14px;padding:10px;opacity:0;transform:translateY(-10px) scale(.97);transform-origin:top right;pointer-events:none;transition:opacity .35s cubic-bezier(.16,1,.3,1),transform .35s cubic-bezier(.16,1,.3,1)}
-    [data-adaptive-hdr].m-open .m-panel{opacity:1;transform:none;pointer-events:auto}
-    .m-panel a{padding:14px 14px;min-height:48px;display:flex;align-items:center;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#cfc7b9;border-radius:9px;transition:background .25s,color .25s}
-    .m-panel a:hover,.m-panel a:active{background:rgba(228,222,210,.08);color:#fff}
-  }
+  /* ── шапка: логотип + тихий язык + две пилюли (бриф, меню); ссылки живут в оверлее ── */
+  .hdr-nav{gap:10px}
+  .hdr-lang{display:inline-flex;align-items:center;gap:5px;margin-right:8px;padding:10px 6px;background:none;border:none;cursor:pointer;color:inherit;font:500 13px/1 'Wix Madefor Text','Wix Madefor Display',sans-serif;letter-spacing:.01em;text-transform:lowercase}
+  .hdr-lang-sep{opacity:.35}
+  .hdr-pill{display:inline-flex;align-items:center;gap:10px;border-radius:50px;padding:12px 18px;border:none;cursor:pointer;text-decoration:none;font:600 12.5px/1 'Wix Madefor Text','Wix Madefor Display',sans-serif;letter-spacing:.02em;text-transform:none;white-space:nowrap;transition:background .3s,color .3s}
+  .hdr-solid{background:#f1e6d2;color:#15100b} .hdr-solid:hover{background:#fff;color:#15100b}
+  .hdr-ghost{background:rgba(255,255,255,.12);color:#fff;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)} .hdr-ghost:hover{background:rgba(255,255,255,.2)}
+  .hdr-arr{display:inline-block;transition:transform .35s cubic-bezier(.16,1,.3,1)} .hdr-solid:hover .hdr-arr{transform:translateX(3px)}
+  .hdr-dots::before{content:'••';letter-spacing:-.12em;font-size:14px;line-height:0} [data-adaptive-hdr].m-open .hdr-dots::before{content:'✕';letter-spacing:0;font-size:12px}
+  .m-panel{position:fixed;inset:0;z-index:0;display:flex;flex-direction:column;justify-content:center;gap:4px;padding:110px clamp(26px,6vw,96px) 56px;background:rgba(16,13,10,.94);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);opacity:0;pointer-events:none;transition:opacity .35s ease}
+  [data-adaptive-hdr].m-open .m-panel{opacity:1;pointer-events:auto}
+  .m-panel > a{font:600 clamp(34px,5.2vw,68px)/1.08 var(--font-display);letter-spacing:-.03em;color:#efe9df;text-decoration:none;padding:4px 0;transform:translateY(12px);opacity:0;transition:color .25s,transform .55s cubic-bezier(.16,1,.3,1),opacity .4s}
+  [data-adaptive-hdr].m-open .m-panel > a{transform:none;opacity:1}
+  [data-adaptive-hdr].m-open .m-panel > a:nth-child(2){transition-delay:.05s} [data-adaptive-hdr].m-open .m-panel > a:nth-child(3){transition-delay:.1s} [data-adaptive-hdr].m-open .m-panel > a:nth-child(4){transition-delay:.15s} [data-adaptive-hdr].m-open .m-panel > a:nth-child(5){transition-delay:.2s}
+  .m-panel > a:hover{color:#fff}
+  .m-panel-foot{display:flex;align-items:center;gap:26px;margin-top:34px} .m-panel-foot a{font:500 12.5px/1 'PT Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:rgba(239,233,223,.72);text-decoration:none} .m-panel-foot a:hover{color:#fff}
+  .m-panel-lang{display:none;margin:0;padding:10px 0}
+  [data-adaptive-hdr].on-light:not(.m-open) .hdr-solid{background:#15100b;color:#f1e6d2} [data-adaptive-hdr].on-light:not(.m-open) .hdr-solid:hover{background:#000;color:#fff}
+  [data-adaptive-hdr].on-light:not(.m-open) .hdr-ghost{background:rgba(0,0,0,.08);color:#15100b} [data-adaptive-hdr].on-light:not(.m-open) .hdr-ghost:hover{background:rgba(0,0,0,.14)}
+  html.m-lock{overflow:hidden}
+  @media (max-width:600px){ .hdr-nav{gap:8px} .hdr-lang:not(.m-panel-lang){display:none} .m-panel-lang{display:inline-flex} .hdr-pill{padding:11px 14px;font-size:12px} .hdr-solid .hdr-arr{display:none} }
   /* Lenis smooth scroll (desktop) */
   html.lenis,html.lenis body{height:auto}
   .lenis.lenis-smooth{scroll-behavior:auto !important}
@@ -86,7 +92,7 @@
   /* RU/EN switcher — active language driven by html[lang] */
   [data-lang-sw] [data-l]{opacity:.62;transition:opacity .3s;text-underline-offset:4px}
   [data-lang-sw]:hover [data-l]{opacity:.7}
-  html[lang="ru"] [data-lang-sw] [data-l="ru"],html[lang="en"] [data-lang-sw] [data-l="en"]{opacity:1;text-decoration:underline}
+  html[lang="ru"] [data-lang-sw] [data-l="ru"],html[lang="en"] [data-lang-sw] [data-l="en"]{opacity:1;font-weight:600}
   /* FAQ accordion polish */
   [data-faq-list]{counter-reset:vfaq}
   [data-faq-list] [data-acc-head]{counter-increment:vfaq}
@@ -366,24 +372,19 @@
     <a href="#top" style="position:relative;z-index:1;display:flex;align-items:center;gap:12px;color:inherit">
       <span style="font-weight:700;font-size:20px;letter-spacing:-.05em;line-height:1">vvid</span>
     </a>
-    <nav style="position:relative;z-index:1;display:flex;align-items:center;gap:30px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:inherit">
-      <span data-navgroup="1" style="display:flex;align-items:center;gap:30px">
-        <a href="#capabilities" style="opacity:.86" style-hover="opacity:1">{{ t.navServices }}</a>
-        <a href="#work" style="opacity:.86" style-hover="opacity:1">{{ t.navCases }}</a>
-        <a href="#pricing" style="opacity:.86" style-hover="opacity:1">{{ t.navPricing }}</a>
-      </span>
-      <button data-lang-sw="1" onClick="{{ toggleLang }}" aria-label="ru / en" style="padding:12px 8px;margin:-12px -8px;display:flex;align-items:center;gap:5px;background:none;border:none;color:inherit;font-family:inherit;font-size:11px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer"><span data-l="ru">ru</span><span style="opacity:.35">/</span><span data-l="en">en</span></button>
-      <a href="#brief" data-magnetic="1" style="display:inline-block;border:1px solid currentColor;padding:8px 15px;letter-spacing:.16em" style-hover="background:#e4ded2;color:#13110c">{{ t.navBrief }}</a>
-      <button class="m-burger" data-m-burger="1" onClick="{{ toggleMenu }}" aria-label="{{ t.menuLabel }}" aria-expanded="false" aria-controls="m-panel"><span></span><span></span><span></span></button>
-      <div class="m-panel" id="m-panel">
-        <a href="#capabilities" onClick="{{ closeMenu }}">{{ t.navServices }}</a>
-        <a href="#work" onClick="{{ closeMenu }}">{{ t.navCases }}</a>
-        <a href="#pricing" onClick="{{ closeMenu }}">{{ t.navPricing }}</a>
-        <a href="#brief" onClick="{{ closeMenu }}">{{ t.navBrief }}</a>
-        <a href="#faq" onClick="{{ closeMenu }}">{{ t.navFaq }}</a>
-        <a href="https://t.me/vvid" target="_blank" rel="noopener noreferrer" onClick="{{ closeMenu }}">telegram ↗</a>
-      </div>
+    <nav class="hdr-nav" style="position:relative;z-index:1;display:flex;align-items:center;gap:10px;color:inherit">
+      <button data-lang-sw="1" class="hdr-lang" onClick="{{ toggleLang }}" aria-label="ru / en"><span data-l="ru">ru</span><span class="hdr-lang-sep">/</span><span data-l="en">en</span></button>
+      <a href="#brief" class="hdr-pill hdr-solid" data-magnetic="1">{{ t.hdrBrief }} <span class="hdr-arr" aria-hidden="true">→</span></a>
+      <button class="hdr-pill hdr-ghost" data-m-burger="1" onClick="{{ toggleMenu }}" aria-label="{{ t.menuLabel }}" aria-expanded="false" aria-controls="m-panel">{{ t.menuLabel }} <span class="hdr-dots" aria-hidden="true"></span></button>
     </nav>
+    </div>
+    <div class="m-panel" id="m-panel">
+      <a href="#capabilities" onClick="{{ closeMenu }}">{{ t.navServices }}</a>
+      <a href="#work" onClick="{{ closeMenu }}">{{ t.navCases }}</a>
+      <a href="#pricing" onClick="{{ closeMenu }}">{{ t.navPricing }}</a>
+      <a href="#brief" onClick="{{ closeMenu }}">{{ t.navBrief }}</a>
+      <a href="#faq" onClick="{{ closeMenu }}">{{ t.navFaq }}</a>
+      <div class="m-panel-foot"><a href="https://t.me/vvid" target="_blank" rel="noopener noreferrer" onClick="{{ closeMenu }}">telegram @vvid ↗</a><button data-lang-sw="1" class="hdr-lang m-panel-lang" onClick="{{ toggleLang }}" aria-label="ru / en"><span data-l="ru">ru</span><span class="hdr-lang-sep">/</span><span data-l="en">en</span></button></div>
     </div>
   </header>
 
@@ -673,7 +674,7 @@ class VFilm {
     return this.nearest(this.bmp)||this.nearest(this.pbmp); }
   draw(){ const b=this.pick(); if(!b) return; this.dirty=false;
     const c=this.canvas; const ctx=this.ctx||(this.ctx=c.getContext('2d',{alpha:false,desynchronized:true}));
-    const dpr=Math.min(window.devicePixelRatio||1,this.maxDpr||1.5); const W=c.clientWidth||innerWidth, H=c.clientHeight||innerHeight;
+    const dpr=Math.min(window.devicePixelRatio||1,this.maxDpr||2); const W=c.clientWidth||innerWidth, H=c.clientHeight||innerHeight;
     const cw=Math.round(W*dpr), ch=Math.round(H*dpr); if(c.width!==cw||c.height!==ch){ c.width=cw; c.height=ch; ctx.imageSmoothingQuality='high'; }
     const cover=(img)=>{ const s=Math.max(cw/img.width, ch/img.height); const dw=img.width*s, dh=img.height*s; ctx.drawImage(img,(cw-dw)/2,(ch-dh)/2,dw,dh); };
     if(this.blend && this.pos!=null){ const f0=Math.floor(this.pos), fr=this.pos-f0; const a=this.bmp.get(f0), b2=this.bmp.get(f0+1);     // между двумя чёткими кадрами — кроссфейд по дробной позиции: движение не ступенчатое
@@ -775,7 +776,8 @@ class Component extends DCLogic {
     this.initDescent();
     this.initMagnetic();
     this.initFloatCTA();
-    this._escMenu=(e)=>{ if(e.key!=='Escape') return; const h=this.root.querySelector('[data-adaptive-hdr].m-open'); if(!h) return; h.classList.remove('m-open'); const b=h.querySelector('[data-m-burger]'); if(b){ b.setAttribute('aria-expanded','false'); try{ b.focus(); }catch(_){} } }; document.addEventListener('keydown', this._escMenu);
+    this._menuLock=(on)=>{ document.documentElement.classList.toggle('m-lock',!!on); try{ if(this._lenis){ on?this._lenis.stop():this._lenis.start(); } }catch(e){} };   // под открытым меню страница не едет: Lenis стоп, html overflow hidden (мобайл)
+    this._escMenu=(e)=>{ if(e.key!=='Escape') return; const h=this.root.querySelector('[data-adaptive-hdr].m-open'); if(!h) return; h.classList.remove('m-open'); this._menuLock(false); const b=h.querySelector('[data-m-burger]'); if(b){ b.setAttribute('aria-expanded','false'); try{ b.focus(); }catch(_){} } }; document.addEventListener('keydown', this._escMenu);
     if(reduce) this.setCalm(true);
     setTimeout(()=>{ try{ this.typografNbsp(); }catch(e){} }, 160);
   }
@@ -1051,7 +1053,7 @@ class Component extends DCLogic {
     const base = coarse ? './film/descent/mobile/' : './film/descent/';
     const big=!coarse && ((navigator.deviceMemory||8)>=8);
     const film=new VFilm({ base, manifestUrl:base+'film.json', proxyBase:base+'proxy/', canvas, wrap:sec, sticky, pxPerFrame: coarse?10:10, overlapVh:0, leadVh:0, noGlobalVar:true, lerp:this._lenis?1:0.12, presetFrames: coarse?471:941, lazy:true, lazyAhead:180,
-      windowAhead: coarse?12:(big?30:22), windowBehind:6, keepBehind: coarse?6:(big?12:10), pwin: coarse?36:56, blend:true, maxDpr:1.5,
+      windowAhead: coarse?12:(big?30:22), windowBehind:6, keepBehind: coarse?6:(big?12:10), pwin: coarse?36:56, blend:true, maxDpr:2,
       zonesFrac: nodes.filter(n=>!n.bridge).map(n=>[n.a+0.02, n.b-0.02, n.el.id==='work'?2:4]),   // кейсы — глава длинная, ей хватит ×2                       // в главе фильм идёт вчетверо медленнее — есть время читать, камера не стоит                       // пока узел на экране — фильм идёт втрое медленнее, но не стоит
       onFrame:(p,f)=>{
         if(canvas.style.opacity!=='1' && f>=0 && (film.bmp.has(f)||film.pbmp.has(f))) canvas.style.opacity='1';
@@ -1108,7 +1110,7 @@ class Component extends DCLogic {
     const big=!lite && ((navigator.deviceMemory||8)>=8);
     const film=this._film=new VFilm({
       base: lite?'./film/mobile/':'./film/desktop/', manifestUrl: lite?'./film/mobile/film.json':'./film/desktop/film.json', proxyBase: lite?'./film/mobile/proxy/':'./film/desktop/proxy/', canvas, wrap, sticky, pxPerFrame: lite?10:9, overlapVh: root.querySelector('[data-descent]') ? 0 : (lite?0.32:0.38),
-      windowAhead: lite?18:(big?30:24), windowBehind:8, keepBehind: lite?10:(big?12:10), pwin: lite?48:64, blend:true, maxDpr:1.5,   // 1080p-битмап = 8.3 МБ: окно 30+12 ≈ 350 МБ на фильм; dpr>1.5 не добавляет деталей (источник 1080p), а рисует вчетверо больше пикселей                                  // окно чётких кадров (память) · окно прокси   // desktop-фильм 48 fps → 7px/кадр   // хвост: страница наезжает на пэйофф
+      windowAhead: lite?18:(big?30:24), windowBehind:8, keepBehind: lite?10:(big?12:10), pwin: lite?48:64, blend:true, maxDpr:2,   // 1080p-битмап = 8.3 МБ: окно 30+12 ≈ 350 МБ на фильм; канвас в dpr экрана (до 2): кап 1.5 заставлял браузер растягивать канвас второй раз — на retina терялось ~40 % резкости                                  // окно чётких кадров (память) · окно прокси   // desktop-фильм 48 fps → 7px/кадр   // хвост: страница наезжает на пэйофф
       lerp:1, presetFrames: lite?240:480,                       // одно сглаживание — Lenis; без него см. ниже · кадров известно заранее → высота без сдвига макета
       holds:[[0,0.16,0],[0.43,0.47,0.40],[0.68,0.72,0.74],[0.88,1,1]],   // старт: первый кадр стоит 16 % скролла (≈690 px) — заголовок, подзаголовок и CTA читаются до движения; финал: последний кадр держится 12 % под титр «следующий проект — ваш»; дорожка 9 px/кадр, чтобы сегменты фильма шли с прежней скоростью    // плато: старт · бутон · раскрытие · цветок    // плато: старт · трещина (глава 01→02) · собранная кладка (03) · пэйофф
       onProgress:(f)=>{ this._filmBytes=f; },
@@ -1211,7 +1213,7 @@ class Component extends DCLogic {
     const T = {
       ru:{
         hdrTag:'студия разработки и автоматизации',
-        navServices:'услуги', navCases:'кейсы', navPricing:'прайс', navBrief:'бриф',
+        navServices:'услуги', navCases:'кейсы', navPricing:'прайс', navBrief:'бриф', hdrBrief:'оставить бриф',
         heroBig1:'мы VVID', heroBig2:'мы делаем', heroBig3:'большие', heroBig4:'вещи', heroBigAria:'мы VVID, мы делаем большие вещи',
                 heroSub:'приложения, сайты и телеграм-боты для бизнеса, который уже работает. цены открыты — от 20 000 ₽.', heroCtaPrimary:'написать в telegram ↗', heroProof:'договор + юрлицо · ответ в telegram < 2 часов · демо каждые 2 недели', heroProof1:'договор + юрлицо', heroProof2:'ответ в telegram < 2 часов', heroProof3:'демо каждые 2 недели', ctaTelegram:'написать в telegram', scroll:'scroll', preLang:'ru', preCol2:'разработка · автоматизация', dsK1:'01 — кто мы · Минск', dsCrafts:'разработка · автоматизация · дизайн — те же люди на созвоне и в коде', dsK3:'03 — кейсы · четыре проекта · три в проде', dsK4:'04 — прайс · у корней · цифра до старта', dsK5:'05 — бриф · у основания · давайте работать', dsBriefH2:'давайте работать.', dsBriefP:'опишите задачу парой строк — в рабочее время ответим меньше чем за 2 часа. цифру назовём, когда поймём процесс.', dsBriefAlt:'или сразу в telegram ↗', dsK2:'02 — что делаем · пять услуг · цены открыты', dsDepth:'глубина', filmK1:'разбор', filmT1:'начинаем с вашего процесса — не с шаблона', filmK2:'сборка', filmT2:'демо каждые 2 недели — видите систему, пока она собирается', filmK3:'результат', filmT3:'3 проекта в проде · гарантия 50 дней', filmKEnd:'vvid — студия разработки и автоматизации', filmTEnd:'следующий проект — ваш', filmSkip:'пропустить фильм ↓', filmCta2:'оставить бриф ↓', footTag:'из хаоса — система', formSent:'бриф готов → открываем telegram ↗', formSentHint:'если telegram не открылся — текст брифа уже скопирован, вставьте его в чат:', formSentTg:'открыть @vvid ↗', formSentMail:'или отправить письмом', formConsent:'нажимая «отправить», вы соглашаетесь на обработку контакта, чтобы мы могли ответить.', formConsentLink:'как храним данные', menuLabel:'меню', navFaq:'вопросы', motionLabel:'анимация', motionOn:'вкл', motionOff:'выкл', dsBridge1:'↓ дальше — прайс: три пакета, цифра до старта', dsBridge2:'↓ дальше — бриф: два поля, ответ за 2 часа',
                 manifH2:'ваш бизнес уже работает. мы снимаем его с ручного привода.',
@@ -1224,7 +1226,7 @@ class Component extends DCLogic {
       },
       en:{
         hdrTag:'development & automation studio',
-        navServices:'services', navCases:'work', navPricing:'pricing', navBrief:'brief',
+        navServices:'services', navCases:'work', navPricing:'pricing', navBrief:'brief', hdrBrief:'leave a brief',
         heroBig1:'we are VVID', heroBig2:'we do', heroBig3:'big things', heroBig4:'', heroBigAria:'we are VVID, we do big things',
                 heroSub:'apps, websites and telegram bots for a business that already runs. prices are open — from $250.', heroCtaPrimary:'message us on telegram ↗', heroProof:'contract + legal entity · telegram reply < 2 hours · a demo every 2 weeks', heroProof1:'contract + legal entity', heroProof2:'telegram reply < 2 hours', heroProof3:'a demo every 2 weeks', ctaTelegram:'message us on telegram', scroll:'scroll', preLang:'en', preCol2:'development · automation', dsK1:'01 — who we are · Minsk', dsCrafts:'development · automation · design — the same people on the call and in the code', dsK3:'03 — work · four projects · three live', dsK4:'04 — pricing · at the roots · a number before we start', dsK5:'05 — brief · at the base · let’s work', dsBriefH2:'let’s work.', dsBriefP:'describe the task in a couple of lines — we reply within 2 hours in work hours. we name a number once we understand the process.', dsBriefAlt:'or straight to telegram ↗', dsK2:'02 — what we do · five services · prices are open', dsDepth:'depth', filmK1:'discovery', filmT1:'we start from your process — not a template', filmK2:'build', filmT2:'a demo every 2 weeks — you watch it come together', filmK3:'result', filmT3:'3 projects live · 50-day guarantee', filmKEnd:'vvid — development & automation studio', filmTEnd:'the next project is yours', filmSkip:'skip the film ↓', filmCta2:'leave a brief ↓', footTag:'from chaos — a system', formSent:'brief ready → opening telegram ↗', formSentHint:'if telegram didn’t open — the brief is already copied, paste it into the chat:', formSentTg:'open @vvid ↗', formSentMail:'or send by email', formConsent:'by sending you agree that we process your contact so we can reply.', formConsentLink:'how we handle data', menuLabel:'menu', navFaq:'faq', motionLabel:'motion', motionOn:'on', motionOff:'off', dsBridge1:'↓ next — pricing: three packages, a number before we start', dsBridge2:'↓ next — the brief: two fields, a reply within 2 hours',
                 manifH2:'your business already runs. we take it off manual.',
@@ -1343,8 +1345,8 @@ class Component extends DCLogic {
       onSubmit: (e)=> this.onSubmit(e),
       setLang: (lng)=> this.setLang(lng),
       toggleLang: ()=> this.setLang(this._lang==='en'?'ru':'en'),
-      toggleMenu: ()=>{ const h=this.root.querySelector('[data-adaptive-hdr]'); if(!h) return; const on=h.classList.toggle('m-open'); const b=h.querySelector('[data-m-burger]'); if(b) b.setAttribute('aria-expanded', on?'true':'false'); },
-      closeMenu: ()=>{ const h=this.root.querySelector('[data-adaptive-hdr]'); if(!h) return; h.classList.remove('m-open'); const b=h.querySelector('[data-m-burger]'); if(b) b.setAttribute('aria-expanded','false'); },
+      toggleMenu: ()=>{ const h=this.root.querySelector('[data-adaptive-hdr]'); if(!h) return; const on=h.classList.toggle('m-open'); const b=h.querySelector('[data-m-burger]'); if(b) b.setAttribute('aria-expanded', on?'true':'false'); this._menuLock(on); },
+      closeMenu: ()=>{ const h=this.root.querySelector('[data-adaptive-hdr]'); if(!h) return; h.classList.remove('m-open'); const b=h.querySelector('[data-m-burger]'); if(b) b.setAttribute('aria-expanded','false'); this._menuLock(false); },
       lang: L, t: T[L],
       capabilities: D.capabilities[L],
       cases: D.cases[L],
@@ -1394,9 +1396,11 @@ class Component extends DCLogic {
       }
     }
     // Apply only when the target changed, or re-apply if a framework re-render stripped it.
-    if(curColor && (curColor!==applied || hdr.style.getPropertyPriority('color')!=='important')){
-      hdr.style.setProperty('color',curColor,'important');
-      applied=curColor;
+    var want=hdr.classList.contains('m-open')?LIGHT_TEXT:curColor;   // открытое меню — тёмный оверлей, текст всегда светлый
+    if(want && (want!==applied || hdr.style.getPropertyPriority('color')!=='important')){
+      hdr.style.setProperty('color',want,'important');
+      hdr.classList.toggle('on-light', want===DARK_TEXT);
+      applied=want;
     }
   }
   requestAnimationFrame(tick);
