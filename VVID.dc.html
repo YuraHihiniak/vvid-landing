@@ -717,7 +717,7 @@ class VFilm {
     const cw=Math.round(W*dpr), ch=Math.round(H*dpr); if(c.width!==cw||c.height!==ch){ c.width=cw; c.height=ch; ctx.imageSmoothingQuality='high'; }
     const cover=(img)=>{ const s=Math.max(cw/img.width, ch/img.height); const dw=img.width*s, dh=img.height*s; ctx.drawImage(img,(cw-dw)/2,(ch-dh)/2,dw,dh); };
     ctx.globalAlpha=1; let drawn=false;
-    if(this.blend && this.pos!=null && (this.span||1)<=4){ const sp=this.span||1; const f0=Math.floor(this.pos/sp)*sp, fr=(this.pos-f0)/sp; const a=this.bmp.get(f0), b2=this.bmp.get(f0+sp);     // между двумя чёткими кадрами — кроссфейд по дробной позиции: движение не ступенчатое
+    if(this.blend && this.pos!=null && (this.span||1)===1 && this.vel<=(this.blendVel||1.2)){ const f0=Math.floor(this.pos), fr=this.pos-f0; const a=this.bmp.get(f0), b2=this.bmp.get(f0+1);     // кроссфейд соседних кадров по дробной позиции — только на медленном скроле (≤ blendVel кадров/тик), где без него видна ступенька; быстрее движение само прячет шаг, а смесь двух кадров (тем более по сетке 2–4) двоит края — кадр выглядит «мыльным», как при упавшем битрейте
       if(a && b2 && fr>0.02 && fr<0.98){ cover(a); ctx.globalAlpha=fr; cover(b2); ctx.globalAlpha=1; drawn=true; } }
     if(!drawn && b) cover(b);
     if(b){ const k=drawn?'blend':this.kind; (this.kinds=this.kinds||{})[k]=(this.kinds[k]||0)+1; }   // статистика слоёв для ?diag=1
