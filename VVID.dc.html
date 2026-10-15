@@ -599,7 +599,7 @@
 /* ---------- SCROLL-FILM PLAYER: кадровые бандлы · декод в воркере · окно ± · холды в маппинге · sticky-пин ---------- */
 class VFilm {
   constructor(o){
-    Object.assign(this,{ lerp:1, maxVel:0, pxPerFrame:14, windowAhead:24, windowBehind:8, keepBehind:16, pwin:64, workers:((navigator.hardwareConcurrency||4)>=8?3:2), perWorker:2, pInflight:6, near:2, holds:[], zones:null, hiBase:null, hiNear:120, hiFade:260 }, o);
+    Object.assign(this,{ lerp:1, maxVel:0, rate:3, span:1, vel:0, decMs:0, pxPerFrame:14, windowAhead:24, windowBehind:8, keepBehind:16, pwin:64, workers:((navigator.hardwareConcurrency||4)>=8?3:2), perWorker:2, pInflight:6, near:2, holds:[], zones:null, hiBase:null, hiNear:120, hiFade:260 }, o);
     this.buf=[]; this.bmp=new Map(); this.pending=new Set(); this.bad=new Set();
     this.pbuf=[]; this.pbmp=new Map(); this.ppending=new Set(); this.pbad=new Set(); this.pm=null;
     this.hi=null; this.hbuf=new Map(); this.hbmp=new Map(); this.hpending=new Set(); this.hbad=new Set(); this.hfetch=new Set(); this.hiShown=-1; this.hiT0=0;   // 2K ключевые кадры (hiBase/hi.json): байты, битмапы, очередь
@@ -612,10 +612,11 @@ class VFilm {
     if(this.presetFrames&&this.wrap){ this.frames=this.presetFrames; if(this.zonesFrac){ const N=this.frames-1; this.zones=this.zonesFrac.map(z=>[Math.round(z[0]*N),Math.round(z[1]*N),z[2]]); } try{ this.layout(); }catch(e){} }   // высота обёртки известна до манифеста — нет сдвига макета (CLS)
   }
   static worker(){
-    const src="self.onmessage=async(e)=>{const{i,buf,type}=e.data;try{const bitmap=await createImageBitmap(new Blob([buf],{type}));self.postMessage({i,bitmap},[bitmap]);}catch(err){self.postMessage({i,bitmap:null});}};";
+    const src="self.onmessage=async(e)=>{const{i,buf,type}=e.data;const t0=performance.now();try{const bitmap=await createImageBitmap(new Blob([buf],{type}));self.postMessage({i,bitmap,ms:performance.now()-t0},[bitmap]);}catch(err){self.postMessage({i,bitmap:null});}};";
     return new Worker(URL.createObjectURL(new Blob([src],{type:'text/javascript'})));
   }
-  onHi({i,bitmap}){ this.pending.delete(i); if(this.destroyed){ if(bitmap) bitmap.close(); return; }
+  onHi({i,bitmap,ms}){ this.pending.delete(i); if(ms>0){ this.decMs=this.decMs?this.decMs*0.8+ms*0.2:ms; this.rate=this.workers*16.667/Math.max(1,this.decMs)*0.8; }   /* пропускная способность декодера, кадров/тик (×0.8 — запас на передачу битмапа и drawImage) */
+    if(this.destroyed){ if(bitmap) bitmap.close(); return; }
     if(!bitmap){ this.bad.add(i); } else if(!this.inKeep(i)){ bitmap.close(); } else { this.bmp.set(i,bitmap); if(i===this.cur||!this.bmp.has(this.cur)) this.redraw(); }
     this.pump(); }
   onPx({i,bitmap}){ this.ppending.delete(i); if(this.destroyed){ if(bitmap) bitmap.close(); return; }
@@ -658,13 +659,14 @@ class VFilm {
   layout(){ if(!this.frames||!this.wrap) return; const sh=this.sticky.clientHeight||innerHeight; this.overlap=Math.round(sh*(this.overlapVh||0)); this.lead=Math.round(sh*(this.leadVh||0)); this.wrap.style.height=Math.round(sh+this.lead+this.frames*this.pxPerFrame+this.extraPx()+this.overlap)+'px'; if(!this.noGlobalVar){ try{ document.documentElement.style.setProperty('--film-overlap', this.overlap+'px'); }catch(e){} } }
   ready(frac,first){ return new Promise(res=>{ const tick=()=>{ if(this.destroyed) return res(); const okB=this.m?(this.loadedBytes/this.m.totalBytes>=frac):false; let okF=!!this.m; if(okF){ for(let i=0;i<first;i++){ if(!this.bmp.has(i)){ okF=false; break; } } } (okB&&okF)?res():setTimeout(tick,60); }; tick(); }); }
   inWindow(i){ const lo=this.cur-(this.dir>0?this.windowBehind:this.windowAhead), hi=this.cur+(this.dir>0?this.windowAhead:this.windowBehind); return i>=lo&&i<=hi; }
-  inKeep(i){ const d=(i-this.cur)*this.dir; return d>=-this.keepBehind&&d<=this.windowAhead; }   // держим чуть больше, чем декодим: разворот скролла не сбрасывает готовые кадры
+  inKeep(i){ const d=(i-this.cur)*this.dir, sp=this.span||1; return d>=-this.keepBehind*sp&&d<=this.windowAhead*sp; }   // держим чуть больше, чем декодим: разворот скролла не сбрасывает готовые кадры
   fill(){ if(this.cur<0||!this.m) return;
-    for(const [i,b] of this.bmp){ if(!this.inKeep(i)){ b.close(); this.bmp.delete(i); } }
+    const sp=this.span||1; for(const [i,b] of this.bmp){ if(!this.inKeep(i)||(sp>1&&i%sp!==0&&Math.abs(i-this.cur)>this.near)){ b.close(); this.bmp.delete(i); } }   /* на сетке держим только кадры сетки (и пару ближайших): память не растёт */
     if(this.pm){ for(const [i,b] of this.pbmp){ if(Math.abs(i-this.cur)>this.pwin){ b.close(); this.pbmp.delete(i); } } }
     this.pump(); this.ppump(); this.hpump(); }
   want(i){ return i>=0&&i<this.frames&&!!this.buf[i]&&!this.bmp.has(i)&&!this.pending.has(i)&&!this.bad.has(i); }
-  next(){ for(let d=0; d<=this.windowAhead; d++){ const a=this.cur+d*this.dir; if(this.want(a)) return a; if(d>0&&d<=this.windowBehind){ const b=this.cur-d*this.dir; if(this.want(b)) return b; } } return -1; }
+  next(){ const sp=this.span||1, c=sp===1?this.cur:Math.round(this.cur/sp)*sp;   /* sp>1 — очередь по сетке каждого sp-го кадра от ближайшего узла: окно впереди растёт в sp раз, битмапов столько же */
+    for(let d=0; d<=this.windowAhead; d++){ const a=c+d*sp*this.dir; if(this.want(a)) return a; if(d>0&&d<=this.windowBehind){ const b=c-d*sp*this.dir; if(this.want(b)) return b; } } return -1; }
   pump(){ if(this.cur<0||!this.m||this.destroyed) return;                 // в очереди ≤ maxInflight кадров: после прыжка/разворота теряем 4 устаревших декода, а не всё окно
     while(this.pending.size<this.maxInflight){ const i=this.next(); if(i<0) break; this.pending.add(i); this.pool[this.rr++%this.pool.length].postMessage({i,buf:this.buf[i],type:this.m.type}); } }
   pwant(i){ return i>=0&&i<this.frames&&!!this.pbuf[i]&&!this.pbmp.has(i)&&!this.ppending.has(i)&&!this.pbad.has(i); }
@@ -696,6 +698,9 @@ class VFilm {
     if(!isFinite(this.tSmooth)) this.tSmooth=this.tTarget;                 // защита от битых таймстампов
     const N=this.frames||240; if(Math.abs(this.tTarget-this.tSmooth)<0.25/N) this.tSmooth=this.tTarget;
     const pos=this.tSmooth*(N-1); const f=Math.round(pos);
+    const dfr=this.pos!=null?Math.abs(pos-this.pos)/(dt/16.667):0; this.vel=dfr>this.vel?dfr:this.vel+(dfr-this.vel)*Math.min(1,dt/70);   /* скорость фильма, кадров/тик: подъём мгновенный, спад ~70 мс — после остановки сетка быстро схлопывается к точному кадру */
+    let sp=1; const capR=Math.max(0.5,this.rate||3)*0.9; while(sp<16&&this.vel/sp>capR) sp*=2;   /* быстрый скролл: декодер не успевает за каждым кадром → декодим сетку каждого sp-го (степень двойки — сетки вложены) и показываем чёткого соседа, а не ¼-прокси */
+    if(sp!==this.span){ this.span=sp; if(f===this.cur) this.fill(); }
     if(f!==this.cur){ this.dir=f>this.cur?1:-1; this.cur=f; this.fill(); this.dirty=true; }
     if(this.blend && Math.abs(pos-(this.pos||0))>0.004){ this.dirty=true; }  this.pos=pos;   // дробная позиция между кадрами → плавный скраб
     this.onFrame&&this.onFrame(p,f,this.tail||0);
@@ -703,7 +708,7 @@ class VFilm {
   }
   pick(){                                                                   // чёткий кадр → чёткий сосед (≤near) → прокси этого кадра → ближайший чёткий → ближайший прокси
     const c=this.cur; let b=this.bmp.get(c); if(b){ this.kind='sharp'; return b; }
-    for(let d=1; d<=this.near; d++){ b=this.bmp.get(c-d*this.dir)||this.bmp.get(c+d*this.dir); if(b){ this.kind='near'; return b; } }
+    const R=Math.max(this.near,this.span||1); for(let d=1; d<=R; d++){ b=this.bmp.get(c-d*this.dir)||this.bmp.get(c+d*this.dir); if(b){ this.kind='near'; return b; } }   /* на сетке сосед не дальше sp — чёткий кадр со сдвигом ≤ sp/2 лучше мыльного прокси */
     b=this.pbmp.get(c); if(b){ this.kind='proxy'; return b; }
     this.kind='far'; return this.nearest(this.bmp)||this.nearest(this.pbmp); }
   draw(){ const b=this.pick(); const hp=this.pos!=null?this.pos:this.cur, hk=Math.round(hp); const hb=(this.hbmp.size&&Math.abs(hp-hk)<0.02)?this.hbmp.get(hk):null; if(!b&&!hb) return; this.dirty=false;
@@ -712,7 +717,7 @@ class VFilm {
     const cw=Math.round(W*dpr), ch=Math.round(H*dpr); if(c.width!==cw||c.height!==ch){ c.width=cw; c.height=ch; ctx.imageSmoothingQuality='high'; }
     const cover=(img)=>{ const s=Math.max(cw/img.width, ch/img.height); const dw=img.width*s, dh=img.height*s; ctx.drawImage(img,(cw-dw)/2,(ch-dh)/2,dw,dh); };
     ctx.globalAlpha=1; let drawn=false;
-    if(this.blend && this.pos!=null){ const f0=Math.floor(this.pos), fr=this.pos-f0; const a=this.bmp.get(f0), b2=this.bmp.get(f0+1);     // между двумя чёткими кадрами — кроссфейд по дробной позиции: движение не ступенчатое
+    if(this.blend && this.pos!=null && (this.span||1)<=4){ const sp=this.span||1; const f0=Math.floor(this.pos/sp)*sp, fr=(this.pos-f0)/sp; const a=this.bmp.get(f0), b2=this.bmp.get(f0+sp);     // между двумя чёткими кадрами — кроссфейд по дробной позиции: движение не ступенчатое
       if(a && b2 && fr>0.02 && fr<0.98){ cover(a); ctx.globalAlpha=fr; cover(b2); ctx.globalAlpha=1; drawn=true; } }
     if(!drawn && b) cover(b);
     if(b){ const k=drawn?'blend':this.kind; (this.kinds=this.kinds||{})[k]=(this.kinds[k]||0)+1; }   // статистика слоёв для ?diag=1
@@ -1448,7 +1453,7 @@ class Component extends DCLogic {
 })();</script>
 <!-- ?diag=1 — что именно рисует плеер на этой машине: слой (sharp/near/proxy), декод, загрузка, ошибки бандлов, 2K -->
 <script>(function(){ if(!/[?&]diag=1\b/.test(location.search)) return; var el=document.createElement('pre'); el.style.cssText='position:fixed;left:8px;bottom:8px;z-index:99999;margin:0;padding:8px 10px;background:rgba(0,0,0,.8);color:#9f9;font:11px/1.45 ui-monospace,monospace;pointer-events:none;white-space:pre;border-radius:6px;max-width:92vw';
-  function f(x,name){ if(!x) return name+': —'; var m=x.m, lb=x.loadedBytes||0; return name+': frames '+(x.frames||'?')+' cur '+x.cur+' layer '+(x.kind||'-')+' decoded '+x.bmp.size+' proxy '+x.pbmp.size+' bad '+x.bad.size+' loaded '+(m?Math.round(100*lb/m.totalBytes):0)+'% rev '+(m&&m.rev||'-')+' 2K '+x.hiShown+'/'+x.hbmp.size+(x.err?' ERR '+x.err.join(','):'')+'\n   draws '+JSON.stringify(x.kinds||{}); }
+  function f(x,name){ if(!x) return name+': —'; var m=x.m, lb=x.loadedBytes||0; return name+': frames '+(x.frames||'?')+' cur '+x.cur+' layer '+(x.kind||'-')+' decoded '+x.bmp.size+' proxy '+x.pbmp.size+' bad '+x.bad.size+' loaded '+(m?Math.round(100*lb/m.totalBytes):0)+'% rev '+(m&&m.rev||'-')+' 2K '+x.hiShown+'/'+x.hbmp.size+(x.err?' ERR '+x.err.join(','):'')+' span '+(x.span||1)+' vel '+(x.vel||0).toFixed(1)+' rate '+(x.rate||0).toFixed(1)+'\n   draws '+JSON.stringify(x.kinds||{}); }
   function tick(){ try{ var d=window.__dbg||{}; var h=d._film, s=d._descent&&d._descent.film; var c=h&&h.canvas; el.textContent=[ navigator.userAgent.replace(/^.*\) /,'').slice(0,70), 'dpr '+devicePixelRatio+' vp '+innerWidth+'x'+innerHeight+' canvas '+(c?c.width+'x'+c.height:'-')+' mode '+(d._filmMode||'-')+' cores '+navigator.hardwareConcurrency+' mem '+(navigator.deviceMemory||'?'), f(h,'hero'), f(s,'descent') ].join('\n'); }catch(e){ el.textContent='diag: '+e; } }
   document.body.appendChild(el); setInterval(tick,500); })();</script>
 <!-- Yandex.Metrika: telegram_click goal on any t.me CTA -->
