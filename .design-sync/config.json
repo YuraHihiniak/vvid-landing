@@ -1,0 +1,7 @@
+{
+  "shape": "brand-bundle",
+  "localDir": "./ds-bundle",
+  "readmeHeader": ".design-sync/conventions.md",
+  "projectName": "VVID",
+  "note": "Off-script: source repo (vvid-landing) is an imperative single-page composition (VVID.dc.html + dc-runtime), not a compiled component library. There are no React components to bundle, so this is a brand/token foundation (colors, type, spacing, motion) authored by hand from the live CSS and STYLE-MOTION-BRIEF.md. No _ds_sync.json anchor (no story/source recipe) — re-sync re-verifies from scratch."
+}

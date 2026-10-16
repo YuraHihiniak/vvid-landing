@@ -1,0 +1,59 @@
+/* VVID design system — root stylesheet.
+ * Everything a design needs reaches it through this @import closure.
+ *
+ * Vibe: warm techno-brutalism. Calm, expensive, engineered, confident.
+ * Dark/light alternate · sharp corners · 1px hairlines · mono spec-labels ·
+ * one warm accent (terracotta) · motion that settles (expo-out), never bounces.
+ */
+
+/* Fonts — 3 voices: Unbounded (display), Golos Text (text), IBM Plex Mono (labels). */
+@import url('https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=Unbounded:wght@600;700;800&display=swap&subset=cyrillic,latin');
+
+/* Tokens */
+@import './tokens/colors.css';
+@import './tokens/typography.css';
+@import './tokens/spacing.css';
+@import './tokens/motion.css';
+
+/* Base — the default surface is warm cream with ink text. */
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  background: var(--vv-cream);
+  color: var(--vv-ink);
+  font-family: var(--vv-font-text);
+  font-size: var(--vv-text-body);
+  line-height: var(--vv-lh-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--vv-selection-bg);
+  color: var(--vv-selection-fg);
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* Convenience text roles (optional helpers — tokens above are the source of truth). */
+.vv-display {
+  font-family: var(--vv-font-display);
+  font-weight: var(--vv-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--vv-tracking-display);
+  line-height: var(--vv-lh-hero);
+}
+.vv-label {
+  font-family: var(--vv-font-mono);
+  font-weight: var(--vv-weight-medium);
+  font-size: var(--vv-text-label);
+  text-transform: uppercase;
+  letter-spacing: var(--vv-tracking-label);
+}
+.vv-metric {
+  font-family: var(--vv-font-mono);
+  font-weight: var(--vv-weight-thin);
+  font-size: var(--vv-text-metric);
+}

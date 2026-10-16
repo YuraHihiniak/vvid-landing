@@ -1,0 +1,186 @@
+[
+  {
+    "file": "01-wave.webm",
+    "emoji": "👋",
+    "name": "wave",
+    "loop_sec": 1.8,
+    "size_kb": 23.9,
+    "use": "приветствие в /start и /help"
+  },
+  {
+    "file": "02-clipboard.webm",
+    "emoji": "📋",
+    "name": "clipboard",
+    "loop_sec": 2.0,
+    "size_kb": 14.4,
+    "use": "шаг «Задача», /start, карточка заявки"
+  },
+  {
+    "file": "03-phone.webm",
+    "emoji": "📞",
+    "name": "phone",
+    "loop_sec": 2.2,
+    "size_kb": 11.1,
+    "use": "шаг «Контакт»"
+  },
+  {
+    "file": "04-money-bag.webm",
+    "emoji": "💰",
+    "name": "money-bag",
+    "loop_sec": 1.9,
+    "size_kb": 8.9,
+    "use": "шаг «Бюджет»"
+  },
+  {
+    "file": "05-building.webm",
+    "emoji": "🏢",
+    "name": "building",
+    "loop_sec": 1.7,
+    "size_kb": 6.7,
+    "use": "шаг «О бизнесе»"
+  },
+  {
+    "file": "06-point-down.webm",
+    "emoji": "👇",
+    "name": "point-down",
+    "loop_sec": 1.4,
+    "size_kb": 7.1,
+    "use": "«Почти готово! Проверьте заявку»"
+  },
+  {
+    "file": "07-party-popper.webm",
+    "emoji": "🎉",
+    "name": "party-popper",
+    "loop_sec": 1.6,
+    "size_kb": 8.7,
+    "use": "финал «Готово! Заявка принята»"
+  },
+  {
+    "file": "08-raised-hands.webm",
+    "emoji": "🙌",
+    "name": "raised-hands",
+    "loop_sec": 1.7,
+    "size_kb": 12.0,
+    "use": "финал, подсказка /start"
+  },
+  {
+    "file": "09-ok-hand.webm",
+    "emoji": "👌",
+    "name": "ok-hand",
+    "loop_sec": 1.8,
+    "size_kb": 8.8,
+    "use": "отмена заявки"
+  },
+  {
+    "file": "10-pencil.webm",
+    "emoji": "✏️",
+    "name": "pencil",
+    "loop_sec": 1.9,
+    "size_kb": 9.5,
+    "use": "«Что поправим?»"
+  },
+  {
+    "file": "11-point-up.webm",
+    "emoji": "👆",
+    "name": "point-up",
+    "loop_sec": 1.4,
+    "size_kb": 7.4,
+    "use": "«воспользуйтесь кнопками выше»"
+  },
+  {
+    "file": "12-thinking.webm",
+    "emoji": "🤔",
+    "name": "thinking",
+    "loop_sec": 2.0,
+    "size_kb": 19.4,
+    "use": "ошибка «Кажется, пусто»"
+  },
+  {
+    "file": "13-scissors.webm",
+    "emoji": "✂️",
+    "name": "scissors",
+    "loop_sec": 1.5,
+    "size_kb": 14.1,
+    "use": "ошибка «длинновато» (макс. символов)"
+  },
+  {
+    "file": "14-slight-smile.webm",
+    "emoji": "🙂",
+    "name": "slight-smile",
+    "loop_sec": 2.0,
+    "size_kb": 13.8,
+    "use": "ошибка «Без контакта не ответим»"
+  },
+  {
+    "file": "15-sweat-smile.webm",
+    "emoji": "😅",
+    "name": "sweat-smile",
+    "loop_sec": 2.4,
+    "size_kb": 19.1,
+    "use": "лимит «слишком много заявок подряд»"
+  },
+  {
+    "file": "16-cross-mark.webm",
+    "emoji": "❌",
+    "name": "cross-mark",
+    "loop_sec": 1.6,
+    "size_kb": 7.6,
+    "use": "команда /cancel в /help"
+  },
+  {
+    "file": "17-info.webm",
+    "emoji": "ℹ️",
+    "name": "info",
+    "loop_sec": 2.0,
+    "size_kb": 13.8,
+    "use": "команда /help в справке"
+  },
+  {
+    "file": "18-vvid-logo.webm",
+    "emoji": "⚡",
+    "name": "vvid-logo",
+    "loop_sec": 2.2,
+    "size_kb": 6.5,
+    "use": "логотип — шапка /start, подпись команды vvid"
+  },
+  {
+    "file": "19-check.webm",
+    "emoji": "✅",
+    "name": "check",
+    "loop_sec": 2.0,
+    "size_kb": 7.6,
+    "use": "успех/подтверждение — «Заявка принята», статусы"
+  },
+  {
+    "file": "20-robot.webm",
+    "emoji": "🤖",
+    "name": "robot",
+    "loop_sec": 1.8,
+    "size_kb": 6.1,
+    "use": "сам бот — /start, «бот VVID на связи»"
+  },
+  {
+    "file": "21-globe.webm",
+    "emoji": "🌐",
+    "name": "globe",
+    "loop_sec": 2.4,
+    "size_kb": 10.4,
+    "use": "сайт/онлайн — ссылка на vvid, языки RU/EN"
+  },
+  {
+    "file": "22-clock.webm",
+    "emoji": "🕐",
+    "name": "clock",
+    "loop_sec": 2.0,
+    "size_kb": 12.8,
+    "use": "время/ожидание — «ответим в течение…», дедлайн"
+  },
+  {
+    "file": "23-phone-mobile.webm",
+    "emoji": "📱",
+    "name": "phone-mobile",
+    "loop_sec": 2.2,
+    "size_kb": 11.4,
+    "use": "контакт/связь — шаг телефон, уведомления"
+  }
+]

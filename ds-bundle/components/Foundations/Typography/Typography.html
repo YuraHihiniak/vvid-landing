@@ -1,0 +1,66 @@
+<!-- @dsCard group="Foundations" name="Typography" subtitle="3 voices · Unbounded / Golos Text / IBM Plex Mono" w="1320" h="980" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VVID — Typography</title>
+<link rel="stylesheet" href="../../../styles.css">
+<style>
+  body { margin: 0; background: var(--vv-void); color: var(--vv-cream); padding: 48px clamp(24px,5vw,72px); }
+  .lab { font-family: var(--vv-font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: var(--vv-tracking-label); color: var(--vv-muted-dark); }
+  .accent { color: var(--vv-accent); }
+  .row { padding: 26px 0; border-top: 1px solid var(--vv-line-on-dark); display: grid; grid-template-columns: 200px 1fr; gap: 24px; align-items: baseline; }
+  .row:first-of-type { border-top: none; }
+  .spec { font-family: var(--vv-font-mono); font-size: 11px; color: var(--vv-muted-dark); line-height: 1.7; }
+  .spec b { color: var(--vv-body-dark); font-weight: 500; }
+  .hero { font-family: var(--vv-font-display); font-weight: 800; text-transform: uppercase; letter-spacing: -.04em; line-height: 1.04; font-size: clamp(34px,5vw,72px); }
+  .h2 { font-family: var(--vv-font-text); font-weight: 600; letter-spacing: -.04em; line-height: 1.0; font-size: clamp(26px,3.4vw,48px); }
+  .h3 { font-family: var(--vv-font-text); font-weight: 600; letter-spacing: -.03em; font-size: clamp(20px,2.4vw,32px); }
+  .lead { font-family: var(--vv-font-text); font-weight: 400; line-height: 1.5; font-size: clamp(16px,1.5vw,21px); color: var(--vv-body-dark); max-width: 52ch; }
+  .body { font-family: var(--vv-font-text); font-weight: 400; line-height: 1.6; font-size: 16px; color: var(--vv-body-dark); max-width: 60ch; }
+  .label { font-family: var(--vv-font-mono); font-weight: 500; text-transform: uppercase; letter-spacing: .2em; font-size: 11px; }
+  .metric { font-family: var(--vv-font-mono); font-weight: 300; font-size: clamp(24px,3vw,32px); }
+  h1.title { font-family: var(--vv-font-display); font-weight:800; text-transform:uppercase; letter-spacing:-.03em; font-size: clamp(28px,5vw,56px); margin: 10px 0 36px; }
+</style>
+</head>
+<body>
+  <div class="lab">fig.03 · type system</div>
+  <h1 class="title">Three <span class="accent">voices</span></h1>
+
+  <div class="row">
+    <div class="spec"><b>Display — Unbounded</b><br>weights 600 / 700 / 800<br>loud moments only:<br>giant headlines, watermarks<br>ls -.04em · lh 1.04</div>
+    <div><div class="hero">Build it <span class="accent">right</span></div></div>
+  </div>
+
+  <div class="row">
+    <div class="spec"><b>H2 — Golos Text 600</b><br>clamp(30,5vw,84)<br>ls -.04em · lh 1.0</div>
+    <div><div class="h2">Engineered, calm, exact</div></div>
+  </div>
+
+  <div class="row">
+    <div class="spec"><b>H3 — Golos Text 600</b><br>clamp(22,2.8vw,38)<br>ls -.03em</div>
+    <div><div class="h3">A studio that ships</div></div>
+  </div>
+
+  <div class="row">
+    <div class="spec"><b>Lead — Golos Text 400</b><br>clamp(16,1.5vw,21)<br>lh 1.5 · ≤52ch</div>
+    <div><div class="lead">Premium through restraint, typography and air — not special effects. Open pricing, founder-led.</div></div>
+  </div>
+
+  <div class="row">
+    <div class="spec"><b>Body — Golos Text 400</b><br>15–16px · lh 1.6<br>text-wrap: pretty · ≤60ch</div>
+    <div><div class="body">When you need real logic, an internal system, non-standard integrations or a process built around your business — a template hits its ceiling. That's what we make.</div></div>
+  </div>
+
+  <div class="row">
+    <div class="spec"><b>Label — IBM Plex Mono 500</b><br>10–11px · UPPERCASE<br>ls .18–.26em<br>fig.0x · nav · prices · chips</div>
+    <div><span class="label">fig.04 / cases</span> &nbsp;·&nbsp; <span class="label accent">02 / 06 · active</span></div>
+  </div>
+
+  <div class="row">
+    <div class="spec"><b>Metric — IBM Plex Mono 300</b><br>clamp(24,3vw,32)<br>thin, precise</div>
+    <div><span class="metric">+148%</span> &nbsp; <span class="metric accent">2.3s</span> &nbsp; <span class="metric">50 days</span></div>
+  </div>
+</body>
+</html>

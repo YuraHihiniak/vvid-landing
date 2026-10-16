@@ -1,0 +1,40 @@
+/* VVID — Colors
+ * Warm techno-brutalism. Dark/light alternate, one warm accent (terracotta).
+ * Values taken from the live site (VVID.dc.html) and STYLE-MOTION-BRIEF.md.
+ * Accent rule: terracotta is "where to look" — at most ONE accent moment per screen.
+ */
+:root {
+  /* Surfaces — dark */
+  --vv-void:        #13110c; /* primary dark bg: hero, dark sections, header text */
+  --vv-void-2:      #0b0906; /* deepest: ASCII canvas backdrops */
+  --vv-ink:         #1b1812; /* dark text on light; dark (ink) buttons */
+
+  /* Surfaces — light */
+  --vv-cream:       #e4ded2; /* primary light bg; light text on dark */
+  --vv-paper-2:     #d3ccbd; /* placeholders / chips on light */
+
+  /* Accent — terracotta (use sparingly, 1 per screen) */
+  --vv-accent:      #b9543f; /* main accent: highlighted H1 word, active case, primary hover, live metric */
+  --vv-accent-hover:#c66048; /* hover of primary action */
+  --vv-accent-press:#a3472f; /* active/pressed (hero flood uses #a4442d) */
+
+  /* Text on dark */
+  --vv-muted-dark:  #8f877a; /* small labels, fig.0x */
+  --vv-body-dark:   #b6ad9e; /* readable body on dark */
+  --vv-dim-cream:   #cfc7b9; /* preloader / quiet text */
+  --vv-faint-cream: #9a9286; /* quietest text on dark */
+
+  /* Text on light */
+  --vv-muted-light: #8c8474; /* labels on cream */
+  --vv-body-light:  #5a5346; /* body on cream */
+
+  /* Hairlines — always 1px. Never heavier. */
+  --vv-line-on-dark:        rgba(228,222,210,.12); /* range .12–.22 */
+  --vv-line-on-dark-strong: rgba(228,222,210,.22);
+  --vv-line-on-light:       rgba(27,24,18,.18);    /* range .18–.30 */
+  --vv-line-on-light-strong:rgba(27,24,18,.30);
+
+  /* Selection */
+  --vv-selection-bg: #1b1812;
+  --vv-selection-fg: #e4ded2;
+}

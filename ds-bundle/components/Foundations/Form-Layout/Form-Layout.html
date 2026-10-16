@@ -1,0 +1,79 @@
+<!-- @dsCard group="Foundations" name="Form & Layout" subtitle="Sharp rectangles · radius 0 · hairlines · pills · section rhythm" w="1320" h="900" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VVID — Form & Layout</title>
+<link rel="stylesheet" href="../../../styles.css">
+<style>
+  body { margin: 0; background: var(--vv-cream); color: var(--vv-ink); padding: 48px clamp(24px,5vw,72px); }
+  .lab { font-family: var(--vv-font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: var(--vv-tracking-label); color: var(--vv-muted-light); }
+  .accent { color: var(--vv-accent); }
+  h1.title { font-family: var(--vv-font-display); font-weight:800; text-transform:uppercase; letter-spacing:-.03em; font-size: clamp(28px,5vw,56px); margin: 10px 0 6px; }
+  .sub { color: var(--vv-body-light); max-width: 60ch; margin: 0 0 40px; }
+  .cols { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 40px; }
+  .panel { border: 1px solid var(--vv-line-on-light); padding: 24px; }
+  .panel .lab { margin-bottom: 16px; }
+  .stack { display: flex; flex-direction: column; gap: 16px; }
+  /* buttons — real CSS from the site */
+  .btn-ink { display:inline-flex; align-items:center; gap:14px; background: var(--vv-ink); color: var(--vv-cream); border:none; font-family: var(--vv-font-mono); font-size:13px; letter-spacing:.14em; text-transform:uppercase; font-weight:600; cursor:pointer; padding:18px 32px; border-radius: 0; transition: background .35s, gap .35s; }
+  .btn-ink:hover { background: var(--vv-accent); color:#fff; gap:20px; }
+  .pill { display:inline-flex; align-items:center; gap:13px; border:1.5px solid var(--vv-line-on-light-strong); color: var(--vv-ink); border-radius: var(--vv-radius-pill); padding:15px 28px; font-family: var(--vv-font-mono); font-size:13px; letter-spacing:.1em; text-transform:uppercase; font-weight:600; }
+  .chip { display:inline-flex; align-items:center; gap:8px; border:1px solid var(--vv-line-on-light); border-radius: var(--vv-radius-pill); padding:7px 15px; font-family: var(--vv-font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.14em; color: var(--vv-body-light); }
+  .dot { width:7px; height:7px; border-radius:50%; background: var(--vv-accent); }
+  /* hairline field */
+  .field { border:none; border-bottom:1px solid var(--vv-line-on-light); padding:12px 0; }
+  .field .l { font-family: var(--vv-font-mono); font-size:10px; letter-spacing:.18em; text-transform:uppercase; color: var(--vv-muted-light); display:block; margin-bottom:8px; }
+  .field input { border:none; background:none; outline:none; font-family: var(--vv-font-text); font-size:17px; color: var(--vv-ink); width:100%; }
+  /* rhythm bar */
+  .rhythm { display:flex; flex-direction:column; gap:6px; }
+  .rh { font-family: var(--vv-font-mono); font-size:12px; color: var(--vv-body-light); display:flex; justify-content:space-between; padding:9px 0; border-top:1px solid var(--vv-line-on-light); }
+  .swatch-shadow { width:120px; height:54px; background:#fff; border-radius:var(--vv-radius-pill); box-shadow: var(--vv-shadow-float); display:flex; align-items:center; justify-content:center; font-family:var(--vv-font-mono); font-size:11px; color:var(--vv-muted-light); }
+</style>
+</head>
+<body>
+  <div class="lab">fig.06 · form &amp; layout</div>
+  <h1 class="title">Sharp, flat, <span class="accent">hairline</span></h1>
+  <p class="sub">Radius 0 everywhere (only pills and status dots round). Structure from 1px hairlines, not shadow. Almost no shadow — the floating button is the one exception.</p>
+
+  <div class="cols">
+    <div class="panel">
+      <div class="lab">Buttons &amp; chips</div>
+      <div class="stack">
+        <button class="btn-ink">Start a brief <span>→</span></button>
+        <span class="pill">View work <span class="accent">→</span></span>
+        <span class="chip"><span class="dot"></span> 04 / cases · active</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="lab">Hairline fields (brief form)</div>
+      <div class="stack">
+        <label class="field"><span class="l">Name</span><input value="Acme Ltd." readonly></label>
+        <label class="field"><span class="l">What are we building</span><input value="Telegram bot + internal panel" readonly></label>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="lab">Section rhythm &amp; containers</div>
+      <div class="rhythm">
+        <div class="rh"><span>section padding-block</span><span>clamp(90, 13vw, 180)</span></div>
+        <div class="rh"><span>gutter</span><span>26px</span></div>
+        <div class="rh"><span>container · text</span><span>1100px</span></div>
+        <div class="rh"><span>container · wide</span><span>1320px</span></div>
+        <div class="rh"><span>header height</span><span>62px</span></div>
+        <div class="rh"><span>radius</span><span>0 (pills 50px)</span></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="lab">The only shadow</div>
+      <div class="stack">
+        <div class="swatch-shadow">float button</div>
+        <div class="rh" style="border:none;padding-top:14px"><span>0 12px 30px rgba(19,17,12,.3)</span></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

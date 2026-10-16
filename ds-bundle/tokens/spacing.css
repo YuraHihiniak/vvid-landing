@@ -1,0 +1,34 @@
+/* VVID — Spacing, layout & form
+ * Sharp rectangles, radius 0 everywhere (except status dots). Flat + hairlines, almost no shadow.
+ */
+:root {
+  /* Vertical section rhythm */
+  --vv-section-pad: clamp(90px, 13vw, 180px); /* padding-block per section */
+
+  /* Horizontal */
+  --vv-gutter: 26px;            /* side gutter */
+  --vv-container-text: 1100px;  /* hero, pricing, brief (text columns) */
+  --vv-container-wide: 1320px;  /* manifest, services, cases, process, team, footer */
+
+  /* Header */
+  --vv-header-height: 62px;     /* fixed; progressive frost-blur on top */
+  --vv-scroll-pad-top: 78px;
+
+  /* Spacing steps (used for gaps/stagger of UI groups) */
+  --vv-space-2xs: 6px;
+  --vv-space-xs:  9px;
+  --vv-space-sm:  14px;
+  --vv-space-md:  22px;
+  --vv-space-lg:  32px;
+
+  /* Form / shape */
+  --vv-radius: 0;          /* sharp rectangles everywhere */
+  --vv-radius-pill: 50px;  /* the ONLY rounded shapes: hero pills, status/meta chips */
+  --vv-radius-dot: 50%;    /* status dots */
+  --vv-border-hairline: 1px; /* never heavier */
+
+  /* Shadow — almost none. The only notable one is the floating button. */
+  --vv-shadow-none: none;
+  --vv-shadow-float: 0 12px 30px rgba(19,17,12,.3);
+  --vv-shadow-float-hover: 0 22px 50px -12px rgba(185,84,63,.55);
+}

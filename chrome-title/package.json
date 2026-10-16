@@ -1,0 +1,33 @@
+{
+  "name": "chrome-title",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Inflated chrome 3D hero title (react-three-fiber) with a CSS fallback",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "build:lib": "tsc -b && vite build -c vite.lib.config.ts && esbuild ../vendor/chrome-title/*.js --minify --format=esm --outdir=../vendor/chrome-title --allow-overwrite --log-level=warning && cp public/fonts/unbounded-black.typeface.json public/fonts/rubik-black.typeface.json public/fonts/boorsok.typeface.json ../vendor/chrome-title/ && cp public/fonts/unbounded-900-latin.woff2 public/fonts/unbounded-900-cyrillic.woff2 public/fonts/rubik-900-latin.woff2 public/fonts/rubik-900-cyrillic.woff2 public/fonts/boorsok.woff2 ../fonts/ && cp font-src/OFL-Unbounded.txt font-src/OFL-Rubik.txt ../fonts/",
+    "preview": "vite preview",
+    "typecheck": "tsc -b",
+    "fonts": "node scripts/make-typeface.mjs font-src/Unbounded-Black.ttf public/fonts/unbounded-black.typeface.json && node scripts/make-typeface.mjs font-src/Rubik-Black.ttf public/fonts/rubik-black.typeface.json",
+    "capture": "node scripts/capture.mjs"
+  },
+  "dependencies": {
+    "@react-three/drei": "9.122.0",
+    "@react-three/fiber": "8.18.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "three": "0.170.0"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "@types/three": "0.170.0",
+    "@vitejs/plugin-react": "4.3.4",
+    "opentype.js": "1.3.4",
+    "puppeteer-core": "23.11.1",
+    "typescript": "5.6.3",
+    "vite": "6.0.7"
+  }
+}

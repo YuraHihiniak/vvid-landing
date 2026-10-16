@@ -19,7 +19,7 @@ cp VVID.dc.html "$DIST/index.html"
 cp VVID.dc.html "$DIST/VVID.dc.html"
 cp support.js robots.txt "$DIST/"
 
-# self-hosted вендоры (react, react-dom, lenis) и шрифты + их лицензии
+# self-hosted вендоры (react, react-dom, lenis, three) и шрифты + их лицензии
 cp -R vendor "$DIST/vendor"
 cp fonts/*.woff2 "$DIST/fonts/"
 for lic in fonts/*OFL* fonts/LICENSE* fonts/*license*; do cp "$lic" "$DIST/fonts/"; done

@@ -1,0 +1,39 @@
+/* VVID — Typography
+ * 3 voices, strictly by role. Display for loud moments only; mono for labels only.
+ * Fonts come from Google Fonts, @imported by styles.css.
+ */
+:root {
+  /* Font families */
+  --vv-font-display: 'Unbounded','Golos Text','Helvetica Neue',sans-serif; /* giant headlines / watermarks only (600/700/800) */
+  --vv-font-text:    'Golos Text','Helvetica Neue',Arial,sans-serif;       /* H1–H3, leads, body (400–900) */
+  --vv-font-mono:    'IBM Plex Mono', ui-monospace, monospace;             /* fig.0x, nav, prices, metrics, chips, counters (400/500/600) */
+
+  /* Fluid type scale (clamp). Headlines tight tracking; labels positive + UPPERCASE. */
+  --vv-text-hero:   clamp(38px, 6.4vw, 88px);  /* H1: 800 · ls -.04em · lh 1.04 */
+  --vv-text-h2:     clamp(30px, 5vw, 84px);    /* 600 · ls -.04em · lh 1.0 */
+  --vv-text-h3:     clamp(22px, 2.8vw, 38px);  /* 600 · ls -.03em */
+  --vv-text-lead:   clamp(16px, 1.5vw, 21px);  /* 400 · lh 1.5 */
+  --vv-text-body:   16px;                       /* 400 · lh 1.6 */
+  --vv-text-label:  11px;                       /* 500 · UPPERCASE · mono */
+  --vv-text-metric: clamp(24px, 3vw, 32px);    /* 300 (thin) */
+  --vv-text-watermark: 46vw;                    /* 800 · ghost color rgba(...,.045) */
+
+  /* Tracking */
+  --vv-tracking-display: -.04em; /* headlines pack tight */
+  --vv-tracking-h3:      -.03em;
+  --vv-tracking-label:   .18em;  /* labels open up; range .18–.26em */
+  --vv-tracking-label-wide: .26em;
+
+  /* Line-height */
+  --vv-lh-hero: 1.04;
+  --vv-lh-tight: 1.0;
+  --vv-lh-lead: 1.5;
+  --vv-lh-body: 1.6;
+
+  /* Weights */
+  --vv-weight-thin: 300;   /* metrics/stats */
+  --vv-weight-regular: 400;
+  --vv-weight-medium: 500; /* labels */
+  --vv-weight-semibold: 600;
+  --vv-weight-bold: 800;   /* hero */
+}

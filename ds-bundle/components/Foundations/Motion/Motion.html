@@ -1,0 +1,59 @@
+<!-- @dsCard group="Foundations" name="Motion" subtitle="Expo-out, long tail · no bounce · reduced-motion always" w="1320" h="900" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VVID — Motion</title>
+<link rel="stylesheet" href="../../../styles.css">
+<style>
+  body { margin: 0; background: var(--vv-void); color: var(--vv-cream); padding: 48px clamp(24px,5vw,72px); }
+  .lab { font-family: var(--vv-font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: var(--vv-tracking-label); color: var(--vv-muted-dark); }
+  .accent { color: var(--vv-accent); }
+  h1.title { font-family: var(--vv-font-display); font-weight:800; text-transform:uppercase; letter-spacing:-.03em; font-size: clamp(28px,5vw,56px); margin: 10px 0 8px; }
+  .sub { color: var(--vv-body-dark); max-width: 60ch; margin: 0 0 40px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 1px; background: var(--vv-line-on-dark); border: 1px solid var(--vv-line-on-dark); margin-bottom: 40px; }
+  .ease { background: var(--vv-void); padding: 22px; }
+  .ease .name { font-size: 14px; font-weight: 600; margin: 12px 0 4px; }
+  .ease .val { font-family: var(--vv-font-mono); font-size: 11px; color: var(--vv-muted-dark); }
+  .ease .use { font-size: 11px; color: var(--vv-faint-cream); margin-top: 8px; line-height: 1.4; }
+  .track { height: 3px; background: var(--vv-line-on-dark); position: relative; margin: 4px 0; overflow: hidden; }
+  .dot { position: absolute; top: -3px; width: 9px; height: 9px; background: var(--vv-accent); border-radius: 50%; left: 0; }
+  .d-expo   { animation: run 2.6s cubic-bezier(.16,1,.3,1) infinite alternate; }
+  .d-reveal { animation: run 2.6s cubic-bezier(.22,1,.36,1) infinite alternate; }
+  .d-drift  { animation: run 2.6s ease-in-out infinite alternate; }
+  .d-linear { animation: run 2.6s linear infinite alternate; }
+  @keyframes run { from { left: 0; } to { left: calc(100% - 9px); } }
+  table { border-collapse: collapse; width: 100%; }
+  td, th { text-align: left; padding: 11px 14px; border-top: 1px solid var(--vv-line-on-dark); font-size: 13px; }
+  th { font-family: var(--vv-font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .14em; color: var(--vv-muted-dark); border-top: none; }
+  td.p { font-family: var(--vv-font-mono); color: var(--vv-body-dark); font-size: 12px; }
+  .donts { margin-top: 30px; color: var(--vv-muted-dark); font-size: 12px; }
+  @media (prefers-reduced-motion: reduce) { .dot { animation: none !important; left: calc(100% - 9px); } }
+</style>
+</head>
+<body>
+  <div class="lab">fig.05 · motion language</div>
+  <h1 class="title">Settles, never <span class="accent">bounces</span></h1>
+  <p class="sub">Fast start → long, soft landing. Only transform &amp; opacity. One moving focus per screen. Every animation has a reduced-motion / "motion off" static fallback — a rule, not an option.</p>
+
+  <div class="grid">
+    <div class="ease"><div class="track"><span class="dot d-expo"></span></div><div class="name">Expo-out · main</div><div class="val">cubic-bezier(.16, 1, .3, 1)</div><div class="use">kinetic words · hovers · accordion chevron · metric reveal · float button</div></div>
+    <div class="ease"><div class="track"><span class="dot d-reveal"></span></div><div class="name">Reveal · softer</div><div class="val">cubic-bezier(.22, 1, .36, 1)</div><div class="use">scroll-in block reveals (easeOutQuint)</div></div>
+    <div class="ease"><div class="track"><span class="dot d-drift"></span></div><div class="name">Drift · background</div><div class="val">ease-in-out</div><div class="use">hero mesh, 24s alternate</div></div>
+    <div class="ease"><div class="track"><span class="dot d-linear"></span></div><div class="name">Marquee</div><div class="val">linear</div><div class="use">trust running line, 36s infinite</div></div>
+  </div>
+
+  <table>
+    <tr><th>Animation</th><th>Move</th><th>Timing</th></tr>
+    <tr><td>Block reveal</td><td class="p">opacity 0→1 + translateY 30→0</td><td class="p">1.1s · reveal · stagger 0/100/200ms</td></tr>
+    <tr><td>Kinetic headline</td><td class="p">masked words translateY 118%→0</td><td class="p">1s · expo · 60ms/word</td></tr>
+    <tr><td>Hover (button/row)</td><td class="p">shift / color</td><td class="p">.4–.5s · expo</td></tr>
+    <tr><td>Accordion chevron</td><td class="p">rotate 0→45° (+ → ×)</td><td class="p">.5s · expo</td></tr>
+    <tr><td>Hero mesh</td><td class="p">translate(-5%,-4%) + scale 1.05→1.18</td><td class="p">24s · ease-in-out · blur 22px</td></tr>
+    <tr><td>Inertial scroll</td><td class="p">Lenis lerp 0.085 (desktop)</td><td class="p">—</td></tr>
+  </table>
+
+  <p class="donts"><span class="accent">DON'T:</span> bounce · elastic · overshoot · springs · rainbow color · layout-property animation · more than one accent per screen · any animation without a reduced-motion fallback.</p>
+</body>
+</html>
